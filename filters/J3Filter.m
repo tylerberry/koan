@@ -33,7 +33,7 @@
 {
   if (!(self = [super init]))
     return nil;
-  [self clearFilters];
+  filters = [[NSMutableArray alloc] init];
   return self;
 }
 
@@ -64,7 +64,7 @@
 
 - (void) clearFilters
 {
-  [self at: &filters put: [NSMutableArray array]];
+  [filters removeAllObjects];
 }
 
 @end

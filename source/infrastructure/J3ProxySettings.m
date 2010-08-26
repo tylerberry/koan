@@ -9,6 +9,8 @@
 
 @implementation J3ProxySettings
 
+@synthesize hostname, port, username, password;
+
 + (id) proxySettings
 {
   return [[[self alloc] init] autorelease];
@@ -19,8 +21,8 @@
   if (!(self = [super init]))
     return nil;
   
-  [self setHostname: @""];
-  [self setPort: [NSNumber numberWithInt: 1080]];
+  hostname = [[NSString alloc] initWithString: @""];
+  port = [[NSNumber alloc] initWithInt: 1080];
   
   return self;
 }
@@ -29,52 +31,14 @@
 {
   [hostname release];
   [port release];
+  [username release];
+  [password release];
   [super dealloc];
 }
 
 - (NSString *) description
 {
   return [NSString stringWithFormat: @"%@: %@", hostname, port];
-}
-
-- (NSString *) hostname
-{
-  return hostname;
-}
-
-- (void) setHostname: (NSString *) value
-{
-  [self at: &hostname put: value];
-}
-
-- (NSNumber *) port
-{
-  return port;
-}
-
-- (void) setPort: (NSNumber *) value
-{
-  [self at: &port put: value];
-}
-
-- (NSString *) username
-{
-  return username;
-}
-
-- (void) setUsername: (NSString *) value
-{
-  [self at: &username put: value];
-}
-
-- (NSString *) password
-{
-  return password;
-}
-
-- (void) setPassword: (NSString *) value
-{
-  [self at: &password put: value];
 }
 
 - (BOOL) hasAuthentication

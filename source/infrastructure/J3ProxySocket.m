@@ -35,10 +35,10 @@
   if (!(self = [super initWithHostname: [settings hostname] port: [[settings port] intValue]]))
     return nil;
   
-  [self at: &realHostname put: hostnameValue];
+  realHostname = [hostnameValue copy];
   realPort = portValue;
-  [self at: &proxySettings put: settings];
-  [self at: &outputBuffer put: [J3WriteBuffer buffer]];
+  proxySettings = [settings retain];
+  outputBuffer = [[J3WriteBuffer buffer] retain];
   [outputBuffer setByteDestination: self];
   
   return self;

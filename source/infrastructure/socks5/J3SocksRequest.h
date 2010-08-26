@@ -17,6 +17,9 @@
   J3SocksReply reply;
 }
 
+@property (copy) NSString *hostname;
+@property (assign, nonatomic) int port;
+
 + (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue;
 
 - (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue;

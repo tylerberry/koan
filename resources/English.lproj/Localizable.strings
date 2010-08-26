@@ -1,6 +1,6 @@
 // Connection status messages.
 
-"ConnectionOpening" = "Trying to open connection...";
+"ConnectionOpening" = "Trying to open connection..."; // Use periods, not an ellipsis.
 "ConnectionOpen" = "Connection open.";
 "ConnectionClosed" = "Connection closed.";
 "ConnectionClosedByServer" = "Connection closed by server.";
@@ -24,7 +24,7 @@
 "GrowlConnectionOpened" = "The connection was opened successfully.";
 "GrowlConnectionClosed" = "The connection was closed.";
 "GrowlConnectionClosedByServer" = "The connection was closed by the server.";
-"GrowlConnectionClosedByError" = "An error caused the connection to close:  %@";
+"GrowlConnectionClosedByError" = "An error caused the connection to close: %@";
 
 // Alert panel messages.
 

@@ -13,7 +13,6 @@ The following features/problems are blocking 1.0:
 
 The following features are currently unscheduled.
 
-* Bug 33. (Page up and down in buffer.)
 * Actually using the toolbar.
 * Tabs, and chat routing via filter.
 * IRC.
@@ -27,7 +26,6 @@ The following features are currently unscheduled.
 * Scripting.
 * Log viewer.
 * TWIN support?
-* MCCP1 and MCCP2 support.
 * Auto-relogin.
 * Smart programmable tab completion.
 * Other telnet options as appropriate. (In J3Terminal.)

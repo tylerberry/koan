@@ -10,6 +10,8 @@
 
 @implementation J3SocksRequest
 
+@synthesize hostname, port;
+
 + (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue
 {
   return [[[J3SocksRequest alloc] initWithHostname: hostnameValue port: portValue] autorelease];
@@ -19,7 +21,7 @@
 {
   if (!(self = [super init]))
     return nil;
-  [self at: &hostname put: hostnameValue];
+  hostname = [hostnameValue copy];
   port = portValue;
   reply = J3SocksNoReply;
   return self;
@@ -37,10 +39,10 @@
   [buffer appendByte: J3SocksConnect];
   [buffer appendByte: 0]; //reserved
   [buffer appendByte: J3SocksDomainName];
-  [buffer appendByte: [hostname length]];
-  [buffer appendString: hostname];
-  [buffer appendByte: (0xFF00 & port) >> 8]; //most significant byte of port
-  [buffer appendByte: (0x00FF & port)]; //least significant byte of port
+  [buffer appendByte: [self.hostname length]];
+  [buffer appendString: self.hostname];
+  [buffer appendByte: (0xFF00 & self.port) >> 8]; // Most significant byte of port.
+  [buffer appendByte: (0x00FF & self.port)];      // Least significant byte of port.
 }
 
 - (void) parseReplyFromByteSource: (NSObject <J3ByteSource> *) source
@@ -48,7 +50,8 @@
   NSData *data = [source readExactlyLength: 4];
   if ([data length] != 4)
     return;
-  const uint8_t *buffer = (uint8_t *) [data bytes];
+  
+  const uint8_t *buffer = (const uint8_t *) [data bytes];
   switch (buffer[3])
   {
     case J3SocksIPV4:

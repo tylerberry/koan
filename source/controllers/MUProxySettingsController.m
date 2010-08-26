@@ -11,18 +11,18 @@
 
 @implementation MUProxySettingsController
 
-- (void) awakeFromNib
-{
-  J3PortFormatter *portFormatter = [[[J3PortFormatter alloc] init] autorelease];
-  
-  [portField setFormatter: portFormatter];
-}
-
 - (id) init
 {
   self = [super initWithWindowNibName: @"MUProxySettings"];
   
   return self;
+}
+
+- (void) awakeFromNib
+{
+  J3PortFormatter *portFormatter = [[[J3PortFormatter alloc] init] autorelease];
+  
+  [portField setFormatter: portFormatter];
 }
 
 - (J3ProxySettings *) proxySettings

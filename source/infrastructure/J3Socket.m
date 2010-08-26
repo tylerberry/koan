@@ -93,7 +93,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   if (!(self = [super init]))
     return nil;
   
-  [self at: &hostname put: [newHostname retain]];
+  hostname = [newHostname copy];
   socketfd = -1;
   port = newPort;
   server = NULL;

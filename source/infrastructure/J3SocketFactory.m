@@ -23,6 +23,8 @@ static J3SocketFactory *defaultFactory = nil;
 
 @implementation J3SocketFactory
 
+@synthesize useProxy, proxySettings;
+
 + (J3SocketFactory *) defaultFactory
 {
   if (!defaultFactory)
@@ -44,7 +46,7 @@ static J3SocketFactory *defaultFactory = nil;
     return nil;
   
   useProxy = NO;
-  [self at: &proxySettings put: [J3ProxySettings proxySettings]];
+  proxySettings = [[J3ProxySettings proxySettings] retain];
   
   return self;
 }
@@ -57,15 +59,10 @@ static J3SocketFactory *defaultFactory = nil;
 
 - (J3Socket *) makeSocketWithHostname: (NSString *) hostname port: (int) port
 {
-  if (useProxy)
-    return [J3ProxySocket socketWithHostname: hostname port: port proxySettings: proxySettings];
+  if (self.useProxy)
+    return [J3ProxySocket socketWithHostname: hostname port: port proxySettings: self.proxySettings];
   else
     return [J3Socket socketWithHostname: hostname port: port];
-}
-
-- (J3ProxySettings *) proxySettings
-{
-  return proxySettings;
 }
 
 - (void) saveProxySettings
@@ -75,12 +72,7 @@ static J3SocketFactory *defaultFactory = nil;
 
 - (void) toggleUseProxy
 {
-  useProxy = !useProxy;
-}
-
-- (BOOL) useProxy
-{
-  return useProxy;
+  self.useProxy = !self.useProxy;
 }
 
 @end
@@ -93,6 +85,7 @@ static J3SocketFactory *defaultFactory = nil;
 {
   [[NSNotificationCenter defaultCenter] removeObserver: defaultFactory];
   [defaultFactory release];
+  defaultFactory = nil;
 }
 
 - (void) loadProxySettingsFromDefaults
@@ -101,15 +94,15 @@ static J3SocketFactory *defaultFactory = nil;
   NSData *useProxyData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPUseProxy];
   
   if (proxySettingsData)
-    [self at: &proxySettings put: [NSKeyedUnarchiver unarchiveObjectWithData: proxySettingsData]];
+    self.proxySettings = [NSKeyedUnarchiver unarchiveObjectWithData: proxySettingsData];
   if (useProxyData)
-    useProxy = [[NSKeyedUnarchiver unarchiveObjectWithData: useProxyData] boolValue];
+    self.useProxy = [[NSKeyedUnarchiver unarchiveObjectWithData: useProxyData] boolValue];
 }
 
 - (void) writeProxySettingsToDefaults
 {
-  NSData *proxySettingsData = [NSKeyedArchiver archivedDataWithRootObject: proxySettings];
-  NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: [NSNumber numberWithBool: useProxy]];
+  NSData *proxySettingsData = [NSKeyedArchiver archivedDataWithRootObject: self.proxySettings];
+  NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: [NSNumber numberWithBool: self.useProxy]];
   
   [[NSUserDefaults standardUserDefaults] setObject: proxySettingsData forKey: MUPProxySettings];  
   [[NSUserDefaults standardUserDefaults] setObject: useProxyData forKey: MUPUseProxy];

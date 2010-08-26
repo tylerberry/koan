@@ -37,10 +37,18 @@
 {
   if (!(self = [super init]))
     return nil;
-  [self at: &foreground put: fore];
-  [self at: &background put: back];
-  [self at: &font put: aFont];
+  foreground = [fore retain];
+  background = [back retain];
+  font = [aFont retain];
   return self;
+}
+
+- (void) dealloc
+{
+  [foreground release];
+  [background release];
+  [font release];
+  [super dealloc];
 }
 
 - (NSColor *) background

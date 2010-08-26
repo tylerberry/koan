@@ -117,7 +117,6 @@
 		7EBFDB0E09380B100077BA3A /* NSObject (Subclasses).m in Sources */ = {isa = PBXBuildFile; fileRef = 7EBFDB0C09380B100077BA3A /* NSObject (Subclasses).m */; };
 		7EC10AEC09AF947C00D840A1 /* J3SocksRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* J3SocksRequest.m */; };
 		7EC3030A092B978B00AFA5C7 /* J3TelnetConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC30307092B978B00AFA5C7 /* J3TelnetConnection.m */; };
-		7EC30342092B99C300AFA5C7 /* NSObject (Accessing).m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3033F092B99C300AFA5C7 /* NSObject (Accessing).m */; };
 		7EC30509092BBB6200AFA5C7 /* J3WriteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC301B4092B78F200AFA5C7 /* J3WriteBuffer.m */; };
 		7EDB35D30BA64FCC008EE7D9 /* J3Testing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDB35D20BA64FCC008EE7D9 /* J3Testing.framework */; };
 		7EE11F3B0BD8284100C78D9C /* J3TelnetNotTelnetState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE11F390BD8284100C78D9C /* J3TelnetNotTelnetState.m */; };
@@ -385,8 +384,6 @@
 		7EC301B4092B78F200AFA5C7 /* J3WriteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = J3WriteBuffer.m; sourceTree = "<group>"; };
 		7EC30306092B978B00AFA5C7 /* J3TelnetConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3TelnetConnection.h; sourceTree = "<group>"; };
 		7EC30307092B978B00AFA5C7 /* J3TelnetConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3TelnetConnection.m; sourceTree = "<group>"; };
-		7EC3033E092B99C300AFA5C7 /* NSObject (Accessing).h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSObject (Accessing).h"; sourceTree = "<group>"; };
-		7EC3033F092B99C300AFA5C7 /* NSObject (Accessing).m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject (Accessing).m"; sourceTree = "<group>"; };
 		7EC61429092EFF72004DF3CD /* J3ByteSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3ByteSource.h; sourceTree = "<group>"; };
 		7EDB35D20BA64FCC008EE7D9 /* J3Testing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = J3Testing.framework; path = ../J3Testing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EDD3E3F078A4AFB00138CD1 /* MUProfileTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileTests.h; sourceTree = "<group>"; };
@@ -791,8 +788,6 @@
 				E63F31BE0815B5C1006C4704 /* NSFont (FullDisplayName).m */,
 				7E51030F0AD1D5AA00142EF3 /* NSFont (Traits).h */,
 				7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */,
-				7EC3033E092B99C300AFA5C7 /* NSObject (Accessing).h */,
-				7EC3033F092B99C300AFA5C7 /* NSObject (Accessing).m */,
 				E6550DFE07763B72002E81FF /* NSObject (BetterHashing).h */,
 				E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */,
 				7EBFDB0B09380B100077BA3A /* NSObject (Subclasses).h */,
@@ -1284,7 +1279,6 @@
 				E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */,
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
-				7EC30342092B99C300AFA5C7 /* NSObject (Accessing).m in Sources */,
 				E6550E0107763B72002E81FF /* NSObject (BetterHashing).m in Sources */,
 				7EBFDB0E09380B100077BA3A /* NSObject (Subclasses).m in Sources */,
 				2F42D0E30BB2618F0056C27A /* NSString (NDUtilities).m in Sources */,

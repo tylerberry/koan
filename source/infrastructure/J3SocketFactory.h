@@ -15,10 +15,12 @@
   J3ProxySettings *proxySettings;
 }
 
+@property (assign, nonatomic) BOOL useProxy;
+@property (retain) J3ProxySettings *proxySettings;
+
 + (J3SocketFactory *) defaultFactory;
 
 - (J3Socket *) makeSocketWithHostname: (NSString *) hostname port: (int) port;
-- (J3ProxySettings *) proxySettings;
 - (void) saveProxySettings;
 - (void) toggleUseProxy;
 - (BOOL) useProxy;

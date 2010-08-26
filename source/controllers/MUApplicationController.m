@@ -295,11 +295,9 @@
 
 - (void) connectionWindowControllerWillClose: (NSNotification *) notification
 {
-  MUConnectionWindowController *controller = [notification object];
+  MUConnectionWindowController *controller = [[[notification object] retain] autorelease];
   
-  [controller retain];
   [connectionWindowControllers removeObject: controller];
-  [controller autorelease];
 }
 
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification

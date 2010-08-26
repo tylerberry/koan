@@ -26,7 +26,7 @@
 
 - (NSToolbarItem *) toolbar: (NSToolbar *) toolbar itemForItemIdentifier: (NSString *) itemIdentifier willBeInsertedIntoToolbar: (BOOL) flag
 {
-  NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
+  NSToolbarItem *item = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier] autorelease];
   
   if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
   {
@@ -37,7 +37,7 @@
     [item setAction: @selector (goToWorldURL:)];
   }
   
-  return [item autorelease];
+  return item;
 }
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar*) toolbar

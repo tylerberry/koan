@@ -77,16 +77,16 @@
 
 - (void) updateString: (NSString *) string
 {
-  NSString *copy = [string copy];
+  NSString *copy = [[string copy] autorelease];
   
   if (cursor == -1)
   {
     [buffer release];
-    buffer = copy;
+    buffer = [copy retain];
   }
   else
   {
-    [updates setObject: [copy autorelease] forKey: [NSNumber numberWithInt: cursor]];
+    [updates setObject: copy forKey: [NSNumber numberWithInt: cursor]];
   }
 }
 

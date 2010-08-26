@@ -24,7 +24,6 @@
 		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* J3TelnetStateMachine.m */; };
 		2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* J3TelnetConnectionState.m */; };
-		2F42D0E30BB2618F0056C27A /* NSString (NDUtilities).m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42D0E10BB2618F0056C27A /* NSString (NDUtilities).m */; };
 		2F51E43711781DD400F6DF65 /* RBSplitSubview.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F51E43511781DD400F6DF65 /* RBSplitSubview.m */; };
 		2F51E43811781DD400F6DF65 /* RBSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F51E43611781DD400F6DF65 /* RBSplitView.m */; };
 		2F51E45B11781EF800F6DF65 /* MUAcknowledgements.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E44F11781EF800F6DF65 /* MUAcknowledgements.xib */; };
@@ -114,7 +113,6 @@
 		7E87757209AD62FE00A883BC /* J3SOCKSPrimitiveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070ACE0933CD81000A36CF /* J3SOCKSPrimitiveTests.m */; };
 		7E87757309AD630E00A883BC /* J3TelnetStateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC2D092AC2AF004554BD /* J3TelnetStateMachineTests.m */; };
 		7E87764409AD6B3000A883BC /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E622A551074231A60069335B /* MUConstants.m */; };
-		7EBFDB0E09380B100077BA3A /* NSObject (Subclasses).m in Sources */ = {isa = PBXBuildFile; fileRef = 7EBFDB0C09380B100077BA3A /* NSObject (Subclasses).m */; };
 		7EC10AEC09AF947C00D840A1 /* J3SocksRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* J3SocksRequest.m */; };
 		7EC3030A092B978B00AFA5C7 /* J3TelnetConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC30307092B978B00AFA5C7 /* J3TelnetConnection.m */; };
 		7EC30509092BBB6200AFA5C7 /* J3WriteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC301B4092B78F200AFA5C7 /* J3WriteBuffer.m */; };
@@ -1280,8 +1278,6 @@
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
 				E6550E0107763B72002E81FF /* NSObject (BetterHashing).m in Sources */,
-				7EBFDB0E09380B100077BA3A /* NSObject (Subclasses).m in Sources */,
-				2F42D0E30BB2618F0056C27A /* NSString (NDUtilities).m in Sources */,
 				2F51E43711781DD400F6DF65 /* RBSplitSubview.m in Sources */,
 				2F51E43811781DD400F6DF65 /* RBSplitView.m in Sources */,
 				2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */,

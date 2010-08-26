@@ -11,8 +11,6 @@
 #import "MUConstants.h"
 #import "categories/NSAttributedString (Allocating).h"
 #import "categories/NSFont (FullDisplayName).h"
-#import "categories/NSObject (Accessing).h"
 #import "categories/NSObject (BetterHashing).h"
-#import "categories/NSString (NDUtilities).h"
 
 #define _(name) NSLocalizedString (name, nil)

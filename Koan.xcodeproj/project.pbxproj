@@ -1580,7 +1580,7 @@
 		E69E22390854FB100055BCF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_VERSION = 1.0b2;
+				APPLICATION_VERSION = "1.1 beta";
 				ARCHS = "$(NATIVE_ARCH)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

@@ -23,20 +23,24 @@
 - (void) testFilter
 {
   J3FilterQueue *queue = [[J3FilterQueue alloc] init];
+  
   NSAttributedString *input = [NSAttributedString attributedStringWithString: @"Foo"];
   NSAttributedString *output = [queue processAttributedString: input];
   [self assert: output equals: input];
+  [queue release];
 }
 
 - (void) testQueue
 {
   J3FilterQueue *queue = [[J3FilterQueue alloc] init];
-  J3UpperCaseFilter *filter = [J3UpperCaseFilter filter];
-  [queue addFilter: filter];
   
-  NSAttributedString *input = [NSAttributedString attributedStringWithString: @"Foo"];
+  [queue addFilter: [J3UpperCaseFilter filter]];
+  
+  NSString *baseString = @"Foo";
+  NSString *uppercaseString = [baseString uppercaseString];
+  NSAttributedString *input = [NSAttributedString attributedStringWithString: baseString];
   NSAttributedString *output = [queue processAttributedString: input];
-  [self assert: [output string] equals: @"FOO"];
+  [self assert: [output string] equals: uppercaseString];
   [queue release];
 }
 

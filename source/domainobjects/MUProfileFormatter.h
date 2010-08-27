@@ -1,5 +1,5 @@
 //
-// MUProfileFormatting.h
+// MUProfileFormatter.h
 //
 // Copyright (c) 2010 3James Software.
 //
@@ -9,7 +9,7 @@
 
 @class MUProfile;
 
-@interface MUProfileFormatting : NSObject <J3Formatter>
+@interface MUProfileFormatter : NSObject <J3Formatter>
 {
   MUProfile *profile;
 }

@@ -1,13 +1,13 @@
 //
-// MUProfileFormatting.m
+// MUProfileFormatter.m
 //
 // Copyright (c) 2010 3James Software.
 //
 
-#import "MUProfileFormatting.h"
+#import "MUProfileFormatter.h"
 #import "MUProfile.h"
 
-@implementation MUProfileFormatting
+@implementation MUProfileFormatter
 
 - (id) initWithProfile: (MUProfile *) newProfile
 {

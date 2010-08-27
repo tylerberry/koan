@@ -6,7 +6,7 @@
 
 #import "MUCodingService.h"
 #import "MUProfile.h"
-#import "MUProfileFormatting.h"
+#import "MUProfileFormatter.h"
 #import "MUTextLogger.h"
 
 @interface MUProfile (Private)
@@ -214,7 +214,7 @@
 
 - (NSObject <J3Formatter> *) formatter
 {
-  return [[[MUProfileFormatting alloc] initWithProfile: self] autorelease];
+  return [[[MUProfileFormatter alloc] initWithProfile: self] autorelease];
 }
 
 #pragma mark -

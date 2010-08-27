@@ -98,7 +98,7 @@
 		7E50AC2309AEB90B00E0BFE7 /* J3ProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E50AC2009AEB90B00E0BFE7 /* J3ProxySocket.m */; };
 		7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */; };
 		7E5103A40AD1E14000142EF3 /* J3Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103A20AD1E14000142EF3 /* J3Formatter.m */; };
-		7E5103BD0AD1E22D00142EF3 /* MUProfileFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103BB0AD1E22D00142EF3 /* MUProfileFormatting.m */; };
+		7E5103BD0AD1E22D00142EF3 /* MUProfileFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */; };
 		7E5C2DDD09B105B2006993E1 /* J3SocksAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* J3SocksAuthentication.m */; };
 		7E68DC59092AC2FB004554BD /* J3ReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* J3ReadBuffer.m */; };
 		7E68DC5D092AC2FB004554BD /* J3Socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC39092AC2FB004554BD /* J3Socket.m */; };
@@ -352,8 +352,8 @@
 		7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFont (Traits).m"; sourceTree = "<group>"; };
 		7E5103A10AD1E14000142EF3 /* J3Formatter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = J3Formatter.h; sourceTree = "<group>"; };
 		7E5103A20AD1E14000142EF3 /* J3Formatter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = J3Formatter.m; sourceTree = "<group>"; };
-		7E5103BA0AD1E22D00142EF3 /* MUProfileFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileFormatting.h; sourceTree = "<group>"; };
-		7E5103BB0AD1E22D00142EF3 /* MUProfileFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileFormatting.m; sourceTree = "<group>"; };
+		7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileFormatter.h; sourceTree = "<group>"; };
+		7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileFormatter.m; sourceTree = "<group>"; };
 		7E5C2DD909B105B2006993E1 /* J3SocksAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3SocksAuthentication.h; sourceTree = "<group>"; };
 		7E5C2DDA09B105B2006993E1 /* J3SocksAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3SocksAuthentication.m; sourceTree = "<group>"; };
 		7E68DC2C092AC2AF004554BD /* J3TelnetStateMachineTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = J3TelnetStateMachineTests.h; sourceTree = "<group>"; };
@@ -926,8 +926,8 @@
 				E677D20F0778041F00B417D2 /* MUPlayer.m */,
 				7E39EF9B0783938F0042A17A /* MUProfile.h */,
 				7E39EF9C0783938F0042A17A /* MUProfile.m */,
-				7E5103BA0AD1E22D00142EF3 /* MUProfileFormatting.h */,
-				7E5103BB0AD1E22D00142EF3 /* MUProfileFormatting.m */,
+				7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */,
+				7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */,
 				E6DA667007776D9900C46267 /* MUWorld.h */,
 				E6DA667107776D9900C46267 /* MUWorld.m */,
 			);
@@ -1257,7 +1257,7 @@
 				E677D2110778041F00B417D2 /* MUPlayer.m in Sources */,
 				E6914C52092FDAD1005DA235 /* MUPreferencesController.m in Sources */,
 				7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */,
-				7E5103BD0AD1E22D00142EF3 /* MUProfileFormatting.m in Sources */,
+				7E5103BD0AD1E22D00142EF3 /* MUProfileFormatter.m in Sources */,
 				7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */,
 				E63CC4E5077A06CD003A54AA /* MUProfilesController.m in Sources */,
 				E67CBF3207D03FEE004BB3DB /* MUProfilesToolbarController.m in Sources */,

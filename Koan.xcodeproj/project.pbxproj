@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* J3TelnetStateMachine.m */; };
+		2F1C1798122854B90079F1E1 /* J3FilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* J3FilterQueue.m */; };
 		2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* J3TelnetConnectionState.m */; };
 		2F51E43711781DD400F6DF65 /* RBSplitSubview.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F51E43511781DD400F6DF65 /* RBSplitSubview.m */; };
 		2F51E43811781DD400F6DF65 /* RBSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F51E43611781DD400F6DF65 /* RBSplitView.m */; };
@@ -227,6 +228,8 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2F0B277912196B9C00AE6B62 /* J3TelnetStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3TelnetStateMachine.h; sourceTree = "<group>"; };
 		2F0B277A12196B9C00AE6B62 /* J3TelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3TelnetStateMachine.m; sourceTree = "<group>"; };
+		2F1C1796122854B90079F1E1 /* J3FilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3FilterQueue.h; sourceTree = "<group>"; };
+		2F1C1797122854B90079F1E1 /* J3FilterQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3FilterQueue.m; sourceTree = "<group>"; };
 		2F2718E912141166006710C7 /* J3TelnetConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3TelnetConnectionState.h; sourceTree = "<group>"; };
 		2F2718EA12141166006710C7 /* J3TelnetConnectionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3TelnetConnectionState.m; sourceTree = "<group>"; };
 		2F2D76E90BBB1C8400BBB71A /* Characteristics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Characteristics.txt; sourceTree = "<group>"; };
@@ -901,6 +904,8 @@
 				7E43C1C00ACB1A4000A8E677 /* J3ANSIFormattingFilter.m */,
 				7EFE43820749C7CE002C7D48 /* J3Filter.h */,
 				7EFE43830749C7CE002C7D48 /* J3Filter.m */,
+				2F1C1796122854B90079F1E1 /* J3FilterQueue.h */,
+				2F1C1797122854B90079F1E1 /* J3FilterQueue.m */,
 				7E5103A10AD1E14000142EF3 /* J3Formatter.h */,
 				7E5103A20AD1E14000142EF3 /* J3Formatter.m */,
 				E6C9D604077C2DC6007BB2C1 /* J3NaiveURLFilter.h */,
@@ -1276,6 +1281,7 @@
 				2F861FB811FD53F2007136D5 /* J3Protocol.m in Sources */,
 				2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */,
 				2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */,
+				2F1C1798122854B90079F1E1 /* J3FilterQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

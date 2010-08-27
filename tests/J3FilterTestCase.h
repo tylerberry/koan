@@ -6,7 +6,7 @@
 
 #import <J3Testing/J3TestCase.h>
 
-#import "J3Filter.h"
+#import "J3FilterQueue.h"
 
 @interface J3FilterTestCase : J3TestCase
 {

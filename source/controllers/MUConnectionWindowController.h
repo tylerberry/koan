@@ -6,7 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "J3Filter.h"
+#import "J3FilterQueue.h"
 #import "J3HistoryRing.h"
 #import "MUDisplayTextView.h"
 #import "MUProfile.h"

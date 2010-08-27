@@ -7,7 +7,7 @@
 #import <Cocoa/Cocoa.h>
 #import <J3Testing/J3Testcase.h>
 
-#import "J3Filter.h"
+#import "J3FilterQueue.h"
 
 @interface J3FilterTests : J3TestCase
 

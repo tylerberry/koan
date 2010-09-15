@@ -328,7 +328,17 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   errno = 0;
   socketfd = socket (AF_INET, SOCK_STREAM, 0);
   if (socketfd == -1)
+  {
     [J3SocketException socketErrorWithErrnoForFunction: @"socket"];
+    return;
+  }
+  
+  int trueval = 1;
+  if (setsockopt (socketfd, SOL_SOCKET, SO_KEEPALIVE, &trueval, sizeof (int)) == -1)
+  {
+    [J3SocketException socketErrorWithErrnoForFunction: @"setsockopt (SO_KEEPALIVE)"];
+    return;   
+  }
 }
 
 - (void) initializeKernelQueue

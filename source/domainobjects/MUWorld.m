@@ -10,6 +10,8 @@
 #import "MUPlayer.h"
 #import "MUCodingService.h"
 
+static const int32_t currentWorldVersion = 6;
+
 @interface MUWorld (Private)
 
 - (void) postWorldsDidChangeNotification;
@@ -20,7 +22,7 @@
 
 @implementation MUWorld
 
-@synthesize name, hostname, port, url;
+@synthesize name, hostname, port, url, isExpanded, players;
 @dynamic uniqueIdentifier, windowTitle;
 
 + (MUWorld *) worldWithName: (NSString *) newName
@@ -45,11 +47,11 @@
   if (!(self = [super init]))
     return nil;
   
-  self.name = newName;
-  self.hostname = newHostname;
-  self.port = newPort;
-  self.url = newURL;
-  [self setPlayers: (newPlayers ? newPlayers : [NSArray array])];
+  name = [newName copy];
+  hostname = [newHostname copy];
+  port = [newPort copy];
+  url = [newURL copy];
+  players = newPlayers ? [newPlayers mutableCopy] : [[NSMutableArray alloc] init];
   
   return self;
 }
@@ -76,18 +78,22 @@
 #pragma mark -
 #pragma mark Array-like accessors for players
 
-- (NSMutableArray *) players
+- (void) addPlayer: (MUPlayer *) player
 {
-  return players;
+  if ([self containsPlayer: player])
+    return;
+  
+  [self willChangeValueForKey: @"players"];
+  [players addObject: player];
+  player.world = self;
+  [self didChangeValueForKey: @"players"];
+  
+  [self postWorldsDidChangeNotification];
 }
 
-- (void) setPlayers: (NSArray *) newPlayers
+- (BOOL) containsPlayer: (MUPlayer *) player
 {
-  if (players == newPlayers)
-    return;
-  [players release];
-  players = [newPlayers mutableCopy];
-  [self postWorldsDidChangeNotification];
+  return [players containsObject: player];
 }
 
 - (int) indexOfPlayer: (MUPlayer *) player
@@ -103,35 +109,31 @@
 
 - (void) insertObject: (MUPlayer *) player inPlayersAtIndex: (unsigned) playerIndex
 {
+  [self willChangeValueForKey: @"players"];
+  player.world = self;
   [players insertObject: player atIndex: playerIndex];
+  [self didChangeValueForKey: @"players"];
+  
   [self postWorldsDidChangeNotification];
 }
 
 - (void) removeObjectFromPlayersAtIndex: (unsigned) playerIndex
 {
+  [self willChangeValueForKey: @"players"];
   [players removeObjectAtIndex: playerIndex];
-  [self postWorldsDidChangeNotification];
-}
-
-- (void) addPlayer: (MUPlayer *) player
-{
-  if ([self containsPlayer: player])
-    return;
+  ((MUPlayer *) [players objectAtIndex: playerIndex]).world = nil;
+  [self didChangeValueForKey: @"players"];
   
-  [players addObject: player];
-  player.world = self;
   [self postWorldsDidChangeNotification];
-}
-
-- (BOOL) containsPlayer: (MUPlayer *) player
-{
-  return [players containsObject: player];
 }
 
 - (void) removePlayer: (MUPlayer *) player
 {
-  player.world = nil;
+  [self willChangeValueForKey: @"players"];
   [players removeObject: player];
+  player.world = nil;
+  [self didChangeValueForKey: @"players"];
+  
   [self postWorldsDidChangeNotification];
 }
 
@@ -144,9 +146,12 @@
   	if (player != oldPlayer)
       continue;
     
+    [self willChangeValueForKey: @"players"];
+    newPlayer.world = self;
     [players replaceObjectAtIndex: i withObject: newPlayer];
     oldPlayer.world = nil;
-    newPlayer.world = self;
+    [self didChangeValueForKey: @"players"];
+    
     [self postWorldsDidChangeNotification];
     break;
   }
@@ -188,7 +193,14 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  [MUCodingService encodeWorld: self withCoder: encoder];
+  [encoder encodeInt32: currentWorldVersion forKey: @"version"];
+  
+  [encoder encodeObject: self.name forKey: @"name"];
+  [encoder encodeObject: self.hostname forKey: @"hostname"];
+  [encoder encodeInt: [self.port intValue] forKey: @"port"];
+  [encoder encodeObject: self.players forKey: @"players"];
+  [encoder encodeObject: self.url forKey: @"URL"];
+  [encoder encodeBool: self.isExpanded forKey: @"isExpanded"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
@@ -196,7 +208,40 @@
   if (!(self = [super init]))
     return nil;
   
-  [MUCodingService decodeWorld: self withCoder: decoder];
+  int32_t version = [decoder decodeInt32ForKey: @"version"];
+  
+  if (version >= 5)
+  {
+    name = [[decoder decodeObjectForKey: @"name"] copy];
+    hostname = [[decoder decodeObjectForKey: @"hostname"] copy];
+  }
+  else
+  {
+    name = [[decoder decodeObjectForKey: @"worldName"] copy];
+    hostname = [[decoder decodeObjectForKey: @"worldHostname"] copy];
+  }
+  
+  if (version >= 6)
+    port = [[NSNumber alloc] initWithInt: [decoder decodeIntForKey: @"port"]];
+  else if (version == 5)
+    port = [[decoder decodeObjectForKey: @"port"] copy];
+  else
+    port = [[decoder decodeObjectForKey: @"worldPort"] copy];
+  
+  players = [[decoder decodeObjectForKey: @"players"] mutableCopy];
+  
+  if (version >= 5)
+    url = [[decoder decodeObjectForKey: @"URL"] copy];
+  else if (version >= 1)
+    url = [[decoder decodeObjectForKey: @"worldURL"] copy];
+  else
+    url = [@"" copy];
+  
+  if (version >= 6)
+    isExpanded = [decoder decodeBoolForKey: @"isExpanded"];
+  else
+    isExpanded = YES;
+  
   return self;
 }
 
@@ -209,7 +254,7 @@
                                             hostname: self.hostname
                                                 port: self.port
                                                  URL: self.url
-                                             players: [self players]];
+                                             players: self.players];
 }
 
 @end

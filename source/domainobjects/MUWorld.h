@@ -17,6 +17,7 @@
   NSString *hostname;
   NSNumber *port;
   NSString *url;
+  BOOL isExpanded;
   NSMutableArray *players;
 }
 
@@ -24,6 +25,8 @@
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;
 @property (copy) NSString *url;
+@property (assign) BOOL isExpanded;
+@property (copy) NSMutableArray *players;
 @property (readonly) NSString *uniqueIdentifier;
 @property (readonly) NSString *windowTitle;
 
@@ -45,11 +48,9 @@
 - (BOOL) containsPlayer: (MUPlayer *) player;
 - (int) indexOfPlayer: (MUPlayer *) player;
 - (void) insertObject: (MUPlayer *) player inPlayersAtIndex: (unsigned) playerIndex;
-- (NSMutableArray *) players;
 - (void) removeObjectFromPlayersAtIndex: (unsigned) playerIndex;
 - (void) removePlayer: (MUPlayer *) player;
 - (void) replacePlayer: (MUPlayer *) oldPlayer withPlayer: (MUPlayer *) newPlayer;
-- (void) setPlayers: (NSArray *) newPlayers;
 
 // Actions.
 - (J3TelnetConnection *) newTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate;

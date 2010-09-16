@@ -329,7 +329,7 @@
   [preferencesController colorPanelColorDidChange];
 }
 
-- (id) infoValueForKey: (NSString*) key
+- (id) infoValueForKey: (NSString *) key
 {
   if ([[[NSBundle mainBundle] localizedInfoDictionary] objectForKey: key])
     return [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey: key];

@@ -14,6 +14,8 @@
 
 @end
 
+#pragma mark -
+
 @implementation J3NaiveURLFilter
 
 + (J3Filter *) filter
@@ -31,6 +33,8 @@
 }
 
 @end
+
+#pragma mark -
 
 @implementation J3NaiveURLFilter (Private)
 

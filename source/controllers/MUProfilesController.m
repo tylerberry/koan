@@ -7,37 +7,33 @@
 #import "MUProfilesController.h"
 #import "J3PortFormatter.h"
 #import "MUProfile.h"
+#import "MUProfileTreeNode.h"
 #import "MUServices.h"
 
-enum MUProfilesEditingReturnValues
-{
-  MUEditOkay,
-  MUEditCancel
-};
+#import "ImageAndTextCell.h"
 
 @interface MUProfilesController (Private)
 
+#if 0
 - (IBAction) changeFont: (id) sender;
 - (void) colorPanelColorDidChange: (NSNotification *) notification;
-- (IBAction) editPlayer: (MUPlayer *) player;
-- (IBAction) editProfile: (MUProfile *) player;
-- (IBAction) editWorld: (MUWorld *) world;
 - (void) globalBackgroundColorDidChange: (NSNotification *) notification;
 - (void) globalFontDidChange: (NSNotification *) notification;
 - (void) globalLinkColorDidChange: (NSNotification *) notification;
 - (void) globalTextColorDidChange: (NSNotification *) notification;
 - (void) globalVisitedLinkColorDidChange: (NSNotification *) notification;
-- (void) playerSheetDidEndAdding: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-- (void) playerSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-- (void) profileSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+#endif
+
 - (void) registerForNotifications;
-- (IBAction) removePlayer: (MUPlayer *) player;
-- (IBAction) removeWorld: (MUWorld *) world;
-- (void) updateProfilesForWorld: (MUWorld *) world withWorld: (MUWorld *) newWorld;
-- (void) updateProfileForWorld: (MUWorld *) world player: (MUPlayer *) player withPlayer: (MUPlayer *) newPlayer;
-- (MUWorld *) worldFromSheetWithPlayers: (NSArray *) players;
-- (void) worldSheetDidEndAdding: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-- (void) worldSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+
+@end
+
+#pragma mark -
+
+@interface MUProfilesController (TreeController)
+
+- (void) populateProfilesFromDefaults;
+- (void) populateProfilesTree;
 
 @end
 
@@ -45,22 +41,25 @@ enum MUProfilesEditingReturnValues
 
 @implementation MUProfilesController
 
+@synthesize profilesTreeArray;
+
 - (id) init
 {
-  self = [super initWithWindowNibName: @"MUProfiles"];
+  if (!(self = [super initWithWindowNibName: @"MUProfiles"]))
+    return nil;
+  
+  profilesTreeArray = [[NSMutableArray alloc] init];
   
   return self;
 }
 
 - (void) awakeFromNib
 {
-  J3PortFormatter *worldPortFormatter = [[[J3PortFormatter alloc] init] autorelease];
+  // J3PortFormatter *worldPortFormatter = [[[J3PortFormatter alloc] init] autorelease];
   
-  [worldPortField setFormatter: worldPortFormatter];
+  // FIXME: [worldPortField setFormatter: worldPortFormatter];
   
-  [worldsAndPlayersOutlineView setAutosaveExpandedItems: YES];
-  [worldsAndPlayersOutlineView setTarget: self];
-  [worldsAndPlayersOutlineView setDoubleAction: @selector (editClickedRow:)];
+  [profilesOutlineView setAutosaveExpandedItems: YES];
   
   editingFont = nil;
   
@@ -69,184 +68,20 @@ enum MUProfilesEditingReturnValues
   textColorActive = NO;
   visitedLinkColorActive = NO;
   
+  [self performSelectorInBackground: @selector (populateProfilesTree)
+                         withObject: nil];
+  
   [self registerForNotifications];
 }
 
-- (BOOL) validateToolbarItem: (NSToolbarItem *) toolbarItem
+- (void) dealloc
 {
-  SEL toolbarItemAction = [toolbarItem action];
-  
-  if (toolbarItemAction == @selector (addWorld:))
-  {
-  	return YES;
-  }
-  else if (toolbarItemAction == @selector (addPlayer:)
-  				 || toolbarItemAction == @selector (editProfileForSelectedRow:))
-  {
-  	if ([worldsAndPlayersOutlineView numberOfSelectedRows] == 0)
-  		return NO;
-  	else
-  		return YES;
-  }
-  else if (toolbarItemAction == @selector (editSelectedRow:))
-  {
-  	if ([worldsAndPlayersOutlineView numberOfSelectedRows] == 0)
-  	{
-  		[toolbarItem setLabel: _(MULEditItem)];
-  		return NO;
-  	}
-  	else
-  	{
-  		id item = [worldsAndPlayersOutlineView itemAtRow: [worldsAndPlayersOutlineView selectedRow]];
-  		
-  		if ([item isKindOfClass: [MUWorld class]])
-  			[toolbarItem setLabel: _(MULEditWorld)];
-  		else if ([item isKindOfClass: [MUPlayer class]])
-  			[toolbarItem setLabel: _(MULEditPlayer)];
-      else return NO;
-  		
-  		return YES;
-  	}
-  }
-  else if (toolbarItemAction == @selector (removeSelectedRow:))
-  {
-  	if ([worldsAndPlayersOutlineView numberOfSelectedRows] == 0)
-  	{
-  		[toolbarItem setLabel: _(MULRemoveItem)];
-  		return NO;
-  	}
-  	else
-  	{
-  		id item = [worldsAndPlayersOutlineView itemAtRow: [worldsAndPlayersOutlineView selectedRow]];
-  		
-  		if ([item isKindOfClass: [MUWorld class]])
-  			[toolbarItem setLabel: _(MULRemoveWorld)];
-  		else if ([item isKindOfClass: [MUPlayer class]])
-  			[toolbarItem setLabel: _(MULRemovePlayer)];
-      else return NO;
-  		
-  		return YES;
-  	}
-  }
-  else if (toolbarItemAction == @selector (goToWorldURL:))
-  {
-    if ([worldsAndPlayersOutlineView numberOfSelectedRows] == 0)
-  	{
-  		return NO;
-  	}
-  	else
-  	{
-  		id item = [worldsAndPlayersOutlineView itemAtRow: [worldsAndPlayersOutlineView selectedRow]];
-  		NSString *url = nil;
-      
-  		if ([item isKindOfClass: [MUWorld class]])
-      {
-        url = ((MUWorld *) item).url;
-      }
-  		else if ([item isKindOfClass: [MUPlayer class]])
-  		{
-        url = ((MUPlayer *) item).world.url;
-      }
-      
-      return (url && ![url isEqualToString: @""]);
-  	}
-  }
-  
-  return NO;
+  [profilesTreeArray release];
+  [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Actions
-
-- (IBAction) addPlayer: (id) sender
-{
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  MUWorld *insertionWorld;
-  int insertionIndex;
-  NSDictionary *contextDictionary;
-  
-  [playerNameField setStringValue: @""];
-  [playerPasswordField setStringValue: @""];
-  
-  [playerEditorSheet makeFirstResponder: playerNameField];
-  
-  if (selectedRow == -1)
-  	return;
-  else
-  {
-  	id selectedItem;
-  	
-  	selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-  	
-  	if ([selectedItem isKindOfClass: [MUWorld class]])
-  	{
-  		insertionWorld = (MUWorld *) selectedItem;
-  		insertionIndex = [[insertionWorld players] count];
-  	}
-  	else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  	{
-  		MUPlayer *selectedPlayer = (MUPlayer *) selectedItem;
-  		int playerIndex = [selectedPlayer.world indexOfPlayer: selectedPlayer] + 1;
-  		
-  		if (playerIndex < 0)
-  			return;
-  		
-  		insertionIndex = (unsigned) playerIndex;
-  		insertionWorld = selectedPlayer.world;
-  	}
-  	else
-  		return;
-  }
-  
-  contextDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-  	[NSNumber numberWithUnsignedInt: insertionIndex], MUInsertionIndex,
-  	insertionWorld, MUInsertionWorld,
-  	NULL];
-  
-  [NSApp beginSheet: playerEditorSheet
-     modalForWindow: [self window]
-      modalDelegate: self
-     didEndSelector: @selector (playerSheetDidEndAdding:returnCode:contextInfo:)
-        contextInfo: contextDictionary];
-}
-
-- (IBAction) addWorld: (id) sender
-{
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  int insertionIndex;
-  
-  [worldNameField setStringValue: @""];
-  [worldHostnameField setStringValue: @""];
-  [worldPortField setStringValue: @""];
-  [worldURLField setStringValue: @""];
-  
-  [worldEditorSheet makeFirstResponder: worldNameField];
-  
-  if (selectedRow == -1)
-  	insertionIndex = [[MUServices worldRegistry] count];
-  else
-  {
-  	id selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-    
-  	MUWorld *selectedWorld = nil;
-  	
-  	if ([selectedItem isKindOfClass: [MUWorld class]])
-  		selectedWorld = (MUWorld *) selectedItem;
-  	else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  		selectedWorld = ((MUPlayer *) selectedItem).world;
-  	
-    if (selectedWorld)
-      insertionIndex = [[MUServices worldRegistry] indexOfWorld: selectedWorld] + 1;
-    else
-      insertionIndex = [[MUServices worldRegistry] count];
-  }
-  
-  [NSApp beginSheet: worldEditorSheet
-     modalForWindow: [self window]
-      modalDelegate: self
-     didEndSelector: @selector (worldSheetDidEndAdding:returnCode:contextInfo:)
-        contextInfo: [[NSNumber alloc] initWithUnsignedInt: insertionIndex]];
-}
 
 - (IBAction) chooseNewFont: (id) sender
 {
@@ -264,235 +99,82 @@ enum MUProfilesEditingReturnValues
   [[NSFontManager sharedFontManager] orderFrontFontPanel: self];
 }
 
-- (IBAction) editClickedRow: (id) sender
-{
-  NSEvent *event = [NSApp currentEvent];
-  NSPoint location = [worldsAndPlayersOutlineView convertPoint: [event locationInWindow] fromView: nil];
-  int row = [worldsAndPlayersOutlineView rowAtPoint: location];
-  id clickedItem;
-  
-  if (row == -1)
-    return;
-  
-  clickedItem = [worldsAndPlayersOutlineView itemAtRow: row];
-  	
-  if ([clickedItem isKindOfClass: [MUWorld class]])
-  	[self editWorld: clickedItem];
-  else if ([clickedItem isKindOfClass: [MUPlayer class]])
-  	[self editPlayer: clickedItem];
-}
-
-- (IBAction) editProfileForSelectedRow: (id) sender
-{
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  id selectedItem;
-  
-  if (selectedRow == -1)
-  	return;
-  
-  selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-  
-  if ([selectedItem isKindOfClass: [MUWorld class]])
-  	[self editProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: selectedItem]];
-  else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  	[self editProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: ((MUPlayer *) selectedItem).world
-                                                                     player: selectedItem]];
-}
-
-- (IBAction) editSelectedRow: (id) sender
-{
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  id selectedItem;
-  
-  if (selectedRow == -1)
-  	return;
-  
-  selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-  
-  if ([selectedItem isKindOfClass: [MUWorld class]])
-  	[self editWorld: selectedItem];
-  else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  	[self editPlayer: selectedItem];
-}
-
-- (IBAction) endEditingPlayer: (id) sender
-{
-  [playerEditorSheet orderOut: sender];
-  [NSApp endSheet: playerEditorSheet returnCode: (sender == playerSaveButton ? MUEditOkay : MUEditCancel)];
-}
-
-- (IBAction) endEditingProfile: (id) sender
-{
-  [profileEditorSheet orderOut: sender];
-  [NSApp endSheet: profileEditorSheet returnCode: (sender == profileSaveButton ? MUEditOkay : MUEditCancel)];
-}
-
-- (IBAction) endEditingWorld: (id) sender
-{
-  [worldEditorSheet orderOut: sender];
-  [NSApp endSheet: worldEditorSheet returnCode: (sender == worldSaveButton ? MUEditOkay : MUEditCancel)];
-}
-
 - (IBAction) goToWorldURL: (id) sender
 {
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  id selectedItem;
-  
-  if (selectedRow == -1)
-  	return;
-  
-  selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-  
-  if ([selectedItem isKindOfClass: [MUWorld class]])
-  	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: ((MUWorld *) selectedItem).url]];
-  else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: ((MUPlayer *) selectedItem).world.url]];
-}
-
-- (IBAction) removeSelectedRow: (id) sender
-{
-  int selectedRow = [worldsAndPlayersOutlineView selectedRow];
-  id selectedItem;
-  
-  if (selectedRow == -1)
-  	return;
-  
-  selectedItem = [worldsAndPlayersOutlineView itemAtRow: selectedRow];
-  
-  if ([selectedItem isKindOfClass: [MUWorld class]])
-  	[self removeWorld: selectedItem];
-  else if ([selectedItem isKindOfClass: [MUPlayer class]])
-  	[self removePlayer: selectedItem];
-}
-
-- (IBAction) useGlobalBackgroundColor: (id) sender
-{
-  if ([sender state] == NSOnState)
-  {
-    NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-    NSColor *color = [NSUnarchiver unarchiveObjectWithData: [[defaults values] valueForKey: MUPBackgroundColor]];
-    
-    [profileBackgroundColorWell setColor: color];
-  }
-}
-
-- (IBAction) useGlobalFont: (id) sender
-{
-  if ([sender state] == NSOnState)
-  {
-    NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	NSString *fontName = [[defaults values] valueForKey: MUPFontName];
-  	NSNumber *fontSize = [[defaults values] valueForKey: MUPFontSize];
-    
-    [editingFont release];
-    editingFont = nil;
-  	
-  	[profileFontField setStringValue: [[NSFont fontWithName: fontName size: [fontSize floatValue]] fullDisplayName]];
-  }
-}
-
-- (IBAction) useGlobalLinkColor: (id) sender
-{
-  if ([sender state] == NSOnState)
-  {
-    NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-    NSColor *color = [NSUnarchiver unarchiveObjectWithData: [[defaults values] valueForKey: MUPLinkColor]];
-    
-    [profileLinkColorWell setColor: color];
-  }
-}
-
-- (IBAction) useGlobalTextColor: (id) sender
-{
-  if ([sender state] == NSOnState)
-  {
-    NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-    NSColor *color = [NSUnarchiver unarchiveObjectWithData: [[defaults values] valueForKey: MUPTextColor]];
-    
-    [profileTextColorWell setColor: color];
-  }
-}
-
-- (IBAction) useGlobalVisitedLinkColor: (id) sender
-{
-  if ([sender state] == NSOnState)
-  {
-    NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-    NSColor *color = [NSUnarchiver unarchiveObjectWithData: [[defaults values] valueForKey: MUPVisitedLinkColor]];
-    
-    [profileVisitedLinkColorWell setColor: color];
-  }
+  return;
 }
 
 #pragma mark -
 #pragma mark NSOutlineView data source
 
-- (id) outlineView: (NSOutlineView *) outlineView child: (int) itemIndex ofItem: (id) item
-{
-  if (item)
-  	return [[(MUWorld *) item players] objectAtIndex: itemIndex];
-  else
-  	return [[MUServices worldRegistry] worldAtIndex: itemIndex];
-}
 
-- (BOOL) outlineView: (NSOutlineView *) outlineView isItemExpandable: (id) item
-{
-  if ([item isKindOfClass: [MUWorld class]] && [[(MUWorld *) item players] count] > 0)
-  	return YES;
-  else
-  	return NO;
-}
-
-- (id) outlineView: (NSOutlineView *) outlineView itemForPersistentObject: (id) object
-{
-  if (object && [object isKindOfClass: [NSString class]])
-  {
-  	return [[MUServices worldRegistry] worldForUniqueIdentifier: (NSString *) object];
-  }
-  
-  return nil;
-}
-
-- (int) outlineView: (NSOutlineView *) outlineView numberOfChildrenOfItem: (id) item
-{
-  if (item)
-  	return [[(MUWorld *) item players] count];
-  else
-  	return [[MUServices worldRegistry] count];
-}
-
-- (id) outlineView: (NSOutlineView *) outlineView objectValueForTableColumn: (NSTableColumn *) column byItem: (id) item
-{
-  if ([item isKindOfClass: [MUWorld class]])
-  	return [(MUWorld *) item name];
-  else if ([item isKindOfClass: [MUPlayer class]])
-  	return ((MUPlayer *) item).name;
-  else
-  	return item;
-}
-
-- (id) outlineView: (NSOutlineView *) outlineView persistentObjectForItem: (id) item
-{
-  if ([item isKindOfClass: [MUWorld class]])
-  	return ((MUWorld *) item).uniqueIdentifier;
-  else
-  	return nil;
-}
 
 #pragma mark -
 #pragma mark NSOutlineView delegate
+
+- (BOOL) outlineView: (NSOutlineView *) outlineView isGroupItem: (id) item
+{
+  return [outlineView parentForItem: item] == nil;
+}
+
+- (BOOL) outlineView: (NSOutlineView *) outlineView shouldCollapseItem: (id) item
+{
+  return [outlineView rowForItem: item] != 0;
+}
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView shouldEditTableColumn: (NSTableColumn *) tableColumn item: (id) item
 {
   return NO;
 }
 
-#pragma mark -
-#pragma mark NSSplitView delegate
-
-- (BOOL) splitView: (NSSplitView *) splitView shouldAdjustSizeOfSubview: (NSView *) subview
+- (BOOL) outlineView: (NSOutlineView *) outlineView shouldSelectItem: (id) item
 {
-  return NO;
+  return [self outlineView: outlineView isGroupItem: item] ? NO : YES;
+}
+
+- (void) outlineView: (NSOutlineView *) outlineView willDisplayCell: (id) cell forTableColumn: (NSTableColumn *) tableColumn item: (id) item
+{
+  if ([cell isKindOfClass: [ImageAndTextCell class]])
+  {
+    if ([self outlineView: outlineView isGroupItem: item])
+      [cell setImage: nil];
+    else
+    {
+      id representedObject = [(NSTreeNode *) [(NSTreeNode *) item representedObject] representedObject];
+      
+      if ([representedObject isKindOfClass: [MUWorld class]])
+      {
+        NSImage *worldImage = [[NSImage imageNamed: NSImageNameNetwork] retain];
+        [worldImage setSize: NSMakeSize (16, 16)];
+        [cell setImage: worldImage];
+      }
+      else if ([representedObject isKindOfClass: [MUPlayer class]])
+      {
+        NSImage *playerImage = [[NSImage imageNamed: NSImageNameUser] retain];
+        [playerImage setSize: NSMakeSize (16, 16)];
+        [cell setImage: playerImage];
+      }
+      else
+      {
+        NSImage *folderImage = [[NSWorkspace sharedWorkspace] iconForFileType: NSFileTypeForHFSTypeCode (kGenericFolderIcon)];
+        [folderImage setSize: NSMakeSize (16, 16)];
+        [cell setImage: folderImage];
+      }
+    }
+  }
+}
+
+- (void) outlineView: (NSOutlineView *) outlineView willDisplayOutlineCell: (id) cell forTableColumn: (NSTableColumn *) tableColumn item: (id) item
+{
+  if ([outlineView rowForItem: item] == 0)
+    [cell setTransparent: YES];
+  else
+    [cell setTransparent: NO];
+}
+
+- (void) outlineViewSelectionDidChange: (NSNotification *) notification
+{
+  return;
 }
 
 @end
@@ -500,6 +182,8 @@ enum MUProfilesEditingReturnValues
 #pragma mark -
 
 @implementation MUProfilesController (Private)
+
+#if 0
 
 - (IBAction) changeFont: (id) sender
 {
@@ -578,64 +262,6 @@ enum MUProfilesEditingReturnValues
   }
 }
 
-- (IBAction) editPlayer: (MUPlayer *) player
-{
-  [playerNameField setStringValue: player.name];
-  [playerPasswordField setStringValue: player.password];
-  
-  [playerEditorSheet makeFirstResponder: playerNameField];
-  
-  [NSApp beginSheet: playerEditorSheet
-     modalForWindow: [self window]
-      modalDelegate: self
-     didEndSelector: @selector (playerSheetDidEndEditing:returnCode:contextInfo:)
-        contextInfo: player];
-}
-
-- (IBAction) editProfile: (MUProfile *) profile
-{
-  editingProfile = [profile retain];
-  
-  [profileAutoconnectButton setState: (profile.autoconnect ? NSOnState : NSOffState)];
-  
-  [profileFontField setStringValue: [profile effectiveFontDisplayName]];
-  [profileFontUseGlobalButton setState: ([profile font] == nil ? NSOnState : NSOffState)];
-  
-  [profileTextColorWell setColor: [NSUnarchiver unarchiveObjectWithData: [profile effectiveTextColor]]];
-  [profileTextColorUseGlobalButton setState: ([profile textColor] == nil ? NSOnState : NSOffState)];
-  
-  [profileBackgroundColorWell setColor: [NSUnarchiver unarchiveObjectWithData: [profile effectiveBackgroundColor]]];
-  [profileBackgroundColorUseGlobalButton setState: ([profile backgroundColor] == nil ? NSOnState : NSOffState)];
-  
-  [profileLinkColorWell setColor: [NSUnarchiver unarchiveObjectWithData: [profile effectiveLinkColor]]];
-  [profileLinkColorUseGlobalButton setState: ([profile linkColor] == nil ? NSOnState : NSOffState)];
-  
-  [profileVisitedLinkColorWell setColor: [NSUnarchiver unarchiveObjectWithData: [profile effectiveVisitedLinkColor]]];
-  [profileVisitedLinkColorUseGlobalButton setState: ([profile visitedLinkColor] == nil ? NSOnState : NSOffState)];
-  
-  [NSApp beginSheet: profileEditorSheet
-     modalForWindow: [self window]
-      modalDelegate: self
-     didEndSelector: @selector (profileSheetDidEndEditing:returnCode:contextInfo:)
-        contextInfo: nil];
-}
-
-- (IBAction) editWorld: (MUWorld *) world
-{
-  [worldNameField setStringValue: world.name];
-  [worldHostnameField setStringValue: world.hostname];
-  [worldPortField setObjectValue: world.port];
-  [worldURLField setStringValue: world.url];
-  
-  [worldEditorSheet makeFirstResponder: worldNameField];
-  
-  [NSApp beginSheet: worldEditorSheet
-     modalForWindow: [self window]
-      modalDelegate: self
-     didEndSelector: @selector (worldSheetDidEndEditing:returnCode:contextInfo:)
-        contextInfo: world];
-}
-
 - (void) globalBackgroundColorDidChange: (NSNotification *) notification
 {
   if (editingProfile && [profileBackgroundColorUseGlobalButton state] == NSOnState)
@@ -695,89 +321,7 @@ enum MUProfilesEditingReturnValues
   }
 }
 
-- (void) playerSheetDidEndAdding: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == MUEditOkay)
-  {
-  	NSDictionary *contextDictionary = (NSDictionary *) contextInfo;
-  	unsigned insertionIndex = [(NSNumber *) [contextDictionary objectForKey: MUInsertionIndex] unsignedIntValue];
-  	MUWorld *insertionWorld = (MUWorld *) [contextDictionary objectForKey: MUInsertionWorld];
-    MUPlayer *newPlayer = [MUPlayer playerWithName: [playerNameField stringValue]
-  																				password: [playerPasswordField stringValue]
-  																					 world: insertionWorld];
-    
-  	[insertionWorld insertObject: newPlayer inPlayersAtIndex: insertionIndex];
-  	
-  	[worldsAndPlayersOutlineView reloadData];
-  }
-  
-  [(NSObject *) contextInfo release];
-}
-
-- (void) playerSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == MUEditOkay)
-  {
-  	MUPlayer *oldPlayer = (MUPlayer *) contextInfo;
-    MUWorld *oldWorld = oldPlayer.world;
-    MUPlayer *newPlayer = [MUPlayer playerWithName: [playerNameField stringValue]
-  																				password: [playerPasswordField stringValue]
-  																					 world: oldWorld];
-  	
-    // Updates the profile for the player/world with the new player object.
-    [self updateProfileForWorld: oldWorld
-                         player: oldPlayer
-                     withPlayer: newPlayer];
-  	
-  	// Actually replace the old player with the new one.
-  	[oldWorld replacePlayer: oldPlayer withPlayer: newPlayer];
-  	
-  	[worldsAndPlayersOutlineView reloadData];
-  }
-}
-
-- (void) profileSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{  
-  if (returnCode == MUEditOkay)
-  {
-    editingProfile.autoconnect = ([profileAutoconnectButton state] == NSOnState ? YES : NO);
-    
-    if ([profileBackgroundColorUseGlobalButton state] == NSOnState)
-      [editingProfile setValue: nil forKey: @"backgroundColor"];
-    else
-      [editingProfile setValue: [profileBackgroundColorWell color]
-                        forKey: @"backgroundColor"];
-    
-    if ([profileFontUseGlobalButton state] == NSOnState)
-      [editingProfile setValue: nil forKey: @"font"];
-    else
-      [editingProfile setValue: editingFont forKey: @"font"];
-    
-    if ([profileLinkColorUseGlobalButton state] == NSOnState)
-      [editingProfile setValue: nil forKey: @"linkColor"];
-    else
-      [editingProfile setValue: [profileLinkColorWell color]
-                        forKey: @"linkColor"];
-    
-    if ([profileTextColorUseGlobalButton state] == NSOnState)
-      [editingProfile setValue: nil forKey: @"textColor"];
-    else
-      [editingProfile setValue: [profileTextColorWell color]
-                        forKey: @"textColor"];
-    
-    if ([profileVisitedLinkColorUseGlobalButton state] == NSOnState)
-      [editingProfile setValue: nil forKey: @"visitedLinkColor"];
-    else
-      [editingProfile setValue: [profileVisitedLinkColorWell color]
-                        forKey: @"visitedLinkColor"];
-  }
-  
-  [editingProfile release];
-  editingProfile = nil;
-  
-  [editingFont release];
-  editingFont = nil;
-}
+#endif
 
 - (void) registerForNotifications
 {
@@ -790,127 +334,74 @@ enum MUProfilesEditingReturnValues
   																				 selector: @selector (globalBackgroundColorDidChange:)
   																						 name: MUGlobalBackgroundColorDidChangeNotification
   																					 object: nil];
-  	
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
   																				 selector: @selector (globalFontDidChange:)
   																						 name: MUGlobalFontDidChangeNotification
   																					 object: nil];
-  	
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
   																				 selector: @selector (globalLinkColorDidChange:)
   																						 name: MUGlobalLinkColorDidChangeNotification
   																					 object: nil];
-  	
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
   																				 selector: @selector (globalTextColorDidChange:)
   																						 name: MUGlobalTextColorDidChangeNotification
   																					 object: nil];
-  	
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
   																				 selector: @selector (globalVisitedLinkColorDidChange:)
   																						 name: MUGlobalVisitedLinkColorDidChangeNotification
   																					 object: nil];
 }
 
-- (IBAction) removePlayer: (MUPlayer *) player
-{
-  [[MUServices profileRegistry] removeProfileForWorld: player.world
-  																						 player: player];
-  [player.world removePlayer: player];
-  
-  [worldsAndPlayersOutlineView reloadData];
-}
+@end
 
-- (IBAction) removeWorld: (MUWorld *) world
-{
-  [[MUServices profileRegistry] removeAllProfilesForWorld: world];
-  [[MUServices worldRegistry] removeWorld: world];
-  
-  [worldsAndPlayersOutlineView reloadData];
-}
+#pragma mark -
 
-- (void) updateProfilesForWorld: (MUWorld *) world
-                      withWorld: (MUWorld *) newWorld
+@implementation MUProfilesController (TreeController)
+
+- (void) populateProfilesFromDefaults
 {
-  for (unsigned i = 0; i < [[world players] count]; i++)
+  MUWorldRegistry *worldRegistry = [MUWorldRegistry defaultRegistry];
+  
+  NSDictionary *localProfilesRootNodeDictionary = [NSDictionary dictionaryWithObject: @"PROFILES" forKey: @"name"];
+  NSTreeNode *localProfilesNode = [NSTreeNode treeNodeWithRepresentedObject: localProfilesRootNodeDictionary];
+  
+  for (MUWorld *world in [worldRegistry worlds])
   {
-    MUPlayer *player = [[world players] objectAtIndex: i];
-    MUProfile *profile = [[[MUServices profileRegistry] profileForWorld: world
-                                                                 player: player] retain];
+    NSTreeNode *worldNode = [NSTreeNode treeNodeWithRepresentedObject: world];
     
-    [[MUServices profileRegistry] removeProfile: profile];
-    profile.world = newWorld;
-    player.world = newWorld;
-    [[MUServices profileRegistry] profileForProfile: profile];
-    [profile release];
+    for (MUPlayer *player in [world players])
+    {
+      NSTreeNode *playerNode = [NSTreeNode treeNodeWithRepresentedObject: player];
+      
+      [[worldNode mutableChildNodes] addObject: playerNode];
+    }
+    
+    [[localProfilesNode mutableChildNodes] addObject: worldNode];
   }
   
-  MUProfile *profile = [[[MUServices profileRegistry] profileForWorld: world] retain];
+  NSDictionary *fakeFolder = [NSDictionary dictionaryWithObject: @"Folder" forKey: @"name"];
+  [[localProfilesNode mutableChildNodes] addObject: [NSTreeNode treeNodeWithRepresentedObject: fakeFolder]];
   
-  [[MUServices profileRegistry] removeProfile: profile];
-  profile.world = newWorld;
-  [[MUServices profileRegistry] profileForProfile: profile];
-  [profile release];
-}
-
-- (void) updateProfileForWorld: (MUWorld *) world
-                        player: (MUPlayer *) player
-                    withPlayer: (MUPlayer *) newPlayer
-{
-  MUProfile *profile = [[[MUServices profileRegistry] profileForWorld: world
-                                                               player: player] retain];
+  [self willChangeValueForKey: @"profilesTreeArray"];
+  [profilesTreeArray addObject: localProfilesNode];
+  [self didChangeValueForKey: @"profilesTreeArray"];
   
-  [[MUServices profileRegistry] removeProfile: profile];
-  profile.player = newPlayer;
-  [[MUServices profileRegistry] profileForProfile: profile];
-  [profile release];
 }
 
-- (MUWorld *) worldFromSheetWithPlayers: (NSArray *) players
+- (void) populateProfilesTree
 {
-  return [MUWorld worldWithName: [worldNameField stringValue]
-  										 hostname: [worldHostnameField stringValue]
-  												 port: [NSNumber numberWithInt: [worldPortField intValue]]
-  													URL: [worldURLField stringValue]
-  											players: players];
-}
-
-- (void) worldSheetDidEndAdding: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == MUEditOkay)
-  {
-    MUWorld *newWorld = [self worldFromSheetWithPlayers: [NSArray array]];
-  	unsigned insertionIndex = [(NSNumber *) contextInfo unsignedIntValue];
-  	
-  	[[MUServices worldRegistry] insertObject: newWorld inWorldsAtIndex: insertionIndex];
-  	
-  	[worldsAndPlayersOutlineView reloadData];
-  	[worldsAndPlayersOutlineView expandItem: newWorld];
-  }
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[self populateProfilesFromDefaults];
   
-  [(NSObject *) contextInfo release];
-}
-
-- (void) worldSheetDidEndEditing: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == MUEditOkay)
-  {
-    MUWorld *oldWorld = (MUWorld *) contextInfo;
-    MUWorld *newWorld = [self worldFromSheetWithPlayers: [oldWorld players]];
-  	BOOL isExpanded = [worldsAndPlayersOutlineView isItemExpanded: oldWorld];
-  	
-    // Update every profile that has this world.
-    [self updateProfilesForWorld: oldWorld
-                       withWorld: newWorld];
-  	
-  	// Actually replace the old world with the new one.
-  	[[MUServices worldRegistry] replaceWorld: oldWorld withWorld: newWorld];
-  	
-  	[worldsAndPlayersOutlineView reloadData];
-  	
-  	if (isExpanded)
-  		[worldsAndPlayersOutlineView expandItem: newWorld];
-  }
+  [profilesOutlineView reloadData];
+  [profilesOutlineView expandItem: [profilesOutlineView itemAtRow: 0]];
+	
+	[pool release];
 }
 
 @end

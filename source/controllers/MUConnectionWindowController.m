@@ -335,7 +335,7 @@ enum MUSearchDirections
   NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: typingAttributes];
   NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
   
-  [textStorage replaceCharactersInRange: NSMakeRange ([textStorage length], 0) withAttributedString: filteredString];
+  [textStorage appendAttributedString: filteredString];
   [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
   
   // Scroll to the bottom of the text window, but only if we were previously at the bottom.

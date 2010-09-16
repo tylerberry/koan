@@ -39,6 +39,7 @@
 		2F51E45E11781EF800F6DF65 /* MUMainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45511781EF800F6DF65 /* MUMainMenu.xib */; };
 		2F51E45F11781EF800F6DF65 /* MUProfiles.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45711781EF800F6DF65 /* MUProfiles.xib */; };
 		2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45911781EF800F6DF65 /* MUProxySettings.xib */; };
+		2F5CB963122C358500DE3962 /* MUProfileTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */; };
 		2F6C71F40BB460CA00709320 /* MUURLHandlerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */; };
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
 		2F7092A01223966F00E0D178 /* CTBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F70929F1223966F00E0D178 /* CTBadge.m */; };
@@ -51,6 +52,7 @@
 		2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FB70BCAC1FD00C1586D /* MUDocumentController.m */; };
 		2F7B4FED0BCAC40F00C1586D /* MUTextLogDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */; };
 		2F7CDB76121EFC22001B4879 /* MUMCCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */; };
+		2F82C8A11240B85800D32655 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82C8A01240B85800D32655 /* ImageAndTextCell.m */; };
 		2F861FB811FD53F2007136D5 /* J3Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F861FB711FD53F2007136D5 /* J3Protocol.m */; };
 		2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */; };
 		2FB40DE10BF10797004E13F8 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */; };
@@ -245,6 +247,8 @@
 		2F51E45611781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUMainMenu.xib; sourceTree = "<group>"; };
 		2F51E45811781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProfiles.xib; sourceTree = "<group>"; };
 		2F51E45A11781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProxySettings.xib; sourceTree = "<group>"; };
+		2F5CB961122C358500DE3962 /* MUProfileTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileTreeNode.h; sourceTree = "<group>"; };
+		2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileTreeNode.m; sourceTree = "<group>"; };
 		2F6C71F10BB460CA00709320 /* MUURLHandlerCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUURLHandlerCommand.h; sourceTree = "<group>"; };
 		2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUURLHandlerCommand.m; sourceTree = "<group>"; };
 		2F6C72A90BB46BD000709320 /* Koan.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; path = Koan.sdef; sourceTree = "<group>"; };
@@ -264,6 +268,8 @@
 		2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLogDocument.m; sourceTree = "<group>"; };
 		2F7CDB74121EFC22001B4879 /* MUMCCPProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMCCPProtocolHandler.h; sourceTree = "<group>"; };
 		2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCCPProtocolHandler.m; sourceTree = "<group>"; };
+		2F82C89F1240B85800D32655 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
+		2F82C8A01240B85800D32655 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		2F861FB611FD53F2007136D5 /* J3Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3Protocol.h; sourceTree = "<group>"; };
 		2F861FB711FD53F2007136D5 /* J3Protocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3Protocol.m; sourceTree = "<group>"; };
 		2FA58B5011A2DFA200A9005A /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = build/BWToolkitFramework.framework; sourceTree = SOURCE_ROOT; };
@@ -678,6 +684,8 @@
 				2F70929F1223966F00E0D178 /* CTBadge.m */,
 				E60DDB83076CE889009870E4 /* FontNameToDisplayNameTransformer.h */,
 				E60DDB84076CE889009870E4 /* FontNameToDisplayNameTransformer.m */,
+				2F82C89F1240B85800D32655 /* ImageAndTextCell.h */,
+				2F82C8A01240B85800D32655 /* ImageAndTextCell.m */,
 				2F51E43211781DD400F6DF65 /* RBSplitSubview.h */,
 				2F51E43311781DD400F6DF65 /* RBSplitView.h */,
 				2F51E43411781DD400F6DF65 /* RBSplitViewPrivateDefines.h */,
@@ -928,6 +936,8 @@
 				7E39EF9C0783938F0042A17A /* MUProfile.m */,
 				7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */,
 				7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */,
+				2F5CB961122C358500DE3962 /* MUProfileTreeNode.h */,
+				2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */,
 				E6DA667007776D9900C46267 /* MUWorld.h */,
 				E6DA667107776D9900C46267 /* MUWorld.m */,
 			);
@@ -1282,6 +1292,8 @@
 				2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */,
 				2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */,
 				2F1C1798122854B90079F1E1 /* J3FilterQueue.m in Sources */,
+				2F5CB963122C358500DE3962 /* MUProfileTreeNode.m in Sources */,
+				2F82C8A11240B85800D32655 /* ImageAndTextCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

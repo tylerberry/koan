@@ -14,10 +14,10 @@
   NSMutableArray *worlds;
 }
 
+@property (readonly) NSArray *worlds;
+
 + (MUWorldRegistry *) defaultRegistry;
 
-- (NSMutableArray *) worlds;
-- (void) setWorlds: (NSArray *) newWorlds;
 - (void) insertObject: (MUWorld *) world inWorldsAtIndex: (unsigned) worldIndex;
 - (void) removeObjectFromWorldsAtIndex: (unsigned) worldIndex;
 

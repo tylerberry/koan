@@ -14,6 +14,7 @@ static MUWorldRegistry *defaultRegistry = nil;
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification;
 - (void) postWorldsDidChangeNotification;
 - (void) readWorldsFromUserDefaults;
+- (void) setWorlds: (NSArray *) newWorlds;
 - (void) worldsDidChange: (NSNotification *) notification;
 - (void) writeWorldsToUserDefaults;
 
@@ -22,6 +23,8 @@ static MUWorldRegistry *defaultRegistry = nil;
 #pragma mark -
 
 @implementation MUWorldRegistry
+
+@synthesize worlds;
 
 + (MUWorldRegistry *) defaultRegistry
 {
@@ -62,32 +65,26 @@ static MUWorldRegistry *defaultRegistry = nil;
 #pragma mark -
 #pragma mark Key-value coding accessors
 
-- (NSMutableArray *) worlds
-{
-  return worlds;
-}
-
-- (void) setWorlds: (NSArray *) newWorlds
-{
-  if (worlds == newWorlds)
-    return;
-  
-  [worlds release];
-  worlds = [newWorlds mutableCopy];
-  
-  [self postWorldsDidChangeNotification];
-}
-
 - (void) insertObject: (MUWorld *) world inWorldsAtIndex: (unsigned) worldIndex
 {
-  [worlds insertObject: world atIndex: worldIndex];
-  [self postWorldsDidChangeNotification];
+  @synchronized (self)
+  {
+    [self willChangeValueForKey: @"worlds"];
+    [worlds insertObject: world atIndex: worldIndex];
+    [self didChangeValueForKey: @"worlds"];
+    [self postWorldsDidChangeNotification];
+  }
 }
 
 - (void) removeObjectFromWorldsAtIndex: (unsigned) worldIndex
 {
-  [worlds removeObjectAtIndex: worldIndex];
-  [self postWorldsDidChangeNotification];
+  @synchronized (self)
+  {
+    [self willChangeValueForKey: @"worlds"];
+    [worlds removeObjectAtIndex: worldIndex];
+    [self didChangeValueForKey: @"worlds"];
+    [self postWorldsDidChangeNotification];
+  }
 }
 
 #pragma mark -
@@ -95,57 +92,85 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (unsigned) count
 {
-  return [worlds count];
+  unsigned count = 0;
+  
+  @synchronized (self)
+  {
+    count = [worlds count];
+  }
+  
+  return count;
 }
 
 - (int) indexOfWorld: (MUWorld *) world
 {
-  for (unsigned i = 0; i < [worlds count]; i++)
+  int index = NSNotFound;
+  
+  @synchronized (self)
   {
-  	if (world == [worlds objectAtIndex: i])
-  	{
-  		return (int) i;
-  	}
+    index = [worlds indexOfObject: world];
   }
   
-  return -1;
+  return index;
 }
 
 - (void) removeWorld: (MUWorld *) world
 {
-  [worlds removeObject: world];
-  [self postWorldsDidChangeNotification];
+  @synchronized (self)
+  {
+    if (![worlds containsObject: world])
+      return;
+    
+    [self willChangeValueForKey: @"worlds"];
+    [worlds removeObject: world];
+    [self didChangeValueForKey: @"worlds"];
+    [self postWorldsDidChangeNotification];
+  }
 }
 
 - (void) replaceWorld: (MUWorld *) oldWorld withWorld: (MUWorld *) newWorld
 {
-  for (unsigned i = 0; i < [worlds count]; i++)
+  @synchronized (self)
   {
-  	if (oldWorld == [worlds objectAtIndex: i])
-  	{
-  		[worlds replaceObjectAtIndex: i withObject: newWorld];
-      [self postWorldsDidChangeNotification];
-  		break;
-  	}
+    if (![worlds containsObject: oldWorld])
+      return;
+    
+    [self willChangeValueForKey: @"worlds"];
+    [worlds replaceObjectAtIndex: [worlds indexOfObject: oldWorld] withObject: newWorld];
+    [self didChangeValueForKey: @"worlds"];
+    [self postWorldsDidChangeNotification];
   }
 }
 
 - (MUWorld *) worldAtIndex: (unsigned) worldIndex
 {
-  return [worlds objectAtIndex: worldIndex];
+  MUWorld *world = nil;
+  
+  @synchronized (self)
+  {
+    world = [worlds objectAtIndex: worldIndex];
+  }
+  
+  return world;
 }
 
 - (MUWorld *) worldForUniqueIdentifier: (NSString *) identifier
 {
-  for (unsigned i = 0; i < [worlds count]; i++)
+  MUWorld *world = nil;
+  
+  @synchronized (self)
   {
-  	MUWorld *world = [worlds objectAtIndex: i];
-  	
-  	if ([identifier isEqualToString: world.uniqueIdentifier])
-  		return world;
+    for (MUWorld *candidate in worlds)
+    {
+      if ([identifier isEqualToString: candidate.uniqueIdentifier])
+      {
+        world = candidate;
+        break;
+      }
+    }
   }
   
-  return nil;
+  return world;
 }
 
 @end
@@ -192,6 +217,18 @@ static MUWorldRegistry *defaultRegistry = nil;
   }
 }
 
+- (void) setWorlds: (NSArray *) newWorlds
+{
+  if (worlds == newWorlds)
+    return;
+  
+  [self willChangeValueForKey: @"worlds"];
+  [worlds release];
+  worlds = [newWorlds mutableCopy];
+  [self didChangeValueForKey: @"worlds"];
+  
+  [self postWorldsDidChangeNotification];
+}
 
 - (void) worldsDidChange: (NSNotification *) notification;
 {
@@ -200,7 +237,7 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (void) writeWorldsToUserDefaults
 {
-  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: worlds]
+  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: self.worlds]
                                             forKey: MUPWorlds];
   
   [[NSUserDefaults standardUserDefaults] synchronize];

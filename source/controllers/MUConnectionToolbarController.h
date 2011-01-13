@@ -6,7 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MUConnectionToolbarController : NSObject
+@interface MUConnectionToolbarController : NSObject <NSToolbarDelegate>
 {
   NSToolbar *toolbar;
   

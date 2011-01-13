@@ -17,7 +17,7 @@
                 player: (MUPlayer *) player;
 
 - (MUWorld *) testWorld;
-- (MUPlayer *) testPlayerWithWorld: (MUWorld *) world;
+- (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world;
 
 @end
 
@@ -66,7 +66,7 @@
 {
   MUProfile *profileOne = nil, *profileTwo = nil;
   MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithWorld: world];
+  MUPlayer *player = [self testPlayerWithParentWorld: world];
   
   profileOne = [registry profileForWorld: world player: player];
   [self assertProfile: profileOne world: world player: player];
@@ -81,7 +81,7 @@
 - (void) testContains
 {
   MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithWorld: world];
+  MUPlayer *player = [self testPlayerWithParentWorld: world];
   
   [self assertFalse: [registry containsProfileForWorld: world player: player]
             message: @"Before adding"];
@@ -95,7 +95,7 @@
 - (void) testRemove
 {
   MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithWorld: world];
+  MUPlayer *player = [self testPlayerWithParentWorld: world];
 
   [registry profileForWorld: world player: player];
   [self assertTrue: [registry containsProfileForWorld: world player: player]
@@ -110,8 +110,8 @@
 - (void) testRemoveWorld
 {
   MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithWorld: world];
-  [world addPlayer: player];
+  MUPlayer *player = [self testPlayerWithParentWorld: world];
+  [world addChild: player];
   
   [registry profileForWorld: world];
   [registry profileForWorld: world player: player];
@@ -145,9 +145,12 @@
   return world;
 }
 
-- (MUPlayer *) testPlayerWithWorld: (MUWorld *) world
+- (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world
 {
-  return [MUPlayer playerWithName: @"User" password: @"" world: world];
+  MUPlayer *player = [MUPlayer playerWithName: @"User" password: @""];
+  player.parent = world;
+  
+  return player;
 }
 
 @end

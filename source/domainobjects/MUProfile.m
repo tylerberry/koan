@@ -79,9 +79,9 @@
   if (!(self = [super init]))
     return nil;
   
-  self.world = newWorld;
-  self.player = newPlayer;
-  self.autoconnect = newAutoconnect;
+  world = [newWorld retain];
+  player = [newPlayer retain];
+  autoconnect = newAutoconnect;
   [self setFont: newFont];
   [self setTextColor: newTextColor];
   [self setBackgroundColor: newBackgroundColor];

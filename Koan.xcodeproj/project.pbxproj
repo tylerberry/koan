@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -39,7 +39,7 @@
 		2F51E45E11781EF800F6DF65 /* MUMainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45511781EF800F6DF65 /* MUMainMenu.xib */; };
 		2F51E45F11781EF800F6DF65 /* MUProfiles.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45711781EF800F6DF65 /* MUProfiles.xib */; };
 		2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45911781EF800F6DF65 /* MUProxySettings.xib */; };
-		2F5CB963122C358500DE3962 /* MUProfileTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */; };
+		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F6C71F40BB460CA00709320 /* MUURLHandlerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */; };
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
 		2F7092A01223966F00E0D178 /* CTBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F70929F1223966F00E0D178 /* CTBadge.m */; };
@@ -53,6 +53,8 @@
 		2F7B4FED0BCAC40F00C1586D /* MUTextLogDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */; };
 		2F7CDB76121EFC22001B4879 /* MUMCCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */; };
 		2F82C8A11240B85800D32655 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82C8A01240B85800D32655 /* ImageAndTextCell.m */; };
+		2F82CADA1241F81300D32655 /* MUFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CAD91241F81300D32655 /* MUFolder.m */; };
+		2F82CB9F12422DFC00D32655 /* MUTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CB9E12422DFC00D32655 /* MUTreeNode.m */; };
 		2F861FB811FD53F2007136D5 /* J3Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F861FB711FD53F2007136D5 /* J3Protocol.m */; };
 		2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */; };
 		2FB40DE10BF10797004E13F8 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */; };
@@ -141,7 +143,6 @@
 		E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */ = {isa = PBXBuildFile; fileRef = E63F31BE0815B5C1006C4704 /* NSFont (FullDisplayName).m */; };
 		E64C9634076BF95E00D0D7C0 /* J3PortFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E64C9632076BF95E00D0D7C0 /* J3PortFormatter.m */; };
 		E653A7D207AEFAB900023476 /* MUGrowlService.m in Sources */ = {isa = PBXBuildFile; fileRef = E653A7D007AEFAB900023476 /* MUGrowlService.m */; };
-		E6550E0107763B72002E81FF /* NSObject (BetterHashing).m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */; };
 		E65CE072075438F9003A796A /* Koan.icns in Resources */ = {isa = PBXBuildFile; fileRef = E65CE071075438F9003A796A /* Koan.icns */; };
 		E670A84207420FDF00E2DAEB /* MUConnectionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E670A84007420FDF00E2DAEB /* MUConnectionWindowController.m */; };
 		E677D2110778041F00B417D2 /* MUPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E677D20F0778041F00B417D2 /* MUPlayer.m */; };
@@ -247,8 +248,8 @@
 		2F51E45611781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUMainMenu.xib; sourceTree = "<group>"; };
 		2F51E45811781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProfiles.xib; sourceTree = "<group>"; };
 		2F51E45A11781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProxySettings.xib; sourceTree = "<group>"; };
-		2F5CB961122C358500DE3962 /* MUProfileTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileTreeNode.h; sourceTree = "<group>"; };
-		2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileTreeNode.m; sourceTree = "<group>"; };
+		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
+		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F6C71F10BB460CA00709320 /* MUURLHandlerCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUURLHandlerCommand.h; sourceTree = "<group>"; };
 		2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUURLHandlerCommand.m; sourceTree = "<group>"; };
 		2F6C72A90BB46BD000709320 /* Koan.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; path = Koan.sdef; sourceTree = "<group>"; };
@@ -270,6 +271,10 @@
 		2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCCPProtocolHandler.m; sourceTree = "<group>"; };
 		2F82C89F1240B85800D32655 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
 		2F82C8A01240B85800D32655 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
+		2F82CAD81241F81300D32655 /* MUFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFolder.h; sourceTree = "<group>"; };
+		2F82CAD91241F81300D32655 /* MUFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFolder.m; sourceTree = "<group>"; };
+		2F82CB9D12422DFC00D32655 /* MUTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNode.h; sourceTree = "<group>"; };
+		2F82CB9E12422DFC00D32655 /* MUTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNode.m; sourceTree = "<group>"; };
 		2F861FB611FD53F2007136D5 /* J3Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3Protocol.h; sourceTree = "<group>"; };
 		2F861FB711FD53F2007136D5 /* J3Protocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3Protocol.m; sourceTree = "<group>"; };
 		2FA58B5011A2DFA200A9005A /* BWToolkitFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BWToolkitFramework.framework; path = build/BWToolkitFramework.framework; sourceTree = SOURCE_ROOT; };
@@ -881,6 +886,8 @@
 				2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */,
 				E6E7A63D0749698F007005AC /* MUTextLoggerTests.h */,
 				E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */,
+				2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */,
+				2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */,
 				7E13FA590788C75F0071D30C /* MUWorldTests.h */,
 				7E13FA5A0788C75F0071D30C /* MUWorldTests.m */,
 				7EA5BB1E07A76A98002336EE /* TestCase (NSAttributedStringAssertions).h */,
@@ -930,14 +937,16 @@
 		E6E7BF500788FDA40065EDD6 /* Domain Objects */ = {
 			isa = PBXGroup;
 			children = (
+				2F82CAD81241F81300D32655 /* MUFolder.h */,
+				2F82CAD91241F81300D32655 /* MUFolder.m */,
 				E677D20E0778041F00B417D2 /* MUPlayer.h */,
 				E677D20F0778041F00B417D2 /* MUPlayer.m */,
 				7E39EF9B0783938F0042A17A /* MUProfile.h */,
 				7E39EF9C0783938F0042A17A /* MUProfile.m */,
 				7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */,
 				7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */,
-				2F5CB961122C358500DE3962 /* MUProfileTreeNode.h */,
-				2F5CB962122C358500DE3962 /* MUProfileTreeNode.m */,
+				2F82CB9D12422DFC00D32655 /* MUTreeNode.h */,
+				2F82CB9E12422DFC00D32655 /* MUTreeNode.m */,
 				E6DA667007776D9900C46267 /* MUWorld.h */,
 				E6DA667107776D9900C46267 /* MUWorld.m */,
 			);
@@ -1060,9 +1069,20 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				ORGANIZATIONNAME = "3James Software";
+			};
 			buildConfigurationList = E69E22380854FB100055BCF5 /* Build configuration list for PBXProject "Koan" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Koan */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1207,6 +1227,7 @@
 				7E87756C09AD62E400A883BC /* MUPlayerTests.m in Sources */,
 				7E87756D09AD62E400A883BC /* MUProfileRegistryTests.m in Sources */,
 				7E87756E09AD62E400A883BC /* MUProfileTests.m in Sources */,
+				2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */,
 				7E87757009AD62E400A883BC /* MUWorldTests.m in Sources */,
 				7E87757109AD62E400A883BC /* TestCase (NSAttributedStringAssertions).m in Sources */,
 			);
@@ -1218,14 +1239,17 @@
 			files = (
 				2F7092A01223966F00E0D178 /* CTBadge.m in Sources */,
 				E60DDB86076CE889009870E4 /* FontNameToDisplayNameTransformer.m in Sources */,
+				2F82C8A11240B85800D32655 /* ImageAndTextCell.m in Sources */,
 				7E43C1C20ACB1A4000A8E677 /* J3ANSIFormattingFilter.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* J3ByteSet.m in Sources */,
 				7E0EEC160C27140E0043FA91 /* J3Connection.m in Sources */,
 				7EFE43870749C7CE002C7D48 /* J3Filter.m in Sources */,
+				2F1C1798122854B90079F1E1 /* J3FilterQueue.m in Sources */,
 				7E5103A40AD1E14000142EF3 /* J3Formatter.m in Sources */,
 				E6E7A62807496940007005AC /* J3HistoryRing.m in Sources */,
 				E6C9D607077C2DC6007BB2C1 /* J3NaiveURLFilter.m in Sources */,
 				E64C9634076BF95E00D0D7C0 /* J3PortFormatter.m in Sources */,
+				2F861FB811FD53F2007136D5 /* J3Protocol.m in Sources */,
 				7E13BA1D09AE950600508460 /* J3ProxySettings.m in Sources */,
 				7E50AC2309AEB90B00E0BFE7 /* J3ProxySocket.m in Sources */,
 				7E68DC59092AC2FB004554BD /* J3ReadBuffer.m in Sources */,
@@ -1236,6 +1260,7 @@
 				7E070B000933D01E000A36CF /* J3SocksMethodSelection.m in Sources */,
 				7EC10AEC09AF947C00D840A1 /* J3SocksRequest.m in Sources */,
 				7EC3030A092B978B00AFA5C7 /* J3TelnetConnection.m in Sources */,
+				2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */,
 				7E4FB27B0BCC877B007BC40F /* J3TelnetDoState.m in Sources */,
 				7E4FB2790BCC877B007BC40F /* J3TelnetDontState.m in Sources */,
 				2FC93E2B0BB103C500149459 /* J3TelnetProtocolHandler.m in Sources */,
@@ -1244,6 +1269,7 @@
 				7EE11F3B0BD8284100C78D9C /* J3TelnetNotTelnetState.m in Sources */,
 				7EF77C940BCC945D0047CF5D /* J3TelnetOption.m in Sources */,
 				7E4FB2810BCC877B007BC40F /* J3TelnetState.m in Sources */,
+				2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */,
 				7E4FB2830BCC877B007BC40F /* J3TelnetSubnegotiationIACState.m in Sources */,
 				2FD0E1EC117DBB8F00E75640 /* J3TelnetSubnegotiationOptionState.m in Sources */,
 				7E4FB2850BCC877B007BC40F /* J3TelnetSubnegotiationState.m in Sources */,
@@ -1260,6 +1286,7 @@
 				E622A553074231A60069335B /* MUConstants.m in Sources */,
 				E6A2312A0772E166008EF744 /* MUDisplayTextView.m in Sources */,
 				2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */,
+				2F82CADA1241F81300D32655 /* MUFolder.m in Sources */,
 				2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */,
 				E653A7D207AEFAB900023476 /* MUGrowlService.m in Sources */,
 				2F7B4F3B0BCAB87B00C1586D /* MULogBrowserWindowController.m in Sources */,
@@ -1273,6 +1300,7 @@
 				E67CBF3207D03FEE004BB3DB /* MUProfilesToolbarController.m in Sources */,
 				7E13B9B709AE8B7600508460 /* MUProxySettingsController.m in Sources */,
 				E6E7A6350749697C007005AC /* MUTextLogger.m in Sources */,
+				2F82CB9F12422DFC00D32655 /* MUTreeNode.m in Sources */,
 				E6DA667307776D9900C46267 /* MUWorld.m in Sources */,
 				E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */,
 				7E230FFE079A0FE500E7CBA6 /* MUServices.m in Sources */,
@@ -1284,16 +1312,9 @@
 				E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */,
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
-				E6550E0107763B72002E81FF /* NSObject (BetterHashing).m in Sources */,
 				2F51E43711781DD400F6DF65 /* RBSplitSubview.m in Sources */,
 				2F51E43811781DD400F6DF65 /* RBSplitView.m in Sources */,
 				2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */,
-				2F861FB811FD53F2007136D5 /* J3Protocol.m in Sources */,
-				2F2718EB12141166006710C7 /* J3TelnetConnectionState.m in Sources */,
-				2F0B277B12196B9C00AE6B62 /* J3TelnetStateMachine.m in Sources */,
-				2F1C1798122854B90079F1E1 /* J3FilterQueue.m in Sources */,
-				2F5CB963122C358500DE3962 /* MUProfileTreeNode.m in Sources */,
-				2F82C8A11240B85800D32655 /* ImageAndTextCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,7 +1459,7 @@
 					"$(BUILD_ROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
-				GCC_ENABLE_OBJC_GC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/Koan-Prefix.pch";
@@ -1512,7 +1533,6 @@
 		E69E22310854FB100055BCF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(BUILD_ROOT)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -1521,9 +1541,6 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/build\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/Koan-Prefix.pch";
 				GCC_USE_GCC3_PFE_SUPPORT = YES;
@@ -1539,7 +1556,6 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/frameworks\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "-DMAC_OS_X_VERSION_MIN_REQUIRED=MAC_OS_X_VERSION_10_4";
 				OTHER_LDFLAGS = (
 					"-lSystem",
@@ -1554,7 +1570,6 @@
 		E69E22320854FB100055BCF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(BUILD_ROOT)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -1563,9 +1578,6 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/build\"";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/build\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/Koan-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1583,6 +1595,7 @@
 				OTHER_LDFLAGS = (
 					"-lSystem",
 					"-lcrypto",
+					"-lz",
 				);
 				PRODUCT_NAME = Koan;
 				WRAPPER_EXTENSION = app;
@@ -1593,12 +1606,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_VERSION = "1.1 beta";
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1615,22 +1628,20 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		E69E223A0854FB100055BCF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_VERSION = 1.0b1;
-				ARCHS = (
-					i386,
-					ppc,
-				);
+				APPLICATION_VERSION = "1.1 beta";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_ENABLE_OBJC_GC = NO;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -1655,7 +1666,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

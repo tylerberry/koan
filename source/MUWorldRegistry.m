@@ -102,9 +102,9 @@ static MUWorldRegistry *defaultRegistry = nil;
   return count;
 }
 
-- (int) indexOfWorld: (MUWorld *) world
+- (NSUInteger) indexOfWorld: (MUWorld *) world
 {
-  int index = NSNotFound;
+  NSUInteger index = NSNotFound;
   
   @synchronized (self)
   {
@@ -119,7 +119,10 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     if (![worlds containsObject: world])
+    {
+      NSLog (@"Called MUWorldRegistry-removeWorld: with argument not in worlds array.");
       return;
+    }
     
     [self willChangeValueForKey: @"worlds"];
     [worlds removeObject: world];
@@ -133,7 +136,10 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     if (![worlds containsObject: oldWorld])
+    {
+      NSLog (@"Called MUWorldRegistry-replaceWorld:withWorld: with oldWorld argument not in worlds array.");
       return;
+    }
     
     [self willChangeValueForKey: @"worlds"];
     [worlds replaceObjectAtIndex: [worlds indexOfObject: oldWorld] withObject: newWorld];
@@ -201,20 +207,8 @@ static MUWorldRegistry *defaultRegistry = nil;
   
   [self setWorlds: [NSKeyedUnarchiver unarchiveObjectWithData: worldsData]];
   
-  for (unsigned i = 0; i < [worlds count]; i++)
-  {
-    MUWorld *world = [worlds objectAtIndex: i];
-    
-    for (unsigned j = 0; j < [[world players] count]; j++)
-    {
-      MUPlayer *player = [[world players] objectAtIndex: j];
-      player.world = world;
-      
-      MUProfile *profile = [[MUServices profileRegistry] profileForWorld: world player: player];
-      profile.world = world;
-      profile.player = player;
-    }
-  }
+  for (MUTreeNode *topLevelNode in worlds)
+    [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
 }
 
 - (void) setWorlds: (NSArray *) newWorlds

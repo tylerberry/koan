@@ -134,7 +134,7 @@
   return [self length] == 0;
 }
 
-- (unsigned) length
+- (NSUInteger) length
 {
   return totalLength;
 }

@@ -28,7 +28,7 @@
   BOOL result = NO;
   
   if ([[self delegate] respondsToSelector: @selector (textView:insertText:)])
-    result = [[self delegate] textView: self insertText: string];
+    result = [(NSObject <MUTextViewDelegate> *) [self delegate] textView: self insertText: string];
   
   if (!result)
     [super insertText: string];
@@ -44,7 +44,7 @@
   BOOL result = NO;
   
   if ([[self delegate] respondsToSelector: @selector (textView:pasteAsPlainText:)])
-    result = [[self delegate] textView: self pasteAsPlainText: sender];
+    result = [(NSObject <MUTextViewDelegate> *) [self delegate] textView: self pasteAsPlainText: sender];
   
   if (!result)
     [super pasteAsPlainText: sender];

@@ -7,27 +7,21 @@
 #import <Cocoa/Cocoa.h>
 #import "MUWorld.h"
 
-@interface MUPlayer : NSObject <NSCoding, NSCopying>
+@interface MUPlayer : MUTreeNode <NSCoding, NSCopying>
 {
-  NSString *name;
   NSString *password;
-  MUWorld *world;
 }
 
-@property (copy) NSString *name;
 @property (copy) NSString *password;
-@property (retain) MUWorld *world;
 @property (readonly) NSString *loginString;
 @property (readonly) NSString *uniqueIdentifier;
 @property (readonly) NSString *windowTitle;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
-  									 password: (NSString *) newPassword
-  											world: (MUWorld *) world;
+  									 password: (NSString *) newPassword;
 
 // Designated initializer.
 - (id) initWithName: (NSString *) newName
-           password: (NSString *) newPassword
-              world: (MUWorld *) world;
+           password: (NSString *) newPassword;
 
 @end

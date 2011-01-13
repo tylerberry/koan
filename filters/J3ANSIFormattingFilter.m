@@ -23,10 +23,10 @@
 - (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
 - (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
 - (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (int) scanUpToCodeInString: (NSString *) string;
-- (int) scanThroughEndOfCodeAt: (unsigned) index inString: (NSString *) string;
+- (NSUInteger) scanUpToCodeInString: (NSString *) string;
+- (NSUInteger) scanThroughEndOfCodeAt: (unsigned) index inString: (NSString *) string;
 - (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (unsigned) startLocation;
-- (NSFont *) setTrait: (NSFontTraitMask)trait onFont: (NSFont *) font;
+- (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
 
 @end
 
@@ -430,14 +430,12 @@
   }
 }
 
-- (int) scanUpToCodeInString: (NSString *) string
+- (NSUInteger) scanUpToCodeInString: (NSString *) string
 {
-  NSCharacterSet *stopSet =
-  [NSCharacterSet characterSetWithCharactersInString: @"\x1B"];
+  NSCharacterSet *stopSet = [NSCharacterSet characterSetWithCharactersInString: @"\x1B"];
   NSRange stopRange = [string rangeOfCharacterFromSet: stopSet];
   NSScanner *scanner = [NSScanner scannerWithString: string];
-  [scanner setCharactersToBeSkipped:
-   [NSCharacterSet characterSetWithCharactersInString: @""]];
+  [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
   if (stopRange.location == NSNotFound)
     return NSNotFound;
@@ -447,16 +445,13 @@
   return [scanner scanLocation];
 }
 
-- (int) scanThroughEndOfCodeAt: (unsigned) codeIndex inString: (NSString *) string
+- (NSUInteger) scanThroughEndOfCodeAt: (unsigned) codeIndex inString: (NSString *) string
 {
   NSScanner *scanner = [NSScanner scannerWithString: string];
   [scanner setScanLocation: codeIndex];
-  [scanner setCharactersToBeSkipped:
-   [NSCharacterSet characterSetWithCharactersInString: @""]];
+  [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
-  NSCharacterSet *resumeSet =
-  [NSCharacterSet characterSetWithCharactersInString:
-   @"m"];
+  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"m"];
   
   NSString *charactersFromThisScan = @"";
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];

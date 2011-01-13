@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UKPrefsPanel : NSObject
+@interface UKPrefsPanel : NSObject <NSToolbarDelegate>
 {
   IBOutlet NSTabView *tabView;
   

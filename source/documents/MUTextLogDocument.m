@@ -12,7 +12,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 @interface MUTextLogDocument (Private)
 
-- (unsigned) findEndOfHeaderLocation: (NSString *)string lineEnding: (NSString **) lineEnding;
+- (NSUInteger) findEndOfHeaderLocation: (NSString *)string lineEnding: (NSString **) lineEnding;
 - (BOOL) addKeyValuePairFromString: (NSString *) string toDictionary: (NSMutableDictionary *) dictionary;
 - (BOOL) parse: (NSString *) string;
 - (NSString *) spotlightDisplayName;
@@ -148,7 +148,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   return result;
 }
 
-- (unsigned) findEndOfHeaderLocation: (NSString *) string lineEnding: (NSString **) lineEnding
+- (NSUInteger) findEndOfHeaderLocation: (NSString *) string lineEnding: (NSString **) lineEnding
 {
   *lineEnding = nil;
   
@@ -182,7 +182,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   NSMutableDictionary *workingHeaders = [NSMutableDictionary dictionary];
   NSString *lineEnding;
   
-  unsigned endOfHeaders = [self findEndOfHeaderLocation: string lineEnding: &lineEnding];
+  NSUInteger endOfHeaders = [self findEndOfHeaderLocation: string lineEnding: &lineEnding];
   if (endOfHeaders == NSNotFound)
     return NO;
   

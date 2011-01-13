@@ -10,7 +10,6 @@
 
 static const int32_t currentProfileVersion = 2;
 static const int32_t currentPlayerVersion = 1;
-static const int32_t currentWorldVersion = 5;
 static const int32_t currentProxyVersion = 2;
 
 #pragma mark -
@@ -64,40 +63,12 @@ static const int32_t currentProxyVersion = 2;
 
 + (void) encodeWorld: (MUWorld *) world withCoder: (NSCoder *) encoder
 {
-  [encoder encodeInt32: currentWorldVersion forKey: @"version"];
-  
-  [encoder encodeObject: world.name forKey: @"name"];
-  [encoder encodeObject: world.hostname forKey: @"hostname"];
-  [encoder encodeObject: world.port forKey: @"port"];
-  [encoder encodeObject: [world players] forKey: @"players"];
-  [encoder encodeObject: world.url forKey: @"URL"];
+  return;
 }
 
 + (void) decodeWorld: (MUWorld *) world withCoder: (NSCoder *) decoder
 {
-  int32_t version = [decoder decodeInt32ForKey: @"version"];
-  
-  if (version >= 5)
-  {
-    world.name = [decoder decodeObjectForKey: @"name"];
-    world.hostname = [decoder decodeObjectForKey: @"hostname"];
-    world.port = [decoder decodeObjectForKey: @"port"];
-  }
-  else
-  {
-    world.name = [decoder decodeObjectForKey: @"worldName"];
-    world.hostname = [decoder decodeObjectForKey: @"worldHostname"];
-    world.port = [decoder decodeObjectForKey: @"worldPort"];
-  }
-  
-  [world setPlayers: [decoder decodeObjectForKey: @"players"]];
-  
-  if (version >= 5)
-    world.url = [decoder decodeObjectForKey: @"URL"];
-  else if (version >= 1)
-    world.url = [decoder decodeObjectForKey: @"worldURL"];
-  else
-    world.url = @"";
+  return;
 }
 
 + (void) encodeProxySettings: (J3ProxySettings *) settings withCoder: (NSCoder *) encoder;

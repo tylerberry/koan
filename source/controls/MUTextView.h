@@ -12,7 +12,9 @@
 
 #pragma mark -
 
-@interface NSObject (MUTextViewDelegate)
+@protocol MUTextViewDelegate
+
+@optional
 
 - (BOOL) textView: (MUTextView *) textView insertText: (id) string;
 - (BOOL) textView: (MUTextView *) textView pasteAsPlainText: (id) originalSender;

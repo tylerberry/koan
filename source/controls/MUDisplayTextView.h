@@ -57,7 +57,9 @@
 
 #pragma mark -
 
-@interface NSObject (MUDisplayTextViewDelegate)
+@protocol MUDisplayTextViewDelegate
+
+@optional
 
 - (NSCursor *) cursorForLink: (NSObject *) linkObject
                      atIndex: (unsigned) charIndex

@@ -164,7 +164,7 @@
     NSToolbarCustomizeToolbarItemIdentifier,
     nil]];
   
-  return allowedItems;
+  return [allowedItems autorelease];
 }
 
 @end

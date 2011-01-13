@@ -59,8 +59,7 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (MUProfile *) profileForWorld: (MUWorld *) world player: (MUPlayer *) player
 {
-  return [self profileForProfile: [MUProfile profileWithWorld: world
-                                                      player: player]];
+  return [self profileForProfile: [MUProfile profileWithWorld: world player: player]];
 }
 
 - (MUProfile *) profileForProfile: (MUProfile *) profile
@@ -126,10 +125,10 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (void) removeAllProfilesForWorld: (MUWorld *) world
 {
-  for (unsigned i = 0; i < [[world players] count]; i++)
+  for (unsigned i = 0; i < [[world children] count]; i++)
   {
     [self removeProfileForWorld: world
-                         player: [[world players] objectAtIndex: i]];
+                         player: [[world children] objectAtIndex: i]];
   }
   
   [self removeProfileForWorld: world];

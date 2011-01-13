@@ -6,7 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MUProfilesToolbarController : NSObject
+@interface MUProfilesToolbarController : NSObject <NSToolbarDelegate>
 {
   NSToolbar *toolbar;
   

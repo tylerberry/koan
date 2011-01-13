@@ -6,27 +6,23 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "MUTreeNode.h"
+
 @class J3TelnetConnection;
 @class MUPlayer;
 @protocol J3LineBufferDelegate;
 @protocol J3TelnetConnectionDelegate;
 
-@interface MUWorld : NSObject <NSCoding, NSCopying>
+@interface MUWorld : MUTreeNode <NSCoding, NSCopying>
 {
-  NSString *name;
   NSString *hostname;
   NSNumber *port;
   NSString *url;
-  BOOL isExpanded;
-  NSMutableArray *players;
 }
 
-@property (copy) NSString *name;
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;
 @property (copy) NSString *url;
-@property (assign) BOOL isExpanded;
-@property (copy) NSMutableArray *players;
 @property (readonly) NSString *uniqueIdentifier;
 @property (readonly) NSString *windowTitle;
 
@@ -36,6 +32,9 @@
   											URL: (NSString *) newURL
   									players: (NSArray *) newPlayers;
 
++ (MUWorld *) worldWithHostname: (NSString *) newHostname
+                           port: (NSNumber *) newPort;
+
 // Designated initializer.
 - (id) initWithName: (NSString *) newName
            hostname: (NSString *) newHostname
@@ -43,14 +42,8 @@
                 URL: (NSString *) newURL
             players: (NSArray *) newPlayers;
 
-// Array-like functions.
-- (void) addPlayer: (MUPlayer *) player;
-- (BOOL) containsPlayer: (MUPlayer *) player;
-- (int) indexOfPlayer: (MUPlayer *) player;
-- (void) insertObject: (MUPlayer *) player inPlayersAtIndex: (unsigned) playerIndex;
-- (void) removeObjectFromPlayersAtIndex: (unsigned) playerIndex;
-- (void) removePlayer: (MUPlayer *) player;
-- (void) replacePlayer: (MUPlayer *) oldPlayer withPlayer: (MUPlayer *) newPlayer;
+- (id) initWithHostname: (NSString *) newHostname
+                   port: (NSNumber *) newPort;
 
 // Actions.
 - (J3TelnetConnection *) newTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate;

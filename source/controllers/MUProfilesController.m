@@ -7,7 +7,6 @@
 #import "MUProfilesController.h"
 #import "J3PortFormatter.h"
 #import "MUProfile.h"
-#import "MUProfileTreeNode.h"
 #import "MUServices.h"
 
 #import "ImageAndTextCell.h"
@@ -59,8 +58,6 @@
   
   // FIXME: [worldPortField setFormatter: worldPortFormatter];
   
-  [profilesOutlineView setAutosaveExpandedItems: YES];
-  
   editingFont = nil;
   
   backgroundColorActive = NO;
@@ -107,7 +104,24 @@
 #pragma mark -
 #pragma mark NSOutlineView data source
 
+- (id) outlineView: (NSOutlineView *) outlineView itemForPersistentObject: (id) object
+{
+  if (object && [object isKindOfClass: [NSString class]])
+  {
+  	return [[MUServices worldRegistry] worldForUniqueIdentifier: (NSString *) object];
+  }
+  
+  return nil;
+}
 
+- (id) outlineView: (NSOutlineView *) outlineView persistentObjectForItem: (id) item
+{
+  id representedObject = [(NSTreeNode *) [(NSTreeNode *) item representedObject] representedObject];
+  if ([representedObject isKindOfClass: [MUWorld class]])
+  	return ((MUWorld *) representedObject).uniqueIdentifier;
+  else
+  	return nil;
+}
 
 #pragma mark -
 #pragma mark NSOutlineView delegate
@@ -147,12 +161,14 @@
         NSImage *worldImage = [[NSImage imageNamed: NSImageNameNetwork] retain];
         [worldImage setSize: NSMakeSize (16, 16)];
         [cell setImage: worldImage];
+        [worldImage release];
       }
       else if ([representedObject isKindOfClass: [MUPlayer class]])
       {
         NSImage *playerImage = [[NSImage imageNamed: NSImageNameUser] retain];
         [playerImage setSize: NSMakeSize (16, 16)];
         [cell setImage: playerImage];
+        [playerImage release];
       }
       else
       {
@@ -373,7 +389,7 @@
   {
     NSTreeNode *worldNode = [NSTreeNode treeNodeWithRepresentedObject: world];
     
-    for (MUPlayer *player in [world players])
+    for (MUPlayer *player in [world children])
     {
       NSTreeNode *playerNode = [NSTreeNode treeNodeWithRepresentedObject: player];
       
@@ -398,6 +414,8 @@
 	
 	[self populateProfilesFromDefaults];
   
+  [profilesOutlineView setAutosaveExpandedItems: YES];
+  [profilesOutlineView setAutosaveName: @"profilesOutlineView"];
   [profilesOutlineView reloadData];
   [profilesOutlineView expandItem: [profilesOutlineView itemAtRow: 0]];
 	

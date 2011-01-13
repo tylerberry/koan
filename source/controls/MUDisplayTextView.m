@@ -58,7 +58,9 @@
   NSCursor *result = nil;
   
   if ([[self delegate] respondsToSelector: @selector (cursorForLink:atIndex:ofTextView:)])
-    result = [[self delegate] cursorForLink: linkObject atIndex: charIndex ofTextView: self];
+    result = [(NSObject <MUDisplayTextViewDelegate> *) [self delegate] cursorForLink: linkObject
+                                                                             atIndex: charIndex
+                                                                          ofTextView: self];
   
   if (result == nil)
     result = [NSCursor fingerCursor];
@@ -87,14 +89,14 @@
       continue;
     
     NSCursor *cursor = [self cursorForLink: linkObject atIndex: attributeRange.location];
-    unsigned rectCount;
+    NSUInteger rectCount;
     
     NSRectArray rects = [[self layoutManager] rectArrayForCharacterRange: attributeRange
                                             withinSelectedCharacterRange: NSMakeRange (NSNotFound, 0)
                                                          inTextContainer: [self textContainer]
                                                                rectCount: &rectCount];
     
-    for (unsigned rectIndex = 0; rectIndex < rectCount; rectIndex++)
+    for (NSUInteger rectIndex = 0; rectIndex < rectCount; rectIndex++)
     {
       NSRect oneRect = NSIntersectionRect (rects[rectIndex], [self visibleRect]);
       [self addCursorRect: oneRect cursor: cursor];

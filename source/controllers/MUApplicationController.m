@@ -42,7 +42,7 @@
 {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
   NSMutableDictionary *initialValues = [NSMutableDictionary dictionary];
-  NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
+  NSValueTransformer *transformer = [[[FontNameToDisplayNameTransformer alloc] init] autorelease];
   NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
@@ -134,11 +134,7 @@
         || [[url scheme] isEqualToString: @"koan"]))
     return;
   
-  MUWorld *world = [MUWorld worldWithName: [url host]
-                                 hostname: [url host]
-                                     port: [url port]
-                                      URL: @""
-                                  players: nil];
+  MUWorld *world = [MUWorld worldWithHostname: [url host] port: [url port]];
   
   MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
   
@@ -149,11 +145,8 @@
 
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
-  MUWorld *world = [MUWorld worldWithName: [newConnectionHostnameField stringValue]
-  															 hostname: [newConnectionHostnameField stringValue]
-  																	 port: [NSNumber numberWithInt: [newConnectionPortField intValue]]
-  																		URL: @""
-  																players: nil];
+  MUWorld *world = [MUWorld worldWithHostname: [newConnectionHostnameField stringValue]
+                                         port: [NSNumber numberWithInt: [newConnectionPortField intValue]]];;
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
   	[[MUServices worldRegistry] insertObject: world inWorldsAtIndex: [[MUServices worldRegistry] count]];
@@ -378,7 +371,7 @@
   {
     MUWorld *world = [registry worldAtIndex: i];
     MUProfile *profile = [profiles profileForWorld: world];
-    NSArray *players = [world players];
+    NSArray *players = [world children];
     NSMenuItem *worldItem = [[NSMenuItem alloc] init];
     NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name];
     NSMenuItem *connectItem = [[NSMenuItem alloc] initWithTitle: _(MULConnectWithoutLogin)

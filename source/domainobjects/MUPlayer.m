@@ -9,40 +9,34 @@
 
 @implementation MUPlayer
 
-@synthesize name, password, world;
+@synthesize password;
 @dynamic loginString, uniqueIdentifier, windowTitle;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword
-  											world: (MUWorld *) newWorld
 {
-  return [[[self alloc] initWithName: newName password: newPassword world: newWorld] autorelease];
+  return [[[self alloc] initWithName: newName password: newPassword] autorelease];
 }
 
 - (id) initWithName: (NSString *) newName
            password: (NSString *) newPassword
-              world: (MUWorld *) newWorld
 {
-  if (!(self = [super init]))
+  if (!(self = [super initWithName: newName children: nil]))
     return nil;
   
-  self.name = newName;
-  self.password = newPassword;
-  self.world = newWorld;
+  password = newPassword;
   
   return self;
 }
 
 - (id) init
 {
-  return [self initWithName: @"" password: @"" world: nil];
+  return [self initWithName: @"New player" password: @""];
 }
 
 - (void) dealloc
 {
-  [name release];
   [password release];
-  [world release];
   [super dealloc];
 }
 
@@ -74,12 +68,15 @@
 
 - (NSString *) uniqueIdentifier
 {
-  return [NSString stringWithFormat: @"%@.%@.%@", self.world.hostname, self.world.port, self.name];
+  // FIXME: WROOONG.
+  return [NSString stringWithString: @"THIS IS WRONG FIX ME DEAR GOD"];
+  //return [NSString stringWithFormat: @"%@.%@.%@", self.world.hostname, self.world.port, self.name];
 }
 
 - (NSString *) windowTitle
 {
-  return [NSString stringWithFormat: @"%@ @ %@", self.name, self.world.name];
+  // FIXME: WROOONG.
+  return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
 }
 
 #pragma mark -
@@ -106,8 +103,7 @@
 - (id) copyWithZone: (NSZone *) zone
 {
   return [[MUPlayer allocWithZone: zone] initWithName: self.name
-                                             password: self.password
-                                                world: self.world];
+                                             password: self.password];
 }
 
 @end

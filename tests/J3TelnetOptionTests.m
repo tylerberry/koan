@@ -13,7 +13,12 @@
 #define WONT 0x08
 
 #define QSTATES 6
+
+#pragma mark -
+
 typedef int QMethodTable[QSTATES][3];
+
+#pragma mark -
 
 @interface J3TelnetOptionTests (Private)
 
@@ -27,6 +32,8 @@ typedef int QMethodTable[QSTATES][3];
 - (NSString *) qStateName: (J3TelnetQState) state;
 
 @end
+
+#pragma mark -
 
 @interface J3TelnetOption (TestAccessors)
 
@@ -262,14 +269,22 @@ typedef int QMethodTable[QSTATES][3];
                    andCalls: (char) expectedFlags;
 {
   NSString *message = [self qStateName: startState];
+  
   [self clearFlags];
+  
   if (himOrUs == @selector (him))
     [option setHim: startState];
   else
     [option setUs: startState];
+  
   [option performSelector: selector];
-  [self assertInt: (int) [option performSelector: himOrUs] equals: endState message: [NSString stringWithFormat: @"%@ ending state",message]];
-  [self assertInt: flags equals: expectedFlags message: [NSString stringWithFormat: @"%@ flags",message]];
+  
+  [self assertInt: (J3TelnetQState) [option performSelector: himOrUs]
+           equals: endState
+          message: [NSString stringWithFormat: @"%@ ending state", message]];
+  [self assertInt: flags
+           equals: expectedFlags
+          message: [NSString stringWithFormat: @"%@ flags", message]];
 }
 
 - (void) clearFlags

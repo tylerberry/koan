@@ -22,7 +22,7 @@
 - (void) removeObjectFromWorldsAtIndex: (unsigned) worldIndex;
 
 - (unsigned) count;
-- (int) indexOfWorld: (MUWorld *) world;
+- (NSUInteger) indexOfWorld: (MUWorld *) world;
 - (void) removeWorld: (MUWorld *) world;
 - (void) replaceWorld: (MUWorld *) oldWorld withWorld: (MUWorld *) newWorld;
 - (MUWorld *) worldAtIndex: (unsigned) worldIndex;

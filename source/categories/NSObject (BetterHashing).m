@@ -26,9 +26,9 @@
 
 @implementation NSObject (BetterHashing)
 
-- (unsigned) hash
+- (NSUInteger) hash
 {
-  return (((unsigned) self >> 4) | (unsigned) self << (32 - 4));
+  return (((NSUInteger) self >> 4) | (NSUInteger) self << (32 - 4));
 }
 
 @end

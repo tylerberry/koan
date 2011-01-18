@@ -15,6 +15,7 @@
 
 @property (copy) NSString *name;
 @property (copy) NSMutableArray *children;
+//@property (readonly) NSUInteger count;
 @property (assign) MUTreeNode *parent;
 @property (readonly) BOOL isLeaf;
 

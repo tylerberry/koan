@@ -82,7 +82,7 @@
     }
     else
     {
-      // FIXME: Failing to initialize the stream is a fatal error.
+      // FIXME: Failing to initialize the stream is a fatal error. As in, should close this whole connection.
       return;
     }
   }

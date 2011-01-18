@@ -14,7 +14,7 @@
   NSMutableArray *worlds;
 }
 
-@property (readonly) NSArray *worlds;
+@property (copy,setter=setWorld:) NSMutableArray *worlds;
 
 + (MUWorldRegistry *) defaultRegistry;
 

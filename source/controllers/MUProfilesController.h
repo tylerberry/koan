@@ -12,6 +12,7 @@
 @interface MUProfilesController : NSWindowController
 {
   NSMutableArray *profilesTreeArray;
+  NSMutableArray *profilesExpandedItems;
   
   IBOutlet NSTreeController *profilesTreeController;
   IBOutlet NSOutlineView *profilesOutlineView;

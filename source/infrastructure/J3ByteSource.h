@@ -6,7 +6,7 @@
 
 @protocol J3ByteSource
 
-- (unsigned) availableBytes;
+- (NSUInteger) availableBytes;
 - (BOOL) hasDataAvailable;
 - (void) poll;
 - (NSData *) readExactlyLength: (size_t) length;

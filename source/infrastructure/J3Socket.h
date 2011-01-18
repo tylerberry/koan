@@ -42,7 +42,7 @@ extern NSString *J3SocketErrorMessageKey;
   int socketfd;
   int kq;
   struct hostent *server;
-  unsigned availableBytes;
+  NSUInteger availableBytes;
   BOOL hasError;
   NSMutableArray *dataToWrite;
   NSObject *dataToWriteLock;

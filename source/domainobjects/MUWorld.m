@@ -10,7 +10,7 @@
 #import "MUPlayer.h"
 #import "MUCodingService.h"
 
-static const int32_t currentWorldVersion = 6;
+static const int32_t currentWorldVersion = 7;
 
 @implementation MUWorld
 
@@ -96,8 +96,8 @@ static const int32_t currentWorldVersion = 6;
 
 - (NSString *) uniqueIdentifier
 {
+  NSMutableString *result = [NSMutableString stringWithString: @"world:"];
   NSArray *tokens = [self.name componentsSeparatedByString: @" "];
-  NSMutableString *result = [NSMutableString string];
   
   if ([tokens count] > 0)
   {
@@ -124,13 +124,13 @@ static const int32_t currentWorldVersion = 6;
   [encoder encodeObject: self.name forKey: @"name"];
   [encoder encodeObject: self.hostname forKey: @"hostname"];
   [encoder encodeInt: [self.port intValue] forKey: @"port"];
-  [encoder encodeObject: self.children forKey: @"players"];
+  [encoder encodeObject: self.children forKey: @"children"];
   [encoder encodeObject: self.url forKey: @"URL"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-  if (!(self = [super init]))
+  if (!(self = [super initWithName: nil children: nil]))
     return nil;
   
   int32_t version = [decoder decodeInt32ForKey: @"version"];
@@ -153,7 +153,10 @@ static const int32_t currentWorldVersion = 6;
   else
     port = [[decoder decodeObjectForKey: @"worldPort"] copy];
   
-  children = [[decoder decodeObjectForKey: @"players"] mutableCopy];
+  if (version >= 7)
+    children = [[decoder decodeObjectForKey: @"children"] mutableCopy];
+  else
+    children = [[decoder decodeObjectForKey: @"players"] mutableCopy];
   
   if (version >= 5)
     url = [[decoder decodeObjectForKey: @"URL"] copy];

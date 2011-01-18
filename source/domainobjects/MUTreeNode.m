@@ -46,6 +46,13 @@
   [super dealloc];
 }
 
+/*
+- (NSUInteger) count
+{
+  return [children count];
+}
+ */
+
 - (BOOL) isLeaf
 {
   return [children count] == 0;

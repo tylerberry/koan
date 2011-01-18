@@ -190,7 +190,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 #pragma mark -
 #pragma mark J3ByteSource protocol
 
-- (unsigned) availableBytes
+- (NSUInteger) availableBytes
 {
   return availableBytes;
 }

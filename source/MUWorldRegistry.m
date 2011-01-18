@@ -213,7 +213,7 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (void) setWorlds: (NSArray *) newWorlds
 {
-  if (worlds == newWorlds)
+  if ([worlds isEqualToArray: newWorlds])
     return;
   
   [self willChangeValueForKey: @"worlds"];

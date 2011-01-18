@@ -19,6 +19,7 @@ NSString *MUPLinkColor = @"MUPLinkColor";
 NSString *MUPTextColor = @"MUPTextColor";
 NSString *MUPWorlds = @"MUPWorlds";
 NSString *MUPProfiles = @"MUPProfiles";
+NSString *MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
 NSString *MUPVisitedLinkColor = @"MUPVisitedLinkColor";
 NSString *MUPProxySettings = @"MUPProxySettings";
 NSString *MUPUseProxy = @"MUPUseProxy";

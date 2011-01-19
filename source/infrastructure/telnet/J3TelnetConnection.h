@@ -9,6 +9,7 @@
 #import "J3ByteDestination.h"
 #import "J3ByteSource.h"
 #import "J3Connection.h"
+#import "MUMCPProtocolHandler.h"
 #import "MUMCCPProtocolHandler.h"
 #import "J3Protocol.h"
 #import "J3Socket.h"
@@ -27,7 +28,7 @@ extern NSString *J3TelnetConnectionWasClosedByServerNotification;
 extern NSString *J3TelnetConnectionWasClosedWithErrorNotification;
 extern NSString *J3TelnetConnectionErrorMessageKey;
 
-@interface J3TelnetConnection : J3Connection <J3SocketDelegate, J3TelnetProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate>
+@interface J3TelnetConnection : J3Connection <J3SocketDelegate, J3ProtocolStackDelegate, J3TelnetProtocolHandlerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate>
 {
   NSObject <J3TelnetConnectionDelegate> *delegate;
   J3TelnetConnectionState *state;

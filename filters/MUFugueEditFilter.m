@@ -20,7 +20,7 @@
   if (!(self = [super init]))
     return nil;
   
-  self.delegate = newDelegate;
+  delegate = newDelegate;
   return self;
 }
 

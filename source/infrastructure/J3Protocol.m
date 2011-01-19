@@ -78,7 +78,19 @@
 - (void) dealloc
 {
   [byteProtocolHandlers release];
+  [parsingBuffer release];
+  [preprocessingBuffer release];
   [super dealloc];
+}
+
+- (NSObject <J3ProtocolStackDelegate> *) delegate
+{
+  return delegate;
+}
+
+- (void) setDelegate: (NSObject <J3ProtocolStackDelegate> *) newDelegate
+{
+  delegate = newDelegate;
 }
 
 - (void) addByteProtocol: (J3ByteProtocolHandler *) protocol
@@ -91,15 +103,16 @@
   [byteProtocolHandlers removeAllObjects];
 }
 
-- (NSData *) parseData: (NSData *) data
+- (void) parseData: (NSData *) data
 {
   if ([byteProtocolHandlers count] == 0)
-    return nil;
+    return;
   
   const uint8_t *bytes = [data bytes];
   unsigned dataLength = [data length];
   
-  parsingBuffer = [[NSMutableData alloc] initWithCapacity: dataLength];
+  if (!parsingBuffer)
+    parsingBuffer = [[NSMutableData alloc] initWithCapacity: dataLength];
   
   unsigned firstLevel = [byteProtocolHandlers count] - 1;
   J3ByteProtocolHandler *firstProtocolHandler = [byteProtocolHandlers objectAtIndex: firstLevel];
@@ -107,10 +120,11 @@
   for (unsigned i = 0; i < dataLength; i++)
     [firstProtocolHandler parseByte: bytes[i]];
   
-  NSData *parsedData = parsingBuffer;
-  parsingBuffer = nil;
-  
-  return [parsedData autorelease];
+  if ([parsingBuffer length] == 0)
+  {
+    [parsingBuffer release];
+    parsingBuffer = nil;
+  }
 }
 
 - (NSData *) preprocessOutput: (NSData *) data
@@ -151,7 +165,14 @@
     [nextProtocolHandler parseByte: byte];
   }
   else
+  {
     [parsingBuffer appendBytes: &byte length: 1];
+    if (byte == '\n')
+    {
+      [delegate displayData: [NSData dataWithData: parsingBuffer]];
+      [parsingBuffer setData: [NSData data]];
+    }
+  }
 }
 
 - (void) preprocessByte: (uint8_t) byte previousProtocolHandler: (J3ByteProtocolHandler *) previousHandler

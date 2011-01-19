@@ -8,6 +8,7 @@
 #import "J3Socket.h"
 #import "J3TelnetConnection.h"
 #import "J3TelnetProtocolHandler.h"
+#import "MUMCPProtocolHandler.h"
 #import "MUMCCPProtocolHandler.h"
 
 NSString *J3TelnetConnectionDidConnectNotification = @"J3TelnetConnectionDidConnectNotification";
@@ -20,6 +21,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 @interface J3TelnetConnection (Private)
 
 - (void) cleanUpPollTimer;
+- (void) displayAndLogString: (NSString *) string;
 - (void) fireTimer: (NSTimer *) timer;
 - (void) initializeSocket;
 - (BOOL) isUsingSocket: (J3Socket *) possibleSocket;
@@ -67,6 +69,11 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
   pollTimer = nil;
   
   protocolStack = [[J3ProtocolStack alloc] init];
+  [protocolStack setDelegate: self];
+  
+  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
+  [mcpProtocolHandler setDelegate: self];
+  [protocolStack addByteProtocol: mcpProtocolHandler];
   
   J3TelnetProtocolHandler *telnetProtocolHandler = [J3TelnetProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
   [telnetProtocolHandler setDelegate: self];
@@ -76,13 +83,14 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
   [mccpProtocolHandler setDelegate: self];
   [protocolStack addByteProtocol: mccpProtocolHandler];
   
-  self.delegate = newDelegate;
+  delegate = newDelegate;
   return self;
 }
 
 - (void) dealloc
 {
-  self.delegate = nil;
+  [self unregisterObjectForNotifications: delegate];
+  delegate = nil;
   
   [self close];
   [self cleanUpPollTimer];
@@ -123,7 +131,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) writeLine: (NSString *) line
 {
   NSString *lineWithLineEnding = [NSString stringWithFormat: @"%@\r\n",line];
-  NSData *encodedData = [lineWithLineEnding dataUsingEncoding: [self.state stringEncoding] allowLossyConversion: YES];
+  NSData *encodedData = [lineWithLineEnding dataUsingEncoding: self.state.stringEncoding allowLossyConversion: YES];
   [self writeDataWithPreprocessing: encodedData];
 }
 
@@ -145,7 +153,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) setStatusConnected
 {
   [super setStatusConnected];
-  [self log: @"Connected to server."];
+  [self displayAndLogString: @"Connected to server."];
   [[NSNotificationCenter defaultCenter] postNotificationName: J3TelnetConnectionDidConnectNotification
                                                       object: self];
 }
@@ -153,6 +161,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) setStatusConnecting
 {
   [super setStatusConnecting];
+  [self.delegate displayString: @"Connecting...\n"];
   [[NSNotificationCenter defaultCenter] postNotificationName: J3TelnetConnectionIsConnectingNotification
                                                       object: self];
 }
@@ -160,7 +169,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) setStatusClosedByClient
 {
   [super setStatusClosedByClient];
-  [self log: @"Connection closed by client."];
+  [self displayAndLogString: @"Connection closed by client."];
   [[NSNotificationCenter defaultCenter] postNotificationName: J3TelnetConnectionWasClosedByClientNotification
                                                       object: self];
 }
@@ -168,7 +177,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) setStatusClosedByServer
 {
   [super setStatusClosedByServer];
-  [self log: @"Connection closed by server."];
+  [self displayAndLogString: @"Connection closed by server."];
   [[NSNotificationCenter defaultCenter] postNotificationName: J3TelnetConnectionWasClosedByServerNotification
                                                       object: self];
 }
@@ -176,7 +185,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 - (void) setStatusClosedWithError: (NSString *) error
 {
   [super setStatusClosedWithError: error];
-  [self log: @"Connection closed with error: %@.", error];
+  [self displayAndLogString: [NSString stringWithFormat: @"Connection closed with error: %@.", error]];
   [[NSNotificationCenter defaultCenter] postNotificationName: J3TelnetConnectionWasClosedWithErrorNotification
                                                       object: self
                                                     userInfo: [NSDictionary dictionaryWithObjectsAndKeys: error, J3TelnetConnectionErrorMessageKey, nil]];
@@ -222,6 +231,18 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 }
 
 #pragma mark -
+#pragma mark J3ProtocolStackDelegate
+
+- (void) displayData: (NSData *) parsedData
+{
+  NSString *parsedString = [[[NSString alloc] initWithBytes: [parsedData bytes]
+                                                     length: [parsedData length]
+                                                   encoding: self.state.stringEncoding] autorelease];
+  
+  [self.delegate displayString: parsedString];
+}
+
+#pragma mark -
 #pragma mark J3TelnetProtocolHandlerDelegate
 
 - (void) writeDataToSocket: (NSData *) data
@@ -239,6 +260,12 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
 {
   [pollTimer invalidate];
   pollTimer = nil;
+}
+
+- (void) displayAndLogString: (NSString *) string
+{
+  [self.delegate displayString: [NSString stringWithFormat: @"%@\n", string]];
+  [self log: @"%@", string];
 }
 
 - (void) fireTimer: (NSTimer *) timer
@@ -268,12 +295,7 @@ NSString *J3TelnetConnectionErrorMessageKey = @"J3TelnetConnectionErrorMessageKe
   [self.socket poll];
   
   if ([self.socket hasDataAvailable])
-  {
-    NSData *parsedData = [protocolStack parseData: [self.socket readUpToLength: [self.socket availableBytes]]];
-    NSString *parsedString = [[[NSString alloc] initWithBytes: [parsedData bytes] length: [parsedData length] encoding: [self.state stringEncoding]] autorelease];
-    
-    [self.delegate displayString: parsedString];
-  }
+    [protocolStack parseData: [self.socket readUpToLength: [self.socket availableBytes]]];
 }
 
 - (void) registerObjectForNotifications: (id) object

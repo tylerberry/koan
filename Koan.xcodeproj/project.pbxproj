@@ -42,6 +42,7 @@
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F6C71F40BB460CA00709320 /* MUURLHandlerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */; };
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
+		2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */; };
 		2F7092A01223966F00E0D178 /* CTBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F70929F1223966F00E0D178 /* CTBadge.m */; };
 		2F7092C112239AF900E0D178 /* CTBadge_1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */; };
 		2F7092C212239AF900E0D178 /* CTBadge_3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */; };
@@ -257,6 +258,8 @@
 		2F6C71F10BB460CA00709320 /* MUURLHandlerCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUURLHandlerCommand.h; sourceTree = "<group>"; };
 		2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUURLHandlerCommand.m; sourceTree = "<group>"; };
 		2F6C72A90BB46BD000709320 /* Koan.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; path = Koan.sdef; sourceTree = "<group>"; };
+		2F6E481412E69ADD00D9B29C /* MUMCPProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMCPProtocolHandler.h; sourceTree = "<group>"; };
+		2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCPProtocolHandler.m; sourceTree = "<group>"; };
 		2F70929E1223966F00E0D178 /* CTBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTBadge.h; sourceTree = "<group>"; };
 		2F70929F1223966F00E0D178 /* CTBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTBadge.m; sourceTree = "<group>"; };
 		2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_1.pdf; sourceTree = "<group>"; };
@@ -665,6 +668,8 @@
 		2F7094031223BB1B00E0D178 /* MCP */ = {
 			isa = PBXGroup;
 			children = (
+				2F6E481412E69ADD00D9B29C /* MUMCPProtocolHandler.h */,
+				2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */,
 			);
 			name = MCP;
 			path = mcp;
@@ -1331,6 +1336,7 @@
 				2F51E43711781DD400F6DF65 /* RBSplitSubview.m in Sources */,
 				2F51E43811781DD400F6DF65 /* RBSplitView.m in Sources */,
 				2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */,
+				2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

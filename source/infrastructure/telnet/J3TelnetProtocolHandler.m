@@ -166,9 +166,7 @@ static NSArray *offerableCharsets;
   {
     receivedCR = NO;
     if (byte == '\0')
-    {
       [protocolStack parseByte: '\r' previousProtocolHandler: self];
-    }
     else
       [protocolStack parseByte: byte previousProtocolHandler: self];
   } 
@@ -724,19 +722,19 @@ static NSArray *offerableCharsets;
     return NSISOLatin1StringEncoding;
   
   /*
-  else if ([encodingName caseInsensitiveCompare: @"US-ASCII"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ASCII"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ANSI_X3.4-1968"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ISO-IR-6"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ANSI_X3.4-1986"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ISO_646.IRV:1991"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"US"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"ISO646-US"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"IBM367"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"CP367"] == NSOrderedSame
-           || [encodingName caseInsensitiveCompare: @"CSASCII"] == NSOrderedSame)
-    return NSASCIIStringEncoding;
-  */
+   else if ([encodingName caseInsensitiveCompare: @"US-ASCII"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ASCII"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ANSI_X3.4-1968"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ISO-IR-6"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ANSI_X3.4-1986"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ISO_646.IRV:1991"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"US"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"ISO646-US"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"IBM367"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"CP367"] == NSOrderedSame
+   || [encodingName caseInsensitiveCompare: @"CSASCII"] == NSOrderedSame)
+   return NSASCIIStringEncoding;
+   */
   
   // There is no "invalid encoding" value, so default to NVT ASCII.
   else return NSASCIIStringEncoding;

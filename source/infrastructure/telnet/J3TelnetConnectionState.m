@@ -20,9 +20,10 @@
   if (!(self = [super init]))
     return nil;
   
-  self.stringEncoding = NSASCIIStringEncoding;
-  nextTerminalTypeIndex = 0;
   charsetNegotiationStatus = J3TelnetCharsetNegotiationInactive;
+  incomingStreamCompressed = NO;
+  nextTerminalTypeIndex = 0;
+  stringEncoding = NSASCIIStringEncoding;
 
   return self;
 }

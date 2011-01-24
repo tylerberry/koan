@@ -17,6 +17,6 @@
 
 @end
 
-@interface J3UpperCaseFilter : MUFilter
+@interface MUUpperCaseFilter : MUFilter
 
 @end

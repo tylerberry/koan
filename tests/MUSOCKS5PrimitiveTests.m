@@ -14,7 +14,7 @@
 #import "MUSOCKS5Request.h"
 #import "MUWriteBuffer.h"
 
-@interface J3MockByteSource : MUReadBuffer <MUByteSource>
+@interface MUMockByteSource : MUReadBuffer <MUByteSource>
 
 + (id) mockByteSource;
 
@@ -22,11 +22,11 @@
 
 #pragma mark -
 
-@implementation J3MockByteSource
+@implementation MUMockByteSource
 
 + (id) mockByteSource
 {
-  return [[[J3MockByteSource alloc] init] autorelease];
+  return [[[MUMockByteSource alloc] init] autorelease];
 }
 
 - (void) appendBytes: (const uint8_t *) bytes length: (unsigned) length
@@ -108,7 +108,7 @@
 - (void) testSelectMethod
 {
   MUSOCKS5MethodSelection *selection = [MUSOCKS5MethodSelection socksMethodSelection];
-  J3MockByteSource *source = [J3MockByteSource mockByteSource];
+  MUMockByteSource *source = [MUMockByteSource mockByteSource];
   
   [selection addMethod: MUSOCKS5UsernamePassword];
   [self assertInt: [selection method] equals: MUSOCKS5NoAuthentication];
@@ -134,7 +134,7 @@
 - (void) testReplyWithDomainName
 {
   MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: @"example.com" port: 0xABCD];
-  J3MockByteSource *source = [J3MockByteSource mockByteSource];
+  MUMockByteSource *source = [MUMockByteSource mockByteSource];
   uint8_t reply[18] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5DomainName, 11, 'e', 'x', 'a', 'm', 'p', 'l', 'e', '.', 'c', 'o', 'm', 0xAB, 0xCD};
   
   [self assertInt: [request reply] equals: MUSOCKS5NoReply];
@@ -150,7 +150,7 @@
 - (void) testReplyWithIPV4
 {
   MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: @"example.com" port: 0xABCD];
-  J3MockByteSource *source = [J3MockByteSource mockByteSource];
+  MUMockByteSource *source = [MUMockByteSource mockByteSource];
   uint8_t reply[10] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5IPv4, 10, 1, 2, 3, 0xAB, 0xCD};
   
   [self assertInt: [request reply] equals: MUSOCKS5NoReply];
@@ -166,7 +166,7 @@
 - (void) testReplyWithIPV6
 {
   MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: @"example.com" port: 0xABCD];
-  J3MockByteSource *source = [J3MockByteSource mockByteSource];
+  MUMockByteSource *source = [MUMockByteSource mockByteSource];
   uint8_t reply[22] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5IPv6, 0xFE, 0xC0, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xAB, 0xCD};
   
   [self assertInt: [request reply] equals: MUSOCKS5NoReply];
@@ -196,7 +196,7 @@
 - (void) testAuthenticationReply
 {
   MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: @"bob" password: @"barfoo"];
-  J3MockByteSource *source = [J3MockByteSource mockByteSource];
+  MUMockByteSource *source = [MUMockByteSource mockByteSource];
   
   [self assertFalse: [auth authenticated]];
   [source appendByte: 1];

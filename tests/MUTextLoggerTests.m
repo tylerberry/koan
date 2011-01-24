@@ -43,9 +43,9 @@
 
 - (void) setUp
 {
-  memset (outputBuffer, 0, J3TextLogTestBufferMax);
+  memset (outputBuffer, 0, MUTextLogTestBufferMax);
   NSOutputStream *output = [NSOutputStream outputStreamToBuffer: outputBuffer
-                                                       capacity: J3TextLogTestBufferMax];
+                                                       capacity: MUTextLogTestBufferMax];
   [output open];
   
   filter = [[MUTextLogger alloc] initWithOutputStream: output];

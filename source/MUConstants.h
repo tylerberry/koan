@@ -111,5 +111,5 @@ extern NSString *MUInsertionWorld;
 
 #pragma mark ANSI parsing constants
 
-extern NSString *J3ANSIForegroundColorAttributeName;
-extern NSString *J3ANSIBackgroundColorAttributeName;
+extern NSString *MUANSIForegroundColorAttributeName;
+extern NSString *MUANSIBackgroundColorAttributeName;

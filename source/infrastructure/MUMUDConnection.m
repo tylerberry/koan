@@ -138,7 +138,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 }
 
 #pragma mark -
-#pragma mark J3Connection overrides
+#pragma mark MUAbstractConnection overrides
 
 - (void) close
 {

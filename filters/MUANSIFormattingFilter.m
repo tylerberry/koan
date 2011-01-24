@@ -95,12 +95,12 @@
   if ([codeComponents count] == 3
       && [[codeComponents objectAtIndex: 1] intValue] == 5)
   {
-    if ([[codeComponents objectAtIndex: 0] intValue] == J3ANSIBackground256)
+    if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIBackground256)
     {
       [names addObject: NSBackgroundColorAttributeName];
       return names;
     }
-    else if ([[codeComponents objectAtIndex: 0] intValue] == J3ANSIForeground256)
+    else if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
     {
       [names addObject: NSForegroundColorAttributeName];
       return names;
@@ -111,37 +111,37 @@
   {
     switch ([code intValue])
     {
-      case J3ANSIBackgroundBlack:
-      case J3ANSIBackgroundBlue:
-      case J3ANSIBackgroundCyan:
-      case J3ANSIBackgroundDefault:
-      case J3ANSIBackgroundGreen:
-      case J3ANSIBackgroundMagenta:
-      case J3ANSIBackgroundRed:
-      case J3ANSIBackgroundWhite:
-      case J3ANSIBackgroundYellow:
+      case MUANSIBackgroundBlack:
+      case MUANSIBackgroundBlue:
+      case MUANSIBackgroundCyan:
+      case MUANSIBackgroundDefault:
+      case MUANSIBackgroundGreen:
+      case MUANSIBackgroundMagenta:
+      case MUANSIBackgroundRed:
+      case MUANSIBackgroundWhite:
+      case MUANSIBackgroundYellow:
         [names addObject: NSBackgroundColorAttributeName];
         break;
         
-      case J3ANSIForegroundBlack:
-      case J3ANSIForegroundBlue:
-      case J3ANSIForegroundCyan:
-      case J3ANSIForegroundDefault:
-      case J3ANSIForegroundGreen:
-      case J3ANSIForegroundMagenta:
-      case J3ANSIForegroundRed:
-      case J3ANSIForegroundWhite:
-      case J3ANSIForegroundYellow:
+      case MUANSIForegroundBlack:
+      case MUANSIForegroundBlue:
+      case MUANSIForegroundCyan:
+      case MUANSIForegroundDefault:
+      case MUANSIForegroundGreen:
+      case MUANSIForegroundMagenta:
+      case MUANSIForegroundRed:
+      case MUANSIForegroundWhite:
+      case MUANSIForegroundYellow:
         [names addObject: NSForegroundColorAttributeName];
         break;
         
-      case J3ANSIBoldOn:
-      case J3ANSIBoldOff:
+      case MUANSIBoldOn:
+      case MUANSIBoldOff:
         [names addObject: NSFontAttributeName];
         break;
         
-      case J3ANSIUnderlineOn:
-      case J3ANSIUnderlineOff:
+      case MUANSIUnderlineOn:
+      case MUANSIUnderlineOff:
         [names addObject: NSUnderlineStyleAttributeName];
         break;
         
@@ -162,8 +162,8 @@
   if ([codeComponents count] == 3
       && [[codeComponents objectAtIndex: 1] intValue] == 5)
   {
-    if ([[codeComponents objectAtIndex: 0] intValue] == J3ANSIBackground256
-        || [[codeComponents objectAtIndex: 0] intValue] == J3ANSIForeground256)
+    if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIBackground256
+        || [[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
     {
       int value = [[codeComponents objectAtIndex: 2] intValue];
       
@@ -171,43 +171,43 @@
       {
         switch (value)
         {
-          case J3ANSI256Black:
-          case J3ANSI256BrightBlack:
+          case MUANSI256Black:
+          case MUANSI256BrightBlack:
             [values addObject: [NSColor darkGrayColor]];
             break;
             
-          case J3ANSI256Red:
-          case J3ANSI256BrightRed:
+          case MUANSI256Red:
+          case MUANSI256BrightRed:
             [values addObject: [NSColor redColor]];
             break;
             
-          case J3ANSI256Green:
-          case J3ANSI256BrightGreen:
+          case MUANSI256Green:
+          case MUANSI256BrightGreen:
             [values addObject: [NSColor greenColor]];
             break;
             
-          case J3ANSI256Yellow:
-          case J3ANSI256BrightYellow:
+          case MUANSI256Yellow:
+          case MUANSI256BrightYellow:
             [values addObject: [NSColor yellowColor]];
             break;
             
-          case J3ANSI256Blue:
-          case J3ANSI256BrightBlue:
+          case MUANSI256Blue:
+          case MUANSI256BrightBlue:
             [values addObject: [NSColor blueColor]];
             break;
             
-          case J3ANSI256Magenta:
-          case J3ANSI256BrightMagenta:
+          case MUANSI256Magenta:
+          case MUANSI256BrightMagenta:
             [values addObject: [NSColor magentaColor]];
             break;
             
-          case J3ANSI256Cyan:
-          case J3ANSI256BrightCyan:
+          case MUANSI256Cyan:
+          case MUANSI256BrightCyan:
             [values addObject: [NSColor cyanColor]];
             break;
             
-          case J3ANSI256White:
-          case J3ANSI256BrightWhite:
+          case MUANSI256White:
+          case MUANSI256BrightWhite:
             [values addObject: [NSColor whiteColor]];
             break;
         }
@@ -242,67 +242,67 @@
   {
     switch ([code intValue])
     {
-      case J3ANSIBackgroundBlack:  
-      case J3ANSIForegroundBlack:  
+      case MUANSIBackgroundBlack:  
+      case MUANSIForegroundBlack:  
         [values addObject: [NSColor darkGrayColor]];
         break;
         
-      case J3ANSIBackgroundBlue:
-      case J3ANSIForegroundBlue:
+      case MUANSIBackgroundBlue:
+      case MUANSIForegroundBlue:
         [values addObject: [NSColor blueColor]];
         break;
         
-      case J3ANSIBackgroundCyan:
-      case J3ANSIForegroundCyan:
+      case MUANSIBackgroundCyan:
+      case MUANSIForegroundCyan:
         [values addObject: [NSColor cyanColor]];
         break;
         
-      case J3ANSIBackgroundDefault:
+      case MUANSIBackgroundDefault:
         [values addObject: [formatter background]];
         break;
         
-      case J3ANSIForegroundDefault:
+      case MUANSIForegroundDefault:
         [values addObject: [formatter foreground]];
         break;
         
-      case J3ANSIBackgroundGreen:
-      case J3ANSIForegroundGreen:
+      case MUANSIBackgroundGreen:
+      case MUANSIForegroundGreen:
         [values addObject: [NSColor greenColor]];
         break;
         
-      case J3ANSIBackgroundMagenta:
-      case J3ANSIForegroundMagenta:
+      case MUANSIBackgroundMagenta:
+      case MUANSIForegroundMagenta:
         [values addObject: [NSColor magentaColor]];
         break;
         
-      case J3ANSIBackgroundRed:
-      case J3ANSIForegroundRed:
+      case MUANSIBackgroundRed:
+      case MUANSIForegroundRed:
         [values addObject: [NSColor redColor]];
         break;
         
-      case J3ANSIBackgroundWhite:
-      case J3ANSIForegroundWhite:
+      case MUANSIBackgroundWhite:
+      case MUANSIForegroundWhite:
         [values addObject: [NSColor whiteColor]];
         break;
         
-      case J3ANSIBackgroundYellow:
-      case J3ANSIForegroundYellow:
+      case MUANSIBackgroundYellow:
+      case MUANSIForegroundYellow:
         [values addObject: [NSColor yellowColor]];
         break;    
         
-      case J3ANSIBoldOn:
+      case MUANSIBoldOn:
         [values addObject: [self makeFontBold: [self fontInString: string atLocation: location]]];
         break;
         
-      case J3ANSIBoldOff:
+      case MUANSIBoldOff:
         [values addObject: [self makeFontUnbold: [self fontInString: string atLocation: location]]];
         break;
         
-      case J3ANSIUnderlineOn:
+      case MUANSIUnderlineOn:
         [values addObject: [NSNumber numberWithInt: NSSingleUnderlineStyle]];
         break;
         
-      case J3ANSIUnderlineOff:
+      case MUANSIUnderlineOff:
         [values addObject: [NSNumber numberWithInt: NSNoUnderlineStyle]];
         break;
         
@@ -500,7 +500,7 @@
     else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
       [self resetBackgroundInString: string fromLocation: startLocation];
     else
-      @throw [NSException exceptionWithName: @"J3ANSIException" reason: @"Did not provide attributeValue" userInfo: nil];
+      @throw [NSException exceptionWithName: @"MUANSIException" reason: @"Did not provide attributeValue" userInfo: nil];
   }
 }
 

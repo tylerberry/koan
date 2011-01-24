@@ -6,7 +6,7 @@
 
 #import "MUFilterTests.h"
 
-@implementation J3UpperCaseFilter
+@implementation MUUpperCaseFilter
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
@@ -34,7 +34,7 @@
 {
   MUFilterQueue *queue = [[MUFilterQueue alloc] init];
   
-  [queue addFilter: [J3UpperCaseFilter filter]];
+  [queue addFilter: [MUUpperCaseFilter filter]];
   
   NSString *baseString = @"Foo";
   NSString *uppercaseString = [baseString uppercaseString];

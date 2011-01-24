@@ -4,8 +4,6 @@
 // Copyright (c) 2011 3James Software.
 //
 
-@protocol J3LineBufferDelegate;
-
 #import <Cocoa/Cocoa.h>
 #import "MUFormatter.h"
 #import "MUWorld.h"

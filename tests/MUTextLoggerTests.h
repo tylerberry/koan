@@ -9,7 +9,7 @@
 
 #import "MUTextLogger.h"
 
-#define J3TextLogTestBufferMax 1024
+#define MUTextLogTestBufferMax 1024
 
 @interface MUTextLoggerTests : J3TestCase
 {

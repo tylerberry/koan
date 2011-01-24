@@ -230,43 +230,43 @@
     
     switch (i)
     {
-      case J3ANSI256Black:
-      case J3ANSI256BrightBlack:
+      case MUANSI256Black:
+      case MUANSI256BrightBlack:
         targetColor = [NSColor darkGrayColor];
         break;
         
-      case J3ANSI256Red:
-      case J3ANSI256BrightRed:
+      case MUANSI256Red:
+      case MUANSI256BrightRed:
         targetColor = [NSColor redColor];
         break;
         
-      case J3ANSI256Green:
-      case J3ANSI256BrightGreen:
+      case MUANSI256Green:
+      case MUANSI256BrightGreen:
         targetColor = [NSColor greenColor];
         break;
         
-      case J3ANSI256Yellow:
-      case J3ANSI256BrightYellow:
+      case MUANSI256Yellow:
+      case MUANSI256BrightYellow:
         targetColor = [NSColor yellowColor];
         break;
         
-      case J3ANSI256Blue:
-      case J3ANSI256BrightBlue:
+      case MUANSI256Blue:
+      case MUANSI256BrightBlue:
         targetColor = [NSColor blueColor];
         break;
         
-      case J3ANSI256Magenta:
-      case J3ANSI256BrightMagenta:
+      case MUANSI256Magenta:
+      case MUANSI256BrightMagenta:
         targetColor = [NSColor magentaColor];
         break;
         
-      case J3ANSI256Cyan:
-      case J3ANSI256BrightCyan:
+      case MUANSI256Cyan:
+      case MUANSI256BrightCyan:
         targetColor = [NSColor cyanColor];
         break;
         
-      case J3ANSI256White:
-      case J3ANSI256BrightWhite:
+      case MUANSI256White:
+      case MUANSI256BrightWhite:
         targetColor = [NSColor whiteColor];
     }
     
@@ -343,43 +343,43 @@
     
     switch (i)
     {
-      case J3ANSI256Black:
-      case J3ANSI256BrightBlack:
+      case MUANSI256Black:
+      case MUANSI256BrightBlack:
         targetColor = [NSColor darkGrayColor];
         break;
         
-      case J3ANSI256Red:
-      case J3ANSI256BrightRed:
+      case MUANSI256Red:
+      case MUANSI256BrightRed:
         targetColor = [NSColor redColor];
         break;
         
-      case J3ANSI256Green:
-      case J3ANSI256BrightGreen:
+      case MUANSI256Green:
+      case MUANSI256BrightGreen:
         targetColor = [NSColor greenColor];
         break;
         
-      case J3ANSI256Yellow:
-      case J3ANSI256BrightYellow:
+      case MUANSI256Yellow:
+      case MUANSI256BrightYellow:
         targetColor = [NSColor yellowColor];
         break;
         
-      case J3ANSI256Blue:
-      case J3ANSI256BrightBlue:
+      case MUANSI256Blue:
+      case MUANSI256BrightBlue:
         targetColor = [NSColor blueColor];
         break;
         
-      case J3ANSI256Magenta:
-      case J3ANSI256BrightMagenta:
+      case MUANSI256Magenta:
+      case MUANSI256BrightMagenta:
         targetColor = [NSColor magentaColor];
         break;
         
-      case J3ANSI256Cyan:
-      case J3ANSI256BrightCyan:
+      case MUANSI256Cyan:
+      case MUANSI256BrightCyan:
         targetColor = [NSColor cyanColor];
         break;
         
-      case J3ANSI256White:
-      case J3ANSI256BrightWhite:
+      case MUANSI256White:
+      case MUANSI256BrightWhite:
         targetColor = [NSColor whiteColor];
     }
     

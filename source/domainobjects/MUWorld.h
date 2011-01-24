@@ -10,7 +10,6 @@
 
 @class MUMUDConnection;
 @class MUPlayer;
-@protocol J3LineBufferDelegate;
 @protocol MUMUDConnectionDelegate;
 
 @interface MUWorld : MUTreeNode <NSCoding, NSCopying>

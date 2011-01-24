@@ -109,5 +109,5 @@ NSString *MUInsertionWorld = @"MUInsertionWorld";
 
 #pragma mark ANSI parsing constants.
 
-NSString *J3ANSIForegroundColorAttributeName = @"J3ANSIForegroundColorAttributeName";
-NSString *J3ANSIBackgroundColorAttributeName = @"J3ANSIBackgroundColorAttributeName";
+NSString *MUANSIForegroundColorAttributeName = @"MUANSIForegroundColorAttributeName";
+NSString *MUANSIBackgroundColorAttributeName = @"MUANSIBackgroundColorAttributeName";

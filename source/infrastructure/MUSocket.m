@@ -147,7 +147,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 }
 
 #pragma mark -
-#pragma mark J3Connection overrides
+#pragma mark MUAbstractConnection overrides
 
 - (void) setStatusConnected
 {

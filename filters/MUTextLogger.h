@@ -1,22 +1,22 @@
 //
 // MUTextLogger.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
-#import "J3Filter.h"
+#import "MUFilter.h"
 
 @class MUPlayer;
 @class MUWorld;
 
-@interface MUTextLogger : J3Filter
+@interface MUTextLogger : MUFilter
 {
   NSOutputStream *output;
 }
 
-+ (J3Filter *) filterWithWorld: (MUWorld *) world;
-+ (J3Filter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player;
++ (MUFilter *) filterWithWorld: (MUWorld *) world;
++ (MUFilter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player;
 
 // Designated initializer.
 - (id) initWithOutputStream: (NSOutputStream *) stream;

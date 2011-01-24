@@ -1,14 +1,14 @@
 //
 // MUConnectionWindowController.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUConnectionWindowController.h"
 #import "MUGrowlService.h"
 
-#import "J3ANSIFormattingFilter.h"
-#import "J3NaiveURLFilter.h"
+#import "MUANSIFormattingFilter.h"
+#import "MUNaiveURLFilter.h"
 #import "MUFugueEditFilter.h"
 #import "MUTextLogger.h"
 
@@ -24,11 +24,11 @@ enum MUSearchDirections
 
 - (BOOL) canCloseWindow;
 - (void) cleanUpPingTimer;
-- (J3Filter *) createLogger;
+- (MUFilter *) createLogger;
 - (void) didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 - (void) disconnect;
 - (void) endCompletion;
-- (BOOL) isUsingTelnet: (J3TelnetConnection *) telnet;
+- (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
 - (void) postConnectionWindowControllerWillCloseNotification;
 - (void) sendPeriodicPing: (NSTimer *) timer;
@@ -49,12 +49,12 @@ enum MUSearchDirections
   
   profile = [newProfile retain];
   
-  historyRing = [[J3HistoryRing historyRing] retain];
-  filterQueue = [[J3FilterQueue filterQueue] retain];
+  historyRing = [[MUHistoryRing historyRing] retain];
+  filterQueue = [[MUFilterQueue filterQueue] retain];
   
-  [filterQueue addFilter: [J3ANSIFormattingFilter filterWithFormatter: [profile formatter]]];
+  [filterQueue addFilter: [MUANSIFormattingFilter filterWithFormatter: [profile formatter]]];
   [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
-  [filterQueue addFilter: [J3NaiveURLFilter filter]];
+  [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
   
   return self;
@@ -314,7 +314,7 @@ enum MUSearchDirections
 }
 
 #pragma mark -
-#pragma mark J3TelnetConnectionDelegate protocol
+#pragma mark MUMUDConnectionDelegate protocol
 
 - (void) displayString: (NSString *) string
 {  
@@ -380,7 +380,7 @@ enum MUSearchDirections
 
 - (void) telnetConnectionWasClosedWithError: (NSNotification *) notification
 {
-  NSString *errorMessage = [[notification userInfo] valueForKey: J3TelnetConnectionErrorMessageKey];
+  NSString *errorMessage = [[notification userInfo] valueForKey: MUMUDConnectionErrorMessageKey];
   [self cleanUpPingTimer];
   [self displayString: [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]];
   [self displayString: @"\n"];
@@ -557,7 +557,7 @@ enum MUSearchDirections
   pingTimer = nil;  
 }
 
-- (J3Filter *) createLogger
+- (MUFilter *) createLogger
 {
   if (profile)
     return [profile createLogger];
@@ -586,7 +586,7 @@ enum MUSearchDirections
   [historyRing resetSearchCursor];
 }
 
-- (BOOL) isUsingTelnet: (J3TelnetConnection *) telnet
+- (BOOL) isUsingTelnet: (MUMUDConnection *) telnet
 {
   return telnetConnection == telnet;
 }

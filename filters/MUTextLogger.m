@@ -1,7 +1,7 @@
 //
 // MUTextLogger.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "categories/NSFileManager (Recursive).h"
@@ -21,12 +21,12 @@
 
 @implementation MUTextLogger
 
-+ (J3Filter *) filterWithWorld: (MUWorld *) world
++ (MUFilter *) filterWithWorld: (MUWorld *) world
 {
   return [[[self alloc] initWithWorld: world] autorelease];
 }
 
-+ (J3Filter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player
++ (MUFilter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player
 {
   return [[[self alloc] initWithWorld: world player: player] autorelease];
 }

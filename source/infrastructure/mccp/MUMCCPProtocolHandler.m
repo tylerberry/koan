@@ -1,7 +1,7 @@
 //
 // MUMCCPProtocolHandler.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUMCCPProtocolHandler.h"
@@ -25,12 +25,12 @@
 
 @implementation MUMCCPProtocolHandler
 
-+ (id) protocolHandlerWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   return [[[self alloc] initWithStack: stack connectionState: telnetConnectionState] autorelease];
 }
 
-- (id) initWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState
+- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   if (!(self = [super initWithStack: stack]))
     return nil;
@@ -63,7 +63,7 @@
 }
 
 #pragma mark -
-#pragma mark J3ByteProtocolHandler overrides
+#pragma mark MUByteProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {

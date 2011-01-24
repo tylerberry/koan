@@ -1,17 +1,17 @@
 //
 // MUProfile.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 @protocol J3LineBufferDelegate;
 
 #import <Cocoa/Cocoa.h>
-#import "J3Formatter.h"
+#import "MUFormatter.h"
 #import "MUWorld.h"
 #import "MUPlayer.h"
-#import "J3Filter.h"
-#import "J3TelnetConnection.h"
+#import "MUFilter.h"
+#import "MUMUDConnection.h"
 
 @interface MUProfile : NSObject <NSCoding>
 {
@@ -70,7 +70,7 @@
 - (void) setLinkColor: (NSColor *) newLinkColor;
 - (NSColor *) visitedLinkColor;
 - (void) setVisitedLinkColor: (NSColor *) newVisitedLinkColor;
-- (NSObject <J3Formatter> *) formatter;
+- (NSObject <MUFormatter> *) formatter;
 
 // Derived bindings.
 - (NSFont *) effectiveFont;
@@ -81,8 +81,8 @@
 - (NSData *) effectiveVisitedLinkColor;
 
 // Actions.
-- (J3Filter *) createLogger;
-- (J3TelnetConnection *) createNewTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate;
+- (MUFilter *) createLogger;
+- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 - (BOOL) hasLoginInformation;
 
 @end

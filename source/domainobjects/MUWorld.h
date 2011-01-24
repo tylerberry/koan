@@ -1,17 +1,17 @@
 //
 // MUWorld.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
 
 #import "MUTreeNode.h"
 
-@class J3TelnetConnection;
+@class MUMUDConnection;
 @class MUPlayer;
 @protocol J3LineBufferDelegate;
-@protocol J3TelnetConnectionDelegate;
+@protocol MUMUDConnectionDelegate;
 
 @interface MUWorld : MUTreeNode <NSCoding, NSCopying>
 {
@@ -46,6 +46,6 @@
                    port: (NSNumber *) newPort;
 
 // Actions.
-- (J3TelnetConnection *) newTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate;
+- (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
 @end

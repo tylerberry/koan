@@ -1,24 +1,24 @@
 //
 // MUMCPProtocolHandler.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "J3Protocol.h"
-#import "J3TelnetConnectionState.h"
+#import "MUByteProtocolHandler.h"
+#import "MUMUDConnectionState.h"
 
 @protocol MUMCPProtocolHandlerDelegate;
 
-@interface MUMCPProtocolHandler : J3ByteProtocolHandler
+@interface MUMCPProtocolHandler : MUByteProtocolHandler
 {
-  J3TelnetConnectionState *connectionState;
+  MUMUDConnectionState *connectionState;
   NSObject <MUMCPProtocolHandlerDelegate> *delegate;
 }
 
-+ (id) protocolHandlerWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState;
-- (id) initWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 - (NSObject <MUMCPProtocolHandlerDelegate> *) delegate;
 - (void) setDelegate: (NSObject <MUMCPProtocolHandlerDelegate> *) object;

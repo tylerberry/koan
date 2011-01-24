@@ -1,7 +1,7 @@
 //
 // MUProfileTests.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUProfileTests.h"
@@ -15,13 +15,13 @@
   world.name = @"Test World";
   
   MUProfile *profile = [MUProfile profileWithWorld: world];
-  [self assert: profile.uniqueIdentifier equals: @"test.world"];
+  [self assert: profile.uniqueIdentifier equals: @"world:test.world"];
   
   MUPlayer *player = [MUPlayer playerWithName: @"User" password: @""];
   player.parent = world;
   
   profile = [MUProfile profileWithWorld: world player: player];
-  [self assert: profile.uniqueIdentifier equals: @"test.world.user"];
+  [self assert: profile.uniqueIdentifier equals: @"world:test.world;player:user"];
 }
 
 - (void) testHasLoginInformation

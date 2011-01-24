@@ -1,15 +1,15 @@
 //
 // MUProfileFormatter.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
-#import "J3Formatter.h"
+#import "MUFormatter.h"
 
 @class MUProfile;
 
-@interface MUProfileFormatter : NSObject <J3Formatter>
+@interface MUProfileFormatter : NSObject <MUFormatter>
 {
   MUProfile *profile;
 }

@@ -1,7 +1,7 @@
 //
 // MUPlayer.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUPlayer.h"
@@ -68,9 +68,17 @@
 
 - (NSString *) uniqueIdentifier
 {
-  // FIXME: WROOONG.
-  return [NSString stringWithString: @"THIS IS WRONG FIX ME DEAR GOD"];
-  //return [NSString stringWithFormat: @"%@.%@.%@", self.world.hostname, self.world.port, self.name];
+  NSMutableString *result = [NSMutableString stringWithString: @"player:"];
+  NSArray *tokens = [self.name componentsSeparatedByString: @" "];
+  
+  if ([tokens count] > 0)
+  {
+    [result appendFormat: @"%@", [[tokens objectAtIndex: 0] lowercaseString]];
+    
+    for (unsigned i = 1; i < [tokens count]; i++)
+      [result appendFormat: @".%@", [[tokens objectAtIndex: i] lowercaseString]];
+  }
+  return result;
 }
 
 - (NSString *) windowTitle

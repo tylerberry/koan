@@ -1,10 +1,10 @@
 //
 // MUWorld.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
-#import "J3SocketFactory.h"
+#import "MUSocketFactory.h"
 #import "MUWorld.h"
 #import "MUConstants.h"
 #import "MUPlayer.h"
@@ -86,9 +86,9 @@ static const int32_t currentWorldVersion = 7;
 #pragma mark -
 #pragma mark Actions
 
-- (J3TelnetConnection *) newTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate
+- (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [J3TelnetConnection telnetWithHostname: self.hostname port: [self.port intValue] delegate: delegate];
+  return [MUMUDConnection telnetWithHostname: self.hostname port: [self.port intValue] delegate: delegate];
 }
 
 #pragma mark -

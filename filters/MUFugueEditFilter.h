@@ -1,13 +1,13 @@
 //
 // MUFugueEditFilter.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
-#import <J3Filter.h>
+#import <MUFilter.h>
 
-@interface MUFugueEditFilter : J3Filter
+@interface MUFugueEditFilter : MUFilter
 {
   id delegate;
 }

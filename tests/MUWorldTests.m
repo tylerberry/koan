@@ -1,7 +1,7 @@
 //
 // MUWorldTests.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUWorldTests.h"
@@ -25,7 +25,7 @@
 - (void) testUniqueIdentifier
 {
   world.name = @"Test World";
-  [self assert: world.uniqueIdentifier equals: @"test.world"];
+  [self assert: world.uniqueIdentifier equals: @"world:test.world"];
 }
 
 @end

@@ -1,7 +1,7 @@
 //
 // NSAttributedString (Allocating).m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 // License:
 // 

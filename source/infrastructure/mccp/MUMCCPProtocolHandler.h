@@ -1,21 +1,21 @@
 //
 // MUMCCPProtocolHandler.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "J3Protocol.h"
-#import "J3TelnetConnectionState.h"
+#import "MUByteProtocolHandler.h"
+#import "MUMUDConnectionState.h"
 
 typedef struct z_stream_s z_stream;
 
 @protocol MUMCCPProtocolHandlerDelegate;
 
-@interface MUMCCPProtocolHandler : J3ByteProtocolHandler
+@interface MUMCCPProtocolHandler : MUByteProtocolHandler
 {
-  J3TelnetConnectionState *connectionState;
+  MUMUDConnectionState *connectionState;
   NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
   
   z_stream *stream;
@@ -29,8 +29,8 @@ typedef struct z_stream_s z_stream;
   unsigned outsize;
 }
 
-+ (id) protocolHandlerWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState;
-- (id) initWithStack: (J3ProtocolStack *) stack connectionState: (J3TelnetConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 - (NSObject <MUMCCPProtocolHandlerDelegate> *) delegate;
 - (void) setDelegate: (NSObject <MUMCCPProtocolHandlerDelegate> *) object;

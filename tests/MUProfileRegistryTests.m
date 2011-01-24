@@ -1,7 +1,7 @@
 //
 // MUProfileRegistryTest.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUProfileRegistryTests.h"
@@ -55,11 +55,12 @@
   profileOne = [registry profileForWorld: world];
   [self assertProfile: profileOne world: world player: nil];
   
-  profileTwo = [registry profileForUniqueIdentifier: @"test.world"];
+  profileTwo = [registry profileForUniqueIdentifier: @"world:test.world"];
   [self assert: profileTwo equals: profileOne message: @"First"];
   
   profileOne = [registry profileForWorld: world];
   [self assert: profileOne equals: profileTwo message: @"Second"];
+  
 }
 
 - (void) testProfileWithWorldAndPlayer
@@ -71,7 +72,7 @@
   profileOne = [registry profileForWorld: world player: player];
   [self assertProfile: profileOne world: world player: player];
   
-  profileTwo = [registry profileForUniqueIdentifier: @"test.world.user"];
+  profileTwo = [registry profileForUniqueIdentifier: @"world:test.world;player:user"];
   [self assert: profileTwo equals: profileOne message: @"First"];
   
   profileOne = [registry profileForWorld: world player: player];
@@ -134,8 +135,8 @@
                 player: (MUPlayer *) player
 {
   [self assertNotNil: profile];
-  [self assert: profile.world equals: world];
-  [self assert: profile.player equals: player];
+  [self assert: profile.world equals: world message: @"World mismatch"];
+  [self assert: profile.player equals: player message: @"Player mismatch"];
 }
 
 - (MUWorld *) testWorld

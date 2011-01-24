@@ -1,12 +1,12 @@
 //
 // MUFugueEditFilterTests.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
-#import "J3FilterTestCase.h"
+#import "MUFilterTestCase.h"
 
-@interface MUFugueEditFilterTests : J3FilterTestCase
+@interface MUFugueEditFilterTests : MUFilterTestCase
 {
   NSString *editString;
 }

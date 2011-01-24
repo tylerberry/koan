@@ -1,11 +1,11 @@
 //
 // MUApplicationController.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "FontNameToDisplayNameTransformer.h"
-#import "J3PortFormatter.h"
+#import "MUPortFormatter.h"
 #import "MUAcknowledgementsController.h"
 #import "MUApplicationController.h"
 #import "MUConnectionWindowController.h"
@@ -15,7 +15,7 @@
 #import "MUProfilesController.h"
 #import "MUProxySettingsController.h"
 #import "MUServices.h"
-#import "J3SocketFactory.h"
+#import "MUSocketFactory.h"
 #import "MUWorld.h"
 
 @interface MUApplicationController (Private)
@@ -68,7 +68,7 @@
 
 - (void) awakeFromNib
 {
-  J3PortFormatter *newConnectionPortFormatter = [[[J3PortFormatter alloc] init] autorelease];
+  MUPortFormatter *newConnectionPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
   
   [MUServices profileRegistry];
   [MUServices worldRegistry];
@@ -108,7 +108,7 @@
 - (BOOL) validateMenuItem: (NSMenuItem *) item
 {
   if ([item action] == @selector (toggleUseProxy:))
-    [item setState: ([[J3SocketFactory defaultFactory] useProxy] ? NSOnState : NSOffState)];
+    [item setState: ([[MUSocketFactory defaultFactory] useProxy] ? NSOnState : NSOffState)];
   return YES;
 }
 
@@ -209,7 +209,7 @@
 
 - (IBAction) toggleUseProxy: (id) sender
 {
-  [[J3SocketFactory defaultFactory] toggleUseProxy];
+  [[MUSocketFactory defaultFactory] toggleUseProxy];
 }
 
 #pragma mark -
@@ -280,7 +280,7 @@
 {
   [NSApp setApplicationIconImage: nil];
   
-  [[J3SocketFactory defaultFactory] saveProxySettings];
+  [[MUSocketFactory defaultFactory] saveProxySettings];
 }
 
 #pragma mark -

@@ -17,7 +17,7 @@
 //   applications etc.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "UKPrefsPanel.h"

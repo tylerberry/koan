@@ -1,11 +1,11 @@
 //
 // MUProfilesController.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUProfilesController.h"
-#import "J3PortFormatter.h"
+#import "MUPortFormatter.h"
 #import "MUProfile.h"
 #import "MUProfilesSection.h"
 #import "MUSection.h"
@@ -61,7 +61,7 @@
 
 - (void) awakeFromNib
 {
-  // J3PortFormatter *worldPortFormatter = [[[J3PortFormatter alloc] init] autorelease];
+  // MUPortFormatter *worldPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
   
   // FIXME: [worldPortField setFormatter: worldPortFormatter];
   

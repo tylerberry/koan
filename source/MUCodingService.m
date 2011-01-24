@@ -1,12 +1,12 @@
 //
 // MUCodingService.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUCodingService.h"
 #import "MUProfile.h"
-#import "J3ProxySettings.h"
+#import "MUProxySettings.h"
 
 static const int32_t currentProfileVersion = 2;
 static const int32_t currentPlayerVersion = 1;
@@ -71,7 +71,7 @@ static const int32_t currentProxyVersion = 2;
   return;
 }
 
-+ (void) encodeProxySettings: (J3ProxySettings *) settings withCoder: (NSCoder *) encoder;
++ (void) encodeProxySettings: (MUProxySettings *) settings withCoder: (NSCoder *) encoder;
 {
   [encoder encodeInt32: currentProxyVersion forKey: @"version"];
   
@@ -81,7 +81,7 @@ static const int32_t currentProxyVersion = 2;
   [encoder encodeObject: [settings password] forKey: @"password"];  
 }
 
-+ (void) decodeProxySettings: (J3ProxySettings *) settings withCoder: (NSCoder *) decoder;
++ (void) decodeProxySettings: (MUProxySettings *) settings withCoder: (NSCoder *) decoder;
 {
   int32_t version = [decoder decodeInt32ForKey: @"version"];
   

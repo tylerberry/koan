@@ -1,7 +1,7 @@
 //
 // MUConstants.h
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -44,7 +44,7 @@ extern NSString *MUGlobalTextColorDidChangeNotification;
 extern NSString *MUGlobalVisitedLinkColorDidChangeNotification;
 extern NSString *MUWorldsDidChangeNotification;
 
-extern NSString *J3ReadBufferDidProvideStringNotification;
+extern NSString *MUReadBufferDidProvideStringNotification;
 
 #pragma mark Toolbar item constants.
 

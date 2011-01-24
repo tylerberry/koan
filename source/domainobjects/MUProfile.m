@@ -1,7 +1,7 @@
 //
 // MUProfile.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUCodingService.h"
@@ -212,7 +212,7 @@
   [self didChangeValueForKey: @"effectiveVisitedLinkColor"];
 }
 
-- (NSObject <J3Formatter> *) formatter
+- (NSObject <MUFormatter> *) formatter
 {
   return [[[MUProfileFormatter alloc] initWithProfile: self] autorelease];
 }
@@ -301,12 +301,12 @@
 #pragma mark -
 #pragma mark Actions
 
-- (J3TelnetConnection *) createNewTelnetConnectionWithDelegate: (NSObject <J3TelnetConnectionDelegate> *) delegate
+- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
   return [world newTelnetConnectionWithDelegate: delegate];
 }
 
-- (J3Filter *) createLogger
+- (MUFilter *) createLogger
 {
   if (player)
     return [MUTextLogger filterWithWorld: world player: player];
@@ -341,8 +341,8 @@
   if (player)
   {
     // FIXME:  Consider offloading the generation of a unique name for the player on MUPlayer.
-    identifier = [NSString stringWithFormat: @"%@.%@",
-                  world.uniqueIdentifier, [player.name lowercaseString]];
+    identifier = [NSString stringWithFormat: @"%@;%@",
+                  world.uniqueIdentifier, player.uniqueIdentifier];
   }
   else
   {

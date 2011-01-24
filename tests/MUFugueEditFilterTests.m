@@ -1,7 +1,7 @@
 //
 // MUFugueEditFilterTests.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUFugueEditFilterTests.h"
@@ -17,7 +17,7 @@
 - (void) setUp
 {
   editString = nil;
-  queue = [[J3FilterQueue alloc] init];
+  queue = [[MUFilterQueue alloc] init];
   [queue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
 }
 

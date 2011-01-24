@@ -1,13 +1,13 @@
 //
 // MUProxySettingsController.m
 //
-// Copyright (c) 2010 3James Software.
+// Copyright (c) 2011 3James Software.
 //
 
 #import "MUProxySettingsController.h"
-#import "J3SocketFactory.h"
-#import "J3PortFormatter.h"
-#import "J3ProxySettings.h"
+#import "MUSocketFactory.h"
+#import "MUPortFormatter.h"
+#import "MUProxySettings.h"
 
 @implementation MUProxySettingsController
 
@@ -20,14 +20,14 @@
 
 - (void) awakeFromNib
 {
-  J3PortFormatter *portFormatter = [[[J3PortFormatter alloc] init] autorelease];
+  MUPortFormatter *portFormatter = [[[MUPortFormatter alloc] init] autorelease];
   
   [portField setFormatter: portFormatter];
 }
 
-- (J3ProxySettings *) proxySettings
+- (MUProxySettings *) proxySettings
 {
-  return [[J3SocketFactory defaultFactory] proxySettings];
+  return [[MUSocketFactory defaultFactory] proxySettings];
 }
 
 @end

@@ -66,7 +66,7 @@
   [self setAutosaveName: [[tabView window] frameAutosaveName]];
   
   NSString *key = [NSString stringWithFormat: @"%@.prefspanel.recentpage", autosaveName];
-  int tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey: key];
+  NSInteger tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey: key];
   [tabView selectTabViewItemAtIndex: tabIndex];
   
   [self mapTabsToToolbar];

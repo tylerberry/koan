@@ -233,8 +233,8 @@
 
 - (NSApplicationTerminateReply) applicationShouldTerminate: (NSApplication *) application
 {
-  unsigned count = [connectionWindowControllers count];
-  unsigned openConnections = 0;
+  NSUInteger count = [connectionWindowControllers count];
+  NSUInteger openConnections = 0;
   
   while (count--)
   {
@@ -246,7 +246,7 @@
   if (openConnections > 0)
   {
     NSAlert *alert;
-    int choice = NSAlertDefaultReturn;
+    NSInteger choice = NSAlertDefaultReturn;
     NSString *title = [NSString stringWithFormat:
       (openConnections == 1 ? _(MULConfirmQuitTitleSingular)
                             : _(MULConfirmQuitTitlePlural)),
@@ -359,10 +359,10 @@
 {
   MUWorldRegistry *registry = [MUServices worldRegistry];
   MUProfileRegistry *profiles = [MUServices profileRegistry];
-  unsigned worldsCount = [registry count];
-  unsigned menuCount = [openConnectionMenu numberOfItems];
+  NSUInteger worldsCount = [registry count];
+  NSUInteger menuCount = [openConnectionMenu numberOfItems];
   
-  for (int menuItemIndex = menuCount - 1; menuItemIndex >= 0; menuItemIndex--)
+  for (NSInteger menuItemIndex = menuCount - 1; menuItemIndex >= 0; menuItemIndex--)
   {
     [openConnectionMenu removeItemAtIndex: menuItemIndex];
   }
@@ -377,7 +377,7 @@
     NSMenuItem *connectItem = [[NSMenuItem alloc] initWithTitle: _(MULConnectWithoutLogin)
                                                          action: @selector (openConnection:)
                                                   keyEquivalent: @""];
-    unsigned playersCount = [players count];
+    NSUInteger playersCount = [players count];
     
     [connectItem setTarget: self];
     [connectItem setRepresentedObject: profile];

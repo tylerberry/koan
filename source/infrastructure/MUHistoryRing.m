@@ -36,18 +36,18 @@
 #pragma mark -
 #pragma mark Accessors
 
-- (unsigned) count
+- (NSUInteger) count
 {
   return [ring count];
 }
 
-- (NSString *) stringAtIndex: (int) ringIndex
+- (NSString *) stringAtIndex: (NSInteger) ringIndex
 {
   if (ringIndex == -1)
     return buffer == nil ? @"" : buffer;
   else
   {
-    NSString *string = [updates objectForKey: [NSNumber numberWithInt: ringIndex]];
+    NSString *string = [updates objectForKey: [NSNumber numberWithInteger: ringIndex]];
     
     if (string)
       return string;
@@ -63,7 +63,7 @@
 {
   NSString *copy = [[string copy] autorelease];
   
-  [updates removeObjectForKey: [NSNumber numberWithInt: cursor]];
+  [updates removeObjectForKey: [NSNumber numberWithInteger: cursor]];
   
   if (!(cursor != -1 && cursor == (int) ([self count] - 1) && [string isEqualToString: [ring objectAtIndex: cursor]]))
   {
@@ -86,7 +86,7 @@
   }
   else
   {
-    [updates setObject: copy forKey: [NSNumber numberWithInt: cursor]];
+    [updates setObject: copy forKey: [NSNumber numberWithInteger: cursor]];
   }
 }
 
@@ -126,15 +126,15 @@
   searchCursor = cursor;
 }
 
-- (unsigned) numberOfUniqueMatchesForStringPrefix: (NSString *) prefix
+- (NSUInteger) numberOfUniqueMatchesForStringPrefix: (NSString *) prefix
 {
-  int savedCursor = searchCursor;
-  unsigned uniqueMatchCount = 0;
+  NSInteger savedCursor = searchCursor;
+  NSUInteger uniqueMatchCount = 0;
   NSMutableDictionary *uniqueMatchDictionary = [[NSMutableDictionary alloc] init];
   
   searchCursor = 0;
   
-  while (searchCursor < (int) [self count])
+  while (searchCursor < [self count])
   {
     NSString *candidate = [self stringAtIndex: searchCursor];
     
@@ -158,7 +158,7 @@
 
 - (NSString *) searchForwardForStringPrefix: (NSString *) prefix
 {
-  int originalSearchCursor = searchCursor;
+  NSInteger originalSearchCursor = searchCursor;
   
   if ([prefix length] == 0)
     return nil;
@@ -167,7 +167,7 @@
   
   while (searchCursor != originalSearchCursor)
   {
-    if (searchCursor > (int) ([self count] - 1))
+    if (searchCursor > ((NSInteger) [self count] - 1))
     {
       searchCursor = -1;
       if (originalSearchCursor == -1)
@@ -190,7 +190,7 @@
 
 - (NSString *) searchBackwardForStringPrefix: (NSString *) prefix
 {
-  int originalSearchCursor = searchCursor;
+  NSInteger originalSearchCursor = searchCursor;
   
   if ([prefix length] == 0)
     return nil;

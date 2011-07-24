@@ -17,7 +17,7 @@
 
 - (void) ensureLastBlockIsBinary;
 - (void) ensureLastBlockIsString;
-- (void) removeDataUpTo: (unsigned) position;
+- (void) removeDataUpTo: (NSUInteger) position;
 - (void) setBlocks: (NSArray *) newBlocks;
 - (void) write;
 
@@ -110,7 +110,7 @@
 {
   NSMutableData *accumulator = [NSMutableData data];
   
-  for (unsigned i = 0; i < [blocks count]; i++)
+  for (NSUInteger i = 0; i < [blocks count]; i++)
   {
     id block = [blocks objectAtIndex: i];
     
@@ -143,7 +143,7 @@
 {
   NSMutableString *accumulator = [NSMutableString string];
   
-  for (unsigned i = 0; i < [blocks count]; i++)
+  for (NSUInteger i = 0; i < [blocks count]; i++)
   {
     id block = [blocks objectAtIndex: i];
     
@@ -152,11 +152,11 @@
     else if ([block isKindOfClass: [NSData class]])
     {
       NSData *data = (NSData *) block;
-      unsigned dataLength = [data length];
+      NSUInteger dataLength = [data length];
       unichar promotionArray[dataLength];
       const uint8_t *byteArray = (const uint8_t *) [data bytes];
       
-      for (unsigned j = 0; j < [data length]; j++)
+      for (NSUInteger j = 0; j < [data length]; j++)
         promotionArray[j] = byteArray[j];
       
       [accumulator appendString: [NSString stringWithCharacters: promotionArray length: dataLength]];
@@ -197,7 +197,7 @@
   }  
 }
 
-- (void) removeDataUpTo: (unsigned) position
+- (void) removeDataUpTo: (NSUInteger) position
 {
   while (position > 0 && [blocks count] > 0)
   {

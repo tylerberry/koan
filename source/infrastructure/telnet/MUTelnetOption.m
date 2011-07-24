@@ -6,6 +6,8 @@
 
 #import "MUTelnetOption.h"
 
+#import "MUTelnetConstants.h"
+
 @interface MUTelnetOption (Private)
 
 - (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
@@ -24,7 +26,96 @@
 
 @end
 
+#pragma mark -
+
 @implementation MUTelnetOption
+
++ (NSString *) optionNameForByte: (uint8_t) byte
+{
+  switch (byte)
+  {
+    case MUTelnetOptionTransmitBinary:
+      return @"TRANSMIT-BINARY";
+      
+    case MUTelnetOptionEcho:
+      return @"ECHO";
+      
+  	case MUTelnetOptionSuppressGoAhead:
+  		return @"SUPPRESS-GO-AHEAD";
+      
+    case MUTelnetOptionStatus:
+      return @"STATUS";
+  		
+  	case MUTelnetOptionTimingMark:
+  		return @"TIMING-MARK";
+  		
+  	case MUTelnetOptionTerminalType:
+  		return @"TERMINAL-TYPE";
+  		
+  	case MUTelnetOptionEndOfRecord:
+  		return @"END-OF-RECORD";
+  		
+  	case MUTelnetOptionNegotiateAboutWindowSize:
+  		return @"NEGOTIATE-ABOUT-WINDOW-SIZE";
+      
+    case MUTelnetOptionTerminalSpeed:
+      return @"TERMINAL-SPEED";
+      
+    case MUTelnetOptionToggleFlowControl:
+      return @"TOGGLE-FLOW-CONTROL";
+  		
+  	case MUTelnetOptionLineMode:
+  		return @"LINEMODE";
+      
+    case MUTelnetOptionXDisplayLocation:
+      return @"X-DISPLAY-LOCATION";
+      
+    case MUTelnetOptionEnvironment:
+      return @"ENVIRON";
+      
+    case MUTelnetOptionNewEnvironment:
+      return @"NEW-ENVIRON";
+      
+    case MUTelnetOptionCharset:
+      return @"CHARSET";
+      
+    case MUTelnetOptionStartTLS:
+      return @"START-TLS";
+      
+    case MUTelnetOptionMSDP:
+      return @"MSDP";
+      
+    case MUTelnetOptionMSSP:
+      return @"MSSP";
+  		
+  	case MUTelnetOptionMCCP1:
+  		return @"COMPRESS (MCCP1)";
+  		
+  	case MUTelnetOptionMCCP2:
+  		return @"COMPRESS2 (MCCP2)";
+  		
+    case MUTelnetOptionMSP:
+      return @"MSP";
+      
+    case MUTelnetOptionMXP:
+      return @"MXP";
+      
+    case MUTelnetOptionZMP:
+      return @"ZMP";
+      
+    case MUTelnetOptionAardwolf:
+      return @"AARDWOLF";
+      
+    case MUTelnetOptionATCP:
+      return @"ATCP";
+      
+    case MUTelnetOptionGMCP:
+      return @"GMCP";
+      
+  	default:
+  		return [NSString stringWithFormat: @"%u (unknown option)", (unsigned) byte];
+  }
+}
 
 - (void) disableHim
 {

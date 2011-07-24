@@ -6,6 +6,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define TELNET_OPTION_MAX UINT8_MAX
+
 // This implements the Telnet Q Method: <http://rfc.net/rfc1143.html>
 
 typedef enum MUTelnetQ {
@@ -28,6 +30,8 @@ typedef enum MUTelnetQ {
   BOOL heIsAllowed;
   BOOL weAreAllowed;
 }
+
++ (NSString *) optionNameForByte: (uint8_t) byte;
 
 - (id) initWithOption: (int) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
 

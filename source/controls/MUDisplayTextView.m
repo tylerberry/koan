@@ -51,22 +51,15 @@
 #import "MUDisplayTextView.h"
 #import "NSCursor (Finger).h"
 
-@implementation MUDisplayTextView
+@interface MUDisplayTextView (Private)
 
-- (NSCursor *) cursorForLink: (NSObject *) linkObject atIndex: (unsigned) charIndex
-{
-  NSCursor *result = nil;
-  
-  if ([[self delegate] respondsToSelector: @selector (cursorForLink:atIndex:ofTextView:)])
-    result = [(NSObject <MUDisplayTextViewDelegate> *) [self delegate] cursorForLink: linkObject
-                                                                             atIndex: charIndex
-                                                                          ofTextView: self];
-  
-  if (result == nil)
-    result = [NSCursor fingerCursor];
-  
-  return result;
-}
+- (NSCursor *) cursorForLink: (NSObject *) linkObject atIndex: (NSUInteger) charIndex;
+
+@end
+
+#pragma mark -
+
+@implementation MUDisplayTextView
 
 - (void) resetCursorRects
 {
@@ -102,6 +95,27 @@
       [self addCursorRect: oneRect cursor: cursor];
     }
   }
+}
+
+@end
+
+#pragma mark -
+
+@implementation MUDisplayTextView (Private)
+
+- (NSCursor *) cursorForLink: (NSObject *) linkObject atIndex: (NSUInteger) charIndex
+{
+  NSCursor *result = nil;
+  
+  if ([[self delegate] respondsToSelector: @selector (cursorForLink:atIndex:ofTextView:)])
+    result = [(NSObject <MUDisplayTextViewDelegate> *) [self delegate] cursorForLink: linkObject
+                                                                             atIndex: charIndex
+                                                                          ofTextView: self];
+    
+    if (result == nil)
+      result = [NSCursor fingerCursor];
+      
+      return result;
 }
 
 @end

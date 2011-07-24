@@ -69,6 +69,7 @@ extern NSString *MUMUDConnectionErrorMessageKey;
 
 @protocol MUMUDConnectionDelegate
 
+- (void) displayPrompt: (NSString *) promptString;
 - (void) displayString: (NSString *) string;
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification;

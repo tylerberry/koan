@@ -6,6 +6,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "MUMUDConnectionState.h"
+
 @class MUByteProtocolHandler;
 
 @class MUProtocolStack;
@@ -13,12 +15,16 @@
 
 @interface MUProtocolStack : NSObject
 {
+  MUMUDConnectionState *connectionState;
+  
   NSMutableArray *byteProtocolHandlers;
   NSMutableData *parsingBuffer;
   NSMutableData *preprocessingBuffer;
   
   NSObject <MUProtocolStackDelegate> *delegate;
 }
+
+- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
 - (NSObject <MUProtocolStackDelegate> *) delegate;
 - (void) setDelegate: (NSObject <MUProtocolStackDelegate> *) newDelegate;
@@ -34,12 +40,15 @@
 - (void) parseByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
 - (void) preprocessByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
 
+- (void) useBufferedDataAsPrompt;
+
 @end
 
 #pragma mark -
 
 @protocol MUProtocolStackDelegate
 
-- (void) displayData: (NSData *) parsedData;
+- (void) displayDataAsText: (NSData *) parsedData;
+- (void) displayDataAsPrompt: (NSData *) parsedData;
 
 @end

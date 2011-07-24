@@ -28,11 +28,6 @@ extern NSString *MUPPlaySounds;
 extern NSString *MUPPlayWhenActive;
 extern NSString *MUPSoundChoice;
 
-extern NSString *MULicenseInfo;
-extern NSString *MULicenseDateCreated;
-extern NSString *MULicenseKey;
-extern NSString *MULicenseOwner;
-
 #pragma mark Notification constants.
 
 extern NSString *MUConnectionWindowControllerWillCloseNotification;

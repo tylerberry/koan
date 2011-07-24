@@ -11,14 +11,14 @@
   NSString *buffer;
   NSMutableArray *ring;
   NSMutableDictionary *updates;
-  int cursor;
-  int searchCursor;
+  NSInteger cursor;
+  NSInteger searchCursor;
 }
 
 + (id) historyRing;
 
-- (unsigned) count;
-- (NSString *) stringAtIndex: (int) ringIndex;
+- (NSUInteger) count;
+- (NSString *) stringAtIndex: (NSInteger) ringIndex;
 
 // These methods are all O(1).
 
@@ -32,7 +32,7 @@
 
 // These methods are all O(n).
 
-- (unsigned) numberOfUniqueMatchesForStringPrefix: (NSString *) prefix;
+- (NSUInteger) numberOfUniqueMatchesForStringPrefix: (NSString *) prefix;
 - (NSString *) searchForwardForStringPrefix: (NSString *) prefix;
 - (NSString *) searchBackwardForStringPrefix: (NSString *) prefix;
 

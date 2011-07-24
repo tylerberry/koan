@@ -52,9 +52,9 @@
     NSRange scannedRange;
     NSURL *foundURL;
     NSDictionary *linkAttributes;
-    unsigned characterIndex;
-    unsigned length;
-    unsigned skipScanLocation = [scanner scanLocation];
+    NSUInteger characterIndex;
+    NSUInteger length;
+    NSUInteger skipScanLocation = [scanner scanLocation];
     
     while (skipScanLocation < [sourceString length])
     {

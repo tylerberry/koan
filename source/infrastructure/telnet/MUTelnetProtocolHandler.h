@@ -2,7 +2,7 @@
 // MUTelnetProtocolHandler.h
 //
 // Copyright (c) 2011 3James Software.
-//s
+//
 
 #import <Cocoa/Cocoa.h>
 #import "MUByteProtocolHandler.h"
@@ -24,7 +24,7 @@
 
 - (void) handleBufferedSubnegotiation;
 - (void) log: (NSString *) message, ...;
-- (NSString *) optionNameForByte: (uint8_t) byte;
+- (void) useBufferedDataAsPrompt;
 
 - (void) receivedDo: (uint8_t) option;
 - (void) receivedDont: (uint8_t) option;

@@ -66,10 +66,11 @@
 		2FB40E7B0BF10AA2004E13F8 /* MUFilterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */; };
 		2FC93E2B0BB103C500149459 /* MUTelnetProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */; };
 		2FCFEF3E0BCADEB40061FB6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		2FCFEF720BCADF970061FB6B /* KoanLogImporter.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanLogImporter.mdimporter */; };
+		2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */; };
 		2FCFEFDD0BCAE36D0061FB6B /* MUTextLogDocumentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */; };
 		2FD06556117D704500B8BFDB /* ukprefspanel-icon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2FD06555117D704500B8BFDB /* ukprefspanel-icon.gif */; };
 		2FD0E1EC117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */; };
+		2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */; };
 		2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */; };
 		2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14E0D67E86A007F0036 /* growl-icon.png */; };
 		2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA1500D67E870007F0036 /* openssl-icon.gif */; };
@@ -220,7 +221,7 @@
 			dstPath = Contents/Library/Spotlight;
 			dstSubfolderSpec = 1;
 			files = (
-				2FCFEF720BCADF970061FB6B /* KoanLogImporter.mdimporter in Copy Importer */,
+				2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */,
 			);
 			name = "Copy Importer";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +303,8 @@
 		2FD06555117D704500B8BFDB /* ukprefspanel-icon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "ukprefspanel-icon.gif"; sourceTree = "<group>"; };
 		2FD0E1EA117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetSubnegotiationOptionState.h; sourceTree = "<group>"; };
 		2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetSubnegotiationOptionState.m; sourceTree = "<group>"; };
+		2FD7F68012ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUHeuristicCodebaseAnalyzer.h; sourceTree = "<group>"; };
+		2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHeuristicCodebaseAnalyzer.m; sourceTree = "<group>"; };
 		2FDF39600ADB3D1A00EDD48A /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = build/Sparkle.framework; sourceTree = SOURCE_ROOT; };
 		2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sparkle-icon.png"; sourceTree = "<group>"; };
 		2FDFA14E0D67E86A007F0036 /* growl-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "growl-icon.png"; sourceTree = "<group>"; };
@@ -313,7 +316,7 @@
 		2FE366730BCAC9820068A6AA /* UKPrefsPanel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = UKPrefsPanel.m; sourceTree = "<group>"; };
 		2FE367EB0BCAD35E0068A6AA /* GetMetadataForFile.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GetMetadataForFile.m; sourceTree = "<group>"; };
 		2FE367EC0BCAD35E0068A6AA /* MUSpotlightImporterMain.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = MUSpotlightImporterMain.c; sourceTree = "<group>"; };
-		2FE367F10BCAD3730068A6AA /* KoanLogImporter.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoanLogImporter.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoanTextLog.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FE368010BCAD4630068A6AA /* Importer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "Importer-Info.plist"; sourceTree = "<group>"; };
 		2FE368420BCAD5DB0068A6AA /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = schema.xml; sourceTree = "<group>"; };
 		2FE369180BCAD8290068A6AA /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = English; path = English.lproj/schema.strings; sourceTree = "<group>"; };
@@ -552,7 +555,7 @@
 			children = (
 				8D1107320486CEB800E47090 /* Koan.app */,
 				7E87751809AD558700A883BC /* KoanTests.octest */,
-				2FE367F10BCAD3730068A6AA /* KoanLogImporter.mdimporter */,
+				2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -988,6 +991,8 @@
 				7E26CB2D0BD80AAF00FC3843 /* MUByteSet.h */,
 				7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */,
 				7EC61429092EFF72004DF3CD /* MUByteSource.h */,
+				2FD7F68012ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.h */,
+				2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */,
 				E6E7A6210749693A007005AC /* MUHistoryRing.h */,
 				E6E7A62707496940007005AC /* MUHistoryRing.m */,
 				7EC30306092B978B00AFA5C7 /* MUMUDConnection.h */,
@@ -1044,7 +1049,7 @@
 			);
 			name = "Spotlight Importer";
 			productName = "Text Log Importer";
-			productReference = 2FE367F10BCAD3730068A6AA /* KoanLogImporter.mdimporter */;
+			productReference = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */;
 			productType = "com.apple.product-type.bundle";
 		};
 		7E87751709AD558700A883BC /* Unit Tests */ = {
@@ -1284,6 +1289,7 @@
 				7E5103A40AD1E14000142EF3 /* MUFormatter.m in Sources */,
 				2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */,
 				E653A7D207AEFAB900023476 /* MUGrowlService.m in Sources */,
+				2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */,
 				E6E7A62807496940007005AC /* MUHistoryRing.m in Sources */,
 				8D11072D0486CEB800E47090 /* MUKoanMain.m in Sources */,
 				2F7B4F3B0BCAB87B00C1586D /* MULogBrowserWindowController.m in Sources */,
@@ -1460,7 +1466,7 @@
 				INFOPLIST_FILE = "importer/Importer-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Spotlight";
 				LIBRARY_STYLE = Bundle;
-				PRODUCT_NAME = KoanLogImporter;
+				PRODUCT_NAME = KoanTextLog;
 				WRAPPER_EXTENSION = mdimporter;
 			};
 			name = Debug;
@@ -1472,7 +1478,7 @@
 				INFOPLIST_FILE = "importer/Importer-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Spotlight";
 				LIBRARY_STYLE = Bundle;
-				PRODUCT_NAME = KoanLogImporter;
+				PRODUCT_NAME = KoanTextLog;
 				WRAPPER_EXTENSION = mdimporter;
 			};
 			name = Release;
@@ -1639,17 +1645,26 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -1657,7 +1672,6 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1694,7 +1708,6 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};

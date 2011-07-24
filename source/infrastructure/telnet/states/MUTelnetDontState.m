@@ -6,6 +6,7 @@
 
 #import "MUTelnetDontState.h"
 
+#import "MUTelnetOption.h"
 #import "MUTelnetTextState.h"
 
 @implementation MUTelnetDontState
@@ -14,7 +15,7 @@
           forStateMachine: (MUTelnetStateMachine *) stateMachine
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
-  [protocolHandler log: @"Received: IAC DONT %@.", [protocolHandler optionNameForByte: byte]];
+  [protocolHandler log: @"Received: IAC DONT %@.", [MUTelnetOption optionNameForByte: byte]];
   [protocolHandler receivedDont: byte];
   return [MUTelnetTextState state];
 }

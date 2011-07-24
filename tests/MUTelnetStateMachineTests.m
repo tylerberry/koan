@@ -188,6 +188,11 @@
   return;
 }
 
+- (void) useBufferedDataAsPrompt
+{
+  return;
+}
+
 @end
 
 #pragma mark -

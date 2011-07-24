@@ -90,9 +90,9 @@ static MUWorldRegistry *defaultRegistry = nil;
 #pragma mark -
 #pragma mark Actions
 
-- (unsigned) count
+- (NSUInteger) count
 {
-  unsigned count = 0;
+  NSUInteger count = 0;
   
   @synchronized (self)
   {
@@ -104,14 +104,14 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (NSUInteger) indexOfWorld: (MUWorld *) world
 {
-  NSUInteger index = NSNotFound;
+  NSUInteger worldIndex = NSNotFound;
   
   @synchronized (self)
   {
-    index = [worlds indexOfObject: world];
+    worldIndex = [worlds indexOfObject: world];
   }
   
-  return index;
+  return worldIndex;
 }
 
 - (void) removeWorld: (MUWorld *) world

@@ -42,8 +42,12 @@
     case MUTelnetAreYouThere:
     case MUTelnetEraseCharacter:
     case MUTelnetEraseLine:
+      [stateMachine confirmTelnet];
+      return [MUTelnetTextState state];
+      
     case MUTelnetGoAhead:
       [stateMachine confirmTelnet];
+      [protocolHandler useBufferedDataAsPrompt];
       return [MUTelnetTextState state];
     
     case MUTelnetEndOfRecord:
@@ -52,6 +56,8 @@
         [protocolHandler log: @"Not telnet: IAC EOR without receiving earlier telnet sequences."];
         return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
       }
+      
+      [protocolHandler useBufferedDataAsPrompt];
       return [MUTelnetTextState state];
       
     case MUTelnetWill:

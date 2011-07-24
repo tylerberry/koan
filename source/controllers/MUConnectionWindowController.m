@@ -27,6 +27,7 @@ enum MUSearchDirections
 - (MUFilter *) createLogger;
 - (void) didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 - (void) disconnect;
+- (void) displayString: (NSString *) string asPrompt: (BOOL) stringIsPrompt;
 - (void) endCompletion;
 - (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
@@ -56,6 +57,8 @@ enum MUSearchDirections
   [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
   [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
+  
+  currentPrompt = nil;
   
   return self;
 }
@@ -129,6 +132,9 @@ enum MUSearchDirections
   [filterQueue release];
   [historyRing release];
   [profile release];
+  
+  [currentPrompt release];
+  
   [super dealloc];
 }
 
@@ -288,8 +294,15 @@ enum MUSearchDirections
 {
   [telnetConnection writeLine: [inputView string]];
   [historyRing saveString: [inputView string]];
-  [inputView setString: @""];
   
+  if (currentPrompt)
+  {
+    [self displayString: [inputView string] asPrompt: NO];
+    [currentPrompt release];
+    currentPrompt = nil;
+  }
+  
+  [inputView setString: @""];
   [[self window] makeFirstResponder: inputView];
 }
 
@@ -316,34 +329,14 @@ enum MUSearchDirections
 #pragma mark -
 #pragma mark MUMUDConnectionDelegate protocol
 
+- (void) displayPrompt: (NSString *) promptString
+{
+  [self displayString: promptString asPrompt: YES];
+}
+
 - (void) displayString: (NSString *) string
 {  
-  if (!string || [string length] == 0)
-    return;
-  
-  NSTextStorage *textStorage = [receivedTextView textStorage];
-  float scrollerPosition = [[[receivedTextView enclosingScrollView] verticalScroller] floatValue];
-  
-  NSMutableDictionary *typingAttributes =
-  [NSMutableDictionary dictionaryWithDictionary: [receivedTextView typingAttributes]];
-  
-  [typingAttributes removeObjectForKey: NSLinkAttributeName];
-  [typingAttributes removeObjectForKey: NSUnderlineStyleAttributeName];
-  [typingAttributes setObject: [[profile formatter] foreground] forKey: NSForegroundColorAttributeName];
-  [typingAttributes setObject: [[profile formatter] background] forKey: NSBackgroundColorDocumentAttribute];
-  
-  NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: typingAttributes];
-  NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
-  
-  [textStorage appendAttributedString: filteredString];
-  [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
-  
-  // Scroll to the bottom of the text window, but only if we were previously at the bottom.
-  
-  if (1.0 - scrollerPosition < 0.000001) // Avoiding inaccuracy of == for floats.
-    [receivedTextView scrollRangeToVisible: NSMakeRange ([textStorage length], 0)];
-  
-  [self postConnectionWindowControllerDidReceiveTextNotification];
+  [self displayString: string asPrompt: NO];
 }
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
@@ -578,6 +571,42 @@ enum MUSearchDirections
 {
   if (telnetConnection)
     [telnetConnection close];
+}
+
+- (void) displayString: (NSString *) string asPrompt: (BOOL) stringIsPrompt
+{
+  if (!string || [string length] == 0)
+    return;
+  
+  if (stringIsPrompt)
+  {
+    if (currentPrompt)
+      [currentPrompt release];
+    currentPrompt = [string copy];
+  }
+  
+  NSTextStorage *textStorage = [receivedTextView textStorage];
+  float scrollerPosition = [[[receivedTextView enclosingScrollView] verticalScroller] floatValue];
+  
+  NSMutableDictionary *typingAttributes = [NSMutableDictionary dictionaryWithDictionary: [receivedTextView typingAttributes]];
+  
+  [typingAttributes removeObjectForKey: NSLinkAttributeName];
+  [typingAttributes removeObjectForKey: NSUnderlineStyleAttributeName];
+  [typingAttributes setObject: [[profile formatter] foreground] forKey: NSForegroundColorAttributeName];
+  [typingAttributes setObject: [[profile formatter] background] forKey: NSBackgroundColorDocumentAttribute];
+  
+  NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: typingAttributes];
+  NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
+  
+  [textStorage appendAttributedString: filteredString];
+  [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
+  
+  // Scroll to the bottom of the text window, but only if we were previously at the bottom.
+  
+  if (1.0 - scrollerPosition < 0.000001) // Avoiding inaccuracy of == for floats.
+    [receivedTextView scrollRangeToVisible: NSMakeRange ([textStorage length], 0)];
+  
+  [self postConnectionWindowControllerDidReceiveTextNotification];  
 }
 
 - (void) endCompletion

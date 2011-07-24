@@ -70,8 +70,12 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   port = newPort;
   pollTimer = nil;
   
-  protocolStack = [[MUProtocolStack alloc] init];
+  protocolStack = [[MUProtocolStack alloc] initWithConnectionState: state];
   [protocolStack setDelegate: self];
+  
+  // Ordering is important for byte protocol handlers: they should be added in
+  // order with respect to outgoing data, and reverse order with respect to
+  // incoming data.
   
   MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
   [mcpProtocolHandler setDelegate: self];
@@ -235,13 +239,22 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 #pragma mark -
 #pragma mark MUProtocolStackDelegate
 
-- (void) displayData: (NSData *) parsedData
+- (void) displayDataAsText: (NSData *) parsedData
 {
   NSString *parsedString = [[[NSString alloc] initWithBytes: [parsedData bytes]
                                                      length: [parsedData length]
                                                    encoding: self.state.stringEncoding] autorelease];
   
   [self.delegate displayString: parsedString];
+}
+
+- (void) displayDataAsPrompt: (NSData *) parsedData
+{
+  NSString *parsedPromptString = [[[NSString alloc] initWithBytes: [parsedData bytes]
+                                                           length: [parsedData length]
+                                                         encoding: self.state.stringEncoding] autorelease];
+  
+  [self.delegate displayPrompt: parsedPromptString];
 }
 
 #pragma mark -

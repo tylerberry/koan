@@ -20,7 +20,7 @@
   {
     case MUTelnetInterpretAsCommand:
       [protocolHandler log: @"Telnet irregularity: IAC received immediately after IAC SB."];
-      return [MUTelnetSubnegotiationIACState state];
+      return [MUTelnetSubnegotiationIACState stateWithReturnState: [MUTelnetSubnegotiationOptionState class]];
       
     case MUTelnetOptionMCCP1:
       [protocolHandler bufferSubnegotiationByte: byte];

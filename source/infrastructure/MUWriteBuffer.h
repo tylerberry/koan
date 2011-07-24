@@ -42,7 +42,7 @@
   NSMutableArray *blocks;
   id lastBlock;
   BOOL lastBlockIsBinary;
-  unsigned totalLength;
+  NSUInteger totalLength;
 }
 
 + (id) buffer;

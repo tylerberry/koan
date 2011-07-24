@@ -28,6 +28,8 @@
   NSTimer *pingTimer;
   MUFilterQueue *filterQueue;
   MUHistoryRing *historyRing;
+  
+  NSString *currentPrompt;
 }
 
 // Designated initializer.

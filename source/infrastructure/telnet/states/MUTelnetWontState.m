@@ -6,6 +6,7 @@
 
 #import "MUTelnetWontState.h"
 
+#import "MUTelnetOption.h"
 #import "MUTelnetTextState.h"
 
 @implementation MUTelnetWontState
@@ -14,7 +15,7 @@
           forStateMachine: (MUTelnetStateMachine *) stateMachine
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
-  [protocolHandler log: @"Received: IAC WONT %@.", [protocolHandler optionNameForByte: byte]];
+  [protocolHandler log: @"Received: IAC WONT %@.", [MUTelnetOption optionNameForByte: byte]];
   [protocolHandler receivedWont: byte];
   return [MUTelnetTextState state];
 }

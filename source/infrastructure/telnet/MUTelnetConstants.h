@@ -28,8 +28,6 @@ enum MUTelnetCommands
   MUTelnetInterpretAsCommand = 255
 };
 
-#define TELNET_OPTION_MAX UINT8_MAX
-
 enum MUTelnetOptions
 {
   // These options are defined by various RFCs.
@@ -87,6 +85,13 @@ enum MUTelnetOptions
   // The GMCP protocol is semi-defined at <http://www.mudstandards.org/forum/viewtopic.php?f=7&t=107>.
   // More documentation is available at <http://www.aardwolf.com/wiki/index.php/Clients/GMCP>.
   MUTelnetOptionGMCP = 201
+};
+
+enum MUTelnetMSSPSubnegotiationCommands
+{
+  // These commands are defined in RFC 1091.
+  MUTelnetMSSPVariable = 0,
+  MUTelnetMSSPValue = 1
 };
 
 enum MUTelnetTerminalTypeSubnegotiationCommands

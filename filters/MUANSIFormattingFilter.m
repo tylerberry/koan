@@ -24,7 +24,7 @@
 - (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
 - (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
 - (NSUInteger) scanUpToCodeInString: (NSString *) string;
-- (NSUInteger) scanThroughEndOfCodeAt: (unsigned) index inString: (NSString *) string;
+- (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
 - (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (unsigned) startLocation;
 - (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
 
@@ -445,7 +445,7 @@
   return [scanner scanLocation];
 }
 
-- (NSUInteger) scanThroughEndOfCodeAt: (unsigned) codeIndex inString: (NSString *) string
+- (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) codeIndex inString: (NSString *) string
 {
   NSScanner *scanner = [NSScanner scannerWithString: string];
   [scanner setScanLocation: codeIndex];

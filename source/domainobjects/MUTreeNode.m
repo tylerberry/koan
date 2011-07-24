@@ -64,7 +64,9 @@
   
   for (MUTreeNode *node in children)
   {
-    if (!node.isLeaf)
+    if (node.isLeaf)
+      node.parent = self;
+    else
       [node recursivelyUpdateParentsWithParentNode: self];
   }
 }

@@ -16,7 +16,7 @@
 - (void) confirmTelnetWithDontEcho;
 - (void) parseBytesWithZeroTerminator: (const uint8_t *) bytes;
 - (void) parseCString: (const char *) string;
-- (void) resetProtocolStack;
+- (void) resetTest;
 - (void) simulateDo: (uint8_t) option;
 - (void) simulateIncomingSubnegotation: (const uint8_t *) payload length: (unsigned) payloadLength;
 - (void) simulateWill: (uint8_t) option;
@@ -29,9 +29,7 @@
 
 - (void) setUp
 {
-  [self resetProtocolStack];
-  mockSocketData = [[NSMutableData alloc] init];
-  parsedData = [[NSMutableData alloc] init];
+  [self resetTest];
 }
 
 - (void) tearDown
@@ -53,7 +51,7 @@
 
 - (void) testTelnetNotSentWhenNotConfirmed
 {
-  [self resetProtocolStack];
+  [self resetTest];
   [protocolHandler enableOptionForUs: 0];
   [protocolHandler enableOptionForHim: 0];
   [protocolHandler disableOptionForUs: 0];
@@ -112,7 +110,7 @@
     [protocolStack parseData: [NSData dataWithBytes: bytes length: 2]];
     [protocolStack flushBufferedData];
     [self assert: parsedData equals: [NSData dataWithBytes: bytes + 1 length: 1]];
-    [self resetProtocolStack];
+    [self resetTest];
   }
 }
 
@@ -347,9 +345,14 @@
 #pragma mark -
 #pragma mark MUProtocolStackDelegate protocol
 
-- (void) displayData: (NSData *) data
+- (void) displayDataAsText: (NSData *) data
 {
   [parsedData appendData: data];
+}
+
+- (void) displayDataAsPrompt: (NSData *) data
+{
+  return;
 }
 
 #pragma mark -
@@ -393,15 +396,17 @@
   [self parseBytesWithZeroTerminator: (const uint8_t *) string];
 }
 
-- (void) resetProtocolStack
+- (void) resetTest
 {
   if (protocolStack)
     [protocolStack release];
+
+  MUMUDConnectionState *connectionState = [MUMUDConnectionState connectionState];
   
-  protocolStack = [[MUProtocolStack alloc] init];
+  protocolStack = [[MUProtocolStack alloc] initWithConnectionState: connectionState];
   [protocolStack setDelegate: self];
   
-  protocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack connectionState: [MUMUDConnectionState connectionState]];
+  protocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack connectionState: connectionState];
   [protocolHandler setDelegate: self];
   
   [protocolStack addByteProtocol: protocolHandler];
@@ -409,7 +414,12 @@
   if (parsedData)
     [parsedData release];
   
-  parsedData = [[NSMutableData alloc] init];
+  parsedData = [[NSMutableData alloc] initWithCapacity: 64];
+  
+  if (mockSocketData)
+    [mockSocketData release];
+  
+  mockSocketData = [[NSMutableData alloc] initWithCapacity: 64];
 }
 
 - (void) simulateDo: (uint8_t) option

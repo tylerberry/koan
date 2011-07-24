@@ -113,7 +113,7 @@ static MUGrowlService *defaultGrowlService;
   															description: description
   												 notificationName: name
   																 iconData: nil
-  																 priority: 0.0
+  																 priority: (float) 0.0
   																 isSticky: NO
   														 clickContext: nil];
   }

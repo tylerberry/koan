@@ -62,7 +62,7 @@
 @optional
 
 - (NSCursor *) cursorForLink: (NSObject *) linkObject
-                     atIndex: (unsigned) charIndex
+                     atIndex: (NSUInteger) charIndex
                   ofTextView: (NSTextView *) aTextView;
 
 @end

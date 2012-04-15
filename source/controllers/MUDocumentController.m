@@ -14,7 +14,7 @@
                    didCloseAllSelector: (SEL) didCloseAllSelector
                            contextInfo: (void *) contextInfo
 {
-  // TODO: override this to handle closing the log browser.
+  // TODO: Override this method to handle closing the log browser.
   // See <http://www.cocoadev.com/index.pl?DocumentBasedAppWithOneWindowForAllDocuments>.
   
   [super closeAllDocumentsWithDelegate: delegate didCloseAllSelector: didCloseAllSelector contextInfo: contextInfo];

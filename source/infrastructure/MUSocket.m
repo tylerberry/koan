@@ -231,7 +231,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   {
     free (bytes);
     
-    // TODO: is this correct?
+    // TODO: Is this correct?
     if (!([self isConnected] || [self isConnecting]))
       return nil;
     
@@ -377,7 +377,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   
   /* int result = */ close (kq);
   
-  // TODO: handle result == -1 in some way. We could throw an exception, return
+  // TODO: Handle result == -1 in some way. We could throw an exception, return
   // it up from here, but it should be noted and handled.
 }  
 
@@ -454,7 +454,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   
   if (bytes_written == -1)
   {
-    // TODO: is this correct?
+    // TODO: Is this correct?
     if (!([self isConnected] || [self isConnecting]))
       return;
     
@@ -525,14 +525,9 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (void) runThread: (id) object
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  @try
+  @autoreleasepool
   {
     [self internalOpen];
-  }
-  @finally
-  {
-    [pool release];
   }
 }
 

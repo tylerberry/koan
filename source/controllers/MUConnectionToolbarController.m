@@ -6,6 +6,8 @@
 
 #import "MUConnectionToolbarController.h"
 
+#import "MUConnectionWindowController.h"
+
 @implementation MUConnectionToolbarController
 
 - (void) awakeFromNib

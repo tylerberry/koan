@@ -11,21 +11,21 @@
 @interface MUANSIFormattingFilter (Private)
 
 - (NSArray *) attributeNamesForANSICode;
-- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (unsigned) startLocation;
+- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
 - (BOOL) extractCode: (NSMutableAttributedString *) editString;
-- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (unsigned) location;
+- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location;
 - (NSFont *) makeFontBold: (NSFont *) font;
 - (NSFont *) makeFontUnbold: (NSFont *) font;
-- (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
-- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation;
+- (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (NSUInteger) scanUpToCodeInString: (NSString *) string;
 - (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
-- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (unsigned) startLocation;
+- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation;
 - (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
 
 @end
@@ -154,7 +154,7 @@
   return names;
 }
 
-- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (unsigned) location
+- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) location
 {
   NSArray *codeComponents = [[ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
   NSMutableArray *values = [NSMutableArray arrayWithCapacity: [codeComponents count]];
@@ -354,7 +354,7 @@
   return NO;
 }
 
-- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (unsigned) location
+- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location
 {
   return [string attribute: NSFontAttributeName atIndex: location effectiveRange: NULL];
 }
@@ -375,7 +375,7 @@
     return [font fontWithTrait: NSUnboldFontMask];
 }
 
-- (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self resetBackgroundInString: string fromLocation: startLocation];
   [self resetForegroundInString: string fromLocation: startLocation];
@@ -383,35 +383,35 @@
   [self resetUnderlineInString: string fromLocation: startLocation];
 }
 
-- (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSBackgroundColorAttributeName
              toValue: [formatter background]
             inString: string fromLocation: startLocation];
 }
 
-- (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSFontAttributeName
              toValue: [formatter font]
             inString: string fromLocation: startLocation];
 }
 
-- (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSForegroundColorAttributeName
              toValue: [formatter foreground]
             inString: string fromLocation: startLocation];
 }
 
-- (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSUnderlineStyleAttributeName
              toValue: [NSNumber numberWithInt: NSNoUnderlineStyle]
             inString: string fromLocation: startLocation];
 }
 
-- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [string addAttribute: attribute
                  value: value
@@ -419,7 +419,7 @@
   [currentAttributes setObject: value forKey: attribute];
 }
 
-- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (unsigned) startLocation
+- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   for (NSString *key in [attributes allKeys])
   {
@@ -466,7 +466,7 @@
     return [charactersFromThisScan length] + 1;
 }
 
-- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (unsigned) startLocation
+- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation
 {
   if ([string length] <= startLocation)
     return;

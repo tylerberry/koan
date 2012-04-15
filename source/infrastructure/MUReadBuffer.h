@@ -12,7 +12,7 @@
 - (void) appendData: (NSData *) data;
 - (void) clear;
 - (BOOL) isEmpty;
-- (unsigned) length;
+- (NSUInteger) length;
 
 - (NSData *) dataByConsumingBuffer;
 - (NSData *) dataByConsumingBytesToIndex: (unsigned) index;

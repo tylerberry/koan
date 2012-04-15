@@ -23,7 +23,7 @@
   
   IBOutlet MUPreferencesController *preferencesController;
   
-  unsigned unreadCount;
+  NSUInteger unreadCount;
   CTBadge *dockBadge;
   
   NSMutableArray *connectionWindowControllers;

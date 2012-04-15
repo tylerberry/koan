@@ -4,7 +4,7 @@
 // Copyright (c) 2011 3James Software.
 //
 
-#import <J3Testing/J3TestCase.h>
+#import "J3TestCase.h"
 #import "MUProtocolStack.h"
 #import "MUTelnetProtocolHandler.h"
 

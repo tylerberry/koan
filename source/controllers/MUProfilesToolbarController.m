@@ -6,6 +6,8 @@
 
 #import "MUProfilesToolbarController.h"
 
+#import "MUProfilesController.h"
+
 @implementation MUProfilesToolbarController
 
 - (void) awakeFromNib
@@ -32,7 +34,7 @@
   	[item setPaletteLabel: _(MULAddWorld)];
   	[item setImage: nil];
   	[item setTarget: windowController];
-  	[item setAction: @selector (addWorld:)];
+    //[item setAction: @selector (addWorld:)];
   }
   else if ([itemIdentifier isEqualToString: MUAddPlayerToolbarItem])
   {
@@ -40,7 +42,7 @@
   	[item setPaletteLabel: _(MULAddPlayer)];
   	[item setImage: nil];
   	[item setTarget: windowController];
-  	[item setAction: @selector (addPlayer:)];
+  	//[item setAction: @selector (addPlayer:)];
   }
   else if ([itemIdentifier isEqualToString: MUEditSelectedRowToolbarItem])
   {
@@ -48,7 +50,7 @@
   	[item setPaletteLabel: _(MULEditItem)];
   	[item setImage: nil];
   	[item setTarget: windowController];
-  	[item setAction: @selector (editSelectedRow:)];
+  	//[item setAction: @selector (editSelectedRow:)];
   }
   else if ([itemIdentifier isEqualToString: MURemoveSelectedRowToolbarItem])
   {
@@ -56,7 +58,7 @@
   	[item setPaletteLabel: _(MULRemoveItem)];
   	[item setImage: nil];
   	[item setTarget: windowController];
-  	[item setAction: @selector (removeSelectedRow:)];
+  	//[item setAction: @selector (removeSelectedRow:)];
   }
   else if ([itemIdentifier isEqualToString: MUEditProfileForSelectedRowToolbarItem])
   {
@@ -64,7 +66,7 @@
   	[item setPaletteLabel: _(MULEditProfile)];
   	[item setImage: nil];
   	[item setTarget: windowController];
-  	[item setAction: @selector (editProfileForSelectedRow:)];
+  	//[item setAction: @selector (editProfileForSelectedRow:)];
   }
   else if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
   {

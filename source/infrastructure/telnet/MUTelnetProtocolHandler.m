@@ -245,6 +245,9 @@ static NSArray *offerableCharsets;
 {
   [options[option] receivedWill];
   
+  if (option == MUTelnetOptionEcho)
+    connectionState.serverWillEcho = YES;
+  
   if (option == MUTelnetOptionMCCP2)
     [self forOption: MUTelnetOptionMCCP1 allowWill: NO allowDo: NO];
 }
@@ -252,6 +255,9 @@ static NSArray *offerableCharsets;
 - (void) receivedWont: (uint8_t) option
 {
   [options[option] receivedWont];
+  
+  if (option == MUTelnetOptionEcho)
+    connectionState.serverWillEcho = NO;
 }
 
 - (void) useBufferedDataAsPrompt
@@ -354,6 +360,7 @@ static NSArray *offerableCharsets;
   for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
     options[i] = [[MUTelnetOption alloc] initWithOption: i delegate: self];
   
+  [self forOption: MUTelnetOptionEcho allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionTransmitBinary allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionSuppressGoAhead allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];

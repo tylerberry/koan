@@ -40,7 +40,7 @@
   }
   
   panelFont = [fontManager convertFont: selectedFont];
-  fontSize = [NSNumber numberWithFloat: [panelFont pointSize]];  
+  fontSize = [NSNumber numberWithFloat: (float) [panelFont pointSize]];  
   
   [currentPrefsValues setValue: [panelFont fontName] forKey: MUPFontName];
   [currentPrefsValues setValue: fontSize forKey: MUPFontSize];

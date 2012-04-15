@@ -53,7 +53,7 @@
   
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blackColor]] forKey: MUPBackgroundColor];
   [initialValues setObject: [fixedPitchFont fontName] forKey: MUPFontName];
-  [initialValues setObject: [NSNumber numberWithFloat: [fixedPitchFont pointSize]] forKey: MUPFontSize];
+  [initialValues setObject: [NSNumber numberWithFloat: (float) [fixedPitchFont pointSize]] forKey: MUPFontSize];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blueColor]] forKey: MUPLinkColor];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]] forKey: MUPTextColor];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor purpleColor]] forKey: MUPVisitedLinkColor];
@@ -312,8 +312,7 @@
 
 @implementation MUApplicationController (Private)
 
-- (IBAction) changeFont: (id) sender
-{
+- (IBAction) changeFont: (id) senderF{
   [preferencesController changeFont];
 }
 
@@ -352,7 +351,9 @@
 
 - (void) playNotificationSound
 {
-  [[NSSound soundNamed: [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice]] play];
+  NSString *soundName = [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice];
+  if (soundName && [soundName length] != 0)
+    [[NSSound soundNamed: soundName] play];
 }
 
 - (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect
@@ -456,7 +457,7 @@
   if (unreadCount == 0)
     [NSApp setApplicationIconImage: nil];
   else
-    [dockBadge badgeApplicationDockIconWithValue: unreadCount insetX: 0.0 y: 0.0];
+    [dockBadge badgeApplicationDockIconWithValue: unreadCount insetX: (float) 0.0 y: (float) 0.0];
 }
 
 - (void) worldsDidChange: (NSNotification *) notification

@@ -59,7 +59,8 @@ enum MUTelnetOptions
   MUTelnetOptionMSSP = 70,
   
   // MUD Client Compression Protocol.
-  // The MCCP extension is defined at <http://mccp.smaugmuds.org/>.
+  // The MCCP extension was defined at <http://mccp.smaugmuds.org/>. The page
+  // seems to be gone now. Try the Internet Archive. :)
   MUTelnetOptionMCCP1 = 85,
   MUTelnetOptionMCCP2 = 86,
   
@@ -89,7 +90,7 @@ enum MUTelnetOptions
 
 enum MUTelnetMSSPSubnegotiationCommands
 {
-  // These commands are defined in RFC 1091.
+  // These commands are defined at <http://tintin.sourceforge.net/mssp/>.
   MUTelnetMSSPVariable = 0,
   MUTelnetMSSPValue = 1
 };

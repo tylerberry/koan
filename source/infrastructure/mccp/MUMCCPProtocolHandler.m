@@ -165,7 +165,7 @@
   {
     memmove (inbuf, stream->next_in, stream->avail_in);
     insize = stream->avail_in;
-    outsize = stream->next_out - outbuf;
+    outsize = (unsigned) (stream->next_out - outbuf);
     
     if (status == Z_STREAM_END)
     {
@@ -196,7 +196,7 @@
   }
   
   // We have some other status error.
-  // FIXME: this is a fatal error.
+  // FIXME: This is a fatal error.
 }
 
 - (BOOL) initializeStream
@@ -210,7 +210,7 @@
   
   if (inflateInit (stream) != Z_OK)
   {
-    // FIXME: this is also a fatal error.
+    // FIXME: This is also a fatal error.
     free (stream);
     stream = NULL;
     return NO;
@@ -238,7 +238,7 @@
   }
   else
   {
-    int old = outalloc;
+    unsigned old = outalloc;
     
     while (outalloc < outsize + bytes)
       outalloc *= 2;
@@ -257,7 +257,7 @@
   }
   else
   {
-    int old = inalloc;
+    unsigned old = inalloc;
     
     while (inalloc < insize + bytes)
       inalloc *= 2;

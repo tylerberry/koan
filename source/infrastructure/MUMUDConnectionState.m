@@ -8,7 +8,7 @@
 
 @implementation MUMUDConnectionState
 
-@synthesize charsetNegotiationStatus, incomingStreamCompressed, nextTerminalTypeIndex, stringEncoding;
+@synthesize charsetNegotiationStatus, incomingStreamCompressed, nextTerminalTypeIndex, serverWillEcho, stringEncoding;
 
 + (id) connectionState
 {
@@ -23,6 +23,7 @@
   charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   incomingStreamCompressed = NO;
   nextTerminalTypeIndex = 0;
+  serverWillEcho = NO;
   stringEncoding = NSASCIIStringEncoding;
 
   return self;

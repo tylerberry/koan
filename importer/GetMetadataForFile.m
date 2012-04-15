@@ -19,13 +19,14 @@ GetMetadataForFile (void *thisInterface,
 {
   Boolean result = FALSE;
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  MUTextLogDocument *logDocument = [[MUTextLogDocument alloc] initWithContentsOfURL: [NSURL fileURLWithPath: (NSString *) pathToFile]
-                                                                             ofType: nil
-                                                                              error: nil];
+  MUTextLogDocument *logDocument = [[MUTextLogDocument alloc]
+                                    initWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
+                                    ofType: nil
+                                    error: nil];
   
   if (logDocument)
   {
-    [logDocument fillDictionaryWithMetadata: (NSMutableDictionary *) attributes];
+    [logDocument fillDictionaryWithMetadata: (__bridge NSMutableDictionary *) attributes];
     [logDocument release];
     result = TRUE;
   }

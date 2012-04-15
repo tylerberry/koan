@@ -37,7 +37,7 @@ static const int32_t currentProxyVersion = 2;
   [encoder encodeInt32: currentProfileVersion forKey: @"version"];
   [encoder encodeBool: profile.autoconnect forKey: @"autoconnect"];
   [encoder encodeObject: [[profile font] fontName] forKey: @"fontName"];
-  [encoder encodeFloat: [[profile font] pointSize] forKey: @"fontSize"];
+  [encoder encodeFloat: (float) [[profile font] pointSize] forKey: @"fontSize"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: [profile textColor]] forKey: @"textColor"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: [profile backgroundColor]] forKey: @"backgroundColor"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: [profile linkColor]] forKey: @"linkColor"];

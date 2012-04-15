@@ -18,12 +18,14 @@ enum charsetNegotiationStatus
   enum charsetNegotiationStatus charsetNegotiationStatus;
   BOOL incomingStreamCompressed;
   unsigned nextTerminalTypeIndex;
+  BOOL serverWillEcho;
   NSStringEncoding stringEncoding;
 }
 
 @property (assign, nonatomic) enum charsetNegotiationStatus charsetNegotiationStatus;
 @property (assign, nonatomic) BOOL incomingStreamCompressed;
 @property (assign, nonatomic) unsigned nextTerminalTypeIndex;
+@property (assign, nonatomic) BOOL serverWillEcho;
 @property (assign, nonatomic) NSStringEncoding stringEncoding;
 
 + (id) connectionState;

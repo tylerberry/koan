@@ -17,8 +17,10 @@
   NSObject <MUMCPProtocolHandlerDelegate> *delegate;
 }
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack
+                connectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithStack: (MUProtocolStack *) stack
+     connectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 - (NSObject <MUMCPProtocolHandlerDelegate> *) delegate;
 - (void) setDelegate: (NSObject <MUMCPProtocolHandlerDelegate> *) object;

@@ -10,13 +10,12 @@
 #import "MUHistoryRing.h"
 #import "MUDisplayTextView.h"
 #import "MUProfile.h"
-#import "RBSplitView.h"
 
 @interface MUConnectionWindowController : NSWindowController <MUMUDConnectionDelegate>
 {
   IBOutlet MUDisplayTextView *receivedTextView;
   IBOutlet NSTextView *inputView;
-  IBOutlet RBSplitView *splitView;
+  IBOutlet NSSplitView *splitView;
   
   id delegate;
   
@@ -43,7 +42,9 @@
 
 - (void) confirmClose: (SEL) callback;
 
+- (IBAction) clearWindow: (id) sender;
 - (IBAction) connect: (id) sender;
+- (IBAction) connectOrDisconnect: (id) sender;
 - (IBAction) disconnect: (id) sender;
 - (IBAction) goToWorldURL: (id) sender;
 - (IBAction) nextCommand: (id) sender;

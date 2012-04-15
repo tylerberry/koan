@@ -91,7 +91,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 - (NSData *) dataOfType: (NSString *) typeName error: (NSError **) error
 {
-  // TODO: should this be a read-only type?
+  // TODO: Should this be a read-only type?
   return nil;
 }
 
@@ -110,7 +110,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
     return YES;
   
   /*
-   TODO: actually report an error here.
+   TODO: Actually report an error here.
    
   if (error)
   {
@@ -178,7 +178,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 - (BOOL) parse: (NSString *) string
 {
-  // TODO: this should have an error field.
+  // TODO: This should have an error field.
   NSMutableDictionary *workingHeaders = [NSMutableDictionary dictionary];
   NSString *lineEnding;
   

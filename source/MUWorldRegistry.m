@@ -65,7 +65,7 @@ static MUWorldRegistry *defaultRegistry = nil;
 #pragma mark -
 #pragma mark Key-value coding accessors
 
-- (void) insertObject: (MUWorld *) world inWorldsAtIndex: (unsigned) worldIndex
+- (void) insertObject: (MUWorld *) world inWorldsAtIndex: (NSUInteger) worldIndex
 {
   @synchronized (self)
   {
@@ -76,7 +76,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   }
 }
 
-- (void) removeObjectFromWorldsAtIndex: (unsigned) worldIndex
+- (void) removeObjectFromWorldsAtIndex: (NSUInteger) worldIndex
 {
   @synchronized (self)
   {
@@ -148,7 +148,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   }
 }
 
-- (MUWorld *) worldAtIndex: (unsigned) worldIndex
+- (MUWorld *) worldAtIndex: (NSUInteger) worldIndex
 {
   MUWorld *world = nil;
   

@@ -63,7 +63,7 @@
 {
   // MUPortFormatter *worldPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
   
-  // FIXME: [worldPortField setFormatter: worldPortFormatter];
+  // [worldPortField setFormatter: worldPortFormatter]; // FIXME: Apply the port formatter.
   
   editingFont = nil;
   
@@ -250,7 +250,17 @@
 
 - (void) outlineViewSelectionDidChange: (NSNotification *) notification
 {
-  return;
+#if 0
+	if ([selection count] == 1)
+  {
+    [self changeItemView];
+  }
+  else // Either multiple selection or no selection = no detail view.
+  {
+    [self removeSubview];
+    currentView = nil;
+  }
+#endif
 }
 
 #pragma mark -
@@ -502,12 +512,8 @@
 
 - (void) saveProfilesOutlineViewState
 {
-  [[NSUserDefaults standardUserDefaults] setObject: profilesExpandedItems forKey: MUPProfilesOutlineViewState];
-}
-
-- (void) applicationWillTerminate: (NSNotification *) notification
-{
-  [self saveProfilesOutlineViewState];
+  [[NSUserDefaults standardUserDefaults] setObject: profilesExpandedItems
+                                            forKey: MUPProfilesOutlineViewState];
 }
 
 @end

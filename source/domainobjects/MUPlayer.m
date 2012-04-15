@@ -83,7 +83,7 @@
 
 - (NSString *) windowTitle
 {
-  // FIXME: WROOONG.
+  // FIXME: This is not the right way to get the window title.
   return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
 }
 

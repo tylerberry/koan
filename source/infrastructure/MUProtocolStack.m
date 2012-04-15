@@ -168,13 +168,9 @@
   
   if ([promptCandidate hasSuffix: @" "])
   {
-    while ([promptCandidate hasSuffix: @" "])
-      promptCandidate = [promptCandidate stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    promptCandidate = [promptCandidate stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
     
-    if ([promptCandidate hasSuffix: @">"]
-        || [promptCandidate hasSuffix: @"?"]
-        || [promptCandidate hasSuffix: @"|"]
-        || [promptCandidate hasSuffix: @":"])
+    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember: [promptCandidate characterAtIndex: [promptCandidate length] - 1]])
       [self useBufferedDataAsPrompt];
   }
 }

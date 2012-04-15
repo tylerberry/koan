@@ -114,9 +114,7 @@ enum MUSearchDirections
   [[self window] setFrameAutosaveName: profile.uniqueIdentifier];
   [[self window] setFrameUsingName: profile.uniqueIdentifier];
 
-  [splitView setAutosaveName: [self splitViewAutosaveName]
-                 recursively: YES];
-  [splitView restoreState: YES];
+  [splitView setAutosaveName: [self splitViewAutosaveName]];
   [splitView adjustSubviews];
   
   currentlySearching = NO;
@@ -180,7 +178,6 @@ enum MUSearchDirections
 {
   if ([notification object] == [self window])
   {
-  	[splitView saveState: YES];
   	[[self window] setDelegate: nil];
   
   	[self postConnectionWindowControllerWillCloseNotification];
@@ -259,7 +256,8 @@ enum MUSearchDirections
     return;
   if (!telnetConnection)
     telnetConnection = [[profile createNewTelnetConnectionWithDelegate: self] retain];
-  // TODO: if (!telnetConnection) { //ERROR! }
+  // if (!telnetConnection) {  }
+  // TODO: Handle this error condition.
   
   [telnetConnection open];
   
@@ -293,11 +291,18 @@ enum MUSearchDirections
 - (IBAction) sendInputText: (id) sender
 {
   [telnetConnection writeLine: [inputView string]];
-  [historyRing saveString: [inputView string]];
+  
+  if (!telnetConnection.state.serverWillEcho)
+  {
+    [historyRing saveString: [inputView string]];
+  
+    if (currentPrompt)
+      [self displayString: [inputView string] asPrompt: NO];
+  }
   
   if (currentPrompt)
   {
-    [self displayString: [inputView string] asPrompt: NO];
+    [self displayString: @"\n"];
     [currentPrompt release];
     currentPrompt = nil;
   }
@@ -430,7 +435,6 @@ enum MUSearchDirections
         key = [[[NSApp currentEvent] charactersIgnoringModifiers] characterAtIndex: 0];
       
       if ([[[NSApp currentEvent] charactersIgnoringModifiers] length] > 1)
-        NSLog (@"Speculative log for #49: length = %d", [[[NSApp currentEvent] charactersIgnoringModifiers] length]);
       
       [self endCompletion];
       

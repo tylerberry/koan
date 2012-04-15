@@ -1,7 +1,7 @@
 //
 // MUTelnetProtocolHandlerTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetProtocolHandlerTests.h"
@@ -34,9 +34,6 @@
 
 - (void) tearDown
 {
-  [protocolStack release];
-  [mockSocketData release];
-  [parsedData release];
 }
 
 - (void) testIACEscapedInData
@@ -398,8 +395,6 @@
 
 - (void) resetTest
 {
-  if (protocolStack)
-    [protocolStack release];
 
   MUMUDConnectionState *connectionState = [MUMUDConnectionState connectionState];
   
@@ -411,13 +406,9 @@
   
   [protocolStack addByteProtocol: protocolHandler];
   
-  if (parsedData)
-    [parsedData release];
   
   parsedData = [[NSMutableData alloc] initWithCapacity: 64];
   
-  if (mockSocketData)
-    [mockSocketData release];
   
   mockSocketData = [[NSMutableData alloc] initWithCapacity: 64];
 }

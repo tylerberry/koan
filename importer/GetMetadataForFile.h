@@ -1,7 +1,7 @@
 //
 // GetMetadataForFile.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #ifndef KOAN_GET_METADATA_H

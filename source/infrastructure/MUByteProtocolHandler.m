@@ -1,7 +1,7 @@
 //
 // MUByteProtocolHandler.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUByteProtocolHandler.h"
@@ -10,7 +10,7 @@
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack
 {
-  return [[[self alloc] initWithStack: stack] autorelease];
+  return [[self alloc] initWithStack: stack];
 }
 
 - (id) initWithStack: (MUProtocolStack *) stack
@@ -18,16 +18,11 @@
   if (!(self = [super init]))
     return nil;
   
-  protocolStack = [stack retain];
+  protocolStack = stack;
   
   return self;
 }
 
-- (void) dealloc
-{
-  [protocolStack release];
-  [super dealloc];
-}
 
 - (void) parseByte: (uint8_t) byte
 {

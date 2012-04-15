@@ -1,7 +1,7 @@
 //
 // MUWorldRegistry.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUServices.h"
@@ -56,11 +56,6 @@ static MUWorldRegistry *defaultRegistry = nil;
   return self;
 }
 
-- (void) dealloc
-{
-  [worlds release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Key-value coding accessors
@@ -188,7 +183,6 @@ static MUWorldRegistry *defaultRegistry = nil;
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: defaultRegistry];
-  [defaultRegistry release];
   defaultRegistry = nil;
 }
 
@@ -217,7 +211,6 @@ static MUWorldRegistry *defaultRegistry = nil;
     return;
   
   [self willChangeValueForKey: @"worlds"];
-  [worlds release];
   worlds = [newWorlds mutableCopy];
   [self didChangeValueForKey: @"worlds"];
   

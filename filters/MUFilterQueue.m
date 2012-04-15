@@ -1,7 +1,7 @@
 //
 // MUFilterQueue.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFilterQueue.h"
@@ -10,7 +10,7 @@
 
 + (id) filterQueue
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init
@@ -22,11 +22,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [filters release];
-  [super dealloc];
-}
 
 - (NSAttributedString *) processAttributedString: (NSAttributedString *) string
 {

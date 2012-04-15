@@ -1,7 +1,7 @@
 //
 // GetMetadataForFile.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #include <CoreFoundation/CoreFoundation.h>
@@ -18,19 +18,18 @@ GetMetadataForFile (void *thisInterface,
                     CFStringRef pathToFile)
 {
   Boolean result = FALSE;
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  MUTextLogDocument *logDocument = [[MUTextLogDocument alloc]
-                                    initWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
-                                    ofType: nil
-                                    error: nil];
-  
-  if (logDocument)
-  {
-    [logDocument fillDictionaryWithMetadata: (__bridge NSMutableDictionary *) attributes];
-    [logDocument release];
-    result = TRUE;
+  @autoreleasepool {
+    MUTextLogDocument *logDocument = [[MUTextLogDocument alloc]
+                                      initWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
+                                      ofType: nil
+                                      error: nil];
+    
+    if (logDocument)
+    {
+      [logDocument fillDictionaryWithMetadata: (__bridge NSMutableDictionary *) attributes];
+      result = TRUE;
+    }
+    
+    return result;
   }
-  
-  [pool release];
-  return result;
 }

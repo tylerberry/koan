@@ -1,7 +1,7 @@
 //
 // MUSocket.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSocket.h"
@@ -63,7 +63,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   va_list args;
   va_start (args, format);
   
-  NSString *message = [[[NSString alloc] initWithFormat: format arguments: args] autorelease];
+  NSString *message = [[NSString alloc] initWithFormat: format arguments: args];
   
   va_end (args);
   
@@ -83,7 +83,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 + (id) socketWithHostname: (NSString *) hostname port: (int) port
 {
-  return [[[self alloc] initWithHostname: hostname port: port] autorelease];
+  return [[self alloc] initWithHostname: hostname port: port];
 }
 
 - (id) initWithHostname: (NSString *) newHostname port: (int) newPort
@@ -109,15 +109,10 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   [self unregisterObjectForNotifications: delegate];
   delegate = nil;
   
-  [availableBytesLock release];
-  [dataToWriteLock release];
-  [dataToWrite release];
-  [hostname release];
  
   if (server)
     free (server);
   
-  [super dealloc];
 }
 
 - (NSObject <MUSocketDelegate> *) delegate
@@ -442,7 +437,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   NSData *data;
   @synchronized (dataToWriteLock)
   {
-    data = [[dataToWrite lastObject] retain];
+    data = [dataToWrite lastObject];
     if (data == nil)
       return;    
     [dataToWrite removeLastObject];
@@ -450,7 +445,6 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
     
   errno = 0; 
   ssize_t bytes_written = full_write (socketfd, [data bytes], (size_t) [data length]);
-  [data release];
   
   if (bytes_written == -1)
   {

@@ -1,7 +1,7 @@
 //
 // MUSocketFactory.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSocketFactory.h"
@@ -46,16 +46,11 @@ static MUSocketFactory *defaultFactory = nil;
     return nil;
   
   useProxy = NO;
-  proxySettings = [[MUProxySettings proxySettings] retain];
+  proxySettings = [MUProxySettings proxySettings];
   
   return self;
 }
 
-- (void) dealloc
-{
-  [proxySettings release];
-  [super dealloc];
-}
 
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port
 {
@@ -84,7 +79,6 @@ static MUSocketFactory *defaultFactory = nil;
 - (void) cleanUpDefaultFactory: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: defaultFactory];
-  [defaultFactory release];
   defaultFactory = nil;
 }
 

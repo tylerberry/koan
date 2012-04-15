@@ -1,7 +1,7 @@
 //
 // MUFilterTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFilterTests.h"
@@ -27,7 +27,6 @@
   NSAttributedString *input = [NSAttributedString attributedStringWithString: @"Foo"];
   NSAttributedString *output = [queue processAttributedString: input];
   [self assert: output equals: input];
-  [queue release];
 }
 
 - (void) testQueue
@@ -41,7 +40,6 @@
   NSAttributedString *input = [NSAttributedString attributedStringWithString: baseString];
   NSAttributedString *output = [queue processAttributedString: input];
   [self assert: [output string] equals: uppercaseString];
-  [queue release];
 }
 
 @end

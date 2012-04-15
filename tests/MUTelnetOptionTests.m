@@ -1,7 +1,7 @@
 //
 // MUTelnetOptionTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetOptionTests.h"
@@ -56,7 +56,6 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) tearDown
 {
-  [option release];
   [super tearDown];
 }
 

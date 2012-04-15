@@ -1,7 +1,7 @@
 //
 // MUFugueEditFilter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFugueEditFilter.h"
@@ -12,7 +12,7 @@
 
 + (id) filterWithDelegate: (id) newDelegate
 {
-  return [[[self alloc] initWithDelegate: newDelegate] autorelease];
+  return [[self alloc] initWithDelegate: newDelegate];
 }
 
 - (id) initWithDelegate: (id) newDelegate

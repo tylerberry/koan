@@ -1,7 +1,7 @@
 //
 // MUProfile.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUCodingService.h"
@@ -51,20 +51,20 @@
                           player: (MUPlayer *) newPlayer
                      autoconnect: (BOOL) newAutoconnect
 {
-  return [[[self alloc] initWithWorld: newWorld
+  return [[self alloc] initWithWorld: newWorld
                                player: newPlayer
-                          autoconnect: newAutoconnect] autorelease];
+                          autoconnect: newAutoconnect];
 }
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
-  return [[[self alloc] initWithWorld: newWorld
-                               player: newPlayer] autorelease];
+  return [[self alloc] initWithWorld: newWorld
+                               player: newPlayer];
 }
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
 {
-  return [[[self alloc] initWithWorld: newWorld] autorelease];
+  return [[self alloc] initWithWorld: newWorld];
 }
 
 - (id) initWithWorld: (MUWorld *) newWorld
@@ -79,8 +79,8 @@
   if (!(self = [super init]))
     return nil;
   
-  world = [newWorld retain];
-  player = [newPlayer retain];
+  world = newWorld;
+  player = newPlayer;
   autoconnect = newAutoconnect;
   [self setFont: newFont];
   [self setTextColor: newTextColor];
@@ -122,9 +122,6 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
-  [player release];
-  [world release];
-  [super dealloc];
 }
 
 #pragma mark -
@@ -142,7 +139,6 @@
   
   [self willChangeValueForKey: @"effectiveFont"];
   [self willChangeValueForKey: @"effectiveFontDisplayName"];
-  [font release];
   font = [newFont copy];
   [self didChangeValueForKey: @"effectiveFont"];
   [self didChangeValueForKey: @"effectiveFontDisplayName"];
@@ -159,7 +155,6 @@
     return;
   
   [self willChangeValueForKey: @"effectiveTextColor"];
-  [textColor release];
   textColor = [newTextColor copy];
   [self didChangeValueForKey: @"effectiveTextColor"];
 }
@@ -175,7 +170,6 @@
     return;
   
   [self willChangeValueForKey: @"effectiveBackgroundColor"];
-  [backgroundColor release];
   backgroundColor = [newBackgroundColor copy];
   [self didChangeValueForKey: @"effectiveBackgroundColor"];
 }
@@ -191,7 +185,6 @@
     return;
   
   [self willChangeValueForKey: @"effectiveLinkColor"];
-  [linkColor release];
   linkColor = [newLinkColor copy];
   [self didChangeValueForKey: @"effectiveLinkColor"];
 }
@@ -207,14 +200,13 @@
     return;
   
   [self willChangeValueForKey: @"effectiveVisitedLinkColor"];
-  [visitedLinkColor release];
   visitedLinkColor = [newVisitedLinkColor copy];
   [self didChangeValueForKey: @"effectiveVisitedLinkColor"];
 }
 
 - (NSObject <MUFormatter> *) formatter
 {
-  return [[[MUProfileFormatter alloc] initWithProfile: self] autorelease];
+  return [[MUProfileFormatter alloc] initWithProfile: self];
 }
 
 #pragma mark -

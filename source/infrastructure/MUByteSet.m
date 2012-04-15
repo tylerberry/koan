@@ -1,7 +1,7 @@
 //
 // MUByteSet.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUByteSet.h"
@@ -10,21 +10,21 @@
 
 + (id) byteSet
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 + (id) byteSetWithBytes: (int) first, ...
 {
   va_list args;
   va_start (args, first);
-  id result = [[[self alloc] initWithFirstByte: first remainingBytes: args] autorelease];
+  id result = [[self alloc] initWithFirstByte: first remainingBytes: args];
   va_end (args);
   return result;
 }
 
 + (id) byteSetWithBytes: (const uint8_t *) bytes length: (size_t) length
 {
-  return [[[self alloc] initWithBytes: bytes length: length] autorelease];
+  return [[self alloc] initWithBytes: bytes length: length];
 }
 
 - (void) addByte: (uint8_t) byte;

@@ -1,7 +1,7 @@
 //
 // MUReadBuffer.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUReadBuffer.h"
@@ -22,7 +22,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 
 + (id) buffer
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init
@@ -35,11 +35,6 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
   return self;
 }
 
-- (void) dealloc
-{
-  [dataBuffer release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark MUReadBuffer protocol
@@ -112,14 +107,14 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 
 - (NSString *) stringByConsumingBufferWithEncoding: (NSStringEncoding) encoding
 {
-  NSString *string = [[[NSString alloc] initWithData: [self dataValue] encoding: encoding] autorelease];
+  NSString *string = [[NSString alloc] initWithData: [self dataValue] encoding: encoding];
   [self clear];
   return string;
 }
 
 - (NSString *) stringValueWithEncoding: (NSStringEncoding) encoding
 {
-  return [[[NSString alloc] initWithData: [self dataValue] encoding: encoding] autorelease];
+  return [[NSString alloc] initWithData: [self dataValue] encoding: encoding];
 }
 
 @end

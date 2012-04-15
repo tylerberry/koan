@@ -1,7 +1,7 @@
 //
 // MUProfileTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfileTests.h"
@@ -11,7 +11,7 @@
 
 - (void) testUniqueIdentifer
 {
-  MUWorld *world = [[[MUWorld alloc] init] autorelease];
+  MUWorld *world = [[MUWorld alloc] init];
   world.name = @"Test World";
   
   MUProfile *profile = [MUProfile profileWithWorld: world];
@@ -26,7 +26,7 @@
 
 - (void) testHasLoginInformation
 {
-  MUWorld *world = [[[MUWorld alloc] init] autorelease];
+  MUWorld *world = [[MUWorld alloc] init];
   world.name = @"Test World";
   MUProfile *profile = [MUProfile profileWithWorld: world];
   [self assertFalse: [profile hasLoginInformation] message: @"no login info"];

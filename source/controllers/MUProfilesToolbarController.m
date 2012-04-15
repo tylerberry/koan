@@ -1,7 +1,7 @@
 //
 // MUProfilesToolbarController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfilesToolbarController.h"
@@ -18,7 +18,6 @@
   [toolbar setAutosavesConfiguration: YES];
   
   [window setToolbar: toolbar];
-  [toolbar release];
 }
 
 #pragma mark -
@@ -77,7 +76,7 @@
     [item setAction: @selector (goToWorldURL:)];
   }
   
-  return [item autorelease];
+  return item;
 }
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar*) toolbar

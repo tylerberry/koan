@@ -1,7 +1,7 @@
 //
 // MUConnectionToolbarController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUConnectionToolbarController.h"
@@ -20,7 +20,6 @@
   
   [window setToolbar: toolbar];
   
-  [toolbar release];
 }
 
 #pragma mark -
@@ -28,7 +27,7 @@
 
 - (NSToolbarItem *) toolbar: (NSToolbar *) toolbar itemForItemIdentifier: (NSString *) itemIdentifier willBeInsertedIntoToolbar: (BOOL) flag
 {
-  NSToolbarItem *item = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier] autorelease];
+  NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
   
   if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
   {

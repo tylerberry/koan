@@ -1,7 +1,7 @@
 //
 // MUMUDConnection.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUMUDConnection.h"
@@ -46,7 +46,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                           port: (int) port
                       delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [[[self alloc] initWithSocketFactory: factory hostname: hostname port: port delegate: delegate] autorelease];
+  return [[self alloc] initWithSocketFactory: factory hostname: hostname port: port delegate: delegate];
 }
 
 + (id) telnetWithHostname: (NSString *) hostname
@@ -64,8 +64,8 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   if (!(self = [super init]))
     return nil;
   
-  state = [[MUMUDConnectionState connectionState] retain];
-  socketFactory = [factory retain];
+  state = [MUMUDConnectionState connectionState];
+  socketFactory = factory;
   hostname = [newHostname copy];
   port = newPort;
   pollTimer = nil;
@@ -101,11 +101,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self close];
   [self cleanUpPollTimer];
   
-  [socketFactory release];
-  [socket release];
-  [hostname release];
-  [protocolStack release];
-  [super dealloc];
 }
 
 - (NSObject <MUMUDConnectionDelegate> *) delegate
@@ -233,7 +228,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
-  NSLog (@"[%@:%d] %@", hostname, port, [[[NSString alloc] initWithFormat: message arguments: args] autorelease]);
+  NSLog (@"[%@:%d] %@", hostname, port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
 #pragma mark -
@@ -241,18 +236,18 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) displayDataAsText: (NSData *) parsedData
 {
-  NSString *parsedString = [[[NSString alloc] initWithBytes: [parsedData bytes]
+  NSString *parsedString = [[NSString alloc] initWithBytes: [parsedData bytes]
                                                      length: [parsedData length]
-                                                   encoding: self.state.stringEncoding] autorelease];
+                                                   encoding: self.state.stringEncoding];
   
   [self.delegate displayString: parsedString];
 }
 
 - (void) displayDataAsPrompt: (NSData *) parsedData
 {
-  NSString *parsedPromptString = [[[NSString alloc] initWithBytes: [parsedData bytes]
+  NSString *parsedPromptString = [[NSString alloc] initWithBytes: [parsedData bytes]
                                                            length: [parsedData length]
-                                                         encoding: self.state.stringEncoding] autorelease];
+                                                         encoding: self.state.stringEncoding];
   
   [self.delegate displayPrompt: parsedPromptString];
 }

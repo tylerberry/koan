@@ -1,7 +1,7 @@
 //
 // MUTextLogger.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "categories/NSFileManager (Recursive).h"
@@ -23,12 +23,12 @@
 
 + (MUFilter *) filterWithWorld: (MUWorld *) world
 {
-  return [[[self alloc] initWithWorld: world] autorelease];
+  return [[self alloc] initWithWorld: world];
 }
 
 + (MUFilter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player
 {
-  return [[[self alloc] initWithWorld: world player: player] autorelease];
+  return [[self alloc] initWithWorld: world player: player];
 }
 
 - (id) initWithOutputStream: (NSOutputStream *) stream
@@ -36,7 +36,7 @@
   if (!stream || !(self = [super init]))
     return nil;
   
-  output = [stream retain];
+  output = stream;
   [output open];
   
   return self;
@@ -74,8 +74,6 @@
 - (void) dealloc
 {
   [output close];
-  [output release];
-  [super dealloc];
 }
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
@@ -130,7 +128,7 @@
   const char *buffer;
   
   va_start (args, format);
-  string = [[[NSString alloc] initWithFormat: format arguments: args] autorelease];
+  string = [[NSString alloc] initWithFormat: format arguments: args];
   va_end (args);
   buffer = [string UTF8String];
   [stream write: (uint8_t *) buffer maxLength: strlen (buffer)];  

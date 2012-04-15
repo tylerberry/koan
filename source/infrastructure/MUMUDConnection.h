@@ -1,7 +1,7 @@
 //
 // MUMUDConnection.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -42,9 +42,9 @@ extern NSString *MUMUDConnectionErrorMessageKey;
   NSTimer *pollTimer;
 }
 
-@property (assign, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
-@property (retain, nonatomic) MUSocket *socket;
-@property (retain, nonatomic) MUMUDConnectionState *state;
+@property (unsafe_unretained, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
+@property ( nonatomic) MUSocket *socket;
+@property ( nonatomic) MUMUDConnectionState *state;
 
 + (id) telnetWithSocketFactory: (MUSocketFactory *) factory
                       hostname: (NSString *) hostname

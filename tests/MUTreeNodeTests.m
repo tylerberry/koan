@@ -26,7 +26,6 @@
 
 - (void) tearDown
 {
-  [node release];
 }
 
 
@@ -94,7 +93,7 @@
   }
   @finally
   {
-    [thisNode release];
+    thisNode = nil;
   }
 }
 
@@ -106,7 +105,7 @@
 
 - (MUTreeNode *) testingNode
 {
-  return [[[MUTreeNode alloc] init] autorelease];
+  return [[MUTreeNode alloc] init];
 }
 
 @end

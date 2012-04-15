@@ -1,7 +1,7 @@
 //
 // MUWriteBuffer.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUWriteBuffer.h"
@@ -29,7 +29,7 @@
 
 + (id) buffer
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init
@@ -44,16 +44,9 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [blocks release];
-  [super dealloc];
-}
 
 - (void) setByteDestination: (NSObject <MUByteDestination> *) object
 {
-  [object retain];
-  [destination release];
   destination = object;
 }
 
@@ -235,7 +228,6 @@
 {
   if (blocks == newBlocks)
     return;
-  [blocks release];
   blocks = [newBlocks mutableCopy];
 }
 

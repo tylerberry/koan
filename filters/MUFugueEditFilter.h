@@ -1,7 +1,7 @@
 //
 // MUFugueEditFilter.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -9,10 +9,10 @@
 
 @interface MUFugueEditFilter : MUFilter
 {
-  id delegate;
+  id __unsafe_unretained delegate;
 }
 
-@property (assign, nonatomic) id delegate;
+@property (unsafe_unretained, nonatomic) id delegate;
 
 + (id) filterWithDelegate: (id) newDelegate;
 

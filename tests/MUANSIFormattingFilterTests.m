@@ -1,7 +1,7 @@
 //
 // MUANSIFormattingFilterTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUANSIFormattingFilterTests.h"
@@ -84,7 +84,6 @@
 
 - (void) tearDown
 {
-  [queue release];
 }
 
 - (void) testNoCode
@@ -576,9 +575,9 @@
 
 - (void) testRetainsPartialCode
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  [self assertInput: @"\x1B[" hasOutput: @""];
-  [pool release];
+  @autoreleasepool {
+    [self assertInput: @"\x1B[" hasOutput: @""];
+  }
   [self assertInput: @"m" hasOutput: @""];
 }
 

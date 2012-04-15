@@ -46,7 +46,7 @@
 //   POSSIBILITY OF SUCH DAMAGE.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "ImageAndTextCell.h"
@@ -60,24 +60,19 @@
   if (!(self = [super init]))
     return nil;
 	
-  [self setFont: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]];
-  [self setLineBreakMode: NSLineBreakByTruncatingTail];
-  [self setSelectable: YES];
+  self.font = [NSFont systemFontOfSize: [NSFont smallSystemFontSize]];
+  self.lineBreakMode = NSLineBreakByTruncatingTail;
+  self.selectable = YES;
   
   return self;
 }
 
-- (void) dealloc
-{
-  [image release];
-  [super dealloc];
-}
 
 - (id) copyWithZone: (NSZone *) zone
 {
-  ImageAndTextCell *cell = (ImageAndTextCell *) [super copyWithZone: zone];
-  cell->image = [image retain];
-  return cell;
+  ImageAndTextCell *newCell = (ImageAndTextCell *) [super copyWithZone: zone];
+  newCell.image = image;
+  return newCell;
 }
 
 - (NSRect) imageRectForBounds: (NSRect) cellFrame
@@ -114,7 +109,11 @@
   return result;
 }
 
-- (void) editWithFrame: (NSRect) cellFrame inView: (NSView *) controlView editor: (NSText *) editor delegate: (id) delegate event: (NSEvent *) event
+- (void) editWithFrame: (NSRect) cellFrame
+                inView: (NSView *) controlView
+                editor: (NSText *) editor
+              delegate: (id) delegate
+                 event: (NSEvent *) event
 {
   NSRect textFrame, imageFrame;
   NSDivideRect (cellFrame, &imageFrame, &textFrame, 3 + [self.image size].width, NSMinXEdge);
@@ -126,7 +125,12 @@
                  event: event];
 }
 
-- (void) selectWithFrame: (NSRect) cellFrame inView: (NSView *) controlView editor: (NSText *) editor delegate: (id) delegate start: (NSInteger) selectStart length: (NSInteger) selectLength
+- (void) selectWithFrame: (NSRect) cellFrame
+                  inView: (NSView *) controlView
+                  editor: (NSText *) editor
+                delegate: (id) delegate
+                   start: (NSInteger) selectStart
+                  length: (NSInteger) selectLength
 {
   NSRect textFrame, imageFrame;
   NSDivideRect (cellFrame, &imageFrame, &textFrame, 3 + [self.image size].width, NSMinXEdge);
@@ -144,13 +148,13 @@
   if (image != nil)
   {
     NSRect imageFrame;
-    NSSize imageSize = [self.image size];
+    NSSize imageSize = self.image.size;
     
     NSDivideRect (cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
     
     if ([self drawsBackground])
     {
-      [[self backgroundColor] set];
+      [self.backgroundColor set];
       NSRectFill (imageFrame);
     }
     
@@ -182,7 +186,7 @@
   // If we have an image, we need to see if the user clicked on the image portion.
   if (image != nil)
   {
-    NSSize imageSize = [self.image size];
+    NSSize imageSize = self.image.size;
     NSRect imageFrame;
     NSDivideRect (cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
     
@@ -190,16 +194,21 @@
     imageFrame.size = imageSize;
     
     // If the point is in the image rect, then it is a content hit.
-    if (NSMouseInRect (point, imageFrame, [controlView isFlipped]))
+    if (NSMouseInRect (point, imageFrame, controlView.isFlipped))
     {
-      // We consider this just a content area. It is not trackable, nor it it editable text. If it was, we would or in the additional items.
-      // By returning the correct parts, we allow NSTableView to correctly begin an edit when the text portion is clicked on.
+      // We consider this just a content area. It is not trackable, nor it it editable text. If it was, we would or in
+      // the additional items.
+      
+      // By returning the correct parts, we allow NSTableView to correctly begin an edit when the text portion is
+      // clicked on.
+      
       return NSCellHitContentArea;
     }        
   }
   
   // At this point, the cellFrame has been modified to exclude the portion for the image.
   // Let the superclass handle the hit testing at this point.
+  
   return [super hitTestForEvent: event inRect: cellFrame ofView: controlView];    
 }
 

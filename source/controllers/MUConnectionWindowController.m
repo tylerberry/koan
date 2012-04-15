@@ -1,7 +1,7 @@
 //
 // MUConnectionWindowController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUConnectionWindowController.h"
@@ -48,10 +48,10 @@ enum MUSearchDirections
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow"]))
     return nil;
   
-  profile = [newProfile retain];
+  profile = newProfile;
   
-  historyRing = [[MUHistoryRing historyRing] retain];
-  filterQueue = [[MUFilterQueue filterQueue] retain];
+  historyRing = [MUHistoryRing historyRing];
+  filterQueue = [MUFilterQueue filterQueue];
   
   [filterQueue addFilter: [MUANSIFormattingFilter filterWithFormatter: [profile formatter]]];
   [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
@@ -126,14 +126,8 @@ enum MUSearchDirections
   
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
   
-  [telnetConnection release];
-  [filterQueue release];
-  [historyRing release];
-  [profile release];
   
-  [currentPrompt release];
   
-  [super dealloc];
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem
@@ -255,17 +249,17 @@ enum MUSearchDirections
   if ([self isConnectedOrConnecting])
     return;
   if (!telnetConnection)
-    telnetConnection = [[profile createNewTelnetConnectionWithDelegate: self] retain];
+    telnetConnection = [profile createNewTelnetConnectionWithDelegate: self];
   // if (!telnetConnection) {  }
   // TODO: Handle this error condition.
   
   [telnetConnection open];
   
-  pingTimer = [[NSTimer scheduledTimerWithTimeInterval: 60.0
+  pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
                                                 target: self
                                               selector: @selector (sendPeriodicPing:)
                                               userInfo: nil
-                                               repeats: YES] retain];
+                                               repeats: YES];
   
   [[self window] makeFirstResponder: inputView];
 }
@@ -303,7 +297,6 @@ enum MUSearchDirections
   if (currentPrompt)
   {
     [self displayString: @"\n"];
-    [currentPrompt release];
     currentPrompt = nil;
   }
   
@@ -550,7 +543,6 @@ enum MUSearchDirections
 - (void) cleanUpPingTimer
 {
   [pingTimer invalidate];
-  [pingTimer release];
   pingTimer = nil;  
 }
 
@@ -584,8 +576,6 @@ enum MUSearchDirections
   
   if (stringIsPrompt)
   {
-    if (currentPrompt)
-      [currentPrompt release];
     currentPrompt = [string copy];
   }
   
@@ -653,7 +643,7 @@ enum MUSearchDirections
   
   if (currentlySearching)
   {
-    currentPrefix = [[[[inputView string] copy] autorelease] substringToIndex: [inputView selectedRange].location];
+    currentPrefix = [[[inputView string] copy] substringToIndex: [inputView selectedRange].location];
     
     if ([historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
@@ -663,7 +653,7 @@ enum MUSearchDirections
     }
   }
   else
-    currentPrefix = [[[inputView string] copy] autorelease];
+    currentPrefix = [[inputView string] copy];
   
   foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
                                                 : [historyRing searchForwardForStringPrefix: currentPrefix];

@@ -1,7 +1,7 @@
 //
 // MUNaiveURLFilterTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUNaiveURLFilterTests.h"
@@ -88,7 +88,6 @@
 
 - (void) tearDown
 {
-  [queue release];
 }
 
 - (void) testNoLink

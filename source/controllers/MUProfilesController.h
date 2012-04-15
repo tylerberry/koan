@@ -1,7 +1,7 @@
 //
 // MUProfilesController.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -26,7 +26,7 @@
   NSFont *editingFont;
 }
 
-@property (assign) NSMutableArray *profilesTreeArray;
+@property  NSMutableArray *profilesTreeArray;
 
 - (IBAction) chooseNewFont: (id) sender;
 - (IBAction) goToWorldURL: (id) sender;

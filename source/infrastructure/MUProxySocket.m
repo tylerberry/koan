@@ -1,7 +1,7 @@
 //
 // MUProxySocket.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProxySocket.h"
@@ -27,7 +27,7 @@
 
 + (id) socketWithHostname: (NSString *) hostname port: (int) port proxySettings: (MUProxySettings *) settings
 {
-  return [[[self alloc] initWithHostname: hostname port: port proxySettings: settings] autorelease];
+  return [[self alloc] initWithHostname: hostname port: port proxySettings: settings];
 }
 
 - (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue proxySettings: (MUProxySettings *) settings
@@ -37,20 +37,13 @@
   
   realHostname = [hostnameValue copy];
   realPort = portValue;
-  proxySettings = [settings retain];
-  outputBuffer = [[MUWriteBuffer buffer] retain];
+  proxySettings = settings;
+  outputBuffer = [MUWriteBuffer buffer];
   [outputBuffer setByteDestination: self];
   
   return self;
 }
 
-- (void) dealloc
-{
-  [realHostname release];
-  [proxySettings release];
-  [outputBuffer release];
-  [super dealloc];
-}
 
 - (void) performPostConnectNegotiation
 {

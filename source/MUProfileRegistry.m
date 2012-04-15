@@ -1,7 +1,7 @@
 //
 // MUProfileRegistry.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfileRegistry.h"
@@ -46,11 +46,6 @@ static MUProfileRegistry *defaultRegistry = nil;
   return self;
 }
 
-- (void) dealloc
-{
-  [profiles release];
-  [super dealloc];
-}
 
 - (MUProfile *) profileForWorld: (MUWorld *) world
 {
@@ -144,7 +139,6 @@ static MUProfileRegistry *defaultRegistry = nil;
   if (profiles == newProfiles)
     return;
   
-  [profiles release];
   profiles = [newProfiles mutableCopy];
   
   [self writeProfilesToUserDefaults];
@@ -159,7 +153,6 @@ static MUProfileRegistry *defaultRegistry = nil;
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: defaultRegistry];
-  [defaultRegistry release];
   defaultRegistry = nil;
 }
 

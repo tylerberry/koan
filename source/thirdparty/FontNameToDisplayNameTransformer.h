@@ -44,7 +44,7 @@
 //   DAMAGE.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Foundation/Foundation.h>

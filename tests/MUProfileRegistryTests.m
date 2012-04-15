@@ -1,7 +1,7 @@
 //
 // MUProfileRegistryTest.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfileRegistryTests.h"
@@ -32,7 +32,6 @@
 
 - (void) tearDown
 {
-  [registry release];
 }
 
 - (void) testSharedRegistry
@@ -141,7 +140,7 @@
 
 - (MUWorld *) testWorld
 {
-  MUWorld *world = [[[MUWorld alloc] init] autorelease];
+  MUWorld *world = [[MUWorld alloc] init];
   world.name = @"Test World";
   return world;
 }

@@ -1,7 +1,7 @@
 //
 // MUFugueEditFilterTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFugueEditFilterTests.h"
@@ -23,8 +23,6 @@
 
 - (void) tearDown
 {
-  [queue release];
-  [editString release];
 }
 
 - (void) testIgnoresNormalInput

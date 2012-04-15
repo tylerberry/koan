@@ -1,7 +1,7 @@
 //
 // MUProtocolStack.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProtocolStack.h"
@@ -31,13 +31,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [byteProtocolHandlers release];
-  [parsingBuffer release];
-  [preprocessingBuffer release];
-  [super dealloc];
-}
 
 - (NSObject <MUProtocolStackDelegate> *) delegate
 {
@@ -111,7 +104,7 @@
   NSData *preprocessedData = preprocessingBuffer;
   preprocessingBuffer = nil;
   
-  return [preprocessedData autorelease];
+  return preprocessedData;
 }
 
 - (void) parseByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
@@ -162,9 +155,9 @@
 
 - (void) maybeUseBufferedDataAsPrompt
 {
-  NSString *promptCandidate = [[[NSString alloc] initWithBytes: [parsingBuffer bytes]
+  NSString *promptCandidate = [[NSString alloc] initWithBytes: [parsingBuffer bytes]
                                                         length: [parsingBuffer length]
-                                                      encoding: connectionState.stringEncoding] autorelease];
+                                                      encoding: connectionState.stringEncoding];
   
   if ([promptCandidate hasSuffix: @" "])
   {

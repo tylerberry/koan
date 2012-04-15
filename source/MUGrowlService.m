@@ -1,7 +1,7 @@
 //
 // MUGrowlService.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUGrowlService.h"
@@ -41,7 +41,7 @@ static MUGrowlService *defaultGrowlService;
   if (!(self = [super init]))
     return nil;
   
-  [GrowlApplicationBridge setGrowlDelegate: self];
+  GrowlApplicationBridge.growlDelegate = self;
   
   return self;
 }
@@ -99,7 +99,6 @@ static MUGrowlService *defaultGrowlService;
 - (void) cleanUpDefaultGrowlService: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: defaultGrowlService];
-  [defaultGrowlService release];
   defaultGrowlService = nil;
 }
 

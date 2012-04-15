@@ -1,7 +1,7 @@
 //
 // MUHistoryRing.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUHistoryRing.h"
@@ -10,7 +10,7 @@
 
 + (id) historyRing
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init
@@ -26,12 +26,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [ring release];
-  [updates release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Accessors
@@ -61,7 +55,7 @@
 
 - (void) saveString: (NSString *) string
 {
-  NSString *copy = [[string copy] autorelease];
+  NSString *copy = [string copy];
   
   [updates removeObjectForKey: [NSNumber numberWithInteger: cursor]];
   
@@ -69,7 +63,6 @@
   {
     [ring addObject: copy];
   }
-  [buffer release];
   buffer = nil;
   cursor = -1;
   searchCursor = -1;
@@ -77,12 +70,11 @@
 
 - (void) updateString: (NSString *) string
 {
-  NSString *copy = [[string copy] autorelease];
+  NSString *copy = [string copy];
   
   if (cursor == -1)
   {
-    [buffer release];
-    buffer = [copy retain];
+    buffer = copy;
   }
   else
   {
@@ -134,7 +126,7 @@
   
   searchCursor = 0;
   
-  while (searchCursor < [self count])
+  while (searchCursor < (NSInteger) [self count])
   {
     NSString *candidate = [self stringAtIndex: searchCursor];
     
@@ -150,7 +142,6 @@
     searchCursor++;
   }
   
-  [uniqueMatchDictionary release];
   searchCursor = savedCursor;
     
   return uniqueMatchCount;

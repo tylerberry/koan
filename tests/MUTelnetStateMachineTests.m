@@ -1,7 +1,7 @@
 //
 // MUTelnetStateMachineTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetStateMachineTests.h"
@@ -46,13 +46,11 @@
 {
   [self resetStateMachine];
   lastByteInput = -1;
-  output = [[NSMutableData data] retain];
+  output = [NSMutableData data];
 }
 
 - (void) tearDown
 {
-  [output release];
-  [stateMachine release];
 }
 
 - (void) testTextStateTransitions
@@ -225,14 +223,14 @@
 givenAnyByteProducesState: (Class) nextStateClass
  exceptForThoseInSet: (MUByteSet *) exclusions
 {
-  [self assertStateObject: [[[stateClass alloc] init] autorelease] givenAnyByteProducesState: nextStateClass exceptForThoseInSet: exclusions];
+  [self assertStateObject: [[stateClass alloc] init] givenAnyByteProducesState: nextStateClass exceptForThoseInSet: exclusions];
 }
 
 - (void) assertState: (Class) stateClass
            givenByte: (uint8_t) givenByte
        producesState: (Class) nextStateClass
 {
-  [self assertStateObject: [[[stateClass alloc] init] autorelease]
+  [self assertStateObject: [[stateClass alloc] init]
                 givenByte: givenByte
             producesState: nextStateClass];
 }
@@ -264,15 +262,13 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 - (void) giveStateClass: (Class) stateClass byte: (uint8_t) byte
 {
-  [[[[stateClass alloc] init] autorelease] parse: byte forStateMachine: stateMachine protocolHandler: self];  
+  [[[stateClass alloc] init] parse: byte forStateMachine: stateMachine protocolHandler: self];  
 }
 
 - (void) resetStateMachine
 {
-  if (stateMachine)
-    [stateMachine release];
   
-  stateMachine = [[MUTelnetStateMachine stateMachine] retain];
+  stateMachine = [MUTelnetStateMachine stateMachine];
 }
 
 @end

@@ -1,7 +1,7 @@
 //
 // MUProxySettingsController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProxySettingsController.h"
@@ -20,7 +20,7 @@
 
 - (void) awakeFromNib
 {
-  MUPortFormatter *portFormatter = [[[MUPortFormatter alloc] init] autorelease];
+  MUPortFormatter *portFormatter = [[MUPortFormatter alloc] init];
   
   [portField setFormatter: portFormatter];
 }

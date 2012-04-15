@@ -1,7 +1,7 @@
 //
 // MUTextLogDocument.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTextLogDocument.h"
@@ -23,6 +23,8 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 @implementation MUTextLogDocument
 
+@synthesize content, headers;
+
 - (id) init
 {
   if (!(self = [super init]))
@@ -41,19 +43,12 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   
   if (![self parse: string])
   {
-    [self release];
     return nil;
   }
   
   return self;
 }
 
-- (void) dealloc
-{
-  [content release];
-  [headers release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Accessors
@@ -194,12 +189,8 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
       return NO;
   }
   
-  if (headers)
-    [headers release];
-  headers = [workingHeaders retain];
+  headers = workingHeaders;
   
-  if (content)
-    [content release];
   content = [[string substringFromIndex: endOfHeaders + (2 * [lineEnding length])] copy];
   
   return YES;

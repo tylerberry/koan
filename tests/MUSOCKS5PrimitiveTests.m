@@ -1,7 +1,7 @@
 //
 // MUSOCKS5PrimitiveTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSOCKS5PrimitiveTests.h"
@@ -26,7 +26,7 @@
 
 + (id) mockByteSource
 {
-  return [[[MUMockByteSource alloc] init] autorelease];
+  return [[MUMockByteSource alloc] init];
 }
 
 - (void) appendBytes: (const uint8_t *) bytes length: (unsigned) length
@@ -80,7 +80,6 @@
 
 - (void) tearDown
 {
-  [buffer release];
 }
 
 - (void) testMethodSelection

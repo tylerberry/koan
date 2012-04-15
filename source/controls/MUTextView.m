@@ -1,7 +1,7 @@
 //
 // MUTextView.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTextView.h"
@@ -16,7 +16,7 @@
       || menuItemAction == @selector (pasteAsPlainText:)
       || menuItemAction == @selector (pasteAsRichText:))
   {
-    if ([[self delegate] respondsToSelector: @selector (textView:pasteAsPlainText:)])
+    if ([self.delegate respondsToSelector: @selector (textView:pasteAsPlainText:)])
       return YES;
   }
   
@@ -27,8 +27,8 @@
 {
   BOOL result = NO;
   
-  if ([[self delegate] respondsToSelector: @selector (textView:insertText:)])
-    result = [(NSObject <MUTextViewDelegate> *) [self delegate] textView: self insertText: string];
+  if ([self.delegate respondsToSelector: @selector (textView:insertText:)])
+    result = [(NSObject <MUTextViewDelegate> *) self.delegate textView: self insertText: string];
   
   if (!result)
     [super insertText: string];
@@ -43,8 +43,8 @@
 {
   BOOL result = NO;
   
-  if ([[self delegate] respondsToSelector: @selector (textView:pasteAsPlainText:)])
-    result = [(NSObject <MUTextViewDelegate> *) [self delegate] textView: self pasteAsPlainText: sender];
+  if ([self.delegate respondsToSelector: @selector (textView:pasteAsPlainText:)])
+    result = [(NSObject <MUTextViewDelegate> *) self.delegate textView: self pasteAsPlainText: sender];
   
   if (!result)
     [super pasteAsPlainText: sender];

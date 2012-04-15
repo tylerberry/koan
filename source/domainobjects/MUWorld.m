@@ -1,7 +1,7 @@
 //
 // MUWorld.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSocketFactory.h"
@@ -23,11 +23,11 @@ static const int32_t currentWorldVersion = 7;
   											URL: (NSString *) newURL
   									players: (NSArray *) newPlayers
 {
-  return [[[self alloc] initWithName: newName
+  return [[self alloc] initWithName: newName
   													hostname: newHostname
   															port: newPort
   															 URL: newURL
-  													 players: newPlayers] autorelease];
+  													 players: newPlayers];
 }
 
 + (MUWorld *) worldWithHostname: (NSString *) newHostname
@@ -49,9 +49,9 @@ static const int32_t currentWorldVersion = 7;
   if (!(self = [super initWithName: newName children: newPlayers]))
     return nil;
   
-  hostname = [newHostname copy];
-  port = [newPort copy];
-  url = [newURL copy];
+  self.hostname = newHostname;
+  self.port = newPort;
+  self.url = newURL;
   
   return self;
 }
@@ -75,20 +75,13 @@ static const int32_t currentWorldVersion = 7;
                     players: nil];
 }
 
-- (void) dealloc
-{
-  [hostname release];
-  [port release];
-  [url release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Actions
 
 - (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [MUMUDConnection telnetWithHostname: self.hostname port: [self.port intValue] delegate: delegate];
+  return [MUMUDConnection telnetWithHostname: self.hostname port: self.port.intValue delegate: delegate];
 }
 
 #pragma mark -
@@ -99,11 +92,11 @@ static const int32_t currentWorldVersion = 7;
   NSMutableString *result = [NSMutableString stringWithString: @"world:"];
   NSArray *tokens = [self.name componentsSeparatedByString: @" "];
   
-  if ([tokens count] > 0)
+  if (tokens.count > 0)
   {
     [result appendFormat: @"%@", [[tokens objectAtIndex: 0] lowercaseString]];
     
-    for (unsigned i = 1; i < [tokens count]; i++)
+    for (NSUInteger i = 1; i < tokens.count; i++)
       [result appendFormat: @".%@", [[tokens objectAtIndex: i] lowercaseString]];
   }
   return result;
@@ -137,33 +130,33 @@ static const int32_t currentWorldVersion = 7;
   
   if (version >= 5)
   {
-    name = [[decoder decodeObjectForKey: @"name"] copy];
-    hostname = [[decoder decodeObjectForKey: @"hostname"] copy];
+    self.name = [decoder decodeObjectForKey: @"name"];
+    self.hostname = [decoder decodeObjectForKey: @"hostname"];
   }
   else
   {
-    name = [[decoder decodeObjectForKey: @"worldName"] copy];
-    hostname = [[decoder decodeObjectForKey: @"worldHostname"] copy];
+    self.name = [decoder decodeObjectForKey: @"worldName"];
+    self.hostname = [decoder decodeObjectForKey: @"worldHostname"];
   }
   
   if (version >= 6)
-    port = [[NSNumber alloc] initWithInt: [decoder decodeIntForKey: @"port"]];
+    self.port = [[NSNumber alloc] initWithInt: [decoder decodeIntForKey: @"port"]];
   else if (version == 5)
-    port = [[decoder decodeObjectForKey: @"port"] copy];
+    self.port = [decoder decodeObjectForKey: @"port"];
   else
-    port = [[decoder decodeObjectForKey: @"worldPort"] copy];
+    self.port = [decoder decodeObjectForKey: @"worldPort"];
   
   if (version >= 7)
-    children = [[decoder decodeObjectForKey: @"children"] mutableCopy];
+    self.children = [decoder decodeObjectForKey: @"children"];
   else
-    children = [[decoder decodeObjectForKey: @"players"] mutableCopy];
+    self.children = [decoder decodeObjectForKey: @"players"];
   
   if (version >= 5)
-    url = [[decoder decodeObjectForKey: @"URL"] copy];
+    self.url = [decoder decodeObjectForKey: @"URL"];
   else if (version >= 1)
-    url = [[decoder decodeObjectForKey: @"worldURL"] copy];
+    self.url = [decoder decodeObjectForKey: @"worldURL"];
   else
-    url = [@"" copy];
+    self.url = @"";
   
   return self;
 }

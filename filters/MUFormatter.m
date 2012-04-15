@@ -1,7 +1,7 @@
 //
 // MUFormatter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFormatter.h"
@@ -15,7 +15,7 @@
 
 + (id) formatterWithForegroundColor: (NSColor *) fore backgroundColor: (NSColor *) back font: (NSFont *) font
 {
-  return [[[self alloc] initWithForegroundColor: fore backgroundColor: back font: font] autorelease];
+  return [[self alloc] initWithForegroundColor: fore backgroundColor: back font: font];
 }
 
 + (NSColor *) testingBackground
@@ -37,19 +37,12 @@
 {
   if (!(self = [super init]))
     return nil;
-  foreground = [fore retain];
-  background = [back retain];
-  font = [aFont retain];
+  foreground = fore;
+  background = back;
+  font = aFont;
   return self;
 }
 
-- (void) dealloc
-{
-  [foreground release];
-  [background release];
-  [font release];
-  [super dealloc];
-}
 
 - (NSColor *) background
 {

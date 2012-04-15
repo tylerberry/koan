@@ -1,7 +1,7 @@
 //
 // MUPlayer.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUPlayer.h"
@@ -15,7 +15,7 @@
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword
 {
-  return [[[self alloc] initWithName: newName password: newPassword] autorelease];
+  return [[self alloc] initWithName: newName password: newPassword];
 }
 
 - (id) initWithName: (NSString *) newName
@@ -34,11 +34,6 @@
   return [self initWithName: @"New player" password: @""];
 }
 
-- (void) dealloc
-{
-  [password release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Property method implementations

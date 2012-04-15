@@ -1,28 +1,32 @@
 //
 // MUProfileFormatter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfileFormatter.h"
 #import "MUProfile.h"
 
+@interface MUProfileFormatter ()
+
+@property (unsafe_unretained, nonatomic) MUProfile *profile;
+
+@end
+
+#pragma mark -
+
 @implementation MUProfileFormatter
+
+@synthesize profile;
 
 - (id) initWithProfile: (MUProfile *) newProfile
 {
   if (!(self = [super init]))
     return nil;
   
-  profile = [newProfile retain];
+  self.profile = newProfile;
   
   return self;
-}
-
-- (void) dealloc
-{
-  [profile release];
-  [super dealloc];
 }
 
 #pragma mark -
@@ -30,23 +34,23 @@
 
 - (NSFont *) font
 {
-  return [profile effectiveFont];
+  return self.profile.effectiveFont;
 }
 
 - (NSColor *) foreground
 {
-  if ([profile textColor])
-    return [profile textColor];
+  if (self.profile.textColor)
+    return self.profile.textColor;
   else
-    return [NSUnarchiver unarchiveObjectWithData: [profile effectiveTextColor]];  
+    return [NSUnarchiver unarchiveObjectWithData: self.profile.effectiveTextColor];
 }
 
 - (NSColor *) background
 {
-  if ([profile backgroundColor])
-    return [profile backgroundColor];
+  if (self.profile.backgroundColor)
+    return self.profile.backgroundColor;
   else
-    return [NSUnarchiver unarchiveObjectWithData: [profile effectiveBackgroundColor]];  
+    return [NSUnarchiver unarchiveObjectWithData: self.profile.effectiveBackgroundColor];  
 }
 
 @end

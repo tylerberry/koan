@@ -1,7 +1,7 @@
 //
 // MUWriteBufferTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUWriteBufferTests.h"
@@ -20,15 +20,13 @@
 
 - (void) setUp
 {
-  buffer = [[MUWriteBuffer buffer] retain];
+  buffer = [MUWriteBuffer buffer];
   [buffer setByteDestination: self];
-  output = [[NSMutableData data] retain];
+  output = [NSMutableData data];
 }
 
 - (void) tearDown
 {
-  [output release];
-  [buffer release];
 }
 
 - (void) testWriteNil
@@ -119,7 +117,7 @@
 
 - (NSString *) output
 {
-  return [[[NSString alloc] initWithData: output encoding: NSASCIIStringEncoding] autorelease];
+  return [[NSString alloc] initWithData: output encoding: NSASCIIStringEncoding];
 }
 
 @end

@@ -1,7 +1,7 @@
 //
 // NSFileManager (Recursive).m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 // License:
 // 

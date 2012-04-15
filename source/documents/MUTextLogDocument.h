@@ -1,20 +1,18 @@
 //
 // MUTextLogDocument.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
 
 @interface MUTextLogDocument : NSDocument
-{
-  NSDictionary *headers;
-  NSString *content;
-}
+
+@property (strong, nonatomic) NSString *content;
+@property (strong, nonatomic) NSDictionary *headers;
 
 - (id) mockInitWithString: (NSString *) string;
 
-- (NSString *) content;
 - (void) fillDictionaryWithMetadata: (NSMutableDictionary *) dictionary;
 - (NSString *) headerForKey: (id) key;
 

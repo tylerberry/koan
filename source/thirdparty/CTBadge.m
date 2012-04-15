@@ -1,6 +1,6 @@
 //
 // CTBadge.m
-// Version: 2.0
+// Version: 2.0 modified
 //
 // Copyright (c) 2007 Chad Weider.
 //
@@ -9,7 +9,7 @@
 //   Released into Public Domain 4/10/08.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "CTBadge.h"
@@ -20,148 +20,117 @@ const float CTLargeLabelSize = (float) 30.; // 24. was Weider's value. -- TB
 const float CTSmallLabelSize = (float) 11.;
 
 @interface CTBadge (Private)
-- (NSImage *)badgeMaskOfSize:(float)size length:(NSUInteger)length;				//return a badge with height of <size> to fit <length> characters
-- (NSAttributedString *)labelForString:(NSString *)string size:(NSUInteger)size;	//returns appropriately attributed label string (not autoreleased)
-- (NSString *)stringForValue:(NSUInteger)value;									//returns string for display (replaces large numbers with infinity)
-- (NSGradient *)badgeGradient;													//gradient used to fill badge mask
+
+// Return a badge with height of <size> to fit <length> characters
+- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length;
+
+// Returns appropriately attributed label string (not autoreleased)
+- (NSAttributedString *) labelForString: (NSString *) string size: (NSUInteger) size;
+
+// Returns string for display (replaces large numbers with infinity)
+- (NSString *) stringForValue: (NSUInteger) value;									
+
+//gradient used to fill badge mask
+- (NSGradient *) badgeGradient;
+
 @end
+
+#pragma mark -
 
 @implementation CTBadge
 
+@synthesize badgeColor, labelColor;
+
 - (id) init
 {
-  self = [super init];
+  if (!(self = [super init]))
+    return nil;
   
-  if (self != nil)
-	{
-    badgeColor = nil;
-    labelColor = nil;
-    
-    [self setBadgeColor:[NSColor redColor]];
-    [self setLabelColor:[NSColor whiteColor]];
-	}
+  self.badgeColor = [NSColor redColor];
+  self.labelColor = [NSColor whiteColor];
+	
   return self;
-}
-
-- (void)dealloc
-{
-  if(badgeColor != nil)
-    [badgeColor release];
-  if(labelColor != nil)
-    [labelColor release];
-  
-  [super dealloc];
 }
 
 + (CTBadge *) systemBadge
 {
   id newInstance = [[[self class] alloc] init];
   
-  return [newInstance autorelease];
+  return newInstance;
 }
 
-+ (CTBadge *) badgeWithColor: (NSColor *) badgeColor labelColor: (NSColor *) labelColor
++ (CTBadge *) badgeWithColor: (NSColor *) newBadgeColor labelColor: (NSColor *) newLabelColor
 {
-  id newInstance = [[[self class] alloc] init];
+  CTBadge *newInstance = [[[self class] alloc] init];
   
-  [newInstance setBadgeColor:badgeColor];
-  [newInstance setLabelColor:labelColor];
+  newInstance.badgeColor = newBadgeColor;
+  newInstance.labelColor = newLabelColor;
   
-  return [newInstance autorelease];
+  return newInstance;
 }
 
-#pragma mark -
-#pragma mark Appearance
+#pragma mark - Drawing
 
-- (void)setBadgeColor:(NSColor *)theColor;
+- (NSImage *) smallBadgeForValue: (NSUInteger) value
 {
-  if(badgeColor != nil)
-    [badgeColor release];
-  
-  badgeColor = theColor;
-  [badgeColor retain];
-}
-- (void)setLabelColor:(NSColor *)theColor;
-{
-  if(labelColor != nil)
-    [labelColor release];
-  
-  labelColor = theColor;
-  [labelColor retain];
+  return [self badgeOfSize: CTSmallBadgeSize forString: [self stringForValue: value]];
 }
 
-- (NSColor *) badgeColor
+- (NSImage *) smallBadgeForString: (NSString *) string
 {
-  return badgeColor;
-}
-- (NSColor *) labelColor
-{
-  return labelColor;
-}
-#pragma mark -
-
-
-#pragma mark Drawing
-- (NSImage *)smallBadgeForValue:(NSUInteger)value		//does drawing in it's own special way
-{
-  return [self badgeOfSize:CTSmallBadgeSize forString:[self stringForValue:value]];
+  return [self badgeOfSize: CTSmallBadgeSize forString: string];
 }
 
-- (NSImage *)smallBadgeForString:(NSString *)string
+- (NSImage *) largeBadgeForValue: (NSUInteger) value
 {
-  return [self badgeOfSize:CTSmallBadgeSize forString:string];
+  return [self badgeOfSize: CTLargeBadgeSize forString: [self stringForValue: value]];
 }
 
-- (NSImage *)largeBadgeForValue:(NSUInteger)value
+- (NSImage *) largeBadgeForString: (NSString *) string
 {
-  return [self badgeOfSize:CTLargeBadgeSize forString:[self stringForValue:value]];
+  return [self badgeOfSize: CTLargeBadgeSize forString: string];
 }
 
-- (NSImage *)largeBadgeForString:(NSString *)string
+- (NSImage *) badgeOfSize: (float) size forValue: (NSUInteger) value
 {
-  return [self badgeOfSize:CTLargeBadgeSize forString:string];
+  return [self badgeOfSize: size forString: [self stringForValue: value]];
 }
 
-- (NSImage *)badgeOfSize:(float)size forValue:(NSUInteger)value
-{
-  return [self badgeOfSize:(float)size forString:[self stringForValue:value]];
-}
-
-- (NSImage *)badgeOfSize:(float)size forString:(NSString *)string
+- (NSImage *) badgeOfSize: (float) size forString: (NSString *) string
 {
   float scaleFactor = 1;
   
-  if(size <= 0)
-    [NSException raise:NSInvalidArgumentException format:@"%@ %@: size (%f) must be positive", [self class], NSStringFromSelector(_cmd), size];
-  else if(size <= CTSmallBadgeSize)
-    scaleFactor = size/CTSmallBadgeSize;
+  if (size <= 0)
+    [NSException raise: NSInvalidArgumentException
+                format: @"%@ %@: size (%f) must be positive", self.class, NSStringFromSelector (_cmd), size];
+  else if (size <= CTSmallBadgeSize)
+    scaleFactor = size / CTSmallBadgeSize;
   else
-    scaleFactor = size/CTLargeBadgeSize;
+    scaleFactor = size / CTLargeBadgeSize;
   
-  //Label stuff  -----------------------------------------------
+  // Label stuff
+  
   NSAttributedString *label;
   NSSize labelSize;
   
-  if(size <= CTSmallBadgeSize)
-    label = [self labelForString:string size:CTSmallLabelSize*scaleFactor];
+  if (size <= CTSmallBadgeSize)
+    label = [self labelForString: string size: CTSmallLabelSize * scaleFactor];
   else
-    label = [self labelForString:string size:CTLargeLabelSize*scaleFactor];
+    label = [self labelForString: string size: CTLargeLabelSize * scaleFactor];
   
-  labelSize = [label size];
+  labelSize = label.size;
   
-  //Badge stuff  -----------------------------------------------
+  // Badge stuff
+  
   NSImage *badgeImage;	//this the image with the gradient fill
   NSImage *badgeMask ;	//we nock out this mask from the gradient
   
   NSGradient *badgeGradient = [self badgeGradient];
   
-  float shadowOpacity,
-  shadowOffset,
-  shadowBlurRadius;
-  
+  float shadowOpacity, shadowOffset, shadowBlurRadius;
   int angle;
   
-  if(size <= CTSmallBadgeSize)
+  if (size <= CTSmallBadgeSize)
 	{
     shadowOpacity = (float) .6;
     shadowOffset = floorf (1 * scaleFactor);
@@ -174,86 +143,91 @@ const float CTSmallLabelSize = (float) 11.;
     shadowBlurRadius = ceilf (2 * scaleFactor);
 	}
   
-  if ([label length] <= 3) // Badges have different gradient angles
+  if (label.length <= 3) // Badges have different gradient angles
     angle = -45;
   else
     angle = -30;
   
-  badgeMask = [self badgeMaskOfSize:size length:[label length]];
+  badgeMask = [self badgeMaskOfSize: size length: label.length];
   
-  NSSize badgeSize = [badgeMask size];
-  NSPoint   origin = NSMakePoint(shadowBlurRadius, shadowBlurRadius+shadowOffset);
+  NSSize badgeSize = badgeMask.size;
+  NSPoint origin = NSMakePoint (shadowBlurRadius, shadowBlurRadius + shadowOffset);
   
-  badgeImage = [[NSImage alloc] initWithSize:NSMakeSize(badgeSize.width  + 2*shadowBlurRadius,													//sometimes it needs more
-                                                        badgeSize.height + 2*shadowBlurRadius - shadowOffset + (size <= CTSmallBadgeSize))];	//space when small
+  NSSize imageSize = NSMakeSize (badgeSize.width + 2 * shadowBlurRadius,
+                                badgeSize.height + 2 * shadowBlurRadius - shadowOffset + (size <= CTSmallBadgeSize));
+  
+  badgeImage = [[NSImage alloc] initWithSize: imageSize];
   
   [badgeImage lockFocus];
-	[badgeGradient drawInRect:NSMakeRect (origin.x, origin.y, floor (badgeSize.width), floor (badgeSize.height)) angle:angle];			//apply the gradient
-	[badgeMask compositeToPoint:origin operation: NSCompositeDestinationAtop];															//knock out the badge area
+	[badgeGradient drawInRect: NSMakeRect (origin.x, origin.y, floor (badgeSize.width), floor (badgeSize.height))
+                      angle: angle];
+	[badgeMask compositeToPoint:origin operation: NSCompositeDestinationAtop]; // Knock out the badge area
 	[label drawInRect: NSMakeRect (origin.x + floor ((badgeSize.width - labelSize.width) / 2),
                                  origin.y + floor ((badgeSize.height - labelSize.height) / 2),
                                  badgeSize.width,
-                                 labelSize.height)];	//draw label in center
+                                 labelSize.height)]; // Draw label in center
   [badgeImage unlockFocus];
   
+  // Final stuff
   
-  //Final stuff   -----------------------------------------------
-  NSImage *image = [[NSImage alloc] initWithSize:[badgeImage size]];
+  NSImage *image = [[NSImage alloc] initWithSize: badgeImage.size];
   
   [image lockFocus];
 	[NSGraphicsContext saveGraphicsState];
-  NSShadow *theShadow = [[NSShadow alloc] init];
-  [theShadow setShadowOffset: NSMakeSize(0,-shadowOffset)];
-  [theShadow setShadowBlurRadius:shadowBlurRadius];
-  [theShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:shadowOpacity]];
-  [theShadow set];
-  [theShadow release];
-  [badgeImage compositeToPoint:NSZeroPoint operation:NSCompositeSourceOver];
+  
+  NSShadow *shadow = [[NSShadow alloc] init];
+  
+  shadow.shadowOffset =  NSMakeSize (0, -shadowOffset);
+  shadow.shadowBlurRadius = shadowBlurRadius;
+  shadow.shadowColor = [[NSColor blackColor] colorWithAlphaComponent: shadowOpacity];
+  [shadow set];
+  
+  [badgeImage compositeToPoint: NSZeroPoint operation: NSCompositeSourceOver];
 	[NSGraphicsContext restoreGraphicsState];
   [image unlockFocus];
-  
-  [label release];
-  [badgeImage release];
-  
-  return [image autorelease];
+    
+  return image;
 }
 
 
-- (NSImage *)badgeOverlayImageForString:(NSString *)string insetX:(float)dx y:(float)dy;
+- (NSImage *) badgeOverlayImageForString: (NSString *) string insetX: (float) dx y: (float) dy;
 {
-  NSImage *badgeImage = [self largeBadgeForString:string];
-  NSImage *overlayImage = [[NSImage alloc] initWithSize:NSMakeSize(128,128)];
+  NSImage *badgeImage = [self largeBadgeForString: string];
+  NSImage *overlayImage = [[NSImage alloc] initWithSize: NSMakeSize (128, 128)];
   
-  //draw large icon in the upper right corner of the overlay image
+  // Draw large icon in the upper right corner of the overlay image
+  
   [overlayImage lockFocus];
-	NSSize badgeSize = [badgeImage size];
-	[badgeImage compositeToPoint:NSMakePoint(128-dx-badgeSize.width,128-dy-badgeSize.height) operation:NSCompositeSourceOver];  
+	NSSize badgeSize = badgeImage.size;
+	[badgeImage compositeToPoint: NSMakePoint (128 - dx - badgeSize.width, 128 - dy - badgeSize.height)
+                     operation: NSCompositeSourceOver];  
   [overlayImage unlockFocus];
   
-  return [overlayImage autorelease];
+  return overlayImage;
 }
 
 - (void)badgeApplicationDockIconWithString:(NSString *)string insetX:(float)dx y:(float)dy;
 {
-  NSImage *appIcon      = [NSImage imageNamed:@"NSApplicationIcon"];
-  NSImage *badgeOverlay = [self badgeOverlayImageForString:string insetX:dx y:dy];
+  NSImage *appIcon = [NSImage imageNamed: @"NSApplicationIcon"];
+  NSImage *badgeOverlay = [self badgeOverlayImageForString: string insetX: dx y: dy];
   
-  //Put the appIcon underneath the badgeOverlay
+  // Put the appIcon underneath the badgeOverlay
+  
   [badgeOverlay lockFocus];
-	[appIcon compositeToPoint:NSZeroPoint operation:NSCompositeDestinationOver];
+	[appIcon compositeToPoint: NSZeroPoint operation: NSCompositeDestinationOver];
   [badgeOverlay unlockFocus];
   
-  [NSApp setApplicationIconImage:badgeOverlay];
+  [NSApp setApplicationIconImage: badgeOverlay];
 }
 
-- (NSImage *)badgeOverlayImageForValue: (NSUInteger) value insetX: (float) dx y: (float) dy
+- (NSImage *) badgeOverlayImageForValue: (NSUInteger) value insetX: (float) dx y: (float) dy
 {
   return [self badgeOverlayImageForString: [self stringForValue: value] insetX: dx y: dy];
 }
 
 - (void) badgeApplicationDockIconWithValue: (NSUInteger) value insetX: (float) dx y: (float) dy
 {
-  [self badgeApplicationDockIconWithString: [self stringForValue:value] insetX: dx y: dy];
+  [self badgeApplicationDockIconWithString: [self stringForValue: value] insetX: dx y: dy];
 }
 
 #pragma mark -
@@ -261,64 +235,70 @@ const float CTSmallLabelSize = (float) 11.;
 
 - (NSGradient *) badgeGradient
 {
-  NSGradient *aGradient = [[NSGradient alloc] initWithColorsAndLocations:[self badgeColor], 0.0, 
-                           [self badgeColor], 1/3., 
-                           [[self badgeColor] shadowWithLevel:1/3.], 1.0, nil];
+  NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations: self.badgeColor, 0.0, 
+                          self.badgeColor, 1/3., 
+                          [self.badgeColor shadowWithLevel:1/3.], 1.0, nil];
   
-  return [aGradient autorelease];
+  return gradient;
 }
 
-- (NSAttributedString *)labelForString:(NSString *)label size:(NSUInteger)size
+- (NSAttributedString *) labelForString: (NSString *) label size: (NSUInteger) size
 {
-  //set Attributes to use on String  ---------------------------
+  // Set attributes to use on String
+  
   NSFont *labelFont;
   
-  if(size <= CTSmallLabelSize)
+  if (size <= CTSmallLabelSize)
     labelFont = [NSFont boldSystemFontOfSize:size];
   else
-    labelFont = [NSFont fontWithName:@"Helvetica-Bold" size:size];
+    labelFont = [NSFont fontWithName: @"Helvetica-Bold" size: size];
   
-  NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];[pStyle setAlignment:NSCenterTextAlignment];
-  NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:[self labelColor], NSForegroundColorAttributeName,
-                              labelFont        , NSFontAttributeName           , nil];
-  [pStyle release];
+  NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
+  pStyle.alignment = NSCenterTextAlignment;
   
-  //Label stuff
-  if([label length] >= 6)	//replace with summarized string - ellipses at end and a zero-width space to trick us into using the 5-wide badge
-    label = [NSString stringWithFormat:@"%@%@", [label substringToIndex:3], [NSString stringWithUTF8String:"\xe2\x80\xa6\xe2\x80\x8b"]];
+  NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              self.labelColor, NSForegroundColorAttributeName,
+                              labelFont, NSFontAttributeName, nil];
   
-  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:label attributes:attributes];
-  [attributes release];
+  // Label stuff
+  
+  if (label.length >= 6) // Replace with summarized string - ellipses at end and a zero-width space to trick us into
+                         // using the 5-wide badge
+    
+    label = [NSString stringWithFormat: @"%@%@",
+             [label substringToIndex: 3], [NSString stringWithUTF8String: "\xe2\x80\xa6\xe2\x80\x8b"]];
+  
+  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: label attributes: attributes];
   
   return attributedString;
 }
 
-- (NSString *)stringForValue:(NSUInteger)value
+- (NSString *) stringForValue: (NSUInteger) value
 {
-  if(value < 100000)
-    return [NSString stringWithFormat:@"%u", value];
-  else //give infinity
-    return [NSString stringWithUTF8String:"\xe2\x88\x9e"];
+  if (value < 100000)
+    return [NSString stringWithFormat: @"%u", value];
+  else // Give infinity
+    return [NSString stringWithUTF8String: "\xe2\x88\x9e"];
 }
 
-- (NSImage *)badgeMaskOfSize:(float)size length:(NSUInteger)length;
+- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length
 {
   NSImage *badgeMask;
   
-  if(length <=2)
-    badgeMask = [NSImage imageNamed:@"CTBadge_1.pdf"];
-  else if(length <=3)
-    badgeMask = [NSImage imageNamed:@"CTBadge_3.pdf"];
-  else if(length <=4)
-    badgeMask = [NSImage imageNamed:@"CTBadge_4.pdf"];
+  if (length <=2)
+    badgeMask = [NSImage imageNamed: @"CTBadge_1.pdf"];
+  else if (length <=3)
+    badgeMask = [NSImage imageNamed: @"CTBadge_3.pdf"];
+  else if (length <=4)
+    badgeMask = [NSImage imageNamed: @"CTBadge_4.pdf"];
   else
-    badgeMask = [NSImage imageNamed:@"CTBadge_5.pdf"];
+    badgeMask = [NSImage imageNamed: @"CTBadge_5.pdf"];
   
-  if(size > 0 && size != [badgeMask size].height)
+  if (size > 0 && size != badgeMask.size.height)
 	{
-    [badgeMask setName:nil];
-    [badgeMask setScalesWhenResized:YES];
-    [badgeMask setSize:NSMakeSize([badgeMask size].width*(size/[badgeMask size].height), size)];
+    badgeMask.name = nil;
+    badgeMask.scalesWhenResized = YES;
+    badgeMask.size = NSMakeSize (badgeMask.size.width * (size / badgeMask.size.height), size);
 	}
   
   return badgeMask;

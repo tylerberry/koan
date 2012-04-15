@@ -1,7 +1,7 @@
 //
 // MUProxySettings.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProxySettings.h"
@@ -13,7 +13,7 @@
 
 + (id) proxySettings
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init
@@ -27,14 +27,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [hostname release];
-  [port release];
-  [username release];
-  [password release];
-  [super dealloc];
-}
 
 - (NSString *) description
 {

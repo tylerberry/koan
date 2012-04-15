@@ -1,7 +1,7 @@
 //
 // MUProfilesController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfilesController.h"
@@ -77,12 +77,6 @@
   [self registerForNotifications];
 }
 
-- (void) dealloc
-{
-  [profilesTreeArray release];
-  [profilesExpandedItems release];
-  [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Actions
@@ -202,17 +196,15 @@
       
       if ([representedObject isKindOfClass: [MUWorld class]])
       {
-        NSImage *worldImage = [[NSImage imageNamed: NSImageNameNetwork] retain];
+        NSImage *worldImage = [NSImage imageNamed: NSImageNameNetwork];
         [worldImage setSize: NSMakeSize (16, 16)];
         [cell setImage: worldImage];
-        [worldImage release];
       }
       else if ([representedObject isKindOfClass: [MUPlayer class]])
       {
-        NSImage *playerImage = [[NSImage imageNamed: NSImageNameUser] retain];
+        NSImage *playerImage = [NSImage imageNamed: NSImageNameUser];
         [playerImage setSize: NSMakeSize (16, 16)];
         [cell setImage: playerImage];
-        [playerImage release];
       }
       else
       {
@@ -475,7 +467,7 @@
 {
   [profilesOutlineView collapseItem: nil collapseChildren: YES];
   
-  for (NSUInteger i = 0; i < [profilesOutlineView numberOfRows]; i++)
+  for (NSInteger i = 0; i < [profilesOutlineView numberOfRows]; i++)
   {
     NSTreeNode *node = [profilesOutlineView itemAtRow: i];
     
@@ -503,11 +495,11 @@
 
 - (void) populateProfilesTree
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  @autoreleasepool {
 	
-	[self populateProfilesFromWorldRegistry];
+		[self populateProfilesFromWorldRegistry];
 	
-	[pool release];
+	}
 }
 
 - (void) saveProfilesOutlineViewState

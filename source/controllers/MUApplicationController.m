@@ -1,7 +1,7 @@
 //
 // MUApplicationController.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "FontNameToDisplayNameTransformer.h"
@@ -42,7 +42,7 @@
 {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
   NSMutableDictionary *initialValues = [NSMutableDictionary dictionary];
-  NSValueTransformer *transformer = [[[FontNameToDisplayNameTransformer alloc] init] autorelease];
+  NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
   NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
@@ -68,7 +68,7 @@
 
 - (void) awakeFromNib
 {
-  MUPortFormatter *newConnectionPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
+  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   
   [MUServices profileRegistry];
   [MUServices worldRegistry];
@@ -90,7 +90,7 @@
                                              object: nil];
   
   unreadCount = 0;
-  dockBadge = [[CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]] retain];
+  dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
   
   [self updateApplicationBadge];
 }
@@ -98,11 +98,6 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
-  [dockBadge release];
-  [connectionWindowControllers release];
-  [profilesController release];
-  [proxySettingsController release];
-  [super dealloc];
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) item
@@ -140,7 +135,6 @@
   
   [self openConnectionWithController: controller];
   
-  [controller release];
 }
 
 - (IBAction) connectUsingPanelInformation: (id) sender
@@ -156,7 +150,6 @@
   [self openConnectionWithController: controller];
   [newConnectionPanel close];
   
-  [controller release];
 }
 
 - (IBAction) openBugsWebPage: (id) sender
@@ -288,7 +281,7 @@
 
 - (void) connectionWindowControllerWillClose: (NSNotification *) notification
 {
-  MUConnectionWindowController *controller = [[[notification object] retain] autorelease];
+  MUConnectionWindowController *controller = [notification object];
   
   [connectionWindowControllers removeObject: controller];
 }
@@ -337,7 +330,6 @@
   
   [self openConnectionWithController: controller];
   
-  [controller release];
 }
 
 - (void) openConnectionWithController: (MUConnectionWindowController *) controller
@@ -411,7 +403,6 @@
       }
       
       [worldMenu addItem: playerItem];
-      [playerItem release];
     }
     
     if (playersCount > 0)
@@ -423,9 +414,6 @@
     [worldItem setTitle: world.name];
     [worldItem setSubmenu: worldMenu];
     [openConnectionMenu addItem: worldItem];
-    [worldItem release];
-    [worldMenu release];
-    [connectItem release];
   }
 }
 

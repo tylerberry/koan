@@ -9,7 +9,7 @@
 //   Released into Public Domain 4/10/08.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -24,6 +24,9 @@ extern const float CTSmallLabelSize;
   NSColor *badgeColor;
   NSColor *labelColor;
 }
+
+@property (strong) NSColor *badgeColor;
+@property (strong) NSColor *labelColor;
 
 // Classic white on red badge.
 + (CTBadge *) systemBadge;

@@ -1,7 +1,7 @@
 //
 // MUTreeNode.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTreeNode.h"
@@ -39,12 +39,6 @@
   return [self initWithName: @"Empty node" children: nil];
 }
 
-- (void) dealloc
-{
-  [children release];
-  [name release];
-  [super dealloc];
-}
 
 /*
 - (NSUInteger) count

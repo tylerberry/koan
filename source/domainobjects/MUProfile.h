@@ -1,7 +1,7 @@
 //
 // MUProfile.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -13,10 +13,6 @@
 
 @interface MUProfile : NSObject <NSCoding>
 {
-  MUWorld *world;
-  MUPlayer *player;
-  BOOL autoconnect;
-  
   BOOL loggedIn;
   
   NSFont *font;
@@ -26,13 +22,13 @@
   NSColor *visitedLinkColor;
 }
 
-@property (retain) MUWorld *world;
-@property (retain) MUPlayer *player;
+@property (strong) MUWorld *world;
+@property (strong) MUPlayer *player;
 @property (assign) BOOL autoconnect;
-@property (readonly) NSString *hostname;
-@property (readonly) NSString *loginString;
-@property (readonly) NSString *uniqueIdentifier;
-@property (readonly) NSString *windowTitle;
+@property (unsafe_unretained, readonly) NSString *hostname;
+@property (unsafe_unretained, readonly) NSString *loginString;
+@property (unsafe_unretained, readonly) NSString *uniqueIdentifier;
+@property (unsafe_unretained, readonly) NSString *windowTitle;
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
                           player: (MUPlayer *) newPlayer

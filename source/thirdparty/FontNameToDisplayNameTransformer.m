@@ -44,7 +44,7 @@
 //   DAMAGE.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "FontNameToDisplayNameTransformer.h"
@@ -53,7 +53,7 @@
 
 + (Class) transformedValueClass
 {
-  return [NSString class];
+  return NSString.class;
 }
 
 + (BOOL) allowsReverseTransformation
@@ -63,7 +63,7 @@
 
 - (id) transformedValue: (id) value
 {
-  return [[NSFont fontWithName: value size: 12] displayName];
+  return [NSFont fontWithName: value size: 12].displayName;
 }
 
 @end

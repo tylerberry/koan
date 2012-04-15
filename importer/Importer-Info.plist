@@ -18,7 +18,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Koan Spotlight Importer version 1.0, Copyright (c) 2011 3James Software.</string>
+	<string>Koan Spotlight Importer version 1.0, Copyright (c) 2012 3James Software.</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.3james.KoanLogImporter</string>
 	<key>CFBundleInfoDictionaryVersion</key>

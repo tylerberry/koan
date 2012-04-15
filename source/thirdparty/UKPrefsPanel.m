@@ -17,7 +17,7 @@
 //   applications etc.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "UKPrefsPanel.h"
@@ -40,30 +40,21 @@
   
   tabView = nil;
   itemsList = [[NSMutableDictionary alloc] init];
-  baseWindowName = [@"" copy];
-  autosaveName = [@"com.ulikusterer" copy];
+  baseWindowName = @"";
+  autosaveName = @"com.ulikusterer";
   
   return self;
 }
 
-- (void) dealloc
-{
-  [itemsList release];
-  [baseWindowName release];
-  [autosaveName release];
-  [super dealloc];
-}
 
 - (void) awakeFromNib
 {
-  NSString *windowTitle = [[tabView window] title];
-  if ([windowTitle length] > 0)
-  {
-  	[baseWindowName release];
-  	baseWindowName = [[NSString stringWithFormat: @"%@ : ", windowTitle] retain];
-  }
+  NSString *windowTitle = tabView.window.title;
+
+  if (windowTitle.length > 0)
+  	baseWindowName = [NSString stringWithFormat: @"%@ : ", windowTitle];
   
-  [self setAutosaveName: [[tabView window] frameAutosaveName]];
+  self.autosaveName = tabView.window.frameAutosaveName;
   
   NSString *key = [NSString stringWithFormat: @"%@.prefspanel.recentpage", autosaveName];
   NSInteger tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey: key];
@@ -94,8 +85,8 @@
 {
   if (autosaveName == name)
     return;
-  [autosaveName release];
-  autosaveName = [name retain];
+  
+  autosaveName = name;
 }
 
 #pragma mark -
@@ -103,7 +94,7 @@
 
 - (IBAction) orderFrontPrefsPanel: (id) sender
 {
-  [[tabView window] makeKeyAndOrderFront: sender];
+  [tabView.window makeKeyAndOrderFront: sender];
 }
 
 #pragma mark -
@@ -113,20 +104,18 @@
       itemForItemIdentifier: (NSString *) itemIdentifier
   willBeInsertedIntoToolbar: (BOOL) willBeInserted
 {
-  NSToolbarItem *toolbarItem = [[[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier] autorelease];
+  NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
   NSString *itemLabel = [itemsList objectForKey: itemIdentifier];
   
   if (itemLabel)
   {
-  	[toolbarItem setLabel: itemLabel];
-  	[toolbarItem setPaletteLabel: itemLabel];
-  	[toolbarItem setTag: [tabView indexOfTabViewItemWithIdentifier: itemIdentifier]];
-  	
-  	[toolbarItem setToolTip: itemLabel];
-  	[toolbarItem setImage: [NSImage imageNamed: itemIdentifier]];
-  	
-  	[toolbarItem setTarget: self];
-  	[toolbarItem setAction: @selector (changePanes:)];
+  	toolbarItem.label = itemLabel;
+  	toolbarItem.paletteLabel = itemLabel;
+  	toolbarItem.tag = [tabView indexOfTabViewItemWithIdentifier: itemIdentifier];
+  	toolbarItem.toolTip = itemLabel;
+  	toolbarItem.image = [NSImage imageNamed: itemIdentifier];
+  	toolbarItem.target = self;
+  	toolbarItem.action = @selector (changePanes:);
   }
   else
   	toolbarItem = nil;
@@ -135,19 +124,21 @@
 }
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_3
+
 - (NSArray *) toolbarSelectableItemIdentifiers: (NSToolbar *) toolbar
 {
-  return [itemsList allKeys];
+  return itemsList.allKeys;
 }
+
 #endif
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar
 {
   NSMutableArray *defaultItems = [NSMutableArray array];
   
-  for (unsigned i = 0; i < (unsigned) [tabView numberOfTabViewItems]; i++)
+  for (NSInteger i = 0; i < tabView.numberOfTabViewItems; i++)
   {
-  	[defaultItems addObject: [[tabView tabViewItemAtIndex: i] identifier]];
+  	[defaultItems addObject: [tabView tabViewItemAtIndex: i].identifier];
   }
   
   return defaultItems;
@@ -164,7 +155,7 @@
     NSToolbarCustomizeToolbarItemIdentifier,
     nil]];
   
-  return [allowedItems autorelease];
+  return allowedItems;
 }
 
 @end
@@ -175,11 +166,13 @@
 
 - (IBAction) changePanes: (id) sender
 {
-  [tabView selectTabViewItemAtIndex: [sender tag]];
-  [[tabView window] setTitle: [baseWindowName stringByAppendingString: [sender label]]];
+  NSToolbarItem *toolbarItem = (NSToolbarItem *) sender;
+  
+  [tabView selectTabViewItemAtIndex: toolbarItem.tag];
+  [[tabView window] setTitle: [baseWindowName stringByAppendingString: toolbarItem.label]];
   
   NSString *key = [NSString stringWithFormat:  @"%@.prefspanel.recentpage", autosaveName];
-  [[NSUserDefaults standardUserDefaults] setInteger: [sender tag] forKey: key];
+  [[NSUserDefaults standardUserDefaults] setInteger: toolbarItem.tag forKey: key];
 }
 
 - (void) mapTabsToToolbar
@@ -187,33 +180,37 @@
   NSToolbar *toolbar = [[tabView window] toolbar];
   
   if (!toolbar)
-  	toolbar = [[[NSToolbar alloc] initWithIdentifier: [NSString stringWithFormat: @"%@.prefspanel.toolbar", autosaveName]] autorelease];
+  	toolbar = [[NSToolbar alloc] initWithIdentifier: [NSString stringWithFormat: @"%@.prefspanel.toolbar",
+                                                      autosaveName]];
   
-  [toolbar setAllowsUserCustomization: YES];
-  [toolbar setAutosavesConfiguration: YES];
-  [toolbar setDisplayMode: NSToolbarDisplayModeIconAndLabel];
+  toolbar.allowsUserCustomization = YES;
+  toolbar.autosavesConfiguration = YES;
+  toolbar.displayMode = NSToolbarDisplayModeIconAndLabel;
   
   [itemsList removeAllObjects];
   
-  for (unsigned i = 0; i < (unsigned) [tabView numberOfTabViewItems]; i++)
+  for (NSInteger i = 0; i < tabView.numberOfTabViewItems; i++)
   {
-  	[itemsList setObject: [[tabView tabViewItemAtIndex: i] label]
-                  forKey: [[tabView tabViewItemAtIndex: i] identifier]];
+  	[itemsList setObject: [tabView tabViewItemAtIndex: i].label
+                  forKey: [tabView tabViewItemAtIndex: i].identifier];
   }
   
-  [toolbar setDelegate: self];
+  toolbar.delegate = self ;
   
-  [[tabView window] setToolbar: toolbar];
+  tabView.window.toolbar = toolbar;
   
-  NSTabViewItem	*currentTab = [tabView selectedTabViewItem];
+  
+  NSTabViewItem	*currentTab = tabView.selectedTabViewItem;
   if (currentTab == nil)
   	currentTab = [tabView tabViewItemAtIndex: 0];
   
-  [[tabView window] setTitle: [baseWindowName stringByAppendingString: [currentTab label]]];
+  tabView.window.title = [baseWindowName stringByAppendingString: currentTab.label];
   
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_3
+  
   if ([toolbar respondsToSelector: @selector (setSelectedItemIdentifier:)])
-  	[toolbar setSelectedItemIdentifier: [currentTab identifier]];
+  	[toolbar setSelectedItemIdentifier: currentTab.identifier];
+  
 #endif
 }
 

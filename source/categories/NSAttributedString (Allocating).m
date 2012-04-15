@@ -1,7 +1,7 @@
 //
 // NSAttributedString (Allocating).m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 // License:
 // 
@@ -30,18 +30,18 @@
 
 + (NSAttributedString *) attributedStringWithAttributedString: (NSAttributedString *) attributedString
 {
-  return [[[self alloc] initWithAttributedString: attributedString] autorelease];
+  return [[self alloc] initWithAttributedString: attributedString];
 }
 
 + (NSAttributedString *) attributedStringWithString: (NSString *) string
 {
-  return [[[self alloc] initWithString: string] autorelease];
+  return [[self alloc] initWithString: string];
 }
 
 + (NSAttributedString *) attributedStringWithString: (NSString *) string attributes: (NSDictionary *) dictionary
 {
-  return [[[self alloc] initWithString: string
-                            attributes: dictionary] autorelease];
+  return [[self alloc] initWithString: string
+                            attributes: dictionary];
 }
 
 @end
@@ -52,18 +52,18 @@
 
 + (NSMutableAttributedString *) attributedStringWithAttributedString: (NSAttributedString *) attributedString
 {
-  return [[[self alloc] initWithAttributedString: attributedString] autorelease];
+  return [[self alloc] initWithAttributedString: attributedString];
 }
 
 + (NSMutableAttributedString *) attributedStringWithString: (NSString *) string
 {
-  return [[[self alloc] initWithString: string] autorelease];
+  return [[self alloc] initWithString: string];
 }
 
 + (NSMutableAttributedString *) attributedStringWithString: (NSString *) string attributes: (NSDictionary *) dictionary
 {
-  return [[[self alloc] initWithString: string
-                            attributes: dictionary] autorelease];
+  return [[self alloc] initWithString: string
+                            attributes: dictionary];
 }
 
 @end

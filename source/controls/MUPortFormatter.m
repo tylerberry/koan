@@ -1,7 +1,7 @@
 //
 // MUPortFormatter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 // License:
 // 
@@ -42,7 +42,7 @@
   
   scanner = [NSScanner scannerWithString: string];
   
-  if ([scanner scanInt: &intResult] && ([scanner isAtEnd]) && intResult > 0 && intResult < 65536)
+  if ([scanner scanInt: &intResult] && scanner.isAtEnd && intResult > 0 && intResult < 65536)
   {
     if (object)
       *object = [NSNumber numberWithInt: intResult];
@@ -55,7 +55,9 @@
   return NO;
 }
 
-- (BOOL) isPartialStringValid: (NSString *) partialString newEditingString: (NSString **) newString errorDescription: (NSString **) error
+- (BOOL) isPartialStringValid: (NSString *) partialString
+             newEditingString: (NSString **) newString
+             errorDescription: (NSString **) error
 {
   int intResult;
   NSScanner *scanner;
@@ -67,7 +69,7 @@
   
   scanner = [NSScanner scannerWithString: partialString];
   
-  if (!([scanner scanInt: &intResult] && [scanner isAtEnd]))
+  if (!([scanner scanInt: &intResult] && scanner.isAtEnd))
   {
     *newString = nil;
     return NO;
@@ -91,12 +93,12 @@
 - (NSString *) stringForObjectValue: (id) object
 {
   NSNumber *number = (NSNumber *) object;
-  int value = [number intValue];
+  int value = number.intValue;
   
   if (value == 0 || number == nil)
     return nil;
   
-  else return [number description];
+  else return number.description;
 }
 
 @end

@@ -1,7 +1,7 @@
 //
 // MUFilter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUFilter.h"
@@ -10,7 +10,7 @@
 
 + (id) filter
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (NSAttributedString *) filter: (NSAttributedString *) string

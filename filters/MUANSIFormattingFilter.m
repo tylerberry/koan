@@ -1,7 +1,7 @@
 //
 // MUANSIFormattingFilter.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUANSIFormattingFilter.h"
@@ -36,7 +36,7 @@
 
 + (MUFilter *) filterWithFormatter: (NSObject <MUFormatter> *) newFormatter
 {
-  return [[[self alloc] initWithFormatter: newFormatter] autorelease];
+  return [[self alloc] initWithFormatter: newFormatter];
 }
 
 - (id) initWithFormatter: (NSObject <MUFormatter> *) newFormatter
@@ -49,7 +49,7 @@
   
   ansiCode = nil;
   inCode = false;
-  formatter = [newFormatter retain];
+  formatter = newFormatter;
   currentAttributes = [[NSMutableDictionary alloc] init];
   [currentAttributes setValue: [formatter font] forKey: NSFontAttributeName];
   
@@ -61,13 +61,6 @@
   return [self initWithFormatter: [MUFormatter formatterForTesting]];
 }
 
-- (void) dealloc
-{
-  [ansiCode release];
-  [formatter release];
-  [currentAttributes release];
-  [super dealloc];
-}
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
@@ -322,8 +315,6 @@
   {
     codeRange.location = [self scanUpToCodeInString: [editString string]];
     
-    if (ansiCode)
-      [ansiCode release];
     ansiCode = [[NSString alloc] initWithString: @""];
   }
   else
@@ -457,7 +448,6 @@
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];
   
   NSString *newAnsiCode = [[NSString alloc] initWithFormat: @"%@%@", ansiCode, charactersFromThisScan];
-  [ansiCode release];
   ansiCode = newAnsiCode;
   
   if ([scanner scanLocation] == [string length])

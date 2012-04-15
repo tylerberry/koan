@@ -1,7 +1,7 @@
 //
 // MUWorldTests.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUWorldTests.h"
@@ -18,8 +18,6 @@
 
 - (void) tearDown
 {
-  [player release];
-  [world release];
 }
 
 - (void) testUniqueIdentifier

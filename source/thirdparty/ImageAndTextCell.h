@@ -46,7 +46,7 @@
 //   POSSIBILITY OF SUCH DAMAGE.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -57,7 +57,7 @@
 	NSImage *image;
 }
 
-@property (retain) NSImage *image;
+@property NSImage *image;
 
 - (void) drawWithFrame: (NSRect) cellFrame inView: (NSView *) controlView;
 - (NSSize) cellSize;

@@ -1,7 +1,7 @@
 //
 // MUProfilesSection.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUProfilesSection.h"
@@ -29,7 +29,7 @@
 
 - (BOOL) isLeaf
 {
-  return [[MUWorldRegistry defaultRegistry] count] == 0;
+  return [MUWorldRegistry defaultRegistry].count == 0;
 }
 
 @end

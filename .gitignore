@@ -34,10 +34,13 @@ build/
 *.pbxuser
 *.perspective
 *.perspectivev3
+project.xcworkspace/
+xcuserdata/
 
 # Generated files.
 
 VersionX-revision.h
 
 # Project-specific files.
-frameworks/timestamp
+
+frameworks/*.framework

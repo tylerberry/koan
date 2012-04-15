@@ -33,7 +33,7 @@
 {
   switch (byte)
   {
-    // TODO: handle these valid commands individually.
+    // TODO: Handle these valid commands individually.
     case MUTelnetNoOperation:
     case MUTelnetDataMark:
     case MUTelnetBreak:

@@ -5,6 +5,7 @@
 //
 
 #import "MUMUDConnection.h"
+#import "MUAbstractConnectionSubclass.h"
 
 #import "MUSocketFactory.h"
 #import "MUSocket.h"
@@ -136,8 +137,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self writeDataWithPreprocessing: encodedData];
 }
 
-#pragma mark -
-#pragma mark MUAbstractConnection overrides
+#pragma mark - MUAbstractConnection overrides
 
 - (void) close
 {
@@ -192,8 +192,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                                                     userInfo: [NSDictionary dictionaryWithObjectsAndKeys: error, MUMUDConnectionErrorMessageKey, nil]];
 }
 
-#pragma mark -
-#pragma mark MUSocketDelegate protocol
+#pragma mark - MUSocketDelegate protocol
 
 - (void) socketIsConnecting: (NSNotification *) notification
 {
@@ -223,37 +222,34 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self setStatusClosedWithError: [[notification userInfo] valueForKey: MUSocketErrorMessageKey]];
 }
 
-#pragma mark -
-#pragma mark Various delegates
+#pragma mark - Various delegates
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
   NSLog (@"[%@:%d] %@", hostname, port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
-#pragma mark -
-#pragma mark MUProtocolStackDelegate
+#pragma mark - MUProtocolStackDelegate
 
 - (void) displayDataAsText: (NSData *) parsedData
 {
-  NSString *parsedString = [[NSString alloc] initWithBytes: [parsedData bytes]
-                                                     length: [parsedData length]
-                                                   encoding: self.state.stringEncoding];
+  NSString *parsedString = [[NSString alloc] initWithBytes: parsedData.bytes
+                                                    length: parsedData.length
+                                                  encoding: self.state.stringEncoding];
   
   [self.delegate displayString: parsedString];
 }
 
 - (void) displayDataAsPrompt: (NSData *) parsedData
 {
-  NSString *parsedPromptString = [[NSString alloc] initWithBytes: [parsedData bytes]
-                                                           length: [parsedData length]
-                                                         encoding: self.state.stringEncoding];
+  NSString *parsedPromptString = [[NSString alloc] initWithBytes: parsedData.bytes
+                                                          length: parsedData.length
+                                                        encoding: self.state.stringEncoding];
   
   [self.delegate displayPrompt: parsedPromptString];
 }
 
-#pragma mark -
-#pragma mark MUTelnetProtocolHandlerDelegate
+#pragma mark - MUTelnetProtocolHandlerDelegate
 
 - (void) writeDataToSocket: (NSData *) data
 {
@@ -305,7 +301,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self.socket poll];
   
   if ([self.socket hasDataAvailable])
-    [protocolStack parseData: [self.socket readUpToLength: [self.socket availableBytes]]];
+    [protocolStack parseInputData: [self.socket readUpToLength: [self.socket availableBytes]]];
 }
 
 - (void) registerObjectForNotifications: (id) object
@@ -356,7 +352,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) writeDataWithPreprocessing: (NSData *) data
 {
-  [self writeDataToSocket: [protocolStack preprocessOutput: data]];
+  [self writeDataToSocket: [protocolStack preprocessOutputData: data]];
 }
 
 @end

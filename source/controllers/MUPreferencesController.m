@@ -50,13 +50,13 @@
 
 - (void) colorPanelColorDidChange
 {
-  if ([globalTextColorWell isActive])
+  if (globalTextColorWell.isActive)
   	[self postGlobalTextColorDidChangeNotification];
-  else if ([globalBackgroundColorWell isActive])
+  else if (globalBackgroundColorWell.isActive)
   	[self postGlobalBackgroundColorDidChangeNotification];
-  else if ([globalLinkColorWell isActive])
+  else if (globalLinkColorWell.isActive)
   	[self postGlobalLinkColorDidChangeNotification];
-  else if ([globalVisitedLinkColorWell isActive])
+  else if (globalVisitedLinkColorWell.isActive)
   	[self postGlobalVisitedLinkColorDidChangeNotification];
 }
 

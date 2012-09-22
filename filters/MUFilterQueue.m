@@ -6,7 +6,17 @@
 
 #import "MUFilterQueue.h"
 
+@interface MUFilterQueue ()
+
+@property (strong, nonatomic) NSMutableArray *filters;
+
+@end
+
+#pragma mark -
+
 @implementation MUFilterQueue
+
+@synthesize filters;
 
 + (id) filterQueue
 {
@@ -18,16 +28,15 @@
   if (!(self = [super init]))
     return nil;
   
-  filters = [[NSMutableArray alloc] init];
+  self.filters = [[NSMutableArray alloc] init];
   return self;
 }
-
 
 - (NSAttributedString *) processAttributedString: (NSAttributedString *) string
 {
   NSAttributedString *returnString = string;
   
-  for (NSObject <MUFiltering> *filter in filters)
+  for (NSObject <MUFiltering> *filter in self.filters)
     returnString = [filter filter: returnString];
 
   return returnString;
@@ -35,12 +44,12 @@
 
 - (void) addFilter: (NSObject <MUFiltering> *) filter
 {
-  [filters addObject: filter];
+  [self.filters addObject: filter];
 }
 
 - (void) clearFilters
 {
-  [filters removeAllObjects];
+  [self.filters removeAllObjects];
 }
 
 @end

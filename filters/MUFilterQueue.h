@@ -9,9 +9,6 @@
 #import "MUFilter.h"
 
 @interface MUFilterQueue : NSObject
-{
-  NSMutableArray *filters;
-}
 
 + (id) filterQueue;
 

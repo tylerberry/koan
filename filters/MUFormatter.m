@@ -8,14 +8,22 @@
 
 @implementation MUFormatter
 
+@synthesize backgroundColor, font, foregroundColor;
+
 + (id) formatterForTesting
 {
-  return [self formatterWithForegroundColor: [MUFormatter testingForeground] backgroundColor: [MUFormatter testingBackground] font: [MUFormatter testingFont]];
+  return [self formatterWithForegroundColor: [MUFormatter testingForeground]
+                            backgroundColor: [MUFormatter testingBackground]
+                                       font: [MUFormatter testingFont]];
 }
 
-+ (id) formatterWithForegroundColor: (NSColor *) fore backgroundColor: (NSColor *) back font: (NSFont *) font
++ (id) formatterWithForegroundColor: (NSColor *) foregroundColor
+                    backgroundColor: (NSColor *) backgroundColor
+                               font: (NSFont *) font
 {
-  return [[self alloc] initWithForegroundColor: fore backgroundColor: back font: font];
+  return [[self alloc] initWithForegroundColor: foregroundColor
+                               backgroundColor: backgroundColor
+                                          font: font];
 }
 
 + (NSColor *) testingBackground
@@ -33,30 +41,18 @@
   return [NSColor lightGrayColor];
 }
 
-- (id) initWithForegroundColor: (NSColor *) fore backgroundColor: (NSColor *) back font: (NSFont *) aFont
+- (id) initWithForegroundColor: (NSColor *) newForegroundColor
+               backgroundColor: (NSColor *) newBackgroundColor
+                          font: (NSFont *) newFont
 {
   if (!(self = [super init]))
     return nil;
-  foreground = fore;
-  background = back;
-  font = aFont;
+  
+  foregroundColor = newForegroundColor;
+  backgroundColor = newBackgroundColor;
+  font = newFont;
+  
   return self;
-}
-
-
-- (NSColor *) background
-{
-  return background;
-}
-
-- (NSFont *) font
-{
-  return font;
-}
-
-- (NSColor *) foreground
-{
-  return foreground;
 }
 
 @end

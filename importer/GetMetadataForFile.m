@@ -18,7 +18,8 @@ GetMetadataForFile (void *thisInterface,
                     CFStringRef pathToFile)
 {
   Boolean result = FALSE;
-  @autoreleasepool {
+  @autoreleasepool
+  {
     MUTextLogDocument *logDocument = [[MUTextLogDocument alloc]
                                       initWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
                                       ofType: nil

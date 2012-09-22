@@ -28,6 +28,8 @@
 
 @implementation NSFont (FullDisplayName)
 
+@dynamic fullDisplayName;
+
 - (NSString *) fullDisplayName
 {
   return [NSString stringWithFormat: @"%@ - %@pt", [self displayName], [NSNumber numberWithFloat: (float) [self pointSize]]];

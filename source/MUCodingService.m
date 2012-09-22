@@ -61,16 +61,6 @@ static const int32_t currentProxyVersion = 2;
   }
 }
 
-+ (void) encodeWorld: (MUWorld *) world withCoder: (NSCoder *) encoder
-{
-  return;
-}
-
-+ (void) decodeWorld: (MUWorld *) world withCoder: (NSCoder *) decoder
-{
-  return;
-}
-
 + (void) encodeProxySettings: (MUProxySettings *) settings withCoder: (NSCoder *) encoder;
 {
   [encoder encodeInt32: currentProxyVersion forKey: @"version"];

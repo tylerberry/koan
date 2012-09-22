@@ -219,8 +219,7 @@ typedef int QMethodTable[QSTATES][3];
   [self assertTrue: [option weAreYes]];
 }
 
-#pragma mark -
-#pragma mark MUTelnetOptionDelegate protocol
+#pragma mark - MUTelnetOptionDelegate protocol
 
 - (void) do: (uint8_t) option
 {
@@ -275,11 +274,17 @@ typedef int QMethodTable[QSTATES][3];
   else
     [option setUs: startState];
   
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+  
   [option performSelector: selector];
   
   [self assertInt: (MUTelnetQState) [option performSelector: himOrUs]
            equals: endState
           message: [NSString stringWithFormat: @"%@ ending state", message]];
+
+#pragma clang diagnostic pop
+  
   [self assertInt: flags
            equals: expectedFlags
           message: [NSString stringWithFormat: @"%@ flags", message]];

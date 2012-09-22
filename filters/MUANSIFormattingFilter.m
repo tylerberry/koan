@@ -48,7 +48,7 @@
     return nil;
   
   ansiCode = nil;
-  inCode = false;
+  inCode = NO;
   formatter = newFormatter;
   currentAttributes = [[NSMutableDictionary alloc] init];
   [currentAttributes setValue: [formatter font] forKey: NSFontAttributeName];
@@ -251,11 +251,11 @@
         break;
         
       case MUANSIBackgroundDefault:
-        [values addObject: [formatter background]];
+        [values addObject: formatter.backgroundColor];
         break;
         
       case MUANSIForegroundDefault:
-        [values addObject: [formatter foreground]];
+        [values addObject: formatter.foregroundColor];
         break;
         
       case MUANSIBackgroundGreen:
@@ -313,9 +313,9 @@
   
   if (!inCode)
   {
-    codeRange.location = [self scanUpToCodeInString: [editString string]];
+    codeRange.location = [self scanUpToCodeInString: editString.string];
     
-    ansiCode = [[NSString alloc] initWithString: @""];
+    ansiCode = @"";
   }
   else
     codeRange.location = 0;
@@ -324,16 +324,16 @@
   {
     inCode = YES;
     codeRange.length = [self scanThroughEndOfCodeAt: codeRange.location
-                                           inString: [editString string]];
+                                           inString: editString.string];
     
     if (codeRange.length == NSNotFound)
     {
-      codeRange.length = [editString length]  - codeRange.location;
+      codeRange.length = editString.length - codeRange.location;
       [editString deleteCharactersInRange: codeRange];
       return NO;
     }
     
-    if (codeRange.location < [editString length])
+    if (codeRange.location < editString.length)
     {
       inCode = NO;
       [editString deleteCharactersInRange: codeRange];
@@ -352,7 +352,7 @@
 
 - (NSFont *) makeFontBold: (NSFont *) font
 {  
-  if ([[formatter font] isBold])
+  if (formatter.font.isBold)
     return [font fontWithTrait: NSUnboldFontMask];
   else
     return [font fontWithTrait: NSBoldFontMask];
@@ -360,7 +360,7 @@
 
 - (NSFont *) makeFontUnbold: (NSFont *) font
 {
-  if ([[formatter font] isBold])
+  if (formatter.font.isBold)
     return [font fontWithTrait: NSBoldFontMask];
   else
     return [font fontWithTrait: NSUnboldFontMask];
@@ -377,21 +377,21 @@
 - (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSBackgroundColorAttributeName
-             toValue: [formatter background]
+             toValue: formatter.backgroundColor
             inString: string fromLocation: startLocation];
 }
 
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSFontAttributeName
-             toValue: [formatter font]
+             toValue: formatter.font
             inString: string fromLocation: startLocation];
 }
 
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSForegroundColorAttributeName
-             toValue: [formatter foreground]
+             toValue: formatter.foregroundColor
             inString: string fromLocation: startLocation];
 }
 
@@ -406,7 +406,7 @@
 {
   [string addAttribute: attribute
                  value: value
-                 range: NSMakeRange (startLocation, [string length] - startLocation)];
+                 range: NSMakeRange (startLocation, string.length - startLocation)];
   [currentAttributes setObject: value forKey: attribute];
 }
 
@@ -433,7 +433,7 @@
   
   while ([scanner scanUpToCharactersFromSet: stopSet intoString: nil])
     ;
-  return [scanner scanLocation];
+  return scanner.scanLocation;
 }
 
 - (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) codeIndex inString: (NSString *) string
@@ -450,15 +450,15 @@
   NSString *newAnsiCode = [[NSString alloc] initWithFormat: @"%@%@", ansiCode, charactersFromThisScan];
   ansiCode = newAnsiCode;
   
-  if ([scanner scanLocation] == [string length])
+  if (scanner.scanLocation == string.length)
     return NSNotFound;
   else
-    return [charactersFromThisScan length] + 1;
+    return charactersFromThisScan.length + 1;
 }
 
 - (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation
 {
-  if ([string length] <= startLocation)
+  if (string.length <= startLocation)
     return;
   
   if ([[ansiCode substringFromIndex: 2] intValue] == 0)
@@ -472,10 +472,12 @@
   if (!attributeValues)
     return;
   
-  if ([attributeNames count] != [attributeValues count])
-    return;
+  if (attributeNames.count != attributeValues.count)
+    @throw [NSException exceptionWithName: @"MUANSIException"
+                                   reason: @"attributeNames.count != attributeValues.count"
+                                 userInfo: nil];
   
-  for (unsigned i = 0; i < [attributeNames count]; i++)
+  for (NSUInteger i = 0; i < attributeNames.count; i++)
   {
     id attributeName = [attributeNames objectAtIndex: i];
     id attributeValue = [attributeValues objectAtIndex: i];
@@ -490,7 +492,9 @@
     else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
       [self resetBackgroundInString: string fromLocation: startLocation];
     else
-      @throw [NSException exceptionWithName: @"MUANSIException" reason: @"Did not provide attributeValue" userInfo: nil];
+      @throw [NSException exceptionWithName: @"MUANSIException"
+                                     reason: @"attributeValue was an invalid [NSNull null]"
+                                   userInfo: nil];
   }
 }
 

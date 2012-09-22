@@ -26,13 +26,13 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString *) string
-                 atIndex: (int) index
+                 atIndex: (NSUInteger) index
                  message: (NSString *) message;
 
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString *) string
-                 atIndex: (int) index;
+                 atIndex: (NSUInteger) index;
 
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue

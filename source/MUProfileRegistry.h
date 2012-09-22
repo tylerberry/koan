@@ -11,14 +11,10 @@
 @class MUPlayer;
 
 @interface MUProfileRegistry : NSObject
-{
-  NSMutableDictionary *profiles;
-}
+
+@property (strong, readonly) NSDictionary *profiles;
 
 + (MUProfileRegistry *) defaultRegistry;
-
-- (NSDictionary *) profiles;
-- (void) setProfiles: (NSDictionary *) newProfiles;
 
 - (MUProfile *) profileForProfile: (MUProfile *) profile;
 - (MUProfile *) profileForWorld: (MUWorld *) world;

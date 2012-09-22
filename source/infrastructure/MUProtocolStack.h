@@ -34,11 +34,11 @@
 
 - (void) flushBufferedData;
 
-- (void) parseData: (NSData *) data;
-- (NSData *) preprocessOutput: (NSData *) data;
+- (void) parseInputData: (NSData *) data;
+- (NSData *) preprocessOutputData: (NSData *) data;
 
-- (void) parseByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
-- (void) preprocessByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
+- (void) parseInputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
+- (void) preprocessOutputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
 
 - (void) useBufferedDataAsPrompt;
 

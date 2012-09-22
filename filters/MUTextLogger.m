@@ -11,7 +11,7 @@
 
 @interface MUTextLogger (Private)
 
-- (void) log: (NSAttributedString *) editString;
+- (void) log: (NSAttributedString *) attributedString;
 - (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers;
 - (void) writeToStream: (NSOutputStream *) stream withFormat: (NSString *) format, ...;
 
@@ -65,7 +65,9 @@
   [headers setValue: (player ? player.name : @"") forKey: @"Player"];
   [headers setValue: todayString forKey: @"Date"];
   
-  [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent] attributes: nil recursive: YES];
+  [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent]
+                                             attributes: nil
+                                              recursive: YES];
   [self initializeFileAtPath: path withHeaders: headers];
   
   return [self initWithOutputStream: [NSOutputStream outputStreamToFileAtPath: path append: YES]];
@@ -78,21 +80,17 @@
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
-  if ([string length] > 0)
+  if (string.length > 0)
     [self log: string];
   
   return string;
 }
 
-@end
+#pragma mark - Private methods
 
-#pragma mark -
-
-@implementation MUTextLogger (Private)
-
-- (void) log: (NSAttributedString *) string
+- (void) log: (NSAttributedString *) attributedString
 {
-  [self writeToStream: output withFormat: @"%@", [string string]];
+  [self writeToStream: output withFormat: @"%@", attributedString.string];
 }
 
 - (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers
@@ -107,10 +105,10 @@
   
   @try
   {
-    for (NSString *key in [headers allKeys])
+    for (NSString *key in headers.allKeys)
     {
       NSString *value = [headers objectForKey: key];
-      if ([value length] > 0)
+      if (value.length > 0)
         [self writeToStream: stream withFormat: @"%@:  %@\n", key, [headers objectForKey: key]];
     }
     [self writeToStream: stream withFormat: @"\n"];      

@@ -40,8 +40,7 @@
 
 + (NSAttributedString *) attributedStringWithString: (NSString *) string attributes: (NSDictionary *) dictionary
 {
-  return [[self alloc] initWithString: string
-                            attributes: dictionary];
+  return [[self alloc] initWithString: string attributes: dictionary];
 }
 
 @end
@@ -62,8 +61,7 @@
 
 + (NSMutableAttributedString *) attributedStringWithString: (NSString *) string attributes: (NSDictionary *) dictionary
 {
-  return [[self alloc] initWithString: string
-                            attributes: dictionary];
+  return [[self alloc] initWithString: string attributes: dictionary];
 }
 
 @end

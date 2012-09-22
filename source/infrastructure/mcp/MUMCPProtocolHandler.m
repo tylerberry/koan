@@ -1,7 +1,7 @@
 //
 // MUMCPProtocolHandler.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUMCPProtocolHandler.h"
@@ -10,7 +10,7 @@
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[[self alloc] initWithStack: stack connectionState: telnetConnectionState] autorelease];
+  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
 }
 
 - (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
@@ -18,16 +18,11 @@
   if (!(self = [super initWithStack: stack]))
     return nil;
   
-  connectionState = [telnetConnectionState retain];
+  connectionState = telnetConnectionState;
   
   return self;
 }
 
-- (void) dealloc
-{
-  [connectionState release];
-  [super dealloc];
-}
 
 - (NSObject <MUMCPProtocolHandlerDelegate> *) delegate
 {
@@ -39,12 +34,11 @@
   delegate = object;
 }
 
-#pragma mark -
-#pragma mark MUByteProtocolHandler overrides
+#pragma mark - MUByteProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
-  [protocolStack parseByte: byte previousProtocolHandler: self];
+  [protocolStack parseInputByte: byte previousProtocolHandler: self];
 }
 
 - (NSData *) headerForPreprocessedData
@@ -60,7 +54,7 @@
 - (void) preprocessByte: (uint8_t) byte
 {
   // Outgoing MCP commands are sent independently.
-  [protocolStack preprocessByte: byte previousProtocolHandler: self];
+  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
 }
 
 @end

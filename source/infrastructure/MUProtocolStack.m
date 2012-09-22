@@ -61,7 +61,7 @@
   }
 }
 
-- (void) parseData: (NSData *) data
+- (void) parseInputData: (NSData *) data
 {
   if ([byteProtocolHandlers count] == 0)
     return;
@@ -79,7 +79,7 @@
     [self maybeUseBufferedDataAsPrompt];
 }
 
-- (NSData *) preprocessOutput: (NSData *) data
+- (NSData *) preprocessOutputData: (NSData *) data
 {
   if ([byteProtocolHandlers count] == 0)
     return nil;
@@ -107,7 +107,7 @@
   return preprocessedData;
 }
 
-- (void) parseByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
+- (void) parseInputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
 {
   NSUInteger previousLevel = [byteProtocolHandlers indexOfObject: previousHandler];
   if (previousLevel > 0)
@@ -125,7 +125,7 @@
   }
 }
 
-- (void) preprocessByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
+- (void) preprocessOutputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
 {
   NSUInteger previousLevel = [byteProtocolHandlers indexOfObject: previousHandler];
   if (previousLevel < [byteProtocolHandlers count] - 1)

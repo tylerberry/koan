@@ -9,10 +9,14 @@
 
 static MUProfileRegistry *defaultRegistry = nil;
 
-@interface MUProfileRegistry (Private)
+@interface MUProfileRegistry ()
+{
+  NSMutableDictionary *mutableProfiles;
+}
 
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification;
 - (void) readProfilesFromUserDefaults;
+- (void) setProfiles: (NSDictionary *) newProfiles;
 - (void) writeProfilesToUserDefaults;
 
 @end
@@ -20,6 +24,8 @@ static MUProfileRegistry *defaultRegistry = nil;
 #pragma mark -
 
 @implementation MUProfileRegistry
+
+@synthesize profiles = mutableProfiles;
 
 + (MUProfileRegistry *) defaultRegistry
 {
@@ -41,11 +47,10 @@ static MUProfileRegistry *defaultRegistry = nil;
   if (!(self = [super init]))
     return nil;
   
-  profiles = [[NSMutableDictionary alloc] init];
+  mutableProfiles = [[NSMutableDictionary alloc] init];
   
   return self;
 }
-
 
 - (MUProfile *) profileForWorld: (MUWorld *) world
 {
@@ -63,7 +68,7 @@ static MUProfileRegistry *defaultRegistry = nil;
   if (!rval)
   {
     rval = profile;
-    [profiles setObject: rval forKey: rval.uniqueIdentifier];
+    [mutableProfiles setObject: rval forKey: rval.uniqueIdentifier];
     [self writeProfilesToUserDefaults];
   }
   return rval;
@@ -71,7 +76,7 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (MUProfile *) profileForUniqueIdentifier: (NSString *) identifier
 {
-  return [profiles objectForKey: identifier];
+  return [self.profiles objectForKey: identifier];
 }
 
 - (BOOL) containsProfileForWorld: (MUWorld *) world
@@ -114,41 +119,22 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (void) removeProfileForUniqueIdentifier: (NSString *) identifier
 {
-  [profiles removeObjectForKey: identifier];  
+  [mutableProfiles removeObjectForKey: identifier];  
   [self writeProfilesToUserDefaults];
 }
 
 - (void) removeAllProfilesForWorld: (MUWorld *) world
 {
-  for (unsigned i = 0; i < [[world children] count]; i++)
+  for (unsigned i = 0; i < world.children.count; i++)
   {
     [self removeProfileForWorld: world
-                         player: [[world children] objectAtIndex: i]];
+                         player: [world.children objectAtIndex: i]];
   }
   
   [self removeProfileForWorld: world];
 }
 
-- (NSDictionary *) profiles
-{
-  return profiles;
-}
-
-- (void) setProfiles: (NSDictionary *) newProfiles
-{
-  if (profiles == newProfiles)
-    return;
-  
-  profiles = [newProfiles mutableCopy];
-  
-  [self writeProfilesToUserDefaults];
-}
-
-@end
-
-#pragma mark -
-
-@implementation MUProfileRegistry (Private)
+#pragma mark - Private methods
 
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification
 {
@@ -164,9 +150,19 @@ static MUProfileRegistry *defaultRegistry = nil;
     [self setProfiles: [NSKeyedUnarchiver unarchiveObjectWithData: profilesData]];
 }
 
+- (void) setProfiles: (NSDictionary *) newProfiles
+{
+  if (mutableProfiles == newProfiles)
+    return;
+  
+  mutableProfiles = [newProfiles mutableCopy];
+  
+  [self writeProfilesToUserDefaults];
+}
+
 - (void) writeProfilesToUserDefaults
 {
-  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: profiles]
+  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: mutableProfiles]
                                             forKey: MUPProfiles];
   
   [[NSUserDefaults standardUserDefaults] synchronize];

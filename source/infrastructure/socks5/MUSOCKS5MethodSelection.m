@@ -1,7 +1,7 @@
 //
 // MUSOCKS5MethodSelection.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSOCKS5MethodSelection.h"
@@ -12,7 +12,7 @@
 
 + (id) socksMethodSelection
 {
-  return [[[MUSOCKS5MethodSelection alloc] init] autorelease];
+  return [[MUSOCKS5MethodSelection alloc] init];
 }
 
 - (id) init
@@ -26,11 +26,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [methods release];
-  [super dealloc];
-}
 
 - (void) addMethod: (MUSOCKS5Method) method
 {

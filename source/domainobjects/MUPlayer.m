@@ -35,8 +35,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Property method implementations
+#pragma mark - Property method implementations
 
 - (NSString *) loginString
 {
@@ -45,7 +44,7 @@
 
   NSRange whitespaceRange = [self.name rangeOfCharacterFromSet: [NSCharacterSet whitespaceCharacterSet]];
   
-  if (self.password && [self.password length] > 0)
+  if (self.password && self.password.length > 0)
   {
   	if (whitespaceRange.location == NSNotFound)
   		return [NSString stringWithFormat: @"connect %@ %@", self.name, self.password];
@@ -66,11 +65,11 @@
   NSMutableString *result = [NSMutableString stringWithString: @"player:"];
   NSArray *tokens = [self.name componentsSeparatedByString: @" "];
   
-  if ([tokens count] > 0)
+  if (tokens.count > 0)
   {
     [result appendFormat: @"%@", [[tokens objectAtIndex: 0] lowercaseString]];
     
-    for (unsigned i = 1; i < [tokens count]; i++)
+    for (unsigned i = 1; i < tokens.count; i++)
       [result appendFormat: @".%@", [[tokens objectAtIndex: i] lowercaseString]];
   }
   return result;
@@ -82,8 +81,7 @@
   return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
 }
 
-#pragma mark -
-#pragma mark NSCoding protocol
+#pragma mark - NSCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -100,8 +98,7 @@
   return self;
 }
 
-#pragma mark -
-#pragma mark NSCopying protocol
+#pragma mark - NSCopying protocol
 
 - (id) copyWithZone: (NSZone *) zone
 {

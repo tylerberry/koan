@@ -19,12 +19,12 @@
 
 - (NSMutableArray *) children
 {
-  return [MUWorldRegistry defaultRegistry].worlds;
+  return [MUWorldRegistry defaultRegistry].mutableWorlds;
 }
 
 - (void) setChildren: (NSMutableArray *) newChildren
 {
-  [MUWorldRegistry defaultRegistry].worlds = newChildren;
+  [MUWorldRegistry defaultRegistry].mutableWorlds = newChildren;
 }
 
 - (BOOL) isLeaf

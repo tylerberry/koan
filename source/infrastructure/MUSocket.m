@@ -5,6 +5,7 @@
 //
 
 #import "MUSocket.h"
+#import "MUAbstractConnectionSubclass.h"
 
 #include <errno.h>
 #include <netdb.h>
@@ -23,8 +24,7 @@ NSString *MUSocketWasClosedByServerNotification = @"MUSocketWasClosedByServerNot
 NSString *MUSocketWasClosedWithErrorNotification = @"MUSocketWasClosedWithErrorNotification";
 NSString *MUSocketErrorMessageKey = @"MUSocketErrorMessageKey";
 
-#pragma mark -
-#pragma mark C Function Prototypes
+#pragma mark - C Function Prototypes
 
 static inline ssize_t full_write (int file_descriptor, const void *bytes, size_t length);
 static inline ssize_t safe_read (int file_descriptor, void *bytes, size_t length);
@@ -141,8 +141,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   [NSThread detachNewThreadSelector: @selector (runThread:) toTarget: self withObject: nil];
 }
 
-#pragma mark -
-#pragma mark MUAbstractConnection overrides
+#pragma mark - MUAbstractConnection overrides
 
 - (void) setStatusConnected
 {
@@ -180,8 +179,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
                                                     userInfo: [NSDictionary dictionaryWithObjectsAndKeys: error, MUSocketErrorMessageKey, nil]];
 }
 
-#pragma mark -
-#pragma mark MUByteSource protocol
+#pragma mark - MUByteSource protocol
 
 - (NSUInteger) availableBytes
 {
@@ -246,8 +244,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   return [NSData dataWithBytesNoCopy: bytes length: bytesRead];
 }
 
-#pragma mark -
-#pragma mark MUByteDestination protocol
+#pragma mark - MUByteDestination protocol
 
 - (void) write: (NSData *) data
 {
@@ -538,8 +535,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 @end
 
-#pragma mark -
-#pragma mark C Functions
+#pragma mark - C Functions
 
 static inline ssize_t
 full_write (int file_descriptor, const void *bytes, size_t length)

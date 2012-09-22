@@ -76,16 +76,14 @@ static const int32_t currentWorldVersion = 7;
 }
 
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
   return [MUMUDConnection telnetWithHostname: self.hostname port: self.port.intValue delegate: delegate];
 }
 
-#pragma mark -
-#pragma mark Property method implementations
+#pragma mark - Property method implementations
 
 - (NSString *) uniqueIdentifier
 {
@@ -107,8 +105,7 @@ static const int32_t currentWorldVersion = 7;
   return [NSString stringWithFormat: @"%@", self.name];
 }
 
-#pragma mark -
-#pragma mark NSCoding protocol
+#pragma mark - NSCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -161,8 +158,7 @@ static const int32_t currentWorldVersion = 7;
   return self;
 }
 
-#pragma mark -
-#pragma mark NSCopying protocol
+#pragma mark - NSCopying protocol
 
 - (id) copyWithZone: (NSZone *) zone
 {

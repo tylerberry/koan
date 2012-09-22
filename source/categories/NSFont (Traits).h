@@ -28,9 +28,10 @@
 
 @interface NSFont (Traits)
 
+@property (unsafe_unretained, readonly) BOOL isBold;
+@property (unsafe_unretained, readonly) BOOL isItalic;
+
 - (NSFont *) fontWithTrait: (NSFontTraitMask)trait;
 - (BOOL) hasTrait: (NSFontTraitMask)trait;
-- (BOOL) isBold;
-- (BOOL) isItalic;
 
 @end

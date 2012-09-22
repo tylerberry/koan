@@ -24,21 +24,18 @@ static MULogBrowserWindowController *sharedLogBrowserWindowController = nil;
   if (!(self = [super initWithWindowNibName: @"MULogBrowser"]))
     return nil;
   
-  (void) [self window];
-  
   return self;
 }
 
-#pragma mark -
-#pragma mark NSWindowController overrides
+#pragma mark - NSWindowController overrides
 
 - (void) setDocument: (NSDocument *) newDocument
 {
   [super setDocument: newDocument];
   
-  [textView setString: [(MUTextLogDocument *) newDocument content]];
+  textView.string = [(MUTextLogDocument *) newDocument content];
   
-  [self showWindow: nil];
+  [self showWindow: self];
 }
 
 @end

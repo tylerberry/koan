@@ -8,27 +8,27 @@
 
 @protocol MUFormatter
 
-- (NSColor *) background;
-- (NSFont *) font;
-- (NSColor *) foreground;
+@property (strong, nonatomic, readonly) NSColor *backgroundColor;
+@property (strong, nonatomic, readonly) NSFont *font;
+@property (strong, nonatomic, readonly) NSColor *foregroundColor;
 
 @end
 
 #pragma mark -
 
 @interface MUFormatter : NSObject <MUFormatter>
-{
-  NSColor *background;
-  NSFont *font;
-  NSColor *foreground;
-}
 
 + (id) formatterForTesting;
-+ (id) formatterWithForegroundColor: (NSColor *) fore backgroundColor: (NSColor *) back font: (NSFont *) font;
++ (id) formatterWithForegroundColor: (NSColor *) foregroundColor
+                    backgroundColor: (NSColor *) backgroundColor
+                               font: (NSFont *) font;
+
 + (NSColor *) testingBackground;
 + (NSFont *) testingFont;
 + (NSColor *) testingForeground;
 
-- (id) initWithForegroundColor: (NSColor *) fore backgroundColor: (NSColor *) back font: (NSFont *) font;
+- (id) initWithForegroundColor: (NSColor *) foregroundColor
+               backgroundColor: (NSColor *) backgroundColor
+                          font: (NSFont *) font;
 
 @end

@@ -52,12 +52,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface ImageAndTextCell : NSTextFieldCell
-{
-@private
-	NSImage *image;
-}
 
-@property NSImage *image;
+@property (strong, nonatomic) NSImage *image;
 
 - (void) drawWithFrame: (NSRect) cellFrame inView: (NSView *) controlView;
 - (NSSize) cellSize;

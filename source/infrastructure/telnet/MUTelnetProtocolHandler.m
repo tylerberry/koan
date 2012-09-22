@@ -1,7 +1,7 @@
 //
 // MUTelnetProtocolHandler.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetProtocolHandler.h"
@@ -16,9 +16,8 @@ static NSArray *offerableCharsets;
 
 #pragma mark -
 
-@interface MUTelnetProtocolHandler (Private)
+@interface MUTelnetProtocolHandler ()
 
-- (void) deallocOptions;
 - (void) forOption: (uint8_t) option allowWill: (BOOL) willValue allowDo: (BOOL) doValue;
 - (void) initializeOptions;
 - (void) negotiateOptions;
@@ -61,14 +60,18 @@ static NSArray *offerableCharsets;
 {
   offerableTerminalTypes = [[NSArray alloc] initWithObjects: @"KOAN", @"UNKNOWN", @"UNKNOWN", nil];
   
-  acceptableCharsets = [[NSArray alloc] initWithObjects: @"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987", @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII", @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US", @"IBM367", @"CP367", @"CSASCII", nil];
+  acceptableCharsets = [[NSArray alloc] initWithObjects: @"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
+                        @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII",
+                        @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US",
+                        @"IBM367", @"CP367", @"CSASCII", nil];
   
   offerableCharsets = [[NSArray alloc] initWithObjects: @"UTF-8", @"ISO-8859-1", @"US-ASCII", nil];
 }
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack
+                connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[[self alloc] initWithStack: stack connectionState: telnetConnectionState] autorelease];
+  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
 }
 
 - (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
@@ -78,22 +81,13 @@ static NSArray *offerableCharsets;
   
   subnegotiationBuffer = [[NSMutableData alloc] initWithCapacity: 64];
   
-  connectionState = [telnetConnectionState retain];
-  stateMachine = [[MUTelnetStateMachine stateMachine] retain];
+  connectionState = telnetConnectionState;
+  stateMachine = [MUTelnetStateMachine stateMachine];
   receivedCR = NO;
   optionRequestSent = NO;
   
   [self initializeOptions];
   return self;
-}
-
-- (void) dealloc
-{
-  [self deallocOptions];
-  [subnegotiationBuffer release];
-  [connectionState release];
-  [stateMachine release];
-  [super dealloc];
 }
 
 - (NSObject <MUTelnetProtocolHandlerDelegate> *) delegate
@@ -155,8 +149,7 @@ static NSArray *offerableCharsets;
   return stateMachine.telnetConfirmed;
 }
 
-#pragma mark -
-#pragma mark MUTelnetProtocolHandler protocol
+#pragma mark - MUTelnetProtocolHandler protocol
 
 - (void) bufferSubnegotiationByte: (uint8_t) byte
 {
@@ -169,24 +162,24 @@ static NSArray *offerableCharsets;
   {
     receivedCR = NO;
     if (byte == '\0')
-      [protocolStack parseByte: '\r' previousProtocolHandler: self];
+      [protocolStack parseInputByte: '\r' previousProtocolHandler: self];
     else
-      [protocolStack parseByte: byte previousProtocolHandler: self];
+      [protocolStack parseInputByte: byte previousProtocolHandler: self];
   } 
   else if (byte == '\r')
     receivedCR = YES;
   else
-    [protocolStack parseByte: byte previousProtocolHandler: self];
+    [protocolStack parseInputByte: byte previousProtocolHandler: self];
 }
 
 - (void) handleBufferedSubnegotiation
 {
-  if ([subnegotiationBuffer length] == 0)
+  if (subnegotiationBuffer.length == 0)
   {
     [self log: @"Telnet irregularity: Received zero-length subnegotiation."];
   }
   
-  const uint8_t *bytes = [subnegotiationBuffer bytes];
+  const uint8_t *bytes = subnegotiationBuffer.bytes;
   
   switch (bytes[0])
   {
@@ -211,11 +204,12 @@ static NSArray *offerableCharsets;
       break;
       
     default:
-      [self log: @"Unknown subnegotation for option %@. [%@]", [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationBuffer];
+      [self log: @"Unknown subnegotation for option %@. [%@]",
+       [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationBuffer];
       break;
   }
   
-  [subnegotiationBuffer setData: [NSData data]];
+  subnegotiationBuffer.data = [NSData data];
 }
 
 - (void) log: (NSString *) message, ...
@@ -265,8 +259,7 @@ static NSArray *offerableCharsets;
   [protocolStack useBufferedDataAsPrompt];
 }
 
-#pragma mark -
-#pragma mark MUByteProtocolHandler overrides
+#pragma mark - MUByteProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
@@ -306,12 +299,11 @@ static NSArray *offerableCharsets;
 - (void) preprocessByte: (uint8_t) byte
 {
   if (byte == MUTelnetInterpretAsCommand)
-    [protocolStack preprocessByte: byte previousProtocolHandler: self];
-  [protocolStack preprocessByte: byte previousProtocolHandler: self];
+    [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
+  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
 }
 
-#pragma mark -
-#pragma mark MUTelnetOptionDelegate protocol
+#pragma mark - MUTelnetOptionDelegate protocol
 
 - (void) do: (uint8_t) option
 {
@@ -337,17 +329,7 @@ static NSArray *offerableCharsets;
   [self sendCommand: MUTelnetWont withByte: option];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTelnetProtocolHandler (Private)
-
-- (void) deallocOptions
-{
-  for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
-    [options[i] release];
-}
+#pragma mark - Private methods
 
 - (void) forOption: (uint8_t) option allowWill: (BOOL) willValue allowDo: (BOOL) doValue
 {
@@ -417,8 +399,7 @@ static NSArray *offerableCharsets;
   [self sendSubnegotiationWithBytes: [payloadData bytes] length: [payloadData length]];
 }
 
-#pragma mark -
-#pragma mark CHARSET
+#pragma mark - CHARSET
 
 - (void) handleCharsetSubnegotiation: (NSData *) subnegotiationData
 {
@@ -459,12 +440,12 @@ static NSArray *offerableCharsets;
       }
       
       uint8_t separatorCharacter = bytes[byteOffset];
-      NSString *separatorCharacterString = [[[NSString alloc] initWithBytes: &separatorCharacter length: 1 encoding: NSASCIIStringEncoding] autorelease];
+      NSString *separatorCharacterString = [[NSString alloc] initWithBytes: &separatorCharacter length: 1 encoding: NSASCIIStringEncoding];
       
       if (separatorCharacter == MUTelnetInterpretAsCommand)
         [self log: @"Telnet irregularity: IAC used as separator in %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       
-      NSString *offeredCharsetsString = [[[NSString alloc] initWithBytes: bytes + byteOffset + 1 length: length - byteOffset - 1 encoding: NSASCIIStringEncoding] autorelease];
+      NSString *offeredCharsetsString = [[NSString alloc] initWithBytes: bytes + byteOffset + 1 length: length - byteOffset - 1 encoding: NSASCIIStringEncoding];
       NSArray *offeredCharsets = [offeredCharsetsString componentsSeparatedByString: separatorCharacterString];
       
       if (serverOfferedTranslationTable)
@@ -510,7 +491,7 @@ static NSArray *offerableCharsets;
         return;
       }
       
-      NSString *acceptedCharset = [[[NSString alloc] initWithBytes: bytes + 2 length: length - 2 encoding: NSASCIIStringEncoding] autorelease];
+      NSString *acceptedCharset = [[NSString alloc] initWithBytes: bytes + 2 length: length - 2 encoding: NSASCIIStringEncoding];
       
       self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
       
@@ -668,23 +649,23 @@ static NSArray *offerableCharsets;
   else return NSASCIIStringEncoding;
 }
 
-#pragma mark -
-#pragma mark MCCP
+#pragma mark - MCCP
 
 - (void) handleMCCPSubnegotiation: (NSData *) subnegotiationData version: (uint8_t) versionByte
 {
-  const uint8_t *bytes = [subnegotiationData bytes];
-  NSUInteger length = [subnegotiationData length];
+  const uint8_t *bytes = subnegotiationData.bytes;
   
-  if (length != 1)
+  if (subnegotiationData.length != 1)
   {
-    [self log: @"MCCP irregularity: %@ subnegotiation length is not 1. [%@]", [MUTelnetOption optionNameForByte: versionByte], subnegotiationData];
+    [self log: @"MCCP irregularity: %@ subnegotiation length is not 1. [%@]",
+     [MUTelnetOption optionNameForByte: versionByte], subnegotiationData];
     return;
   }
   
   if (bytes[0] != versionByte)
   {
-    [self log: @"MCCP irregularity: First byte is not %@. [%@]", [MUTelnetOption optionNameForByte: versionByte], subnegotiationData];
+    [self log: @"MCCP irregularity: First byte is not %@. [%@]",
+     [MUTelnetOption optionNameForByte: versionByte], subnegotiationData];
     return;
   }
   
@@ -702,15 +683,13 @@ static NSArray *offerableCharsets;
   self.connectionState.incomingStreamCompressed = YES;
 }
 
-#pragma mark -
-#pragma mark MSSP
+#pragma mark - MSSP
 
 - (void) handleMSSPSubnegotiation: (NSData *) subnegotiationData
 {
-  const uint8_t *bytes = [subnegotiationData bytes];
-  NSUInteger length = [subnegotiationData length];
+  const uint8_t *bytes = subnegotiationData.bytes;
   
-  if (length == 1)
+  if (subnegotiationData.length == 1)
   {
     [self log: @"MSSP irregularity: %@ subnegotiation length of 1. [%@]", [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
     return;
@@ -728,7 +707,7 @@ static NSArray *offerableCharsets;
   
   [self log: @"Received: IAC SB %@ [] IAC SE.", [MUTelnetOption optionNameForByte: MUTelnetOptionMSSP]];
   
-  for (unsigned i = 2; i < length; i++)
+  for (unsigned i = 2; i < subnegotiationData.length; i++)
   {
     switch (bytes[i])
     {
@@ -762,21 +741,20 @@ static NSArray *offerableCharsets;
 
 - (void) logMSSPVariableData: (NSData *) variableData valueData: (NSData *) valueData
 {
-  [self log: @"    MSSP:   %@ = %@.", [[[NSString alloc] initWithData: variableData encoding: NSASCIIStringEncoding] autorelease],
-   [[[NSString alloc] initWithData: valueData encoding: NSASCIIStringEncoding] autorelease]];
+  [self log: @"    MSSP:   %@ = %@.", [[NSString alloc] initWithData: variableData encoding: NSASCIIStringEncoding],
+   [[NSString alloc] initWithData: valueData encoding: NSASCIIStringEncoding]];
 }
 
-#pragma mark -
-#pragma mark TERMINAL-TYPE
+#pragma mark - TERMINAL-TYPE
 
 - (void) handleTerminalTypeSubnegotiation: (NSData *) subnegotiationData
 {
-  const uint8_t *bytes = [subnegotiationData bytes];
-  NSUInteger length = [subnegotiationData length];
+  const uint8_t *bytes = subnegotiationData.bytes;
   
-  if (length != 2)
+  if (subnegotiationData.length != 2)
   {
-    [self log: @"Telnet irregularity: Invalid length of %u for %@ subnegotiation request. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    [self log: @"Telnet irregularity: Invalid length of %u for %@ subnegotiation request. [%@]",
+     subnegotiationData.length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
     return;
   }
   
@@ -797,7 +775,7 @@ static NSArray *offerableCharsets;
   
   NSString *terminalType = [offerableTerminalTypes objectAtIndex: self.connectionState.nextTerminalTypeIndex++];
   
-  if (self.connectionState.nextTerminalTypeIndex >= [offerableTerminalTypes count])
+  if (self.connectionState.nextTerminalTypeIndex >= offerableTerminalTypes.count)
     self.connectionState.nextTerminalTypeIndex = 0;
   
   [terminalTypeData appendBytes: [terminalType cStringUsingEncoding: NSASCIIStringEncoding]

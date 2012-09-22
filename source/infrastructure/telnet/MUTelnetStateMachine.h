@@ -1,7 +1,7 @@
 //
 // MUTelnetStateMachine.h
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -17,7 +17,7 @@
   BOOL telnetConfirmed;
 }
 
-@property (retain, nonatomic) MUTelnetState *state;
+@property ( nonatomic) MUTelnetState *state;
 @property (assign, nonatomic) BOOL telnetConfirmed;
 
 + (id) stateMachine;

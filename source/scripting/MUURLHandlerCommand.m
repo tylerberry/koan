@@ -12,7 +12,7 @@
 
 - (id) performDefaultImplementation
 {
-  [[NSApp delegate] connectToURL: [NSURL URLWithString: [self directParameter]]];
+  [[NSApp delegate] connectToURL: [NSURL URLWithString: self.directParameter]];
   
   return nil;
 }

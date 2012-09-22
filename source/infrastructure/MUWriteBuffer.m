@@ -50,8 +50,7 @@
   destination = object;
 }
 
-#pragma mark -
-#pragma mark MUWriteBuffer protocol
+#pragma mark - MUWriteBuffer protocol
 
 - (void) appendByte: (uint8_t) byte
 {

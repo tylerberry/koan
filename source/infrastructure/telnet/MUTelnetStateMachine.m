@@ -1,7 +1,7 @@
 //
 // MUTelnetStateMachine.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetStateMachine.h"
@@ -14,7 +14,7 @@
 
 + (id) stateMachine
 {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (id) init

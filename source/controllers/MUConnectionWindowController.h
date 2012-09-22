@@ -7,11 +7,12 @@
 #import <Cocoa/Cocoa.h>
 
 #import "MUFilterQueue.h"
+#import "MUFugueEditFilter.h"
 #import "MUHistoryRing.h"
 #import "MUDisplayTextView.h"
 #import "MUProfile.h"
 
-@interface MUConnectionWindowController : NSWindowController <MUMUDConnectionDelegate>
+@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate>
 {
   IBOutlet MUDisplayTextView *receivedTextView;
   IBOutlet NSTextView *inputView;

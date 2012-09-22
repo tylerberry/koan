@@ -53,7 +53,7 @@
 
 + (Class) transformedValueClass
 {
-  return NSString.class;
+  return [NSString class];
 }
 
 + (BOOL) allowsReverseTransformation

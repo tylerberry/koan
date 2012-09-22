@@ -29,15 +29,14 @@
   return self;
 }
 
-#pragma mark -
-#pragma mark MUFormatter protocol
+#pragma mark - MUFormatter protocol
 
 - (NSFont *) font
 {
   return self.profile.effectiveFont;
 }
 
-- (NSColor *) foreground
+- (NSColor *) foregroundColor
 {
   if (self.profile.textColor)
     return self.profile.textColor;
@@ -45,7 +44,7 @@
     return [NSUnarchiver unarchiveObjectWithData: self.profile.effectiveTextColor];
 }
 
-- (NSColor *) background
+- (NSColor *) backgroundColor
 {
   if (self.profile.backgroundColor)
     return self.profile.backgroundColor;

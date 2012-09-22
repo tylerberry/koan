@@ -15,7 +15,7 @@
 - (NSUInteger) length;
 
 - (NSData *) dataByConsumingBuffer;
-- (NSData *) dataByConsumingBytesToIndex: (unsigned) index;
+- (NSData *) dataByConsumingBytesToIndex: (NSUInteger) index;
 - (NSData *) dataValue;
 
 - (NSString *) ASCIIStringByConsumingBuffer;

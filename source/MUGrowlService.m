@@ -41,7 +41,7 @@ static MUGrowlService *defaultGrowlService;
   if (!(self = [super init]))
     return nil;
   
-  GrowlApplicationBridge.growlDelegate = self;
+  [GrowlApplicationBridge setGrowlDelegate: self];
   
   return self;
 }
@@ -77,8 +77,7 @@ static MUGrowlService *defaultGrowlService;
                                            description: description];
 }
 
-#pragma mark -
-#pragma mark GrowlApplicationBridge delegate
+#pragma mark - GrowlApplicationBridge delegate
 
 - (NSString *) applicationNameForGrowl
 {

@@ -7,7 +7,6 @@
 #import "MUProfileRegistryTests.h"
 #import "MUProfileRegistry.h"
 #import "MUProfile.h"
-#import "MUServices.h"
 #import "MUWorld.h"
 
 @interface MUProfileRegistryTests (Private)
@@ -38,10 +37,10 @@
 {
   MUProfileRegistry *registryOne, *registryTwo;
   
-  registryOne = [MUServices profileRegistry];
+  registryOne = [MUProfileRegistry defaultRegistry];
   [self assertNotNil: registryOne];
   
-  registryTwo = [MUServices profileRegistry];
+  registryTwo = [MUProfileRegistry defaultRegistry];
   [self assert: registryOne equals: registryTwo];
 }
 

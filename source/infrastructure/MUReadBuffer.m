@@ -35,9 +35,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
   return self;
 }
 
-
-#pragma mark -
-#pragma mark MUReadBuffer protocol
+#pragma mark - MUReadBuffer protocol
 
 - (void) appendByte: (uint8_t) byte
 {
@@ -62,7 +60,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
   return data;
 }
 
-- (NSData *) dataByConsumingBytesToIndex: (unsigned) byteIndex
+- (NSData *) dataByConsumingBytesToIndex: (NSUInteger) byteIndex
 {
   NSData *subdata = [dataBuffer subdataWithRange: NSMakeRange (0, byteIndex)];
   

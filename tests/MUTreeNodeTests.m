@@ -26,8 +26,8 @@
 
 - (void) tearDown
 {
+  return;
 }
-
 
 - (void) testAddChild
 {
@@ -51,7 +51,7 @@
   [node addChild: child];
   [node addChild: child];
   
-  [self assertInt: [node.children count] equals: 1];
+  [self assertUInteger: node.children.count equals: 1];
 }
 
 - (void) testRemoveChild
@@ -89,7 +89,7 @@
   @try
   {
     [thisNode addChild: child];
-    [self assertInt: [thisNode.children count] equals: 1];
+    [self assertUInteger: thisNode.children.count equals: 1];
   }
   @finally
   {

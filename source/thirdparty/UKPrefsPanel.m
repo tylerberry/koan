@@ -63,8 +63,7 @@
   [self mapTabsToToolbar];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSTabView *) tabView
 {
@@ -89,16 +88,14 @@
   autosaveName = name;
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (IBAction) orderFrontPrefsPanel: (id) sender
 {
   [tabView.window makeKeyAndOrderFront: sender];
 }
 
-#pragma mark -
-#pragma mark NSToolbar delegate
+#pragma mark - NSToolbar delegate
 
 - (NSToolbarItem *) toolbar: (NSToolbar *) toolbar
       itemForItemIdentifier: (NSString *) itemIdentifier

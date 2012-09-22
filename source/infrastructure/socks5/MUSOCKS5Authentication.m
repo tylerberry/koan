@@ -1,7 +1,7 @@
 //
 // MUSOCKS5Authentication.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSOCKS5Authentication.h"
@@ -13,7 +13,7 @@
 
 + (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue
 {
-  return [[[MUSOCKS5Authentication alloc] initWithUsername: usernameValue password: passwordValue] autorelease];
+  return [[MUSOCKS5Authentication alloc] initWithUsername: usernameValue password: passwordValue];
 }
 
 - (id) initWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue
@@ -26,12 +26,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [username release];
-  [password release];
-  [super dealloc];
-}
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {

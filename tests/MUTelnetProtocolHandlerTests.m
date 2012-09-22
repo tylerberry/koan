@@ -40,7 +40,7 @@
 {
   uint8_t bytes[] = {MUTelnetInterpretAsCommand};
   NSData *data = [NSData dataWithBytes: bytes length: 1];
-  NSData *preprocessedData = [protocolStack preprocessOutput: data];
+  NSData *preprocessedData = [protocolStack preprocessOutputData: data];
   
   const char expectedBytes[] = {MUTelnetInterpretAsCommand, MUTelnetInterpretAsCommand, 0};
   [self assertData: preprocessedData hasBytesWithZeroTerminator: expectedBytes];
@@ -77,7 +77,7 @@
 
 - (void) testParseCRCRNUL
 {
-  [protocolStack parseData: [NSData dataWithBytes: "\r\r\0" length: 3]];
+  [protocolStack parseInputData: [NSData dataWithBytes: "\r\r\0" length: 3]];
   [protocolStack flushBufferedData];
   [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
 }
@@ -90,7 +90,7 @@
 
 - (void) testParseCRNUL
 {
-  [protocolStack parseData: [NSData dataWithBytes: "\r\0" length: 2]];
+  [protocolStack parseInputData: [NSData dataWithBytes: "\r\0" length: 2]];
   [protocolStack flushBufferedData];
   [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
 }
@@ -104,7 +104,7 @@
     if (i == '\n' || i == '\r')
       continue;
     bytes[1] = i;
-    [protocolStack parseData: [NSData dataWithBytes: bytes length: 2]];
+    [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 2]];
     [protocolStack flushBufferedData];
     [self assert: parsedData equals: [NSData dataWithBytes: bytes + 1 length: 1]];
     [self resetTest];
@@ -114,7 +114,7 @@
 - (void) testParseCRWithSomeTelnetThrownIn
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetNoOperation, 0};
-  [protocolStack parseData: [NSData dataWithBytes: bytes length: 4]];
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
   [protocolStack flushBufferedData];
   [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
 }
@@ -133,7 +133,7 @@
 
 - (void) testParseLFCRNUL
 {
-  [protocolStack parseData: [NSData dataWithBytes: "\n\r\0" length: 3]];
+  [protocolStack parseInputData: [NSData dataWithBytes: "\n\r\0" length: 3]];
   [protocolStack flushBufferedData];
   [self assertData: parsedData hasBytesWithZeroTerminator: "\n\r"];
 }
@@ -142,23 +142,22 @@
 {
   uint8_t bytes[9] = {MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [protocolStack parseData: [NSData dataWithBytes: bytes length: 9]];
-  [self assertInt: [parsedData length] equals: 0];
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 9]];
+  [self assertUInteger: [parsedData length] equals: 0];
 }
 
 - (void) testSubnegotiationStrippedFromText
 {
   uint8_t bytes[13] = {'a', 'b', MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, 'c', 'd'};
   
-  [protocolStack parseData: [NSData dataWithBytes: bytes length: 13]];
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 13]];
   [protocolStack flushBufferedData];
   
   uint8_t expectedBytes[4] = {'a', 'b', 'c', 'd'};
   [self assert: parsedData equals: [NSData dataWithBytes: expectedBytes length: 4]];
 }
 
-#pragma mark -
-#pragma mark Telnet options
+#pragma mark - Telnet options
 
 - (void) testDoSuppressGoAhead
 {
@@ -176,7 +175,7 @@
 {
   [self confirmTelnetWithDontEcho];
   
-  NSData *preprocessedData = [protocolStack preprocessOutput: [NSData data]];
+  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
   
   const char bytes[] = {MUTelnetInterpretAsCommand, MUTelnetGoAhead, 0};
   [self assertData: preprocessedData hasBytesWithZeroTerminator: bytes];
@@ -187,8 +186,8 @@
   [protocolHandler enableOptionForUs: MUTelnetOptionSuppressGoAhead];
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
   
-  NSData *preprocessedData = [protocolStack preprocessOutput: [NSData data]];
-  [self assertInt: [preprocessedData length] equals: 0];
+  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
+  [self assertUInteger: [preprocessedData length] equals: 0];
 }
 
 - (void) testDoTerminalType
@@ -248,7 +247,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[11] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -257,7 +256,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 11]];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
 }
 
 - (void) testCharsetLatin1Accepted
@@ -266,7 +265,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[13] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1'};
   const uint8_t charsetReply[16] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -275,7 +274,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 13];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 16]];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSISOLatin1StringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSISOLatin1StringEncoding];
 }
 
 - (void) testCharsetRejected
@@ -284,7 +283,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[10] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'N', 'V', 'A', 'L', 'I', 'D'};
   const uint8_t charsetReply[6] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetRejected, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -293,14 +292,14 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 10];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 6]];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
 }
 
 - (void) testCharsetNonStandardBehavior
 {
   [self simulateDo: MUTelnetOptionCharset];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[17] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, MUTelnetInterpretAsCommand, MUTelnetWill, MUTelnetOptionTransmitBinary, MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTransmitBinary};
@@ -309,7 +308,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 17]];
   
-  [self assertInt: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
 }
 
 - (void) testDoEndOfRecord
@@ -328,19 +327,18 @@
 {
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
   
-  NSData *preprocessedData = [protocolStack preprocessOutput: [NSData data]];
-  [self assertInt: [preprocessedData length] equals: 0];
+  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
+  [self assertUInteger: [preprocessedData length] equals: 0];
   
   [self simulateDo: MUTelnetOptionEndOfRecord];
   
-  preprocessedData = [protocolStack preprocessOutput: [NSData data]];
+  preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
   
   uint8_t expectedBytes[2] = {MUTelnetInterpretAsCommand, MUTelnetEndOfRecord};
   [self assert: preprocessedData equals: [NSData dataWithBytes: expectedBytes length: 2]];
 }
 
-#pragma mark -
-#pragma mark MUProtocolStackDelegate protocol
+#pragma mark - MUProtocolStackDelegate protocol
 
 - (void) displayDataAsText: (NSData *) data
 {
@@ -352,8 +350,7 @@
   return;
 }
 
-#pragma mark -
-#pragma mark MUTelnetProtocolHandlerDelegate protocol
+#pragma mark - MUTelnetProtocolHandlerDelegate protocol
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
@@ -379,12 +376,12 @@
 - (void) confirmTelnetWithDontEcho
 {
   uint8_t bytes[3] = {MUTelnetInterpretAsCommand, MUTelnetDont, MUTelnetOptionEcho};
-  [protocolStack parseData: [NSData dataWithBytes: bytes length: 3]];
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 3]];
 }
 
 - (void) parseBytesWithZeroTerminator: (const uint8_t *) bytes
 {
-  [protocolStack parseData: [NSData dataWithBytes: bytes length: strlen ((const char *) bytes)]];
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: strlen ((const char *) bytes)]];
   [protocolStack flushBufferedData];
 }
 
@@ -416,7 +413,7 @@
 - (void) simulateDo: (uint8_t) option
 {
   const uint8_t doRequest[] = {MUTelnetInterpretAsCommand, MUTelnetDo, option};
-  [protocolStack parseData: [NSData dataWithBytes: doRequest length: 3]];
+  [protocolStack parseInputData: [NSData dataWithBytes: doRequest length: 3]];
 }
 
 - (void) simulateIncomingSubnegotation: (const uint8_t *) payload length: (unsigned) payloadLength
@@ -427,13 +424,13 @@
   [data appendBytes: header length: 2];
   [data appendBytes: payload length: payloadLength];
   [data appendBytes: footer length: 2];
-  [protocolStack parseData: data];
+  [protocolStack parseInputData: data];
 }
 
 - (void) simulateWill: (uint8_t) option
 {
   const uint8_t willRequest[] = {MUTelnetInterpretAsCommand, MUTelnetWill, option};
-  [protocolStack parseData: [NSData dataWithBytes: willRequest length: 3]];
+  [protocolStack parseInputData: [NSData dataWithBytes: willRequest length: 3]];
 }
 
 @end

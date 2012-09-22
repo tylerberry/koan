@@ -8,34 +8,45 @@
 
 #import "MUConnectionWindowController.h"
 
+@interface MUConnectionToolbarController ()
+
+@property (strong, nonatomic) NSToolbar *toolbar;
+
+@end
+
+#pragma mark -
+
 @implementation MUConnectionToolbarController
+
+@synthesize toolbar, window, windowController;
 
 - (void) awakeFromNib
 {
-  toolbar = [[NSToolbar alloc] initWithIdentifier: @"connectionWindowToolbar"];
+  self.toolbar = [[NSToolbar alloc] initWithIdentifier: @"connectionWindowToolbar"];
   
-  [toolbar setDelegate: self];
-  [toolbar setAllowsUserCustomization: YES];
-  [toolbar setAutosavesConfiguration: YES];
+  self.toolbar.delegate = self;
+  self.toolbar.allowsUserCustomization = YES;
+  self.toolbar.autosavesConfiguration = YES;
   
-  [window setToolbar: toolbar];
+  [self.window setToolbar: self.toolbar];
   
 }
 
-#pragma mark -
-#pragma mark NSToolbar delegate
+#pragma mark - NSToolbar delegate
 
-- (NSToolbarItem *) toolbar: (NSToolbar *) toolbar itemForItemIdentifier: (NSString *) itemIdentifier willBeInsertedIntoToolbar: (BOOL) flag
+- (NSToolbarItem *) toolbar: (NSToolbar *) toolbar
+      itemForItemIdentifier: (NSString *) itemIdentifier
+  willBeInsertedIntoToolbar: (BOOL) insertIntoToolbar
 {
   NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
   
   if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
   {
-    [item setLabel: _(MULGoToURL)];
-    [item setPaletteLabel: _(MULGoToURL)];
-    [item setImage: nil];
-    [item setTarget: windowController];
-    [item setAction: @selector (goToWorldURL:)];
+    item.label = _(MULGoToURL);
+    item.paletteLabel = _(MULGoToURL);
+    item.image = nil;
+    item.target = self.windowController;
+    item.action = @selector (goToWorldURL:);
   }
   
   return item;

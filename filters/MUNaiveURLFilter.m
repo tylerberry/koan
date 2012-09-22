@@ -7,7 +7,7 @@
 #import "MUNaiveURLFilter.h"
 #import "categories/NSURL (Allocating).h"
 
-@interface MUNaiveURLFilter (Private)
+@interface MUNaiveURLFilter ()
 
 - (void) linkifyURLs: (NSMutableAttributedString *) editString;
 - (NSURL *) normalizedURLForString: (NSString *) string;
@@ -32,11 +32,7 @@
   return editString;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUNaiveURLFilter (Private)
+#pragma mark - Private methods
 
 - (void) linkifyURLs: (NSMutableAttributedString *) editString
 {
@@ -46,17 +42,15 @@
   NSCharacterSet *nonwhitespace = [whitespace invertedSet];
   NSCharacterSet *skips = [NSCharacterSet characterSetWithCharactersInString: @",.!?()[]{}<>'\""];
   
-  while (![scanner isAtEnd])
+  while (!scanner.isAtEnd)
   {
     NSString *scannedString;
     NSRange scannedRange;
     NSURL *foundURL;
     NSDictionary *linkAttributes;
-    NSUInteger characterIndex;
-    NSUInteger length;
-    NSUInteger skipScanLocation = [scanner scanLocation];
+    NSUInteger skipScanLocation = scanner.scanLocation;
     
-    while (skipScanLocation < [sourceString length])
+    while (skipScanLocation < sourceString.length)
     {
       if (![nonwhitespace characterIsMember: [sourceString characterAtIndex: skipScanLocation]])
         skipScanLocation++;
@@ -64,17 +58,16 @@
         break;
     }
     
-    if (skipScanLocation > [scanner scanLocation])
+    if (skipScanLocation > scanner.scanLocation)
       [scanner setScanLocation: skipScanLocation];
     
-    scannedRange.location = [scanner scanLocation];
+    scannedRange.location = scanner.scanLocation;
     [scanner scanUpToCharactersFromSet: whitespace intoString: &scannedString];
-    scannedRange.length = [scanner scanLocation] - scannedRange.location;
+    scannedRange.length = scanner.scanLocation - scannedRange.location;
     
-    characterIndex = 0;
-    length = [scannedString length];
+    NSUInteger characterIndex = 0;
     
-    while (characterIndex < length && [skips characterIsMember: [scannedString characterAtIndex: characterIndex]])
+    while (characterIndex < scannedString.length && [skips characterIsMember: [scannedString characterAtIndex: characterIndex]])
     {
       characterIndex++;
       scannedRange.location++;
@@ -82,7 +75,7 @@
     }
     
     scannedString = [sourceString substringWithRange: scannedRange];
-    characterIndex = [scannedString length];
+    characterIndex = scannedString.length;
     
     while (characterIndex > 0 && [skips characterIsMember: [scannedString characterAtIndex: characterIndex - 1]])
     {

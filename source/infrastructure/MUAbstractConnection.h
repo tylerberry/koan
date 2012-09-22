@@ -10,33 +10,24 @@ typedef enum MUConnectionStatus
 {
   MUConnectionStatusNotConnected,
   MUConnectionStatusConnecting,
-  MUConnectionStatusConnected,
-  MUConnectionStatusClosed
+  MUConnectionStatusConnected
 } MUConnectionStatus;
 
 #pragma mark -
 
 @interface MUAbstractConnection : NSObject
 {
+@protected
   MUConnectionStatus status;
 }
 
+@property (readonly) MUConnectionStatus status;
+
+@property (readonly) BOOL isClosed;
+@property (readonly) BOOL isConnected;
+@property (readonly) BOOL isConnecting;
+
 - (void) close;
-- (BOOL) isClosed;
-- (BOOL) isConnected;
-- (BOOL) isConnecting;
 - (void) open;
-
-@end
-
-#pragma mark -
-
-@interface MUAbstractConnection (Protected)
-
-- (void) setStatusConnected;
-- (void) setStatusConnecting;
-- (void) setStatusClosedByClient;
-- (void) setStatusClosedByServer;
-- (void) setStatusClosedWithError: (NSString *) error;
 
 @end

@@ -124,8 +124,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSFont *) font
 {
@@ -209,8 +208,7 @@
   return [[MUProfileFormatter alloc] initWithProfile: self];
 }
 
-#pragma mark -
-#pragma mark Accessors for bindings
+#pragma mark - Accessors for bindings
 
 - (NSData *) effectiveBackgroundColor
 {
@@ -290,8 +288,7 @@
   }
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
@@ -311,8 +308,7 @@
   return [self loginString] != nil;
 }
 
-#pragma mark -
-#pragma mark Property method implementations
+#pragma mark - Property method implementations
 
 - (NSString *) hostname
 {
@@ -348,8 +344,7 @@
   return (player ? player.windowTitle : world.windowTitle);
 }
 
-#pragma mark -
-#pragma mark NSCoding protocol
+#pragma mark - NSCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {

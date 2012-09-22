@@ -50,8 +50,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 }
 
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSString *) content
 {
@@ -81,8 +80,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   return [headers objectForKey: key];
 }
 
-#pragma mark -
-#pragma mark NSDocument overrides
+#pragma mark - NSDocument overrides
 
 - (NSData *) dataOfType: (NSString *) typeName error: (NSError **) error
 {

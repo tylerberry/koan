@@ -95,8 +95,7 @@
   [self assert: [self output] equals: @"abfoo"];
 }
 
-#pragma mark -
-#pragma mark MUByteDestination protocol
+#pragma mark - MUByteDestination protocol
 
 - (void) write: (NSData *) data
 {

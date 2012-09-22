@@ -7,23 +7,21 @@
 #import <Cocoa/Cocoa.h>
 #import <MUFilter.h>
 
-@interface MUFugueEditFilter : MUFilter
-{
-  id __unsafe_unretained delegate;
-}
+@protocol MUFugueEditFilterDelegate
 
-@property (unsafe_unretained, nonatomic) id delegate;
-
-+ (id) filterWithDelegate: (id) newDelegate;
-
-- (id) initWithDelegate: (id) newDelegate;
+@required
+- (void) setInputViewString: (NSString *) text;
 
 @end
 
 #pragma mark -
 
-@interface NSObject (MUFugueEditFilterDelegate)
+@interface MUFugueEditFilter : MUFilter
 
-- (void) setInputViewString: (NSString *) text;
+@property (weak, nonatomic) NSObject <MUFugueEditFilterDelegate> *delegate;
+
++ (id) filterWithDelegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
+
+- (id) initWithDelegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
 @end

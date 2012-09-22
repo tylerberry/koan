@@ -28,6 +28,8 @@
 
 @implementation NSFont (Traits)
 
+@dynamic isBold, isItalic;
+
 - (NSFont *) fontWithTrait: (NSFontTraitMask) trait
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];

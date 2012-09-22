@@ -1,7 +1,7 @@
 //
 // MUTelnetSubnegotiationIACState.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetSubnegotiationIACState.h"
@@ -13,7 +13,7 @@
 
 + (id) stateWithReturnState: (Class) state
 {
-  return [[[self alloc] initWithReturnState: state] autorelease];
+  return [[self alloc] initWithReturnState: state];
 }
 
 - (id) initWithReturnState: (Class) state

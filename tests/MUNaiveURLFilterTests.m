@@ -64,13 +64,13 @@
   
   if (foundURL)
   {
-    [self assert: [NSNumber numberWithUnsignedInt: foundRange.location]
-          equals: [NSNumber numberWithUnsignedInt: range.location]
-         message: @"Range locations don't match."];
+    [self assertUInteger: foundRange.location
+                  equals: range.location
+                 message: @"Range locations don't match."];
     
-    [self assert: [NSNumber numberWithUnsignedInt: foundRange.length]
-          equals: [NSNumber numberWithUnsignedInt: range.length]
-         message: @"Range lengths don't match."];
+    [self assertUInteger: foundRange.length
+                  equals: range.length
+                 message: @"Range lengths don't match."];
   }
 }
 

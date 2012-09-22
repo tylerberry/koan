@@ -21,7 +21,7 @@
   if (!(self = [super init]))
     return nil;
   
-  hostname = [[NSString alloc] initWithString: @""];
+  hostname = @"";
   port = [[NSNumber alloc] initWithInt: 1080];
   
   return self;
@@ -38,8 +38,7 @@
   return username && ([username length] > 0);
 }
 
-#pragma mark -
-#pragma mark NSCoding protocol
+#pragma mark - NSCoding protocol
 
 - (id) initWithCoder: (NSCoder *) coder
 {

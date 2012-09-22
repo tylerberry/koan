@@ -1,7 +1,7 @@
 //
 // MUMCCPProtocolHandler.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUMCCPProtocolHandler.h"
@@ -27,7 +27,7 @@
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[[self alloc] initWithStack: stack connectionState: telnetConnectionState] autorelease];
+  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
 }
 
 - (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
@@ -35,7 +35,7 @@
   if (!(self = [super initWithStack: stack]))
     return nil;
   
-  connectionState = [telnetConnectionState retain];
+  connectionState = telnetConnectionState;
   stream = NULL;
   insize = 0;
   outsize = 0;
@@ -46,10 +46,8 @@
 - (void) dealloc
 {
   [self cleanUpStream];
-  [connectionState release];
   if (inbuf) free (inbuf);
   if (outbuf) free (outbuf);
-  [super dealloc];
 }
 
 - (NSObject <MUMCCPProtocolHandlerDelegate> *) delegate
@@ -62,14 +60,13 @@
   delegate = object;
 }
 
-#pragma mark -
-#pragma mark MUByteProtocolHandler overrides
+#pragma mark - MUByteProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
   if (!connectionState.incomingStreamCompressed)
   {
-    [protocolStack parseByte: byte previousProtocolHandler: self];
+    [protocolStack parseInputByte: byte previousProtocolHandler: self];
     return;
   }
   
@@ -110,7 +107,7 @@
 - (void) preprocessByte: (uint8_t) byte
 {
   // We don't compress outgoing. There's no point, and no servers support it.
-  [protocolStack preprocessByte: byte previousProtocolHandler: self];
+  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
 }
 
 @end
@@ -140,7 +137,7 @@
     return;
   
   for (unsigned i = 0; i < outsize; i++)
-    [protocolStack parseByte: outbuf[i] previousProtocolHandler: self];
+    [protocolStack parseInputByte: outbuf[i] previousProtocolHandler: self];
   
   outsize = 0;
   

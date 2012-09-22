@@ -10,18 +10,16 @@
 @class MUPlayer;
 
 @interface MUWorldRegistry : NSObject
-{
-  NSMutableArray *worlds;
-}
 
-@property (copy, setter=setMutableWorlds:) NSMutableArray *worlds;
+@property (unsafe_unretained, readonly) NSUInteger count;
+@property (unsafe_unretained, readonly) NSArray *worlds;
+@property (strong, nonatomic) NSMutableArray *mutableWorlds;
 
 + (MUWorldRegistry *) defaultRegistry;
 
 - (void) insertObject: (MUWorld *) world inWorldsAtIndex: (NSUInteger) worldIndex;
 - (void) removeObjectFromWorldsAtIndex: (NSUInteger) worldIndex;
 
-- (NSUInteger) count;
 - (NSUInteger) indexOfWorld: (MUWorld *) world;
 - (void) removeWorld: (MUWorld *) world;
 - (void) replaceWorld: (MUWorld *) oldWorld withWorld: (MUWorld *) newWorld;

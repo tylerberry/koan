@@ -19,7 +19,7 @@
   NSAttributedString *attributedExpectedOutput = [NSAttributedString attributedStringWithString: output];
   NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [queue processAttributedString: attributedInput]];
   
-  [actualOutput setAttributes: [NSDictionary dictionary] range: NSMakeRange (0, [actualOutput length])];
+  [actualOutput setAttributes: [NSDictionary dictionary] range: NSMakeRange (0, actualOutput.length)];
   [self assert: actualOutput equals: attributedExpectedOutput message: message];  
 }
 

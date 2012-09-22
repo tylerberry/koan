@@ -22,8 +22,7 @@
   return self;
 }
 
-#pragma mark -
-#pragma mark Accumulating heuristics
+#pragma mark - Accumulating heuristics
 
 - (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value
 {
@@ -76,8 +75,7 @@
     return;
 }
 
-#pragma mark -
-#pragma mark Codebase-specific behavior tweaks
+#pragma mark - Codebase-specific behavior tweaks
 
 - (BOOL) shouldSuppressGoAhead
 {

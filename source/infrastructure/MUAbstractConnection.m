@@ -5,8 +5,12 @@
 //
 
 #import "MUAbstractConnection.h"
+#import "MUAbstractConnectionSubclass.h"
 
 @implementation MUAbstractConnection
+
+@synthesize status;
+@dynamic isClosed, isConnected, isConnecting;
 
 - (void) close
 {
@@ -25,29 +29,23 @@
 
 - (BOOL) isClosed
 {
-  return status == MUConnectionStatusClosed;
+  return self.status == MUConnectionStatusNotConnected;
 }
 
 - (BOOL) isConnected
 {
-  return status == MUConnectionStatusConnected;
+  return self.status == MUConnectionStatusConnected;
 }
 
 - (BOOL) isConnecting
 {
-  return status == MUConnectionStatusConnecting;
+  return self.status == MUConnectionStatusConnecting;
 }
 
 - (void) open
 {
   return;
 }
-
-@end
-
-#pragma mark -
-
-@implementation MUAbstractConnection (Protected)
 
 - (void) setStatusConnected
 {
@@ -61,17 +59,17 @@
 
 - (void) setStatusClosedByClient
 {
-  status = MUConnectionStatusClosed;
+  status = MUConnectionStatusNotConnected;
 }
 
 - (void) setStatusClosedByServer
 {
-  status = MUConnectionStatusClosed;
+  status = MUConnectionStatusNotConnected;
 }
 
 - (void) setStatusClosedWithError: (NSString *) error
 {
-  status = MUConnectionStatusClosed;
+  status = MUConnectionStatusNotConnected;
 }
 
 @end

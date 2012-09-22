@@ -36,8 +36,8 @@
   
   if ([plainString hasPrefix: fugueEditPrefix])
   {
-    if ([self.delegate respondsToSelector: @selector (setInputViewString:)])
-      [self.delegate setInputViewString: [[plainString substringFromIndex: [fugueEditPrefix length]] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    [self.delegate setInputViewString: [[plainString substringFromIndex: fugueEditPrefix.length]
+                                        stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     
     return [NSAttributedString attributedStringWithString: @""];
   }

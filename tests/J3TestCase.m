@@ -106,7 +106,7 @@
 
 - (void) assertNotNil: (id) actual message: (NSString *) message;
 {
-  NSString *error = [NSString stringWithFormat: @"%@ expected not to be nil", message, actual];
+  NSString *error = [NSString stringWithFormat: @"%@ expected not nil", message];
   [self assertTrue: (actual != nil) message: error];
 }
 

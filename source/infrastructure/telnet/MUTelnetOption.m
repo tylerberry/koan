@@ -1,14 +1,14 @@
 //
 // MUTelnetOption.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetOption.h"
 
 #import "MUTelnetConstants.h"
 
-@interface MUTelnetOption (Private)
+@interface MUTelnetOption ()
 
 - (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
 - (void) receivedDisableDemandForState: (MUTelnetQState *) state
@@ -89,10 +89,10 @@
       return @"MSSP";
   		
   	case MUTelnetOptionMCCP1:
-  		return @"COMPRESS (MCCP1)";
+  		return @"MCCP1";
   		
   	case MUTelnetOptionMCCP2:
-  		return @"COMPRESS2 (MCCP2)";
+  		return @"MCCP2";
   		
     case MUTelnetOptionMSP:
       return @"MSP";
@@ -200,11 +200,10 @@
   weAreAllowed = value;
 }
 
-@end
+#pragma mark - Private methods
 
-#pragma mark -
-
-@implementation MUTelnetOption (Private)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
 - (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector
 {
@@ -316,6 +315,8 @@
       break;
   }
 }
+
+#pragma clang diagnostic pop
 
 - (void) sendDo
 {

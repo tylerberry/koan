@@ -28,6 +28,6 @@
 
 @interface NSFont (FullDisplayName)
 
-- (NSString *) fullDisplayName;
+@property (unsafe_unretained, readonly) NSString *fullDisplayName;
 
 @end

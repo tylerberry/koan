@@ -16,7 +16,7 @@
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
   @throw [NSException exceptionWithName: @"SubclassResponsibility"
-                                 reason: @"Subclass failed to implement -[filter:]"
+                                 reason: @"subclass failed to implement -[filter:]"
                                userInfo: nil];
 }
 

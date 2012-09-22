@@ -145,7 +145,7 @@
 
 - (void) drawWithFrame: (NSRect) cellFrame inView: (NSView *) controlView
 {
-  if (image != nil)
+  if (self.image != nil)
   {
     NSRect imageFrame;
     NSSize imageSize = self.image.size;
@@ -175,7 +175,7 @@
 - (NSSize) cellSize
 {
   NSSize cellSize = [super cellSize];
-  cellSize.width += (self.image ? [self.image size].width : 0) + 3;
+  cellSize.width += (self.image ? self.image.size.width : 0) + 3;
   return cellSize;
 }
 

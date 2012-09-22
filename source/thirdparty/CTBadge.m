@@ -230,8 +230,7 @@ const float CTSmallLabelSize = (float) 11.;
   [self badgeApplicationDockIconWithString: [self stringForValue: value] insetX: dx y: dy];
 }
 
-#pragma mark -
-#pragma mark Misc.
+#pragma mark - Misc.
 
 - (NSGradient *) badgeGradient
 {
@@ -276,7 +275,7 @@ const float CTSmallLabelSize = (float) 11.;
 - (NSString *) stringForValue: (NSUInteger) value
 {
   if (value < 100000)
-    return [NSString stringWithFormat: @"%u", value];
+    return [NSString stringWithFormat: @"%lu", value];
   else // Give infinity
     return [NSString stringWithUTF8String: "\xe2\x88\x9e"];
 }

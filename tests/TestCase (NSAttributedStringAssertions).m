@@ -31,9 +31,9 @@
       longestEffectiveRange: &result
                     inRange: range];
   
-  [self assertInt: result.length
-           equals: range.length
-          message: message];
+  [self assertUInteger: result.length
+                equals: range.length
+               message: message];
 }
 
 - (void) assertAttributesTheSameInString: (NSAttributedString *) string
@@ -47,7 +47,7 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString *) string
-                 atIndex: (int) characterIndex
+                 atIndex: (NSUInteger) characterIndex
                  message: (NSString *) message
 {
   NSDictionary *attributes = [string attributesAtIndex: characterIndex
@@ -60,7 +60,7 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString *) string
-                 atIndex: (int) characterIndex
+                 atIndex: (NSUInteger) characterIndex
 {
   [self assertAttribute: attributeName
                  equals: expectedValue
@@ -84,7 +84,7 @@
 
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
-      inAttributedString: (NSAttributedString*) string
+      inAttributedString: (NSAttributedString *) string
                withRange: (NSRange)range
 {
   [self assertAttribute: attributeName

@@ -6,7 +6,22 @@
 
 #import "MUHistoryRing.h"
 
+@interface MUHistoryRing ()
+
+@property (copy, nonatomic) NSString *buffer;
+@property (nonatomic) NSUInteger cursor;
+@property (strong, nonatomic) NSMutableArray *ring;
+@property (nonatomic) NSUInteger searchCursor;
+@property (strong, nonatomic) NSMutableDictionary *updates;
+
+@end
+
+#pragma mark -
+
 @implementation MUHistoryRing
+
+@synthesize buffer, cursor, ring, searchCursor, updates;
+@dynamic count;
 
 + (id) historyRing
 {
@@ -18,117 +33,118 @@
   if (!(self = [super init]))
     return nil;
 
+  buffer = nil;
+  cursor = NSNotFound;
   ring = [[NSMutableArray alloc] init];
+  searchCursor = NSNotFound;
   updates = [[NSMutableDictionary alloc] init];
-  cursor = -1;
-  searchCursor = -1;
   
   return self;
 }
 
-
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSUInteger) count
 {
-  return [ring count];
+  return self.ring.count;
 }
 
 - (NSString *) stringAtIndex: (NSInteger) ringIndex
 {
-  if (ringIndex == -1)
-    return buffer == nil ? @"" : buffer;
+  if (ringIndex == NSNotFound)
+    return self.buffer == nil ? @"" : self.buffer;
   else
   {
-    NSString *string = [updates objectForKey: [NSNumber numberWithInteger: ringIndex]];
+    NSString *string = [self.updates objectForKey: [NSNumber numberWithUnsignedInteger: ringIndex]];
     
     if (string)
       return string;
     else
-      return [ring objectAtIndex: ringIndex];
+      return [self.ring objectAtIndex: ringIndex];
   }
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (void) saveString: (NSString *) string
 {
   NSString *copy = [string copy];
   
-  [updates removeObjectForKey: [NSNumber numberWithInteger: cursor]];
+  [self.updates removeObjectForKey: [NSNumber numberWithUnsignedInteger: cursor]];
   
-  if (!(cursor != -1 && cursor == (int) ([self count] - 1) && [string isEqualToString: [ring objectAtIndex: cursor]]))
-  {
+  if (!(self.cursor != NSNotFound
+        && self.cursor == self.count - 1
+        && [string isEqualToString: [self.ring objectAtIndex: cursor]]))
     [ring addObject: copy];
-  }
-  buffer = nil;
-  cursor = -1;
-  searchCursor = -1;
+  
+  self.buffer = nil;
+  self.cursor = NSNotFound;
+  self.searchCursor = NSNotFound;
 }
 
 - (void) updateString: (NSString *) string
 {
   NSString *copy = [string copy];
   
-  if (cursor == -1)
+  if (self.cursor == NSNotFound)
   {
-    buffer = copy;
+    self.buffer = copy;
   }
   else
   {
-    [updates setObject: copy forKey: [NSNumber numberWithInteger: cursor]];
+    [self.updates setObject: copy forKey: [NSNumber numberWithUnsignedInteger: self.cursor]];
   }
 }
 
 - (NSString *) currentString
 {
-  return [self stringAtIndex: cursor];
+  return [self stringAtIndex: self.cursor];
 }
 
 - (NSString *) nextString
 {
-  cursor++;
+  if (self.cursor == NSNotFound)
+    self.cursor = 0;
+  else if (self.cursor == self.count - 1)
+    self.cursor = NSNotFound;
+  else
+    self.cursor++;
   
-  if (cursor >= (int) [self count] || cursor < -1)
-    cursor = -1;
+  self.searchCursor = self.cursor;
   
-  searchCursor = cursor;
-  
-  return [self stringAtIndex: cursor];
+  return [self stringAtIndex: self.cursor];
 }
 
 - (NSString *) previousString
 {
-  cursor--;
+  if (self.cursor == NSNotFound)
+    self.cursor = self.count - 1;
+  else if (self.cursor == 0)
+    self.cursor = NSNotFound;
+  else
+    self.cursor--;
   
-  if (cursor == -2)
-    cursor = [self count] - 1;
-  else if (cursor >= (int) [self count] || cursor < -2)
-    cursor = -1;
+  self.searchCursor = self.cursor;
   
-  searchCursor = cursor;
-  
-  return [self stringAtIndex: cursor];
+  return [self stringAtIndex: self.cursor];
 }
 
 - (void) resetSearchCursor
 {
-  searchCursor = cursor;
+  self.searchCursor = self.cursor;
 }
 
 - (NSUInteger) numberOfUniqueMatchesForStringPrefix: (NSString *) prefix
 {
-  NSInteger savedCursor = searchCursor;
+  NSInteger savedCursor = self.searchCursor;
   NSUInteger uniqueMatchCount = 0;
   NSMutableDictionary *uniqueMatchDictionary = [[NSMutableDictionary alloc] init];
   
-  searchCursor = 0;
+  self.searchCursor = 0;
   
-  while (searchCursor < (NSInteger) [self count])
+  while (self.searchCursor < self.count)
   {
-    NSString *candidate = [self stringAtIndex: searchCursor];
+    NSString *candidate = [self stringAtIndex: self.searchCursor];
     
     if ([candidate hasPrefix: prefix] && ![candidate isEqualToString: prefix])
     {
@@ -139,74 +155,80 @@
       }
     }
     
-    searchCursor++;
+    self.searchCursor++;
   }
   
-  searchCursor = savedCursor;
+  self.searchCursor = savedCursor;
     
   return uniqueMatchCount;
 }
 
 - (NSString *) searchForwardForStringPrefix: (NSString *) prefix
 {
-  NSInteger originalSearchCursor = searchCursor;
+  NSUInteger originalSearchCursor = self.searchCursor;
   
-  if ([prefix length] == 0)
+  if (prefix.length == 0)
     return nil;
   
-  searchCursor++;
-  
-  while (searchCursor != originalSearchCursor)
+  do
   {
-    if (searchCursor > ((NSInteger) [self count] - 1))
+    if (self.searchCursor == self.count - 1)
     {
-      searchCursor = -1;
-      if (originalSearchCursor == -1)
+      self.searchCursor = NSNotFound;
+      if (originalSearchCursor == NSNotFound)
         return nil;
     }
+    else if (self.searchCursor == NSNotFound)
+      self.searchCursor = 0;
+    else
+      self.searchCursor++;
     
-    if (searchCursor != -1)
+    if (self.searchCursor != NSNotFound)
     {
-      NSString *candidate = [self stringAtIndex: searchCursor];
+      NSString *candidate = [self stringAtIndex: self.searchCursor];
       
       if ([candidate hasPrefix: prefix] && ![candidate isEqualToString: prefix])
         return candidate;
     }
-    
-    searchCursor++;
   }
+  while (self.searchCursor != originalSearchCursor);
   
   return nil;
 }
 
 - (NSString *) searchBackwardForStringPrefix: (NSString *) prefix
 {
-  NSInteger originalSearchCursor = searchCursor;
+  NSUInteger originalSearchCursor = self.searchCursor;
   
-  if ([prefix length] == 0)
+  if (prefix.length == 0)
     return nil;
   
-  searchCursor--;
-  
-  while (searchCursor != originalSearchCursor)
+  do
   {
-    if (searchCursor < 0)
+    if (self.searchCursor == NSNotFound)
     {
-      searchCursor = [self count] - 1;
-      if (originalSearchCursor == (int) ([self count] - 1))
+      self.searchCursor = self.count - 1;
+      if (originalSearchCursor == self.count - 1)
         return nil;
     }
-    
-    if (searchCursor != -1)
+    else if (self.searchCursor == 0)
     {
-      NSString *candidate = [self stringAtIndex: searchCursor];
+      self.searchCursor = NSNotFound;
+      if (originalSearchCursor == NSNotFound)
+        return nil;
+    }
+    else
+      self.searchCursor--;
+    
+    if (self.searchCursor != NSNotFound)
+    {
+      NSString *candidate = [self stringAtIndex: self.searchCursor];
       
       if ([candidate hasPrefix: prefix] && ![candidate isEqualToString: prefix])
         return candidate;
     }
-    
-    searchCursor--;
   }
+  while (self.searchCursor != originalSearchCursor);
   
   return nil;
 }

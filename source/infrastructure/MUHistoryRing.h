@@ -7,17 +7,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MUHistoryRing : NSObject
-{
-  NSString *buffer;
-  NSMutableArray *ring;
-  NSMutableDictionary *updates;
-  NSInteger cursor;
-  NSInteger searchCursor;
-}
 
-+ (id) historyRing;
+@property (readonly) NSUInteger count;
 
-- (NSUInteger) count;
++ (MUHistoryRing *) historyRing;
+
 - (NSString *) stringAtIndex: (NSInteger) ringIndex;
 
 // These methods are all O(1).

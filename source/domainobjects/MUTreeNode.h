@@ -11,7 +11,7 @@
 @property (copy) NSString *name;
 @property (copy) NSMutableArray *children;
 //@property (readonly) NSUInteger count;
-@property (unsafe_unretained) MUTreeNode *parent;
+@property (weak, nonatomic) MUTreeNode *parent;
 @property (readonly) BOOL isLeaf;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren;

@@ -42,9 +42,9 @@ extern NSString *MUMUDConnectionErrorMessageKey;
   NSTimer *pollTimer;
 }
 
-@property (unsafe_unretained, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
-@property ( nonatomic) MUSocket *socket;
-@property ( nonatomic) MUMUDConnectionState *state;
+@property (weak, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
+@property (strong, nonatomic) MUSocket *socket;
+@property (strong, nonatomic) MUMUDConnectionState *state;
 
 + (id) telnetWithSocketFactory: (MUSocketFactory *) factory
                       hostname: (NSString *) hostname

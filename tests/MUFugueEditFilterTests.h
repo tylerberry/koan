@@ -5,12 +5,11 @@
 //
 
 #import "MUFilterTestCase.h"
+#import "MUFugueEditFilter.h"
 
-@interface MUFugueEditFilterTests : MUFilterTestCase
+@interface MUFugueEditFilterTests : MUFilterTestCase <MUFugueEditFilterDelegate>
 {
   NSString *editString;
 }
-
-- (void) setInputViewString: (NSString *) string;
 
 @end

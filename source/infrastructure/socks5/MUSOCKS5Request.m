@@ -1,7 +1,7 @@
 //
 // MUSOCKS5Request.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUSOCKS5Request.h"
@@ -14,7 +14,7 @@
 
 + (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue
 {
-  return [[[MUSOCKS5Request alloc] initWithHostname: hostnameValue port: portValue] autorelease];
+  return [[MUSOCKS5Request alloc] initWithHostname: hostnameValue port: portValue];
 }
 
 - (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue
@@ -27,11 +27,6 @@
   return self;
 }
 
-- (void) dealloc
-{
-  [hostname release];
-  [super dealloc];
-}
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {

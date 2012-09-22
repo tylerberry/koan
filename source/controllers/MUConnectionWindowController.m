@@ -178,8 +178,7 @@ enum MUSearchDirections
   }
 }
   
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (id) delegate
 {
@@ -219,8 +218,7 @@ enum MUSearchDirections
   return [telnetConnection isConnected] || [telnetConnection isConnecting];
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (void) confirmClose: (SEL) callback
 {
@@ -316,16 +314,14 @@ enum MUSearchDirections
   [inputView setString: [historyRing previousString]];
 }
 
-#pragma mark -
-#pragma mark Filter delegate methods
+#pragma mark - Filter delegate methods
 
 - (void) setInputViewString: (NSString *) string
 {
   [inputView setString: string];
 }
 
-#pragma mark -
-#pragma mark MUMUDConnectionDelegate protocol
+#pragma mark - MUMUDConnectionDelegate protocol
 
 - (void) displayPrompt: (NSString *) promptString
 {
@@ -378,8 +374,7 @@ enum MUSearchDirections
   [MUGrowlService connectionClosedByErrorForTitle: profile.windowTitle error: errorMessage];
 }
 
-#pragma mark -
-#pragma mark NSTextView delegate
+#pragma mark - NSTextView delegate
 
 - (BOOL) textView: (NSTextView *) textView doCommandBySelector: (SEL) commandSelector
 {
@@ -488,8 +483,7 @@ enum MUSearchDirections
   return NO;
 }
 
-#pragma mark -
-#pragma mark MUTextView delegate
+#pragma mark - MUTextView delegate
 
 - (BOOL) textView: (MUTextView *) textView insertText: (id) string
 {
@@ -586,8 +580,8 @@ enum MUSearchDirections
   
   [typingAttributes removeObjectForKey: NSLinkAttributeName];
   [typingAttributes removeObjectForKey: NSUnderlineStyleAttributeName];
-  [typingAttributes setObject: [[profile formatter] foreground] forKey: NSForegroundColorAttributeName];
-  [typingAttributes setObject: [[profile formatter] background] forKey: NSBackgroundColorDocumentAttribute];
+  [typingAttributes setObject: profile.formatter.foregroundColor forKey: NSForegroundColorAttributeName];
+  [typingAttributes setObject: profile.formatter.backgroundColor forKey: NSBackgroundColorDocumentAttribute];
   
   NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: typingAttributes];
   NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];

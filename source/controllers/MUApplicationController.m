@@ -12,11 +12,12 @@
 #import "MUGrowlService.h"
 #import "MUPlayer.h"
 #import "MUPreferencesController.h"
+#import "MUProfileRegistry.h"
 #import "MUProfilesController.h"
 #import "MUProxySettingsController.h"
-#import "MUServices.h"
 #import "MUSocketFactory.h"
 #import "MUWorld.h"
+#import "MUWorldRegistry.h"
 
 @interface MUApplicationController (Private)
 
@@ -70,8 +71,8 @@
 {
   MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   
-  [MUServices profileRegistry];
-  [MUServices worldRegistry];
+  [MUProfileRegistry defaultRegistry];
+  [MUWorldRegistry defaultRegistry];
   
   connectionWindowControllers = [[NSMutableArray alloc] init];
   
@@ -107,8 +108,7 @@
   return YES;
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (IBAction) chooseNewFont: (id) sender
 {
@@ -125,8 +125,7 @@
 
 - (IBAction) connectToURL: (NSURL *) url
 {
-  if (!([[url scheme] isEqualToString: @"telnet"]
-        || [[url scheme] isEqualToString: @"koan"]))
+  if (!([url.scheme isEqualToString: @"telnet"] || [url.scheme isEqualToString: @"koan"]))
     return;
   
   MUWorld *world = [MUWorld worldWithHostname: [url host] port: [url port]];
@@ -139,11 +138,11 @@
 
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
-  MUWorld *world = [MUWorld worldWithHostname: [newConnectionHostnameField stringValue]
-                                         port: [NSNumber numberWithInt: [newConnectionPortField intValue]]];;
+  MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
+                                         port: [NSNumber numberWithInt: newConnectionPortField.intValue]];;
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
-  	[[MUServices worldRegistry] insertObject: world inWorldsAtIndex: [[MUServices worldRegistry] count]];
+  	[[MUWorldRegistry defaultRegistry] insertObject: world inWorldsAtIndex: [MUWorldRegistry defaultRegistry].count];
   
   MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
   
@@ -159,9 +158,10 @@
 
 - (IBAction) openNewConnectionPanel: (id) sender
 {
-  [newConnectionHostnameField setObjectValue: nil];
-  [newConnectionPortField setObjectValue: nil];
-  [newConnectionSaveWorldButton setState: NSOffState];
+  newConnectionHostnameField.objectValue = nil;
+  newConnectionPortField.objectValue = nil;
+  newConnectionSaveWorldButton.state = NSOffState;
+
   [newConnectionPanel makeFirstResponder: newConnectionHostnameField];
   [newConnectionPanel makeKeyAndOrderFront: self];
 }
@@ -205,8 +205,7 @@
   [[MUSocketFactory defaultFactory] toggleUseProxy];
 }
 
-#pragma mark -
-#pragma mark NSApplication delegate
+#pragma mark - NSApplication delegate
 
 - (BOOL) application: (NSApplication *) application openFile: (NSString *) string
 {
@@ -276,12 +275,11 @@
   [[MUSocketFactory defaultFactory] saveProxySettings];
 }
 
-#pragma mark -
-#pragma mark MUConnectionWindowController delegate
+#pragma mark - MUConnectionWindowController delegate
 
 - (void) connectionWindowControllerWillClose: (NSNotification *) notification
 {
-  MUConnectionWindowController *controller = [notification object];
+  MUConnectionWindowController *controller = notification.object;
   
   [connectionWindowControllers removeObject: controller];
 }
@@ -305,7 +303,8 @@
 
 @implementation MUApplicationController (Private)
 
-- (IBAction) changeFont: (id) senderF{
+- (IBAction) changeFont: (id) sender
+{
   [preferencesController changeFont];
 }
 
@@ -316,10 +315,10 @@
 
 - (id) infoValueForKey: (NSString *) key
 {
-  if ([[[NSBundle mainBundle] localizedInfoDictionary] objectForKey: key])
-    return [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey: key];
+  if ([[NSBundle mainBundle].localizedInfoDictionary objectForKey: key])
+    return [[NSBundle mainBundle].localizedInfoDictionary objectForKey: key];
   
-  return [[[NSBundle mainBundle] infoDictionary] objectForKey: key];
+  return [[NSBundle mainBundle].infoDictionary objectForKey: key];
 }
 
 - (IBAction) openConnection: (id) sender
@@ -344,26 +343,24 @@
 - (void) playNotificationSound
 {
   NSString *soundName = [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice];
-  if (soundName && [soundName length] != 0)
+  if (soundName && soundName.length != 0)
     [[NSSound soundNamed: soundName] play];
 }
 
 - (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect
 {
-  MUWorldRegistry *registry = [MUServices worldRegistry];
-  MUProfileRegistry *profiles = [MUServices profileRegistry];
-  NSUInteger worldsCount = [registry count];
-  NSUInteger menuCount = [openConnectionMenu numberOfItems];
+  MUWorldRegistry *worldRegistry = [MUWorldRegistry defaultRegistry];
+  MUProfileRegistry *profileRegistry = [MUProfileRegistry defaultRegistry];
   
-  for (NSInteger menuItemIndex = menuCount - 1; menuItemIndex >= 0; menuItemIndex--)
+  for (NSInteger menuItemIndex = openConnectionMenu.numberOfItems - 1; menuItemIndex >= 0; menuItemIndex--)
   {
     [openConnectionMenu removeItemAtIndex: menuItemIndex];
   }
   
-  for (unsigned i = 0; i < worldsCount; i++)
+  for (unsigned i = 0; i < worldRegistry.count; i++)
   {
-    MUWorld *world = [registry worldAtIndex: i];
-    MUProfile *profile = [profiles profileForWorld: world];
+    MUWorld *world = [worldRegistry worldAtIndex: i];
+    MUProfile *profile = [profileRegistry profileForWorld: world];
     NSArray *players = [world children];
     NSMenuItem *worldItem = [[NSMenuItem alloc] init];
     NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name];
@@ -385,7 +382,7 @@
     for (unsigned j = 0; j < playersCount; j++)
     {
       MUPlayer *player = [players objectAtIndex: j];
-      profile = [profiles profileForWorld: world player: player];
+      profile = [profileRegistry profileForWorld: world player: player];
       
       SEL action = @selector (openConnection:);
       NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name

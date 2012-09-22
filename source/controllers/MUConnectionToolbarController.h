@@ -7,11 +7,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MUConnectionToolbarController : NSObject <NSToolbarDelegate>
-{
-  NSToolbar *toolbar;
-  
-  IBOutlet NSWindow *window;
-  IBOutlet NSWindowController *windowController;
-}
+
+@property (weak, readonly) IBOutlet NSWindow *window;
+@property (weak, readonly) IBOutlet NSWindowController *windowController;
 
 @end

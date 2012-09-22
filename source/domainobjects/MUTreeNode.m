@@ -43,13 +43,13 @@
 /*
 - (NSUInteger) count
 {
-  return [children count];
+  return children.count;
 }
  */
 
 - (BOOL) isLeaf
 {
-  return [children count] == 0;
+  return children.count == 0;
 }
 
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode
@@ -65,8 +65,7 @@
   }
 }
 
-#pragma mark -
-#pragma mark Array-like accessors for players
+#pragma mark - Array-like accessors for players
 
 - (void) addChild: (MUTreeNode *) child
 {
@@ -88,7 +87,7 @@
 
 - (NSUInteger) indexOfChild: (MUTreeNode *) child
 {
-  for (NSUInteger i = 0; i < [self.children count]; i++)
+  for (NSUInteger i = 0; i < self.children.count; i++)
   {
     if (child == [self.children objectAtIndex: i])
       return i;
@@ -129,7 +128,7 @@
 
 - (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
 {
-  for (unsigned i = 0; i < [self.children count]; i++)
+  for (unsigned i = 0; i < self.children.count; i++)
   {
     MUTreeNode *node = [self.children objectAtIndex: i];
     

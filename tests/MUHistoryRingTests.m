@@ -440,28 +440,28 @@ NSString *Third = @"Third";
 {
   [ring saveString: @"Dog"];
   
-  [self assertInt: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-           equals: 0];
+  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
+                equals: 0];
   
   [ring saveString: @"Cat"];
   
-  [self assertInt: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-           equals: 0];
+  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
+                equals: 0];
   
   [ring saveString: @"Catatonic"];
   
-  [self assertInt: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-           equals: 1];
+  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
+                equals: 1];
   
   [ring saveString: @"Catastrophic"];
   
-  [self assertInt: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-           equals: 2];
+  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
+                equals: 2];
   
   [ring saveString: @"Catastrophic"];
   
-  [self assertInt: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-           equals: 2];
+  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
+                equals: 2];
 }
 
 @end

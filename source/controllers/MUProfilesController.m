@@ -9,7 +9,6 @@
 #import "MUProfile.h"
 #import "MUProfilesSection.h"
 #import "MUSection.h"
-#import "MUServices.h"
 
 #import "ImageAndTextCell.h"
 
@@ -78,14 +77,14 @@
 }
 
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (IBAction) chooseNewFont: (id) sender
 {
   NSDictionary *values = [[NSUserDefaultsController sharedUserDefaultsController] values];
   NSString *fontName = [values valueForKey: MUPFontName];
-  int fontSize = [[values valueForKey: MUPFontSize] floatValue];
+  NSNumber *fontSizeNumber = (NSNumber *) [values valueForKey: MUPFontSize];
+  int fontSize = fontSizeNumber.floatValue;
   NSFont *font = [NSFont fontWithName: fontName size: fontSize];
   
   if (font == nil)
@@ -102,8 +101,7 @@
   return;
 }
 
-#pragma mark -
-#pragma mark NSOutlineView data source
+#pragma mark - NSOutlineView data source
 
 // I tried implementing this the recommended way, but in 10.6 at least there seems
 // to be no functional way of getting it working.
@@ -128,23 +126,22 @@
     // possible to walk the tree.
     
     NSMutableArray *items = [NSMutableArray array];
-    NSUInteger rows = [outlineView numberOfRows];
     
-    for (NSUInteger i = 0; i < rows; i++)
+    for (NSInteger i = 0; i < outlineView.numberOfRows; i++)
     {
       [items addObject: [outlineView itemAtRow: i]];
     }
     
-    for (NSUInteger i = 0; i < [items count]; i++)
+    for (NSUInteger i = 0; i < items.count; i++)
     {
       NSTreeNode *shadowObject = [items objectAtIndex: i];
-      MUTreeNode *node = [shadowObject representedObject];
+      MUTreeNode *node = shadowObject.representedObject;
       
       if ([node isKindOfClass: [MUWorld class]])
         if ([((MUWorld *) node).uniqueIdentifier isEqualToString: object])
           return shadowObject;
       
-      [items addObjectsFromArray: [shadowObject childNodes]];
+      [items addObjectsFromArray: shadowObject.childNodes];
     }
   }
   
@@ -153,16 +150,16 @@
 
 - (id) outlineView: (NSOutlineView *) outlineView persistentObjectForItem: (id) item
 {
-  id node = [(NSTreeNode *) item representedObject];
+  NSTreeNode *node = (NSTreeNode *) item;
+  id representedObject = node.representedObject;
   
-  if ([node isKindOfClass: [MUWorld class]])
-  	return ((MUWorld *) node).uniqueIdentifier;
+  if ([representedObject isKindOfClass: [MUWorld class]])
+  	return ((MUWorld *) representedObject).uniqueIdentifier;
   else
   	return nil;
 }
 
-#pragma mark -
-#pragma mark NSOutlineView delegate
+#pragma mark - NSOutlineView delegate
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView isGroupItem: (id) item
 {
@@ -184,12 +181,17 @@
   return [self outlineView: outlineView isGroupItem: item] ? NO : YES;
 }
 
-- (void) outlineView: (NSOutlineView *) outlineView willDisplayCell: (id) cell forTableColumn: (NSTableColumn *) tableColumn item: (id) item
+- (void) outlineView: (NSOutlineView *) outlineView
+     willDisplayCell: (id) cell
+      forTableColumn: (NSTableColumn *) tableColumn
+                item: (id) item
 {
   if ([cell isKindOfClass: [ImageAndTextCell class]])
   {
+    ImageAndTextCell *imageAndTextCell = (ImageAndTextCell *) cell;
+    
     if ([self outlineView: outlineView isGroupItem: item])
-      [cell setImage: nil];
+      imageAndTextCell.image = nil;
     else
     {
       id representedObject = [(NSTreeNode *) item representedObject];
@@ -197,26 +199,29 @@
       if ([representedObject isKindOfClass: [MUWorld class]])
       {
         NSImage *worldImage = [NSImage imageNamed: NSImageNameNetwork];
-        [worldImage setSize: NSMakeSize (16, 16)];
-        [cell setImage: worldImage];
+        worldImage.size = NSMakeSize (16, 16);
+        imageAndTextCell.image = worldImage;
       }
       else if ([representedObject isKindOfClass: [MUPlayer class]])
       {
         NSImage *playerImage = [NSImage imageNamed: NSImageNameUser];
-        [playerImage setSize: NSMakeSize (16, 16)];
-        [cell setImage: playerImage];
+        playerImage.size = NSMakeSize (16, 16);
+        imageAndTextCell.image = playerImage;
       }
       else
       {
         NSImage *folderImage = [[NSWorkspace sharedWorkspace] iconForFileType: NSFileTypeForHFSTypeCode (kGenericFolderIcon)];
-        [folderImage setSize: NSMakeSize (16, 16)];
-        [cell setImage: folderImage];
+        folderImage.size = NSMakeSize (16, 16);
+        imageAndTextCell.image = folderImage;
       }
     }
   }
 }
 
-- (void) outlineView: (NSOutlineView *) outlineView willDisplayOutlineCell: (id) cell forTableColumn: (NSTableColumn *) tableColumn item: (id) item
+-   (void) outlineView: (NSOutlineView *) outlineView
+willDisplayOutlineCell: (id) cell
+        forTableColumn: (NSTableColumn *) tableColumn
+                  item: (id) item
 {
   if ([self outlineView: outlineView isGroupItem: item])
     [cell setTransparent: YES];
@@ -226,7 +231,8 @@
 
 - (void) outlineViewItemWillCollapse: (NSNotification *) notification
 {
-  id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: [[notification userInfo] objectForKey: @"NSObject"]];
+  id item = [[notification userInfo] objectForKey: @"NSObject"];
+  id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
     [profilesExpandedItems removeObject: persistentObject];
@@ -234,7 +240,8 @@
 
 - (void) outlineViewItemWillExpand: (NSNotification *) notification
 {
-  id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: [[notification userInfo] objectForKey: @"NSObject"]];
+  id item = [[notification userInfo] objectForKey: @"NSObject"];
+  id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
     [profilesExpandedItems addObject: persistentObject];
@@ -255,8 +262,7 @@
 #endif
 }
 
-#pragma mark -
-#pragma mark NSWindow delegate
+#pragma mark - NSWindow delegate
 
 - (void) windowDidLoad
 {
@@ -295,7 +301,7 @@
   panelFont = [fontManager convertFont: selectedFont];
   
   [profileFontUseGlobalButton setState: NSOffState];
-  [profileFontField setStringValue: [panelFont fullDisplayName]];
+  [profileFontField setStringValue: panelFont.fullDisplayName];
   editingFont = [panelFont copy];
 }
 
@@ -495,10 +501,9 @@
 
 - (void) populateProfilesTree
 {
-  @autoreleasepool {
-	
+  @autoreleasepool
+  {
 		[self populateProfilesFromWorldRegistry];
-	
 	}
 }
 

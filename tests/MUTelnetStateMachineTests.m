@@ -137,8 +137,7 @@
   [self assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetMCCP1SubnegotiationState)] givenByte: MUTelnetEndSubnegotiation producesState: C(MUTelnetTextState)];
 }
 
-#pragma mark -
-#pragma mark MUTelnetProtocolHandler protocol
+#pragma mark - MUTelnetProtocolHandler protocol
 
 - (void) bufferSubnegotiationByte: (uint8_t) byte
 {

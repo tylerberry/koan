@@ -1,7 +1,7 @@
 //
 // MUTelnetState.m
 //
-// Copyright (c) 2011 3James Software.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUTelnetConstants.h"
@@ -19,13 +19,13 @@ static NSMutableDictionary *states;
   if (!states)
     states = [[NSMutableDictionary alloc] init];
   
-  if (![states objectForKey: self])
+  if (![states objectForKey: [self description]])
   {
-    result = [[[self alloc] init] autorelease];
-    [states setObject: result forKey: self];
+    result = [[self alloc] init];
+    [states setObject: result forKey: [self description]];
   }
   else
-    result = [states objectForKey: self];
+    result = [states objectForKey: [self description]];
   
   return result;
 }

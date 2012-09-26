@@ -19,6 +19,9 @@ enum MCPStates
 
 @property (assign) enum MCPStates mcpState;
 
+- (void) bufferMCPByte: (uint8_t) byte;
+- (void) handleBufferedMCPMessage;
+
 @end
 
 #pragma mark -
@@ -89,7 +92,6 @@ enum MCPStates
         [protocolStack parseInputByte: '$' previousProtocolHandler: self];
         [protocolStack parseInputByte: byte previousProtocolHandler: self];
       }
-      
       break;
       
     case MUMCPPassThroughState:
@@ -101,9 +103,11 @@ enum MCPStates
     case MUMCPBufferMCPCommandState:
       if (byte == '\n')
       {
-        [protocolStack parseInputByte: byte previousProtocolHandler: self];
         self.mcpState = MUMCPNewLineState;
+        [self handleBufferedMCPMessage];
       }
+      else
+        [self bufferMCPByte: byte];
       break;
   }
 }
@@ -122,6 +126,18 @@ enum MCPStates
 {
   // Outgoing MCP commands are sent independently.
   [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
+}
+
+#pragma mark - Private methods
+
+- (void) bufferMCPByte: (uint8_t) byte
+{
+  return;
+}
+
+- (void) handleBufferedMCPMessage
+{
+  return;
 }
 
 @end

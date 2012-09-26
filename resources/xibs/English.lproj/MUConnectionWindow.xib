@@ -53,12 +53,12 @@
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
-						<object class="NSSplitView" id="817263261">
+						<object class="NSSplitView" id="570977921">
 							<reference key="NSNextResponder" ref="639381930"/>
 							<int key="NSvFlags">274</int>
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSScrollView" id="433606926">
-									<reference key="NSNextResponder" ref="817263261"/>
+									<reference key="NSNextResponder" ref="570977921"/>
 									<int key="NSvFlags">274</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSClipView" id="362385187">
@@ -161,7 +161,7 @@
 															</object>
 														</array>
 													</array>
-													<object class="NSColor" key="NSColor" id="718331430">
+													<object class="NSColor" key="NSColor" id="601062544">
 														<int key="NSColorSpace">3</int>
 														<bytes key="NSWhite">MCAwAA</bytes>
 													</object>
@@ -197,7 +197,7 @@
 										</object>
 									</array>
 									<string key="NSFrameSize">{534, 337}</string>
-									<reference key="NSSuperview" ref="817263261"/>
+									<reference key="NSSuperview" ref="570977921"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="381857141"/>
 									<int key="NSsFlags">133136</int>
@@ -209,7 +209,7 @@
 									<double key="NSMagnification">1</double>
 								</object>
 								<object class="NSScrollView" id="34121738">
-									<reference key="NSNextResponder" ref="817263261"/>
+									<reference key="NSNextResponder" ref="570977921"/>
 									<int key="NSvFlags">274</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSClipView" id="908576080">
@@ -442,7 +442,7 @@ wGw</bytes>
 															</object>
 														</array>
 													</array>
-													<reference key="NSColor" ref="718331430"/>
+													<reference key="NSColor" ref="601062544"/>
 												</object>
 											</object>
 											<int key="NScvFlags">4</int>
@@ -453,7 +453,6 @@ wGw</bytes>
 											<string key="NSFrame">{{519, 0}, {15, 84}}</string>
 											<reference key="NSSuperview" ref="34121738"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView"/>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											<reference key="NSTarget" ref="34121738"/>
 											<string key="NSAction">_doScroller:</string>
@@ -475,7 +474,7 @@ wGw</bytes>
 										</object>
 									</array>
 									<string key="NSFrame">{{0, 347}, {534, 84}}</string>
-									<reference key="NSSuperview" ref="817263261"/>
+									<reference key="NSSuperview" ref="570977921"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="1023902253"/>
 									<int key="NSsFlags">133136</int>
@@ -497,7 +496,7 @@ wGw</bytes>
 					<string key="NSFrameSize">{534, 431}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
-					<reference key="NSNextKeyView" ref="817263261"/>
+					<reference key="NSNextKeyView" ref="570977921"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
 				<string key="NSMinSize">{213, 129}</string>
@@ -539,6 +538,14 @@ wGw</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">splitView</string>
+						<reference key="source" ref="266844703"/>
+						<reference key="destination" ref="570977921"/>
+					</object>
+					<int key="connectionID">179</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="455200458"/>
 						<reference key="destination" ref="266844703"/>
@@ -577,6 +584,14 @@ wGw</bytes>
 					</object>
 					<int key="connectionID">159</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="570977921"/>
+						<reference key="destination" ref="266844703"/>
+					</object>
+					<int key="connectionID">180</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -611,7 +626,7 @@ wGw</bytes>
 						<int key="objectID">5</int>
 						<reference key="object" ref="639381930"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="817263261"/>
+							<reference ref="570977921"/>
 						</array>
 						<reference key="parent" ref="455200458"/>
 					</object>
@@ -635,7 +650,7 @@ wGw</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">178</int>
-						<reference key="object" ref="817263261"/>
+						<reference key="object" ref="570977921"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="433606926"/>
 							<reference ref="34121738"/>
@@ -650,7 +665,7 @@ wGw</bytes>
 							<reference ref="424044393"/>
 							<reference ref="684670211"/>
 						</array>
-						<reference key="parent" ref="817263261"/>
+						<reference key="parent" ref="570977921"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">151</int>
@@ -675,7 +690,7 @@ wGw</bytes>
 							<reference ref="902248184"/>
 							<reference ref="1023902253"/>
 						</array>
-						<reference key="parent" ref="817263261"/>
+						<reference key="parent" ref="570977921"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">156</int>
@@ -723,7 +738,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">178</int>
+			<int key="maxID">180</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

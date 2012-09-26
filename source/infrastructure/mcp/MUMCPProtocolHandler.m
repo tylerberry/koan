@@ -6,7 +6,26 @@
 
 #import "MUMCPProtocolHandler.h"
 
+enum MCPStates
+{
+  MUMCPNewLineState,
+  MUMCPReceivedHashState,
+  MUMCPReceivedHashDollarState,
+  MUMCPPassThroughState,
+  MUMCPBufferMCPCommandState
+};
+
+@interface MUMCPProtocolHandler ()
+
+@property (assign) enum MCPStates mcpState;
+
+@end
+
+#pragma mark -
+
 @implementation MUMCPProtocolHandler
+
+@synthesize delegate;
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
@@ -19,26 +38,74 @@
     return nil;
   
   connectionState = telnetConnectionState;
+  self.mcpState = MUMCPNewLineState;
   
   return self;
-}
-
-
-- (NSObject <MUMCPProtocolHandlerDelegate> *) delegate
-{
-  return delegate;
-}
-
-- (void) setDelegate: (NSObject <MUMCPProtocolHandlerDelegate> *) object
-{
-  delegate = object;
 }
 
 #pragma mark - MUByteProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
-  [protocolStack parseInputByte: byte previousProtocolHandler: self];
+  switch (self.mcpState)
+  {
+    case MUMCPNewLineState:
+      if (byte == '#')
+        self.mcpState = MUMCPReceivedHashState;
+      else
+      {
+        if (byte != '\n')
+          self.mcpState = MUMCPPassThroughState;
+        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      }
+      break;
+      
+    case MUMCPReceivedHashState:
+      if (byte == '$')
+        self.mcpState = MUMCPReceivedHashDollarState;
+      else
+      {
+        if (byte == '\n')
+          self.mcpState = MUMCPNewLineState;
+        else
+          self.mcpState = MUMCPPassThroughState;
+        [protocolStack parseInputByte: '#' previousProtocolHandler: self];
+        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      }
+      break;
+      
+    case MUMCPReceivedHashDollarState:
+      if (byte == '#')
+        self.mcpState = MUMCPBufferMCPCommandState;
+      else if (byte == '"')
+        self.mcpState = MUMCPPassThroughState;
+      else
+      {
+        if (byte == '\n')
+          self.mcpState = MUMCPNewLineState;
+        else
+          self.mcpState = MUMCPPassThroughState;
+        [protocolStack parseInputByte: '#' previousProtocolHandler: self];
+        [protocolStack parseInputByte: '$' previousProtocolHandler: self];
+        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      }
+      
+      break;
+      
+    case MUMCPPassThroughState:
+      if (byte == '\n')
+        self.mcpState = MUMCPNewLineState;
+      [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      break;
+      
+    case MUMCPBufferMCPCommandState:
+      if (byte == '\n')
+      {
+        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+        self.mcpState = MUMCPNewLineState;
+      }
+      break;
+  }
 }
 
 - (NSData *) headerForPreprocessedData

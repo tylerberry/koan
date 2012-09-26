@@ -80,8 +80,6 @@
 
 - (void) awakeFromNib
 {
-  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
-  
   [MUProfileRegistry defaultRegistry];
   [MUWorldRegistry defaultRegistry];
   
@@ -89,6 +87,7 @@
   
   [self rebuildConnectionsMenuWithAutoconnect: YES];
   
+  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   [newConnectionPortField setFormatter: newConnectionPortFormatter];
   
   [[NSNotificationCenter defaultCenter] addObserver: self
@@ -164,7 +163,7 @@
 
 - (IBAction) openBugsWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://svn.thoughtlocker.net/trac/koan/"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"https://github.com/tylerberry/koan/issues"]];
 }
 
 - (IBAction) openNewConnectionPanel: (id) sender

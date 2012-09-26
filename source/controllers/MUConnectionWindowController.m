@@ -95,6 +95,10 @@ enum MUSearchDirections
          toObject: profile
       withKeyPath: @"effectiveTextColor"
           options: bindingOptions];
+  [inputView bind: @"insertionPointColor"
+         toObject: profile
+      withKeyPath: @"effectiveTextColor"
+          options: bindingOptions];
   
   [receivedTextView bind: @"backgroundColor"
                 toObject: profile
@@ -103,11 +107,6 @@ enum MUSearchDirections
   [inputView bind: @"backgroundColor"
          toObject: profile
       withKeyPath: @"effectiveBackgroundColor"
-          options: bindingOptions];
-  
-  [inputView bind: @"insertionPointColor"
-         toObject: profile
-      withKeyPath: @"effectiveTextColor"
           options: bindingOptions];
   
   [[self window] setTitle: profile.windowTitle];
@@ -125,9 +124,6 @@ enum MUSearchDirections
   [self disconnect];
   
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
-  
-  
-  
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem
@@ -678,6 +674,5 @@ enum MUSearchDirections
       ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, YES);
   }
 }
-
 
 @end

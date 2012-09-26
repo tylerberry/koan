@@ -221,14 +221,6 @@
 		2F51E45A11781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProxySettings.xib; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
-		2F56F642153B58D400533D91 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		2F56F644153B58D400533D91 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		2F56F647153B58D500533D91 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		2F56F648153B58D500533D91 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		2F56F649153B58D500533D91 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2F56F65D153B591700533D91 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		2F56F65F153B591700533D91 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		2F56F661153B591700533D91 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		2F6C71F10BB460CA00709320 /* MUURLHandlerCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUURLHandlerCommand.h; sourceTree = "<group>"; };
 		2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUURLHandlerCommand.m; sourceTree = "<group>"; };
 		2F6C72A90BB46BD000709320 /* Koan.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; path = Koan.sdef; sourceTree = "<group>"; };
@@ -541,7 +533,6 @@
 				2FE367E60BCAD3230068A6AA /* Spotlight Importer */,
 				E6B5E40A06A6F28400F53EBB /* Tests */,
 				E6B5E42906A6F36300F53EBB /* Documentation */,
-				2F56F663153B591700533D91 /* Koan for iOS */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -612,12 +603,6 @@
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Bundled Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* OS Frameworks */,
-				2F56F642153B58D400533D91 /* SenTestingKit.framework */,
-				2F56F644153B58D400533D91 /* Cocoa.framework */,
-				2F56F65D153B591700533D91 /* UIKit.framework */,
-				2F56F65F153B591700533D91 /* Foundation.framework */,
-				2F56F661153B591700533D91 /* CoreGraphics.framework */,
-				2F56F646153B58D500533D91 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			path = frameworks;
@@ -630,31 +615,6 @@
 				2F07053A16139F4C00A71314 /* JRSwizzle.m */,
 			);
 			path = JRSwizzle;
-			sourceTree = "<group>";
-		};
-		2F56F646153B58D500533D91 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2F56F647153B58D500533D91 /* AppKit.framework */,
-				2F56F648153B58D500533D91 /* CoreData.framework */,
-				2F56F649153B58D500533D91 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
-		2F56F663153B591700533D91 /* Koan for iOS */ = {
-			isa = PBXGroup;
-			children = (
-				2F56F664153B591700533D91 /* Supporting Files */,
-			);
-			path = "Koan for iOS";
-			sourceTree = "<group>";
-		};
-		2F56F664153B591700533D91 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2F6C71F00BB460CA00709320 /* Scripting */ = {

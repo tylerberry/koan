@@ -63,6 +63,7 @@
 
 // Miscellaneous messages.
 
+"FontFullDisplayName" = "%@ - %@pt";
 "Connect" = "Connect";
 "Disconnect" = "Disconnect";
 

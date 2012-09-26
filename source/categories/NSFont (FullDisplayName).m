@@ -32,7 +32,14 @@
 
 - (NSString *) fullDisplayName
 {
-  return [NSString stringWithFormat: @"%@ - %@pt", [self displayName], [NSNumber numberWithFloat: (float) [self pointSize]]];
+  NSNumber *fontSizeNumber;
+  
+  if (CGFLOAT_IS_DOUBLE)
+    fontSizeNumber = [NSNumber numberWithDouble: [self pointSize]];
+  else
+    fontSizeNumber = [NSNumber numberWithFloat: [self pointSize]];
+  
+  return [NSString stringWithFormat: _(@"%@ - %@pt"), [self displayName], fontSizeNumber];
 }
 
 @end

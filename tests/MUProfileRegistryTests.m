@@ -31,6 +31,7 @@
 
 - (void) tearDown
 {
+  
 }
 
 - (void) testSharedRegistry

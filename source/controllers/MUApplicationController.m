@@ -5,6 +5,7 @@
 //
 
 #import "FontNameToDisplayNameTransformer.h"
+#import "JRSwizzle.h"
 #import "MUPortFormatter.h"
 #import "MUAcknowledgementsController.h"
 #import "MUApplicationController.h"
@@ -18,6 +19,7 @@
 #import "MUSocketFactory.h"
 #import "MUWorld.h"
 #import "MUWorldRegistry.h"
+#import "NSObject (BetterHashing).h"
 
 @interface MUApplicationController (Private)
 
@@ -43,24 +45,33 @@
 {
   NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
   NSMutableDictionary *initialValues = [NSMutableDictionary dictionary];
-  NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
-  NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   
+  // Replace NSObject's -hash method with a better version via method swizzling.
+  
+  NSError *swizzleError = nil;
+  [NSObject jr_swizzleMethod: @selector (hash) withMethod: @selector (betterHash) error: &swizzleError];
+  
+  if (swizzleError)
+    NSLog (@"Error occurred trying to swizzle NSObject -hash to -betterHash: %@", [swizzleError description]);
+  
+  NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
   
   [defaults setObject: [NSArray array] forKey: MUPWorlds];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   
-  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blackColor]] forKey: MUPBackgroundColor];
+  NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   [initialValues setObject: [fixedPitchFont fontName] forKey: MUPFontName];
   [initialValues setObject: [NSNumber numberWithFloat: (float) [fixedPitchFont pointSize]] forKey: MUPFontSize];
+
+  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blackColor]] forKey: MUPBackgroundColor];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blueColor]] forKey: MUPLinkColor];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]] forKey: MUPTextColor];
   [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor purpleColor]] forKey: MUPVisitedLinkColor];
   [initialValues setObject: [NSNumber numberWithBool: YES] forKey: MUPPlaySounds];
   [initialValues setObject: [NSNumber numberWithBool: NO] forKey: MUPPlayWhenActive];
-  [initialValues setObject: @"Blow" forKey: MUPSoundChoice];
+  [initialValues setObject: @"Pop" forKey: MUPSoundChoice];
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   

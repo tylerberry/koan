@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */; };
+		2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F07053A16139F4C00A71314 /* JRSwizzle.m */; };
 		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
 		2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* MUFilterQueue.m */; };
@@ -201,6 +203,8 @@
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* MUKoanMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKoanMain.m; sourceTree = "<group>"; };
+		2F07053916139F4C00A71314 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
+		2F07053A16139F4C00A71314 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		2F0B277912196B9C00AE6B62 /* MUTelnetStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachine.h; sourceTree = "<group>"; };
 		2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachine.m; sourceTree = "<group>"; };
 		2F1C1796122854B90079F1E1 /* MUFilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterQueue.h; sourceTree = "<group>"; };
@@ -619,6 +623,15 @@
 			path = frameworks;
 			sourceTree = SOURCE_ROOT;
 		};
+		2F07053816139F3300A71314 /* JRSwizzle */ = {
+			isa = PBXGroup;
+			children = (
+				2F07053916139F4C00A71314 /* JRSwizzle.h */,
+				2F07053A16139F4C00A71314 /* JRSwizzle.m */,
+			);
+			path = JRSwizzle;
+			sourceTree = "<group>";
+		};
 		2F56F646153B58D500533D91 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -705,6 +718,7 @@
 		2FE366630BCAC8D40068A6AA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				2F07053816139F3300A71314 /* JRSwizzle */,
 				2F70929E1223966F00E0D178 /* CTBadge.h */,
 				2F70929F1223966F00E0D178 /* CTBadge.m */,
 				E60DDB83076CE889009870E4 /* FontNameToDisplayNameTransformer.h */,
@@ -1335,7 +1349,9 @@
 				E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */,
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
+				2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */,
 				2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */,
+				2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

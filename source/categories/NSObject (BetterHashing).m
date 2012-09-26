@@ -26,9 +26,10 @@
 
 @implementation NSObject (BetterHashing)
 
-- (NSUInteger) hash
+- (NSUInteger) betterHash
 {
-  return (((NSUInteger) self >> 4) | (NSUInteger) self << (32 - 4));
+  // Rotate the aligned low-value bits to the highest-value bits for comparison efficiency.
+  return (((NSUInteger) self >> 4) | (NSUInteger) self << (sizeof (NSUInteger) * CHAR_BIT - 4));
 }
 
 @end

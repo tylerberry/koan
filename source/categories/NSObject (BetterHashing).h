@@ -28,4 +28,6 @@
 
 @interface NSObject (BetterHashing)
 
+- (NSUInteger) betterHash;
+
 @end

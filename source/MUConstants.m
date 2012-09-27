@@ -92,6 +92,8 @@ NSString *MULConfirmQuitMessage = @"ConfirmQuitMessage";
 
 #pragma mark Miscellaneous localization constants.
 
+NSString *MULFontFullDisplayName = @"FontFullDisplayName";
+
 NSString *MULConnect = @"Connect";
 NSString *MULDisconnect = @"Disconnect";
 

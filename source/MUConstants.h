@@ -94,6 +94,8 @@ extern NSString *MULConfirmQuitMessage;
 
 #pragma mark Miscellaneous localization constants.
 
+extern NSString *MULFontFullDisplayName;
+
 extern NSString *MULConnect;
 extern NSString *MULDisconnect;
 

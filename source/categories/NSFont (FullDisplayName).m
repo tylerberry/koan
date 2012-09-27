@@ -39,7 +39,7 @@
   else
     fontSizeNumber = [NSNumber numberWithFloat: [self pointSize]];
   
-  return [NSString stringWithFormat: _(@"%@ - %@pt"), [self displayName], fontSizeNumber];
+  return [NSString stringWithFormat: _(MULFontFullDisplayName), [self displayName], fontSizeNumber];
 }
 
 @end

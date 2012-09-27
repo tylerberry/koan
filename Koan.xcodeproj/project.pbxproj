@@ -198,6 +198,13 @@
 			remoteGlobalIDString = 06DB23A61609F5830071BDA0;
 			remoteInfo = MMTabBarView;
 		};
+		2F0705641613FEAC00A71314 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2F07053C1613F2E300A71314 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 		2FCFEF6C0BCADF680061FB6B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1118,6 +1125,7 @@
 			);
 			dependencies = (
 				2FCFEF6D0BCADF680061FB6B /* PBXTargetDependency */,
+				2F0705651613FEAC00A71314 /* PBXTargetDependency */,
 			);
 			name = Koan;
 			productInstallPath = "$(HOME)/Applications";
@@ -1435,6 +1443,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2F0705651613FEAC00A71314 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = 2F0705641613FEAC00A71314 /* PBXContainerItemProxy */;
+		};
 		2FCFEF6D0BCADF680061FB6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2FE367F00BCAD3730068A6AA /* Koan Spotlight Importer */;

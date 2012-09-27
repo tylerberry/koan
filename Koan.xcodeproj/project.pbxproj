@@ -1286,7 +1286,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"${DERIVED_FILE_DIR}\"\ncd \"${SRCROOT}/frameworks/\"\nFRAMEWORKS=\"BWToolkitFramework Growl Sparkle\"\nfor name in $FRAMEWORKS; do\n  if [ ! -e \"${SRCROOT}/frameworks/${name}.framework\" -o \"${SRCROOT}/frameworks/${name}.framework.tar.gz\" -nt ${DERIVED_FILE_DIR}/framework-timestamp ] ; then\n    rm -rf \"${SRCROOT}/frameworks/${name}.framework\"\n    tar zxvf \"${SRCROOT}/frameworks/${name}.framework.tar.gz\"\n  fi\ndone\ntouch ${DERIVED_FILE_DIR}/framework-timestamp\n";
+			shellScript = "mkdir -p \"${DERIVED_FILE_DIR}\"\ncd \"${SRCROOT}/frameworks/\"\nFRAMEWORKS=\"BWToolkitFramework Growl\"\nfor name in $FRAMEWORKS; do\n  if [ ! -e \"${SRCROOT}/frameworks/${name}.framework\" -o \"${SRCROOT}/frameworks/${name}.framework.tar.gz\" -nt ${DERIVED_FILE_DIR}/framework-timestamp ] ; then\n    rm -rf \"${SRCROOT}/frameworks/${name}.framework\"\n    tar zxvf \"${SRCROOT}/frameworks/${name}.framework.tar.gz\"\n  fi\ndone\ntouch ${DERIVED_FILE_DIR}/framework-timestamp\n";
 		};
 		7E87751609AD558700A883BC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

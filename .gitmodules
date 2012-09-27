@@ -1,9 +1,3 @@
 [submodule "source/thirdparty/JRSwizzle"]
 	path = source/thirdparty/JRSwizzle
 	url = git://github.com/rentzsch/jrswizzle.git
-[submodule "source/thirdparty/Sparkle"]
-	path = source/thirdparty/Sparkle
-	url = git://github.com/andymatuschak/Sparkle.git
-[submodule "source/thirdparty/MMTabBarView"]
-	path = source/thirdparty/MMTabBarView
-	url = git://github.com/MiMo42/MMTabBarView.git

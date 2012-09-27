@@ -126,7 +126,6 @@
 		E62C8FBE07421D83005662BC /* MUConnectionToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = E62C8FBC07421D83005662BC /* MUConnectionToolbarController.m */; };
 		E62C905D07422595005662BC /* MUApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E62C905B07422595005662BC /* MUApplicationController.m */; };
 		E62C909F07422669005662BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E62C909E07422669005662BC /* Localizable.strings */; };
-		E62E7FA307A1AB5400BF15E9 /* NSCursor (Finger).m in Sources */ = {isa = PBXBuildFile; fileRef = E62E7FA107A1AB5400BF15E9 /* NSCursor (Finger).m */; };
 		E62E832007A1D10400BF15E9 /* MUTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E62E831E07A1D10400BF15E9 /* MUTextView.m */; };
 		E63CC4E5077A06CD003A54AA /* MUProfilesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E63CC4E3077A06CD003A54AA /* MUProfilesController.m */; };
 		E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */ = {isa = PBXBuildFile; fileRef = E63F31BE0815B5C1006C4704 /* NSFont (FullDisplayName).m */; };
@@ -150,7 +149,6 @@
 		E6DA667307776D9900C46267 /* MUWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DA667107776D9900C46267 /* MUWorld.m */; };
 		E6E7A62807496940007005AC /* MUHistoryRing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A62707496940007005AC /* MUHistoryRing.m */; };
 		E6E7A6350749697C007005AC /* MUTextLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A6340749697C007005AC /* MUTextLogger.m */; };
-		E6E7BF0E07867F080065EDD6 /* finger-cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = E6E7BF0D07867F080065EDD6 /* finger-cursor.png */; };
 		E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F3A71E077A1B270011A461 /* MUWorldRegistry.m */; };
 		E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */ = {isa = PBXBuildFile; fileRef = E6F60DAC0778A3C600E0EBB4 /* NSFileManager (Recursive).m */; };
 /* End PBXBuildFile section */
@@ -452,8 +450,6 @@
 		E62C905A07422595005662BC /* MUApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUApplicationController.h; sourceTree = "<group>"; };
 		E62C905B07422595005662BC /* MUApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUApplicationController.m; sourceTree = "<group>"; };
 		E62C909A0742265F005662BC /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
-		E62E7FA007A1AB5400BF15E9 /* NSCursor (Finger).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCursor (Finger).h"; sourceTree = "<group>"; };
-		E62E7FA107A1AB5400BF15E9 /* NSCursor (Finger).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCursor (Finger).m"; sourceTree = "<group>"; };
 		E62E831D07A1D10400BF15E9 /* MUTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTextView.h; sourceTree = "<group>"; };
 		E62E831E07A1D10400BF15E9 /* MUTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextView.m; sourceTree = "<group>"; };
 		E62F2B9F07CD4EC400DC8C1B /* Backlog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Backlog.txt; sourceTree = "<group>"; };
@@ -507,7 +503,6 @@
 		E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLoggerTests.m; sourceTree = "<group>"; };
 		E6E7A6CC074970FE007005AC /* MUHistoryRingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUHistoryRingTests.h; sourceTree = "<group>"; };
 		E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHistoryRingTests.m; sourceTree = "<group>"; };
-		E6E7BF0D07867F080065EDD6 /* finger-cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "finger-cursor.png"; sourceTree = "<group>"; };
 		E6F3A71D077A1B270011A461 /* MUWorldRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorldRegistry.h; sourceTree = "<group>"; };
 		E6F3A71E077A1B270011A461 /* MUWorldRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUWorldRegistry.m; sourceTree = "<group>"; };
 		E6F60DAB0778A3C600E0EBB4 /* NSFileManager (Recursive).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager (Recursive).h"; sourceTree = "<group>"; };
@@ -631,7 +626,6 @@
 				E6C9D449077BF6B5007BB2C1 /* add.png */,
 				E6C9D44A077BF6B5007BB2C1 /* edit-pressed.png */,
 				E6C9D44B077BF6B5007BB2C1 /* edit.png */,
-				E6E7BF0D07867F080065EDD6 /* finger-cursor.png */,
 				2FDFA14E0D67E86A007F0036 /* growl-icon.png */,
 				2FDFA1500D67E870007F0036 /* openssl-icon.gif */,
 				2FDFA1520D67E890007F0036 /* rbsplitview-icon.png */,
@@ -843,8 +837,6 @@
 			children = (
 				E6055F7C07492729007A13BD /* NSAttributedString (Allocating).h */,
 				E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */,
-				E62E7FA007A1AB5400BF15E9 /* NSCursor (Finger).h */,
-				E62E7FA107A1AB5400BF15E9 /* NSCursor (Finger).m */,
 				E6F60DAB0778A3C600E0EBB4 /* NSFileManager (Recursive).h */,
 				E6F60DAC0778A3C600E0EBB4 /* NSFileManager (Recursive).m */,
 				E63F31BD0815B5C1006C4704 /* NSFont (FullDisplayName).h */,
@@ -1250,7 +1242,6 @@
 				E6C9D44F077BF6B5007BB2C1 /* add.png in Resources */,
 				E6C9D450077BF6B5007BB2C1 /* edit-pressed.png in Resources */,
 				E6C9D451077BF6B5007BB2C1 /* edit.png in Resources */,
-				E6E7BF0E07867F080065EDD6 /* finger-cursor.png in Resources */,
 				2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */,
 				2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */,
 				2FDFA1530D67E890007F0036 /* rbsplitview-icon.png in Resources */,
@@ -1430,7 +1421,6 @@
 				E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */,
 				7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */,
 				E6055F7F07492729007A13BD /* NSAttributedString (Allocating).m in Sources */,
-				E62E7FA307A1AB5400BF15E9 /* NSCursor (Finger).m in Sources */,
 				E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */,
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,

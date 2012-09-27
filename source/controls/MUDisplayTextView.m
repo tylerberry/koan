@@ -49,7 +49,6 @@
 //
 
 #import "MUDisplayTextView.h"
-#import "NSCursor (Finger).h"
 
 @interface MUDisplayTextView (Private)
 
@@ -113,7 +112,7 @@
                                                                           ofTextView: self];
     
     if (result == nil)
-      result = [NSCursor fingerCursor];
+      result = [NSCursor pointingHandCursor];
       
       return result;
 }

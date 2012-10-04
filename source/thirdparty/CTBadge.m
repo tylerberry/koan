@@ -161,7 +161,7 @@ const float CTSmallLabelSize = (float) 11.;
   [badgeImage lockFocus];
 	[badgeGradient drawInRect: NSMakeRect (origin.x, origin.y, floor (badgeSize.width), floor (badgeSize.height))
                       angle: angle];
-	[badgeMask compositeToPoint:origin operation: NSCompositeDestinationAtop]; // Knock out the badge area
+  [badgeMask drawAtPoint: origin fromRect: NSZeroRect operation: NSCompositeDestinationAtop fraction: 1.0];
 	[label drawInRect: NSMakeRect (origin.x + floor ((badgeSize.width - labelSize.width) / 2),
                                  origin.y + floor ((badgeSize.height - labelSize.height) / 2),
                                  badgeSize.width,
@@ -182,7 +182,7 @@ const float CTSmallLabelSize = (float) 11.;
   shadow.shadowColor = [[NSColor blackColor] colorWithAlphaComponent: shadowOpacity];
   [shadow set];
   
-  [badgeImage compositeToPoint: NSZeroPoint operation: NSCompositeSourceOver];
+  [badgeImage drawAtPoint: NSZeroPoint fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1.0];
 	[NSGraphicsContext restoreGraphicsState];
   [image unlockFocus];
     
@@ -199,8 +199,10 @@ const float CTSmallLabelSize = (float) 11.;
   
   [overlayImage lockFocus];
 	NSSize badgeSize = badgeImage.size;
-	[badgeImage compositeToPoint: NSMakePoint (128 - dx - badgeSize.width, 128 - dy - badgeSize.height)
-                     operation: NSCompositeSourceOver];  
+  [badgeImage drawAtPoint: NSMakePoint (128 - dx - badgeSize.width, 128 - dy - badgeSize.height)
+                 fromRect: NSZeroRect
+                operation: NSCompositeSourceOver
+                 fraction: 1.0];
   [overlayImage unlockFocus];
   
   return overlayImage;
@@ -214,7 +216,7 @@ const float CTSmallLabelSize = (float) 11.;
   // Put the appIcon underneath the badgeOverlay
   
   [badgeOverlay lockFocus];
-	[appIcon compositeToPoint: NSZeroPoint operation: NSCompositeDestinationOver];
+  [appIcon drawAtPoint: NSZeroPoint fromRect: NSZeroRect operation: NSCompositeDestinationOver fraction: 1.0];
   [badgeOverlay unlockFocus];
   
   [NSApp setApplicationIconImage: badgeOverlay];

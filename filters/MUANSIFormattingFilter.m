@@ -401,9 +401,8 @@
 
 - (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  [self removeAttribute: NSUnderlineStyleAttributeName
-               inString: string
-           fromLocation: startLocation];
+  [string removeAttribute: NSUnderlineStyleAttributeName
+                    range: NSMakeRange (startLocation, string.length - startLocation)];
 }
 
 - (void) setAttribute: (NSString *) attribute

@@ -309,7 +309,7 @@
 		2FA60E3A12E1379F008BD147 /* MUSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSection.m; sourceTree = "<group>"; };
 		2FA60E4912E1384F008BD147 /* MUProfilesSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfilesSection.h; sourceTree = "<group>"; };
 		2FA60E4A12E1384F008BD147 /* MUProfilesSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfilesSection.m; sourceTree = "<group>"; };
-		2FAF2C25161CC1EC00EADBA3 /* Koan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Koan.entitlements; path = ../Koan.entitlements; sourceTree = "<group>"; };
+		2FAF2C25161CC1EC00EADBA3 /* Koan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Koan.entitlements; sourceTree = "<group>"; };
 		2FB1F802161BFAEE00AFD977 /* spacer.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = spacer.tiff; sourceTree = "<group>"; };
 		2FB1F804161C045500AFD977 /* ActionTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ActionTemplate.pdf; sourceTree = "<group>"; };
 		2FB1F805161C045500AFD977 /* AddMailboxTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddMailboxTemplate.pdf; sourceTree = "<group>"; };

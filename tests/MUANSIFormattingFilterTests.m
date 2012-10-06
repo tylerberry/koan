@@ -532,7 +532,7 @@
              message: @"b"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSNoUnderlineStyle]
+            hasValue: nil
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 2
              message: @"c"];
@@ -544,7 +544,7 @@
              message: @"d"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSNoUnderlineStyle]
+            hasValue: nil
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 4
              message: @"e"];
@@ -556,7 +556,7 @@
              message: @"f"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSNoUnderlineStyle]
+            hasValue: nil
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 6
              message: @"g"];

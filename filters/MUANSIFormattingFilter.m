@@ -297,7 +297,7 @@
         break;
         
       case MUANSIUnderlineOff:
-        [values addObject: [NSNumber numberWithInt: NSNoUnderlineStyle]];
+        [values addObject: [NSNull null]];
         break;
         
       default:
@@ -499,6 +499,8 @@
       [self resetForegroundInString: string fromLocation: startLocation];
     else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
       [self resetBackgroundInString: string fromLocation: startLocation];
+    else if ([attributeName isEqualToString: NSUnderlineStyleAttributeName])
+      [self resetUnderlineInString: string fromLocation: startLocation];
     else
       @throw [NSException exceptionWithName: @"MUANSIException"
                                      reason: @"attributeValue was an invalid [NSNull null]"

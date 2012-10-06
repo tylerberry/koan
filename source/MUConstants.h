@@ -36,6 +36,12 @@ extern NSString *MUPPlaySounds;
 extern NSString *MUPPlayWhenActive;
 extern NSString *MUPSoundChoice;
 
+#pragma mark Custom string attributes.
+
+extern NSString *MUBoldFontAttributeName;
+extern NSString *MUCustomColorAttributeName;
+extern NSString *MUItalicFontAttributeName;
+
 #pragma mark Notification constants.
 
 extern NSString *MUConnectionWindowControllerWillCloseNotification;

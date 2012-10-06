@@ -196,7 +196,7 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36mbc\x1B[35md\x1B[39me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: nil forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
+  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c"];
   [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d"];
@@ -422,7 +422,7 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mbc\x1B[45;35md\x1B[39;49me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: nil forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a foreground"];
+  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a foreground"];
   [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: @"a background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];

@@ -36,6 +36,12 @@ NSString *MUPPlaySounds = @"MUPPlaySounds";
 NSString *MUPPlayWhenActive = @"MUPPlayWhenActive";
 NSString *MUPSoundChoice = @"MUPSoundChoice";
 
+#pragma mark Custom string attributes.
+
+NSString *MUBoldFontAttributeName = @"MUBoldFont";
+NSString *MUCustomColorAttributeName = @"MUCustomColor";
+NSString *MUItalicFontAttributeName = @"MUItalicFont";
+
 #pragma mark Notification constants.
 
 NSString *MUConnectionWindowControllerWillCloseNotification = @"MUConnectionWindowControllerWillCloseNotification";

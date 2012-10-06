@@ -20,7 +20,7 @@ enum MUSearchDirections
   MUForwardSearch
 };
 
-@interface MUConnectionWindowController (Private)
+@interface MUConnectionWindowController ()
 
 - (BOOL) canCloseWindow;
 - (void) cleanUpPingTimer;
@@ -32,6 +32,8 @@ enum MUSearchDirections
 - (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
 - (void) postConnectionWindowControllerWillCloseNotification;
+- (void) setTextViewsNeedDisplay: (NSNotification *) notification;
+- (void) registerForNotifications;
 - (void) sendPeriodicPing: (NSTimer *) timer;
 - (NSString *) splitViewAutosaveName;
 - (void) tabCompleteWithDirection: (enum MUSearchDirections)direction;
@@ -59,6 +61,7 @@ enum MUSearchDirections
   [filterQueue addFilter: [self createLogger]];
   
   currentPrompt = nil;
+  currentlySearching = NO;
   
   return self;
 }
@@ -78,27 +81,12 @@ enum MUSearchDirections
   NSDictionary *bindingOptions = [NSDictionary dictionaryWithObject: NSUnarchiveFromDataTransformerName
                                                              forKey: @"NSValueTransformerName"];
   
-  [receivedTextView bind: @"font"
-                toObject: profile
-             withKeyPath: @"effectiveFont"
-                 options: nil];
-  [inputView bind: @"font"
-         toObject: profile
-      withKeyPath: @"effectiveFont"
-          options: nil];
+  [receivedTextView bind: @"font" toObject: profile withKeyPath: @"effectiveFont" options: nil];
+  [inputView bind: @"font" toObject: profile withKeyPath: @"effectiveFont" options: nil];
   
-  [receivedTextView bind: @"textColor"
-                toObject: profile
-             withKeyPath: @"effectiveTextColor"
-                 options: bindingOptions];
-  [inputView bind: @"textColor"
-         toObject: profile
-      withKeyPath: @"effectiveTextColor"
-          options: bindingOptions];
-  [inputView bind: @"insertionPointColor"
-         toObject: profile
-      withKeyPath: @"effectiveTextColor"
-          options: bindingOptions];
+  [receivedTextView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
+  [inputView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
+  [inputView bind: @"insertionPointColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
   
   [receivedTextView bind: @"backgroundColor"
                 toObject: profile
@@ -109,20 +97,21 @@ enum MUSearchDirections
       withKeyPath: @"effectiveBackgroundColor"
           options: bindingOptions];
   
+  [self registerForNotifications];
+  
   [[self window] setTitle: profile.windowTitle];
   [[self window] setFrameAutosaveName: profile.uniqueIdentifier];
   [[self window] setFrameUsingName: profile.uniqueIdentifier];
 
   [splitView setAutosaveName: [self splitViewAutosaveName]];
   [splitView adjustSubviews];
-  
-  currentlySearching = NO;
 }
 
 - (void) dealloc
 {
   [self disconnect];
   
+  [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
 }
 
@@ -244,8 +233,7 @@ enum MUSearchDirections
     return;
   if (!telnetConnection)
     telnetConnection = [profile createNewTelnetConnectionWithDelegate: self];
-  // if (!telnetConnection) {  }
-  // TODO: Handle this error condition.
+  // if (!telnetConnection) {  }  // TODO: Handle this error condition.
   
   [telnetConnection open];
   
@@ -513,11 +501,7 @@ enum MUSearchDirections
   return NO;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUConnectionWindowController (Private)
+#pragma mark - Private methods
 
 - (BOOL) canCloseWindow
 {
@@ -572,17 +556,11 @@ enum MUSearchDirections
   NSTextStorage *textStorage = [receivedTextView textStorage];
   float scrollerPosition = [[[receivedTextView enclosingScrollView] verticalScroller] floatValue];
   
-  NSMutableDictionary *typingAttributes = [NSMutableDictionary dictionaryWithDictionary: [receivedTextView typingAttributes]];
-  
-  [typingAttributes removeObjectForKey: NSLinkAttributeName];
-  [typingAttributes removeObjectForKey: NSUnderlineStyleAttributeName];
-  [typingAttributes setObject: profile.formatter.foregroundColor forKey: NSForegroundColorAttributeName];
-  [typingAttributes setObject: profile.formatter.backgroundColor forKey: NSBackgroundColorDocumentAttribute];
-  
-  NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: typingAttributes];
+  NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: [receivedTextView typingAttributes]];
   NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
   
   [textStorage appendAttributedString: filteredString];
+  
   [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
   
   // Scroll to the bottom of the text window, but only if we were previously at the bottom.
@@ -616,9 +594,33 @@ enum MUSearchDirections
                                                       object: self];
 }
 
+- (void) registerForNotifications
+{
+  [[NSNotificationCenter defaultCenter] addObserver: self
+  																				 selector: @selector (setTextViewsNeedDisplay:)
+  																						 name: MUGlobalBackgroundColorDidChangeNotification
+  																					 object: nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+  																				 selector: @selector (setTextViewsNeedDisplay:)
+  																						 name: MUGlobalFontDidChangeNotification
+  																					 object: nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+  																				 selector: @selector (setTextViewsNeedDisplay:)
+  																						 name: MUGlobalTextColorDidChangeNotification
+  																					 object: nil];
+}
+
 - (void) sendPeriodicPing: (NSTimer *) timer
 {
   [telnetConnection writeLine: @"@@"];
+}
+
+- (void) setTextViewsNeedDisplay: (NSNotification *) notification
+{
+  [receivedTextView setNeedsDisplay: YES];
+  [inputView setNeedsDisplay: YES];
 }
 
 - (NSString *) splitViewAutosaveName

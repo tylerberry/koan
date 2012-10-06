@@ -9,13 +9,13 @@
 #import "MUFilterQueue.h"
 #import "MUFugueEditFilter.h"
 #import "MUHistoryRing.h"
-#import "MUDisplayTextView.h"
 #import "MUProfile.h"
+#import "MUTextView.h"
 
 @interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate>
 {
-  IBOutlet MUDisplayTextView *receivedTextView;
-  IBOutlet NSTextView *inputView;
+  IBOutlet MUTextView *receivedTextView;
+  IBOutlet MUTextView *inputView;
   IBOutlet NSSplitView *splitView;
   
   id delegate;

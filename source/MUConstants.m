@@ -10,6 +10,14 @@
 
 NSString *MUApplicationName = @"Koan";
 
+#pragma mark URLs.
+
+NSString *MUKoanBugsURLString = @"https://github.com/tylerberry/koan/issues";
+NSString *MUGrowlURLString = @"http://growl.info/";
+NSString *MUOpenSSLURLString = @"http://www.openssl.org/";
+NSString *MUSparkleURLString = @"http://sparkle.andymatuschak.org/";
+NSString *MUUKPrefsPaneURLString = @"http://zathras.de/angelweb/sourcecode.htm";
+
 #pragma mark User defaults constants.
 
 NSString *MUPBackgroundColor = @"MUPBackgroundColor";

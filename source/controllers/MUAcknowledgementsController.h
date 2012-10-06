@@ -12,7 +12,6 @@
 
 - (IBAction) openGrowlWebPage: (id) sender;
 - (IBAction) openOpenSSLWebPage: (id) sender;
-- (IBAction) openRBSplitViewWebPage: (id) sender;
 - (IBAction) openSparkleWebPage: (id) sender;
 - (IBAction) openUKPrefsPanelWebPage: (id) sender;
 

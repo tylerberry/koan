@@ -10,6 +10,14 @@
 
 extern NSString *MUApplicationName;
 
+#pragma mark URLs.
+
+extern NSString *MUKoanBugsURLString;
+extern NSString *MUGrowlURLString;
+extern NSString *MUOpenSSLURLString;
+extern NSString *MUSparkleURLString;
+extern NSString *MUUKPrefsPaneURLString;
+
 #pragma mark User defaults constants.
 
 extern NSString *MUPBackgroundColor;

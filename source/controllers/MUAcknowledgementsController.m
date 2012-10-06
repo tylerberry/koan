@@ -18,27 +18,22 @@
   
 - (IBAction) openGrowlWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://growl.info/"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUGrowlURLString]];
 }
 
 - (IBAction) openOpenSSLWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://www.openssl.org/"]];
-}
-
-- (IBAction) openRBSplitViewWebPage: (id) sender
-{
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://www.brockerhoff.net/src/rbs.html"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUOpenSSLURLString]];
 }
 
 - (IBAction) openSparkleWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://sparkle.andymatuschak.org/"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUSparkleURLString]];
 }
 
 - (IBAction) openUKPrefsPanelWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"http://zathras.de/angelweb/sourcecode.htm"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUUKPrefsPaneURLString]];
 }
 
 @end

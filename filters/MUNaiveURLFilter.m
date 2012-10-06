@@ -25,7 +25,7 @@
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
-  NSMutableAttributedString *editString = [NSMutableAttributedString attributedStringWithAttributedString: string];
+  NSMutableAttributedString *editString = [string mutableCopy];
   
   [self linkifyURLs: editString];
   

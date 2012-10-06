@@ -163,7 +163,7 @@
 
 - (IBAction) openBugsWebPage: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: @"https://github.com/tylerberry/koan/issues"]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUKoanBugsURLString]];
 }
 
 - (IBAction) openNewConnectionPanel: (id) sender

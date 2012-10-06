@@ -16,6 +16,10 @@
   
   IBOutlet NSTreeController *profilesTreeController;
   IBOutlet NSOutlineView *profilesOutlineView;
+  IBOutlet NSButton *addButton;
+  IBOutlet NSButton *actionButton;
+  
+  IBOutlet NSMenu *addMenu;
   
   BOOL backgroundColorActive;
   BOOL linkColorActive;
@@ -30,5 +34,6 @@
 
 - (IBAction) chooseNewFont: (id) sender;
 - (IBAction) goToWorldURL: (id) sender;
+- (IBAction) showAddContextMenu: (id) sender;
 
 @end

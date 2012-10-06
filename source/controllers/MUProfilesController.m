@@ -10,9 +10,7 @@
 #import "MUProfilesSection.h"
 #import "MUSection.h"
 
-#import "ImageAndTextCell.h"
-
-@interface MUProfilesController (Private)
+@interface MUProfilesController ()
 
 - (void) applicationWillTerminate: (NSNotification *) notification;
 
@@ -55,15 +53,6 @@
   profilesTreeArray = [[NSMutableArray alloc] init];
   profilesExpandedItems = [[NSMutableArray alloc] init];
   
-  return self;
-}
-
-- (void) awakeFromNib
-{
-  // MUPortFormatter *worldPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
-  
-  // [worldPortField setFormatter: worldPortFormatter]; // FIXME: Apply the port formatter.
-  
   editingFont = nil;
   
   backgroundColorActive = NO;
@@ -73,9 +62,22 @@
   
   [self populateProfilesTree];
   
+  return self;
+}
+
+- (void) awakeFromNib
+{
+  // MUPortFormatter *worldPortFormatter = [[[MUPortFormatter alloc] init] autorelease];
+  
+  // [worldPortField setFormatter: worldPortFormatter]; // FIXME: Apply the port formatter.
+  
   [self registerForNotifications];
 }
 
+- (void) dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
+}
 
 #pragma mark - Actions
 
@@ -99,6 +101,26 @@
 - (IBAction) goToWorldURL: (id) sender
 {
   return;
+}
+
+- (IBAction) showAddContextMenu: (id) sender
+{
+  NSPoint point = [NSEvent mouseLocation];
+  NSPoint wp = [self.window convertScreenToBase: point];
+  NSLog (@"Location? x= %f, y = %f", (float)point.x, (float)point.y);
+  NSLog (@"Location? x= %f, y = %f", (float)wp.x, (float)wp.y);
+  
+  NSEvent *event = [NSEvent mouseEventWithType: NSLeftMouseUp
+                                      location: wp
+                                 modifierFlags: 0
+                                     timestamp: NSTimeIntervalSince1970
+                                  windowNumber: [self.window windowNumber]
+                                       context: nil
+                                   eventNumber: 0
+                                    clickCount: 0
+                                      pressure: 0.1];
+  
+  [NSMenu popUpContextMenu: addMenu withEvent: event forView: nil];
 }
 
 #pragma mark - NSOutlineView data source
@@ -181,52 +203,12 @@
   return [self outlineView: outlineView isGroupItem: item] ? NO : YES;
 }
 
-- (void) outlineView: (NSOutlineView *) outlineView
-     willDisplayCell: (id) cell
-      forTableColumn: (NSTableColumn *) tableColumn
-                item: (id) item
-{
-  if ([cell isKindOfClass: [ImageAndTextCell class]])
-  {
-    ImageAndTextCell *imageAndTextCell = (ImageAndTextCell *) cell;
-    
-    if ([self outlineView: outlineView isGroupItem: item])
-      imageAndTextCell.image = nil;
-    else
-    {
-      id representedObject = [(NSTreeNode *) item representedObject];
-      
-      if ([representedObject isKindOfClass: [MUWorld class]])
-      {
-        NSImage *worldImage = [NSImage imageNamed: NSImageNameNetwork];
-        worldImage.size = NSMakeSize (16, 16);
-        imageAndTextCell.image = worldImage;
-      }
-      else if ([representedObject isKindOfClass: [MUPlayer class]])
-      {
-        NSImage *playerImage = [NSImage imageNamed: NSImageNameUser];
-        playerImage.size = NSMakeSize (16, 16);
-        imageAndTextCell.image = playerImage;
-      }
-      else
-      {
-        NSImage *folderImage = [[NSWorkspace sharedWorkspace] iconForFileType: NSFileTypeForHFSTypeCode (kGenericFolderIcon)];
-        folderImage.size = NSMakeSize (16, 16);
-        imageAndTextCell.image = folderImage;
-      }
-    }
-  }
-}
-
--   (void) outlineView: (NSOutlineView *) outlineView
-willDisplayOutlineCell: (id) cell
-        forTableColumn: (NSTableColumn *) tableColumn
-                  item: (id) item
+- (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
 {
   if ([self outlineView: outlineView isGroupItem: item])
-    [cell setTransparent: YES];
+    return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: self];
   else
-    [cell setTransparent: NO];
+    return [outlineView makeViewWithIdentifier: @"DataCell" owner: self];
 }
 
 - (void) outlineViewItemWillCollapse: (NSNotification *) notification
@@ -274,11 +256,7 @@ willDisplayOutlineCell: (id) cell
   [self saveProfilesOutlineViewState];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUProfilesController (Private)
+#pragma mark - Private methods
 
 - (void) applicationWillTerminate: (NSNotification *) notification
 {
@@ -286,7 +264,6 @@ willDisplayOutlineCell: (id) cell
 }
 
 #if 0
-
 - (IBAction) changeFont: (id) sender
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
@@ -422,7 +399,6 @@ willDisplayOutlineCell: (id) cell
     [profileVisitedLinkColorWell setColor: [NSUnarchiver unarchiveObjectWithData: colorData]];
   }
 }
-
 #endif
 
 - (void) registerForNotifications

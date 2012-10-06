@@ -78,7 +78,7 @@
 	<key>OSAScriptingDefinition</key>
 	<string>Koan.sdef</string>
 	<key>SUFeedURL</key>
-	<string>http://tyler.thoughtlocker.net/appcasts/koan.rss</string>
+	<string>https://www.3james.org/appcasts/koan.rss</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

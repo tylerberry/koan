@@ -37,6 +37,8 @@ enum MUSearchDirections
 - (void) sendPeriodicPing: (NSTimer *) timer;
 - (NSString *) splitViewAutosaveName;
 - (void) tabCompleteWithDirection: (enum MUSearchDirections)direction;
+- (void) updateLinkTextColor;
+- (void) updateTextColors;
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 
 @end
@@ -55,7 +57,7 @@ enum MUSearchDirections
   historyRing = [MUHistoryRing historyRing];
   filterQueue = [MUFilterQueue filterQueue];
   
-  [filterQueue addFilter: [MUANSIFormattingFilter filterWithFormatter: [profile formatter]]];
+  [filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: profile]];
   [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
   [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
@@ -78,33 +80,37 @@ enum MUSearchDirections
 
 - (void) awakeFromNib
 {
-  NSDictionary *bindingOptions = [NSDictionary dictionaryWithObject: NSUnarchiveFromDataTransformerName
-                                                             forKey: @"NSValueTransformerName"];
+  // Initial window colors and fonts.
   
-  [receivedTextView bind: @"font" toObject: profile withKeyPath: @"effectiveFont" options: nil];
+  [receivedTextView setFont: profile.effectiveFont];
+  [receivedTextView setTextColor: profile.effectiveTextColor];
+  
+  [self updateLinkTextColor];
+  
+  // Restore window and split view title, size, and position.
+  
+  [self.window setTitle: profile.windowTitle];
+  [self.window setFrameAutosaveName: profile.uniqueIdentifier];
+  [self.window setFrameUsingName: profile.uniqueIdentifier];
+  
+  [splitView setAutosaveName: self.splitViewAutosaveName];
+  [splitView adjustSubviews];
+  
+  // Bindings and notifications.
+  
   [inputView bind: @"font" toObject: profile withKeyPath: @"effectiveFont" options: nil];
   
-  [receivedTextView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
-  [inputView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
-  [inputView bind: @"insertionPointColor" toObject: profile withKeyPath: @"effectiveTextColor" options: bindingOptions];
+  [profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
+  [profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
+  [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
   
-  [receivedTextView bind: @"backgroundColor"
-                toObject: profile
-             withKeyPath: @"effectiveBackgroundColor"
-                 options: bindingOptions];
-  [inputView bind: @"backgroundColor"
-         toObject: profile
-      withKeyPath: @"effectiveBackgroundColor"
-          options: bindingOptions];
+  [receivedTextView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
+  
+  [inputView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"insertionPointColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
   
   [self registerForNotifications];
-  
-  [[self window] setTitle: profile.windowTitle];
-  [[self window] setFrameAutosaveName: profile.uniqueIdentifier];
-  [[self window] setFrameUsingName: profile.uniqueIdentifier];
-
-  [splitView setAutosaveName: [self splitViewAutosaveName]];
-  [splitView adjustSubviews];
 }
 
 - (void) dealloc
@@ -113,6 +119,31 @@ enum MUSearchDirections
   
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if (object == profile)
+  {
+    if ([keyPath isEqualToString: @"effectiveFont"])
+    {
+      return;
+    }
+    else if ([keyPath isEqualToString: @"effectiveLinkColor"])
+    {
+      [self updateLinkTextColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: @"effectiveTextColor"])
+    {
+      [self updateTextColors];
+      return;
+    }
+  }
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem
@@ -553,20 +584,17 @@ enum MUSearchDirections
     currentPrompt = [string copy];
   }
   
-  NSTextStorage *textStorage = [receivedTextView textStorage];
-  float scrollerPosition = [[[receivedTextView enclosingScrollView] verticalScroller] floatValue];
-  
   NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: [receivedTextView typingAttributes]];
   NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
   
-  [textStorage appendAttributedString: filteredString];
+  [receivedTextView.textStorage appendAttributedString: filteredString];
   
   [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
   
   // Scroll to the bottom of the text window, but only if we were previously at the bottom.
   
-  if (1.0 - scrollerPosition < 0.000001) // Avoiding inaccuracy of == for floats.
-    [receivedTextView scrollRangeToVisible: NSMakeRange ([textStorage length], 0)];
+  if (1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001) // Avoiding inaccuracy of == for floats.
+    [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0)];
   
   [self postConnectionWindowControllerDidReceiveTextNotification];  
 }
@@ -661,6 +689,35 @@ enum MUSearchDirections
   }
   
   currentlySearching = YES;
+}
+
+- (void) updateLinkTextColor
+{
+  NSMutableDictionary *linkTextAttributes = [[receivedTextView linkTextAttributes] mutableCopy];
+  [linkTextAttributes setObject: profile.effectiveLinkColor
+                         forKey: NSForegroundColorAttributeName];
+  [receivedTextView setLinkTextAttributes: linkTextAttributes];
+}
+
+- (void) updateTextColors
+{
+  NSTextStorage *textStorage = receivedTextView.textStorage;
+  NSUInteger index = 0;
+  
+  while (index < textStorage.length)
+  {
+    NSRange attributeRange;
+    NSDictionary *attributes = [textStorage attributesAtIndex: index effectiveRange: &attributeRange];
+    
+    if (![attributes objectForKey: MUCustomColorAttributeName])
+    {
+      [textStorage addAttribute: NSForegroundColorAttributeName
+                          value: profile.effectiveTextColor
+                          range: attributeRange];
+    }
+    
+    index += attributeRange.length;
+  }
 }
 
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo

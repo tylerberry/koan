@@ -7,7 +7,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MUFilter.h"
 
-@protocol MUFormatter;
+#import "MUProfile.h"
 
 // All of the below codes are supported except for italics and strike. I am merely documenting them here for
 // completeness.  They are not implemented because my survey of mushes indicates that they are not used.
@@ -69,8 +69,8 @@ typedef enum MUANSI256ColorCode
 
 @interface MUANSIFormattingFilter : MUFilter
 
-+ (MUFilter *) filterWithFormatter: (NSObject <MUFormatter> *) newFormatter;
++ (MUFilter *) filterWithProfile: (MUProfile *) newProfile;
 
-- (id) initWithFormatter: (NSObject <MUFormatter> *) newFormatter;
+- (id) initWithProfile: (MUProfile *) newProfile;
 
 @end

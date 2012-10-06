@@ -6,8 +6,45 @@
 
 #import "MUANSIFormattingFilterTests.h"
 #import "MUANSIFormattingFilter.h"
-#import "MUFormatter.h"
+#import "MUProfile.h"
 #import "NSFont (Traits).h"
+
+#define TESTING_TEXT_COLOR [NSColor cyanColor]
+#define TESTING_BACKGROUND_COLOR [NSColor magentaColor]
+#define TESTING_LINK_COLOR [NSColor yellowColor]
+#define TESTING_VISITED_LINK_COLOR [NSColor redColor]
+
+@interface MUProfile (Testing)
+
++ (id) profileForTesting;
+- (id) initForTesting;
+
+@end
+
+#pragma mark -
+
+@implementation MUProfile (Testing)
+
++ (id) profileForTesting
+{
+  return [[self alloc] initForTesting];
+}
+
+- (id) initForTesting
+{
+  return [self initWithWorld: nil
+                      player: nil
+                 autoconnect: NO
+                        font: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]
+                   textColor: TESTING_TEXT_COLOR
+             backgroundColor: TESTING_BACKGROUND_COLOR
+                   linkColor: TESTING_LINK_COLOR
+            visitedLinkColor: TESTING_VISITED_LINK_COLOR];
+}
+
+@end
+
+#pragma mark -
 
 @interface MUANSIFormattingFilterTests (Private)
 
@@ -79,11 +116,12 @@
 - (void) setUp
 {
   queue = [[MUFilterQueue alloc] init];
-  [queue addFilter: [MUANSIFormattingFilter filter]];
+  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting]]];
 }
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testNoCode
@@ -196,11 +234,11 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36mbc\x1B[35md\x1B[39me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c"];
   [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e"];
 }
 
 - (void) testStandardForegroundColors
@@ -313,7 +351,7 @@
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c"];
   [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSBackgroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: [MUFormatter testingBackground] forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e"];
 }
 
 - (void) testStandardBackgroundColors
@@ -422,7 +460,7 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mbc\x1B[45;35md\x1B[39;49me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a foreground"];
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a foreground"];
   [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: @"a background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
@@ -430,8 +468,8 @@
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
   [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d foreground"];
   [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSBackgroundColorAttributeName atIndex: 3 message: @"d background"];
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e foreground"];
-  [self assertString: output hasValue: [MUFormatter testingBackground] forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e background"];
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e foreground"];
+  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e background"];
 }
 
 - (void) testResetDisplayMode
@@ -442,7 +480,7 @@
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
   [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
 }
 
 - (void) testCompoundSetThenResetDisplayMode
@@ -453,7 +491,7 @@
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
   [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
 }
 
 - (void) testShortFormOfResetDisplayMode
@@ -464,7 +502,7 @@
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
   [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"]; 
+  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"]; 
 }
 
 - (void) testPersistColorsBetweenLines
@@ -492,14 +530,17 @@
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 5 message: @"f"];
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 6 message: @"g"];
 }
+
 - (void) testBoldWithBoldAlreadyOn
 {
   NSMutableAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[22mc\x1B[1md\x1B[0me\x1B[1mf\x1B[mg"];
   NSAttributedString *output;
-  NSFont *boldFont = [[MUFormatter testingFont] fontWithTrait: NSBoldFontMask];
   
   [queue clearFilters];
-  [queue addFilter: [MUANSIFormattingFilter filterWithFormatter: [MUFormatter formatterWithForegroundColor: [MUFormatter testingForeground] backgroundColor: [MUFormatter testingBackground] font: boldFont]]];
+  
+  MUProfile *testingProfile = [MUProfile profileForTesting];
+  testingProfile.font = [testingProfile.font fontWithTrait: NSBoldFontMask];
+  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile]];
 
   output = [queue processAttributedString: input];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a"];

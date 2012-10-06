@@ -5,14 +5,13 @@
 //
 
 #import "MUANSIFormattingFilter.h"
-#import "MUFormatter.h"
 #import "NSFont (Traits).h"
 
 @interface MUANSIFormattingFilter ()
 {
   BOOL inCode;
   NSString *ansiCode;
-  NSObject <MUFormatter> *formatter;
+  MUProfile *profile;
   NSMutableDictionary *currentAttributes;
 }
 
@@ -25,6 +24,7 @@
 - (NSUInteger) scanUpToCodeInString: (NSString *) string;
 - (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
 - (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
+- (void) updateProfileTextColor;
 
 #pragma mark - Attribute manipulation
 
@@ -52,14 +52,14 @@
 
 @implementation MUANSIFormattingFilter
 
-+ (MUFilter *) filterWithFormatter: (NSObject <MUFormatter> *) newFormatter
++ (MUFilter *) filterWithProfile: (MUProfile *) newProfile
 {
-  return [[self alloc] initWithFormatter: newFormatter];
+  return [[self alloc] initWithProfile: newProfile];
 }
 
-- (id) initWithFormatter: (NSObject <MUFormatter> *) newFormatter
+- (id) initWithProfile: (MUProfile *) newProfile
 {
-  if (!newFormatter)
+  if (!newProfile)
     return nil;
   
   if (!(self = [super init]))
@@ -67,17 +67,31 @@
   
   ansiCode = nil;
   inCode = NO;
-  formatter = newFormatter;
+  profile = newProfile;
+  
   currentAttributes = [[NSMutableDictionary alloc] init];
-  [currentAttributes setValue: [formatter font] forKey: NSFontAttributeName];
-  [currentAttributes setValue: [formatter foregroundColor] forKey: NSForegroundColorAttributeName];
+  [currentAttributes setValue: profile.effectiveFont forKey: NSFontAttributeName];
+  [currentAttributes setValue: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
+  
+  [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
   
   return self;
 }
 
-- (id) init
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
 {
-  return [self initWithFormatter: [MUFormatter formatterForTesting]];
+  if (object == profile)
+  {
+    if ([keyPath isEqualToString: @"effectiveTextColor"])
+    {
+      [self updateProfileTextColor];
+      return;
+    }
+  }
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 - (NSAttributedString *) filter: (NSAttributedString *) string
@@ -279,11 +293,11 @@
         
       case MUANSIForegroundDefault:
         [values addObject: [NSNull null]];
-        [values addObject: formatter.foregroundColor];
+        [values addObject: profile.effectiveTextColor];
         break;
         
       case MUANSIBackgroundDefault:
-        [values addObject: formatter.backgroundColor];
+        [values addObject: [NSNull null]];
         break;
         
       case MUANSIForegroundGreen:
@@ -385,7 +399,7 @@
 
 - (NSFont *) makeFontBold: (NSFont *) font
 {  
-  if (formatter.font.isBold)
+  if (profile.effectiveFont.isBold)
     return [font fontWithTrait: NSUnboldFontMask];
   else
     return [font fontWithTrait: NSBoldFontMask];
@@ -393,7 +407,7 @@
 
 - (NSFont *) makeFontUnbold: (NSFont *) font
 {
-  if (formatter.font.isBold)
+  if (profile.effectiveFont.isBold)
     return [font fontWithTrait: NSBoldFontMask];
   else
     return [font fontWithTrait: NSUnboldFontMask];
@@ -472,7 +486,7 @@
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSFontAttributeName
-             toValue: formatter.font
+             toValue: profile.effectiveFont
             inString: string
         fromLocation: startLocation];
 }
@@ -480,7 +494,7 @@
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSForegroundColorAttributeName
-             toValue: formatter.foregroundColor
+             toValue: profile.effectiveTextColor
             inString: string
         fromLocation: startLocation];
 }
@@ -558,6 +572,12 @@
                                      reason: @"attributeValue was an invalid [NSNull null]"
                                    userInfo: nil];
   }
+}
+
+- (void) updateProfileTextColor
+{
+  if (![currentAttributes objectForKey: MUCustomColorAttributeName])
+    [currentAttributes setObject: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
 }
 
 @end

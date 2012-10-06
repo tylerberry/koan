@@ -5,7 +5,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MUFormatter.h"
 #import "MUWorld.h"
 #import "MUPlayer.h"
 #import "MUFilter.h"
@@ -13,8 +12,6 @@
 
 @interface MUProfile : NSObject <NSCoding>
 {
-  BOOL loggedIn;
-  
   NSFont *font;
   NSColor *textColor;
   NSColor *backgroundColor;
@@ -25,10 +22,17 @@
 @property (strong) MUWorld *world;
 @property (strong) MUPlayer *player;
 @property (assign) BOOL autoconnect;
-@property (unsafe_unretained, readonly) NSString *hostname;
-@property (unsafe_unretained, readonly) NSString *loginString;
-@property (unsafe_unretained, readonly) NSString *uniqueIdentifier;
-@property (unsafe_unretained, readonly) NSString *windowTitle;
+
+@property (readonly) NSString *hostname;
+@property (readonly) NSString *loginString;
+@property (readonly) NSString *uniqueIdentifier;
+@property (readonly) NSString *windowTitle;
+
+@property (readonly) NSFont *effectiveFont;
+@property (readonly) NSString *effectiveFontDisplayName;
+@property (readonly) NSColor *effectiveTextColor;
+@property (readonly) NSColor *effectiveBackgroundColor;
+@property (readonly) NSColor *effectiveLinkColor;
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
                           player: (MUPlayer *) newPlayer
@@ -64,15 +68,6 @@
 - (void) setLinkColor: (NSColor *) newLinkColor;
 - (NSColor *) visitedLinkColor;
 - (void) setVisitedLinkColor: (NSColor *) newVisitedLinkColor;
-- (NSObject <MUFormatter> *) formatter;
-
-// Derived bindings.
-- (NSFont *) effectiveFont;
-- (NSString *) effectiveFontDisplayName;
-- (NSData *) effectiveTextColor;
-- (NSData *) effectiveBackgroundColor;
-- (NSData *) effectiveLinkColor;
-- (NSData *) effectiveVisitedLinkColor;
 
 // Actions.
 - (MUFilter *) createLogger;

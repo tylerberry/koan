@@ -95,8 +95,6 @@
 		7E4FB28B0BCC877B007BC40F /* MUTelnetWontState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2770BCC877B007BC40F /* MUTelnetWontState.m */; };
 		7E50AC2309AEB90B00E0BFE7 /* MUProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */; };
 		7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */; };
-		7E5103A40AD1E14000142EF3 /* MUFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103A20AD1E14000142EF3 /* MUFormatter.m */; };
-		7E5103BD0AD1E22D00142EF3 /* MUProfileFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */; };
 		7E5C2DDD09B105B2006993E1 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
 		7E68DC5D092AC2FB004554BD /* MUSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC39092AC2FB004554BD /* MUSocket.m */; };
 		7E87735409AD44DE00A883BC /* MUSocketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E87735209AD44DE00A883BC /* MUSocketFactory.m */; };
@@ -395,10 +393,6 @@
 		7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySocket.m; sourceTree = "<group>"; };
 		7E51030F0AD1D5AA00142EF3 /* NSFont (Traits).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFont (Traits).h"; sourceTree = "<group>"; };
 		7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFont (Traits).m"; sourceTree = "<group>"; };
-		7E5103A10AD1E14000142EF3 /* MUFormatter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUFormatter.h; sourceTree = "<group>"; };
-		7E5103A20AD1E14000142EF3 /* MUFormatter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUFormatter.m; sourceTree = "<group>"; };
-		7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileFormatter.h; sourceTree = "<group>"; };
-		7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileFormatter.m; sourceTree = "<group>"; };
 		7E5C2DD909B105B2006993E1 /* MUSOCKS5Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Authentication.h; sourceTree = "<group>"; };
 		7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Authentication.m; sourceTree = "<group>"; };
 		7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachineTests.h; sourceTree = "<group>"; };
@@ -973,8 +967,6 @@
 				7EFE43830749C7CE002C7D48 /* MUFilter.m */,
 				2F1C1796122854B90079F1E1 /* MUFilterQueue.h */,
 				2F1C1797122854B90079F1E1 /* MUFilterQueue.m */,
-				7E5103A10AD1E14000142EF3 /* MUFormatter.h */,
-				7E5103A20AD1E14000142EF3 /* MUFormatter.m */,
 				2FB40CD80BF0FA3D004E13F8 /* MUFugueEditFilter.h */,
 				2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */,
 				E6C9D604077C2DC6007BB2C1 /* MUNaiveURLFilter.h */,
@@ -995,8 +987,6 @@
 				E677D20F0778041F00B417D2 /* MUPlayer.m */,
 				7E39EF9B0783938F0042A17A /* MUProfile.h */,
 				7E39EF9C0783938F0042A17A /* MUProfile.m */,
-				7E5103BA0AD1E22D00142EF3 /* MUProfileFormatter.h */,
-				7E5103BB0AD1E22D00142EF3 /* MUProfileFormatter.m */,
 				2FA60E4912E1384F008BD147 /* MUProfilesSection.h */,
 				2FA60E4A12E1384F008BD147 /* MUProfilesSection.m */,
 				2FA60E3912E1379F008BD147 /* MUSection.h */,
@@ -1372,7 +1362,6 @@
 				7EFE43870749C7CE002C7D48 /* MUFilter.m in Sources */,
 				2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */,
 				2F82CADA1241F81300D32655 /* MUFolder.m in Sources */,
-				7E5103A40AD1E14000142EF3 /* MUFormatter.m in Sources */,
 				2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */,
 				E653A7D207AEFAB900023476 /* MUGrowlService.m in Sources */,
 				2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */,
@@ -1388,7 +1377,6 @@
 				E64C9634076BF95E00D0D7C0 /* MUPortFormatter.m in Sources */,
 				E6914C52092FDAD1005DA235 /* MUPreferencesController.m in Sources */,
 				7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */,
-				7E5103BD0AD1E22D00142EF3 /* MUProfileFormatter.m in Sources */,
 				7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */,
 				E63CC4E5077A06CD003A54AA /* MUProfilesController.m in Sources */,
 				2FA60E5512E13939008BD147 /* MUProfilesSection.m in Sources */,

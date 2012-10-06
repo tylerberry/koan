@@ -6,13 +6,15 @@
 
 #import "MUCodingService.h"
 #import "MUProfile.h"
-#import "MUProfileFormatter.h"
 #import "MUTextLogger.h"
 
-@interface MUProfile (Private)
+static const int32_t currentProfileVersion = 2;
+
+@interface MUProfile ()
 
 - (void) globalBackgroundColorDidChange: (NSNotification *) notification;
 - (void) globalFontDidChange: (NSNotification *) notification;
+- (void) globalLinkColorDidChange: (NSNotification *) notification;
 - (void) globalTextColorDidChange: (NSNotification *) notification;
 - (void) registerForNotifications;
 
@@ -23,7 +25,8 @@
 @implementation MUProfile
 
 @synthesize world, player, autoconnect;
-@dynamic loginString, uniqueIdentifier, windowTitle;
+@dynamic hostname, loginString, uniqueIdentifier, windowTitle;
+@dynamic effectiveBackgroundColor, effectiveFont, effectiveFontDisplayName, effectiveLinkColor, effectiveTextColor;
 
 + (BOOL) automaticallyNotifiesObserversForKey: (NSString *) key
 {
@@ -34,7 +37,7 @@
   	keyArray = [NSArray arrayWithObjects:
   		@"effectiveFont",
   		@"effectiveFontDisplayName",
-  		@"effectiveTextColor",
+      @"effectiveTextColor",
   		@"effectiveBackgroundColor",
   		@"effectiveLinkColor",
   		@"effectiveVisitedLinkColor",
@@ -203,22 +206,17 @@
   [self didChangeValueForKey: @"effectiveVisitedLinkColor"];
 }
 
-- (NSObject <MUFormatter> *) formatter
-{
-  return [[MUProfileFormatter alloc] initWithProfile: self];
-}
-
 #pragma mark - Accessors for bindings
 
-- (NSData *) effectiveBackgroundColor
+- (NSColor *) effectiveBackgroundColor
 {
   if (backgroundColor)
-  	return [NSArchiver archivedDataWithRootObject: backgroundColor];
+  	return backgroundColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	
-  	return [[defaults values] valueForKey: MUPBackgroundColor];
+  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPBackgroundColor]];
   }
 }
 
@@ -229,8 +227,8 @@
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	NSString *fontName = [[defaults values] valueForKey: MUPFontName];
-  	float fontSize = [(NSNumber *) [[defaults values] valueForKey: MUPFontSize] floatValue];
+  	NSString *fontName = [defaults.values valueForKey: MUPFontName];
+  	float fontSize = ((NSNumber *) [defaults.values valueForKey: MUPFontSize]).floatValue;
   	
   	return [NSFont fontWithName: fontName size: fontSize];
   }
@@ -239,52 +237,50 @@
 - (NSString *) effectiveFontDisplayName
 {
   if (font)
-  {
-  	return [font fullDisplayName];
-  }
+  	return font.fullDisplayName;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	NSString *fontName = [[defaults values] valueForKey: MUPFontName];
-  	NSNumber *fontSize = [[defaults values] valueForKey: MUPFontSize];
+  	NSString *fontName = [defaults.values valueForKey: MUPFontName];
+  	NSNumber *fontSize = [defaults.values valueForKey: MUPFontSize];
   	
-  	return [[NSFont fontWithName: fontName size: [fontSize floatValue]] fullDisplayName];
+  	return [NSFont fontWithName: fontName size: fontSize.floatValue].fullDisplayName;
   }
 }
 
-- (NSData *) effectiveLinkColor
+- (NSColor *) effectiveLinkColor
 {
   if (linkColor)
-  	return [NSArchiver archivedDataWithRootObject: linkColor];
+  	return linkColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	
-  	return [[defaults values] valueForKey: MUPLinkColor];
+  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPLinkColor]];
   }
 }
 
-- (NSData *) effectiveTextColor
+- (NSColor *) effectiveTextColor
 {
   if (textColor)
-  	return [NSArchiver archivedDataWithRootObject: textColor];
+  	return textColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	
-  	return [[defaults values] valueForKey: MUPTextColor];
+  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPTextColor]];
   }
 }
 
-- (NSData *) effectiveVisitedLinkColor
+- (NSColor *) effectiveVisitedLinkColor
 {
   if (visitedLinkColor)
-  	return [NSArchiver archivedDataWithRootObject: visitedLinkColor];
+  	return visitedLinkColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	
-  	return [[defaults values] valueForKey: MUPVisitedLinkColor];
+  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPVisitedLinkColor]];
   }
 }
 
@@ -305,7 +301,7 @@
 
 - (BOOL) hasLoginInformation
 {
-  return [self loginString] != nil;
+  return self.loginString != nil;
 }
 
 #pragma mark - Property method implementations
@@ -329,8 +325,7 @@
   if (player)
   {
     // FIXME:  Consider offloading the generation of a unique name for the player on MUPlayer.
-    identifier = [NSString stringWithFormat: @"%@;%@",
-                  world.uniqueIdentifier, player.uniqueIdentifier];
+    identifier = [NSString stringWithFormat: @"%@;%@", world.uniqueIdentifier, player.uniqueIdentifier];
   }
   else
   {
@@ -348,22 +343,38 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  [MUCodingService encodeProfile: self withCoder: encoder];
+  [encoder encodeInt32: currentProfileVersion forKey: @"version"];
+  [encoder encodeBool: self.autoconnect forKey: @"autoconnect"];
+  [encoder encodeObject: self.font.fontName forKey: @"fontName"];
+  [encoder encodeFloat: (float) self.font.pointSize forKey: @"fontSize"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.textColor] forKey: @"textColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.backgroundColor] forKey: @"backgroundColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.linkColor] forKey: @"linkColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.visitedLinkColor] forKey: @"visitedLinkColor"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-  [MUCodingService decodeProfile: self withCoder: decoder];
+  int32_t version = [decoder decodeInt32ForKey: @"version"];
+  
+  self.autoconnect = [decoder decodeBoolForKey: @"autoconnect"];
+  
+  if (version >= 2)
+  {
+  	self.font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
+                                size: [decoder decodeFloatForKey: @"fontSize"]];
+  	self.textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
+  	self.backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
+  	self.linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
+  	self.visitedLinkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"visitedLinkColor"]];
+  }
+  
   [self registerForNotifications];
   
   return self;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUProfile (Private)
+#pragma mark - Private methods
 
 - (void) globalBackgroundColorDidChange: (NSNotification *) notification
 {
@@ -382,6 +393,15 @@
   	[self willChangeValueForKey: @"effectiveFontDisplayName"];
   	[self didChangeValueForKey: @"effectiveFont"];
   	[self didChangeValueForKey: @"effectiveFontDisplayName"];
+  }
+}
+
+- (void) globalLinkColorDidChange: (NSNotification *) notification
+{
+  if (!linkColor)
+  {
+  	[self willChangeValueForKey: @"effectiveLinkColor"];
+  	[self didChangeValueForKey: @"effectiveLinkColor"];
   }
 }
 
@@ -405,7 +425,12 @@
   																				 selector: @selector (globalFontDidChange:)
   																						 name: MUGlobalFontDidChangeNotification
   																					 object: nil];
-  	
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+  																				 selector: @selector (globalLinkColorDidChange:)
+  																						 name: MUGlobalLinkColorDidChangeNotification
+  																					 object: nil];
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
   																				 selector: @selector (globalTextColorDidChange:)
   																						 name: MUGlobalTextColorDidChangeNotification

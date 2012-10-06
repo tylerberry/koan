@@ -85,6 +85,11 @@ static const int32_t currentWorldVersion = 7;
 
 #pragma mark - Property method implementations
 
+- (NSImage *) icon
+{
+  return [NSImage imageNamed: @"NSNetwork"];
+}
+
 - (NSString *) uniqueIdentifier
 {
   NSMutableString *result = [NSMutableString stringWithString: @"world:"];

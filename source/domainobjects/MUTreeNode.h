@@ -9,6 +9,7 @@
 @interface MUTreeNode : NSObject
 
 @property (copy) NSString *name;
+@property (readonly) NSImage *icon;
 @property (copy) NSMutableArray *children;
 //@property (readonly) NSUInteger count;
 @property (weak, nonatomic) MUTreeNode *parent;

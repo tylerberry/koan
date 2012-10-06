@@ -6,7 +6,7 @@
 
 #import "MUTreeNode.h"
 
-@interface MUTreeNode (Private)
+@interface MUTreeNode ()
 
 - (void) postWorldsDidChangeNotification;
 
@@ -17,7 +17,7 @@
 @implementation MUTreeNode
 
 @synthesize children, name, parent;
-@dynamic isLeaf;
+@dynamic icon, isLeaf;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
 {
@@ -39,6 +39,10 @@
   return [self initWithName: @"Empty node" children: nil];
 }
 
+- (NSImage *) icon
+{
+  return nil;
+}
 
 /*
 - (NSUInteger) count
@@ -146,11 +150,7 @@
   }
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTreeNode (Private)
+#pragma mark - Private methods
 
 - (void) postWorldsDidChangeNotification
 {

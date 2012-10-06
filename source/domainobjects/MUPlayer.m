@@ -37,6 +37,11 @@
 
 #pragma mark - Property method implementations
 
+- (NSImage *) icon
+{
+  return [NSImage imageNamed: @"NSUser"];
+}
+
 - (NSString *) loginString
 {
   if (!self.name)

@@ -66,6 +66,7 @@
   formatter = newFormatter;
   currentAttributes = [[NSMutableDictionary alloc] init];
   [currentAttributes setValue: [formatter font] forKey: NSFontAttributeName];
+  [currentAttributes setValue: [formatter foregroundColor] forKey: NSForegroundColorAttributeName];
   
   return self;
 }

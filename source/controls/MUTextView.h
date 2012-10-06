@@ -6,13 +6,18 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol MUTextViewPasteDelegate;
+
 @interface MUTextView : NSTextView
+
+@property (weak) IBOutlet NSObject <MUTextViewPasteDelegate> *pasteDelegate;
+@property (readonly) NSSize monospaceCharacterSize;
 
 @end
 
 #pragma mark -
 
-@protocol MUTextViewDelegate
+@protocol MUTextViewPasteDelegate
 
 @optional
 

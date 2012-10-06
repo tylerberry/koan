@@ -441,7 +441,7 @@
   
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: [MUFormatter testingBackground] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];  
+  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
   [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
 }
 
@@ -452,7 +452,7 @@
   
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: [MUFormatter testingBackground] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];  
+  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
   [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
 }
 
@@ -463,7 +463,7 @@
   
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: [MUFormatter testingBackground] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];  
+  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
   [self assertString: output hasValue: [MUFormatter testingForeground] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"]; 
 }
 

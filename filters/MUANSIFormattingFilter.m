@@ -22,13 +22,21 @@
 - (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location;
 - (NSFont *) makeFontBold: (NSFont *) font;
 - (NSFont *) makeFontUnbold: (NSFont *) font;
+- (void) removeAttribute: (NSString *) attribute
+                inString: (NSMutableAttributedString *) string
+            fromLocation: (NSUInteger) startLocation;
 - (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
-- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
-- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) setAttribute: (NSString *) attribute
+              toValue: (id) value
+             inString: (NSMutableAttributedString *) string
+         fromLocation: (NSUInteger) startLocation;
+- (void) setAttributes: (NSDictionary *) attributes
+              onString: (NSMutableAttributedString *) string
+          fromLocation: (NSUInteger) startLocation;
 - (NSUInteger) scanUpToCodeInString: (NSString *) string;
 - (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
 - (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation;
@@ -367,6 +375,15 @@
     return [font fontWithTrait: NSUnboldFontMask];
 }
 
+- (void) removeAttribute: (NSString *) attribute
+                inString: (NSMutableAttributedString *) string
+            fromLocation: (NSUInteger) startLocation
+{
+  [string removeAttribute: attribute
+                    range: NSMakeRange (startLocation, string.length - startLocation)];
+  [currentAttributes removeObjectForKey: attribute];
+}
+
 - (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self resetBackgroundInString: string fromLocation: startLocation];
@@ -377,10 +394,9 @@
 
 - (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  [self setAttribute: NSBackgroundColorAttributeName
-             toValue: formatter.backgroundColor
-            inString: string
-        fromLocation: startLocation];
+  [self removeAttribute: NSBackgroundColorAttributeName
+               inString: string
+           fromLocation: startLocation];
 }
 
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -401,8 +417,9 @@
 
 - (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  [string removeAttribute: NSUnderlineStyleAttributeName
-                    range: NSMakeRange (startLocation, string.length - startLocation)];
+  [self removeAttribute: NSUnderlineStyleAttributeName
+               inString: string
+           fromLocation: startLocation];
 }
 
 - (void) setAttribute: (NSString *) attribute

@@ -8,7 +8,13 @@
 #import "MUFormatter.h"
 #import "NSFont (Traits).h"
 
-@interface MUANSIFormattingFilter (Private)
+@interface MUANSIFormattingFilter ()
+{
+  BOOL inCode;
+  NSString *ansiCode;
+  NSObject <MUFormatter> *formatter;
+  NSMutableDictionary *currentAttributes;
+}
 
 - (NSArray *) attributeNamesForANSICode;
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
@@ -61,10 +67,9 @@
   return [self initWithFormatter: [MUFormatter formatterForTesting]];
 }
 
-
 - (NSAttributedString *) filter: (NSAttributedString *) string
 {
-  NSMutableAttributedString *editString = [NSMutableAttributedString attributedStringWithAttributedString: string];
+  NSMutableAttributedString *editString = [string mutableCopy];
   
   [self setAttributes: currentAttributes onString: editString fromLocation: 0];
   
@@ -74,11 +79,7 @@
   return editString;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUANSIFormattingFilter (Private)
+#pragma mark - Private methods
 
 - (NSArray *) attributeNamesForANSICode
 {
@@ -150,9 +151,9 @@
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) location
 {
   NSArray *codeComponents = [[ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
-  NSMutableArray *values = [NSMutableArray arrayWithCapacity: [codeComponents count]];
+  NSMutableArray *values = [NSMutableArray arrayWithCapacity: codeComponents.count];
   
-  if ([codeComponents count] == 3
+  if (codeComponents.count == 3
       && [[codeComponents objectAtIndex: 1] intValue] == 5)
   {
     if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIBackground256
@@ -378,31 +379,37 @@
 {
   [self setAttribute: NSBackgroundColorAttributeName
              toValue: formatter.backgroundColor
-            inString: string fromLocation: startLocation];
+            inString: string
+        fromLocation: startLocation];
 }
 
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSFontAttributeName
              toValue: formatter.font
-            inString: string fromLocation: startLocation];
+            inString: string
+        fromLocation: startLocation];
 }
 
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSForegroundColorAttributeName
              toValue: formatter.foregroundColor
-            inString: string fromLocation: startLocation];
+            inString: string
+        fromLocation: startLocation];
 }
 
 - (void) resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  [self setAttribute: NSUnderlineStyleAttributeName
-             toValue: [NSNumber numberWithInt: NSNoUnderlineStyle]
-            inString: string fromLocation: startLocation];
+  [self removeAttribute: NSUnderlineStyleAttributeName
+               inString: string
+           fromLocation: startLocation];
 }
 
-- (void) setAttribute: (NSString *) attribute toValue: (id) value inString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+- (void) setAttribute: (NSString *) attribute
+              toValue: (id) value
+             inString: (NSMutableAttributedString *) string
+         fromLocation: (NSUInteger) startLocation
 {
   [string addAttribute: attribute
                  value: value
@@ -410,9 +417,11 @@
   [currentAttributes setObject: value forKey: attribute];
 }
 
-- (void) setAttributes: (NSDictionary *) attributes onString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+- (void) setAttributes: (NSDictionary *) attributes
+              onString: (NSMutableAttributedString *) string
+          fromLocation: (NSUInteger) startLocation
 {
-  for (NSString *key in [attributes allKeys])
+  for (NSString *key in attributes.allKeys)
   {
     [self setAttribute: key
                toValue: [attributes valueForKey: key]

@@ -68,12 +68,6 @@ typedef enum MUANSI256ColorCode
 } MUANSI256ColorCode;
 
 @interface MUANSIFormattingFilter : MUFilter
-{
-  BOOL inCode;
-  NSString *ansiCode;
-  NSObject <MUFormatter> *formatter;
-  NSMutableDictionary *currentAttributes;
-}
 
 + (MUFilter *) filterWithFormatter: (NSObject <MUFormatter> *) newFormatter;
 

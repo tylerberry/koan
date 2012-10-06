@@ -90,7 +90,7 @@
       linkAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
         foundURL, NSLinkAttributeName,
         [NSNumber numberWithInt: NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
-        [NSColor blueColor], NSForegroundColorAttributeName, NULL];
+        NULL];
       [editString addAttributes: linkAttributes range: scannedRange];
     }
   }

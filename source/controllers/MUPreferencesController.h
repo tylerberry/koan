@@ -9,6 +9,7 @@
 @interface MUPreferencesController : NSObject
 {
   IBOutlet NSWindow *preferencesWindow;
+
   IBOutlet NSColorWell *globalTextColorWell;
   IBOutlet NSColorWell *globalBackgroundColorWell;
   IBOutlet NSColorWell *globalLinkColorWell;

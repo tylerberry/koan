@@ -30,8 +30,7 @@
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
   NSFont *selectedFont = [fontManager selectedFont];
-  NSFont *panelFont;
-  NSNumber *fontSize;
+  
   id currentPrefsValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
   
   if (selectedFont == nil)
@@ -39,10 +38,10 @@
     selectedFont = [NSFont systemFontOfSize: [NSFont systemFontSize]];
   }
   
-  panelFont = [fontManager convertFont: selectedFont];
-  fontSize = [NSNumber numberWithFloat: (float) [panelFont pointSize]];  
+  NSFont *panelFont = [fontManager convertFont: selectedFont];
+  NSNumber *fontSize = [NSNumber numberWithFloat: (float) [panelFont pointSize]];
   
-  [currentPrefsValues setValue: [panelFont fontName] forKey: MUPFontName];
+  [currentPrefsValues setValue: panelFont.fontName forKey: MUPFontName];
   [currentPrefsValues setValue: fontSize forKey: MUPFontSize];
   
   [self postGlobalFontDidChangeNotification];
@@ -111,7 +110,7 @@
 - (NSArray *) systemSoundsArray
 {
   NSMutableArray *foundPaths = [NSMutableArray array];
-
+  
   for (NSString *libraryPath in NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSAllDomainsMask, YES))
   {
     NSString *searchPath = [libraryPath stringByAppendingPathComponent: @"Sounds"];

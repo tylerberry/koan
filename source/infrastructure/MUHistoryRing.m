@@ -49,7 +49,7 @@
   return self.ring.count;
 }
 
-- (NSString *) stringAtIndex: (NSInteger) ringIndex
+- (NSString *) stringAtIndex: (NSUInteger) ringIndex
 {
   if (ringIndex == NSNotFound)
     return self.buffer == nil ? @"" : self.buffer;

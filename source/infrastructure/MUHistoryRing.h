@@ -12,7 +12,7 @@
 
 + (MUHistoryRing *) historyRing;
 
-- (NSString *) stringAtIndex: (NSInteger) ringIndex;
+- (NSString *) stringAtIndex: (NSUInteger) ringIndex;
 
 // These methods are all O(1).
 

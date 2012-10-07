@@ -4,11 +4,9 @@
 // Copyright (c) 2012 3James Software.
 //
 
-#import "MUSocketFactory.h"
 #import "MUWorld.h"
-#import "MUConstants.h"
 #import "MUPlayer.h"
-#import "MUCodingService.h"
+#import "MUSocketFactory.h"
 
 static const int32_t currentWorldVersion = 7;
 
@@ -118,7 +116,7 @@ static const int32_t currentWorldVersion = 7;
   
   [encoder encodeObject: self.name forKey: @"name"];
   [encoder encodeObject: self.hostname forKey: @"hostname"];
-  [encoder encodeInt: [self.port intValue] forKey: @"port"];
+  [encoder encodeInt: self.port.intValue forKey: @"port"];
   [encoder encodeObject: self.children forKey: @"children"];
   [encoder encodeObject: self.url forKey: @"URL"];
 }

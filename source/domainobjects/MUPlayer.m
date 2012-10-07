@@ -5,7 +5,8 @@
 //
 
 #import "MUPlayer.h"
-#import "MUCodingService.h"
+
+static const int32_t currentPlayerVersion = 1;
 
 @implementation MUPlayer
 
@@ -90,7 +91,10 @@
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  [MUCodingService encodePlayer: self withCoder: encoder];
+  [encoder encodeInt32: currentPlayerVersion forKey: @"version"];
+  
+  [encoder encodeObject: self.name forKey: @"name"];
+  [encoder encodeObject: self.password forKey: @"password"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
@@ -98,7 +102,10 @@
   if (!(self = [super init]))
     return nil;
   
-  [MUCodingService decodePlayer: self withCoder: decoder];
+  // int32_t version = [decoder decodeInt32ForKey: @"version"];
+  
+  self.name = [decoder decodeObjectForKey: @"name"];
+  self.password = [decoder decodeObjectForKey: @"password"];
   
   return self;
 }

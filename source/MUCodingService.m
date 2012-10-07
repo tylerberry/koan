@@ -5,31 +5,13 @@
 //
 
 #import "MUCodingService.h"
-#import "MUProfile.h"
 #import "MUProxySettings.h"
 
-static const int32_t currentPlayerVersion = 1;
 static const int32_t currentProxyVersion = 2;
 
 #pragma mark -
 
 @implementation MUCodingService
-
-+ (void) encodePlayer: (MUPlayer *) player withCoder: (NSCoder *) encoder
-{
-  [encoder encodeInt32: currentPlayerVersion forKey: @"version"];
-  
-  [encoder encodeObject: player.name forKey: @"name"];
-  [encoder encodeObject: player.password forKey: @"password"];  
-}
-
-+ (void) decodePlayer: (MUPlayer *) player withCoder: (NSCoder *) decoder
-{
-  // int32_t version = [decoder decodeInt32ForKey: @"version"];
-  
-  player.name = [decoder decodeObjectForKey: @"name"];
-  player.password = [decoder decodeObjectForKey: @"password"];
-}
 
 + (void) encodeProxySettings: (MUProxySettings *) settings withCoder: (NSCoder *) encoder;
 {

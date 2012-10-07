@@ -4,7 +4,6 @@
 // Copyright (c) 2012 3James Software.
 //
 
-#import "MUCodingService.h"
 #import "MUProfile.h"
 #import "MUTextLogger.h"
 

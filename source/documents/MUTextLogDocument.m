@@ -10,12 +10,13 @@
 static NSString *MUKoanLogWorld = @"com_3james_koan_log_world";
 static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
-@interface MUTextLogDocument (Private)
+@interface MUTextLogDocument ()
+
+@property (readonly) NSString *spotlightDisplayName;
 
 - (NSUInteger) findEndOfHeaderLocation: (NSString *)string lineEnding: (NSString **) lineEnding;
 - (BOOL) addKeyValuePairFromString: (NSString *) string toDictionary: (NSMutableDictionary *) dictionary;
 - (BOOL) parse: (NSString *) string;
-- (NSString *) spotlightDisplayName;
 
 @end
 
@@ -24,6 +25,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 @implementation MUTextLogDocument
 
 @synthesize content, headers;
+@dynamic spotlightDisplayName;
 
 - (id) init
 {
@@ -42,13 +44,10 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
     return nil;
   
   if (![self parse: string])
-  {
     return nil;
-  }
   
   return self;
 }
-
 
 #pragma mark - Accessors
 
@@ -71,8 +70,8 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
     [dictionary setObject: [NSDate dateWithNaturalLanguageString: [self headerForKey: @"Date"]]
                    forKey: (NSString *) kMDItemContentCreationDate];
   
-  [dictionary setObject: [self spotlightDisplayName] forKey: (NSString *) kMDItemDisplayName];
-  [dictionary setObject: [self content] forKey: (NSString *) kMDItemTextContent];  
+  [dictionary setObject: self.spotlightDisplayName forKey: (NSString *) kMDItemDisplayName];
+  [dictionary setObject: self.content forKey: (NSString *) kMDItemTextContent];
 }
 
 - (NSString *) headerForKey: (id) key
@@ -119,11 +118,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   return NO;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTextLogDocument (Private)
+#pragma mark - Private methods
 
 - (BOOL) addKeyValuePairFromString: (NSString *) string toDictionary: (NSMutableDictionary *) dictionary
 {
@@ -132,10 +127,11 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   
   [scanner scanUpToString: @":" intoString: &header];
   
-  BOOL result = [string length] > [header length];
+  BOOL result = string.length > header.length;
   if (result)
   {
-    NSString *value = [[string substringFromIndex: [scanner scanLocation] + 2] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *value = [[string substringFromIndex: scanner.scanLocation + 2] stringByTrimmingCharactersInSet:
+                       [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     [dictionary setObject: value forKey: header];     
   }
   return result;
@@ -179,7 +175,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   if (endOfHeaders == NSNotFound)
     return NO;
   
-  NSArray *headerLines = [[string substringToIndex:endOfHeaders] componentsSeparatedByString: lineEnding];
+  NSArray *headerLines = [[string substringToIndex: endOfHeaders] componentsSeparatedByString: lineEnding];
   
   for (NSString *line in headerLines)
   {
@@ -189,7 +185,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   
   headers = workingHeaders;
   
-  content = [[string substringFromIndex: endOfHeaders + (2 * [lineEnding length])] copy];
+  content = [[string substringFromIndex: endOfHeaders + (2 * lineEnding.length)] copy];
   
   return YES;
 }
@@ -204,11 +200,13 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   NSString *date = [self headerForKey: @"Date"];
   if (!date)
     return nil;
+  
   NSString *name = [self headerForKey: @"Player"];
   if (!name)
     name = [self headerForKey: @"World"];
   if (!name)
     name = @"Koan Log";
+  
   return [NSString stringWithFormat: @"%@ on %@", name, date];
 }
 

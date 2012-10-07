@@ -16,7 +16,7 @@
 }
 
 @property (assign, nonatomic) BOOL useProxy;
-@property  MUProxySettings *proxySettings;
+@property (strong) MUProxySettings *proxySettings;
 
 + (MUSocketFactory *) defaultFactory;
 

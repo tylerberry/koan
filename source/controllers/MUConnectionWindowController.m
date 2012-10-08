@@ -119,6 +119,10 @@ enum MUSearchDirections
 {
   [self disconnect];
   
+  [profile removeObserver: self forKeyPath: @"effectiveFont"];
+  [profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+  [profile removeObserver: self forKeyPath: @"effectiveTextColor"];
+  
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
 }

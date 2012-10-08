@@ -11,9 +11,10 @@
 {
   BOOL inCode;
   NSString *ansiCode;
-  MUProfile *profile;
   NSMutableDictionary *currentAttributes;
 }
+
+@property (strong, nonatomic) MUProfile *profile;
 
 - (NSArray *) attributeNamesForANSICode;
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
@@ -52,6 +53,8 @@
 
 @implementation MUANSIFormattingFilter
 
+@synthesize profile;
+
 + (MUFilter *) filterWithProfile: (MUProfile *) newProfile
 {
   return [[self alloc] initWithProfile: newProfile];
@@ -73,10 +76,16 @@
   [currentAttributes setValue: profile.effectiveFont forKey: NSFontAttributeName];
   [currentAttributes setValue: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
   
-  [profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: NULL];
-  [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
+  [self.profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: NULL];
+  [self.profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
   
   return self;
+}
+
+- (void) dealloc
+{
+  [self.profile removeObserver: self forKeyPath: @"effectiveFont"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveTextColor"];
 }
 
 - (void) observeValueForKeyPath: (NSString *) keyPath

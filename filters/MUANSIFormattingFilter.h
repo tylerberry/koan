@@ -69,6 +69,7 @@ typedef enum MUANSI256ColorCode
 
 typedef enum MUANSICommands
 {
+  MUANSIXtermSetWindowTitle = '\007',
   MUANSIEraseData = 'J',
   MUANSISelectGraphicRendition = 'm'
 } MUANSICommand;

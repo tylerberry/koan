@@ -152,6 +152,7 @@
       return;
       
     default:
+      NSLog (@"Received unhandled ANSI command 'ESC %@%c'", [ansiCode substringFromIndex: 1], code);
       return;
   }
 }
@@ -470,7 +471,7 @@
   [scanner setScanLocation: codeIndex];
   [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
-  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"ABCDEFGHJKSTfhlmnsu"];
+  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTfhlmnsu"];
   
   NSString *charactersFromThisScan = @"";
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];

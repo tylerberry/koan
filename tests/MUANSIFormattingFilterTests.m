@@ -116,7 +116,7 @@
 - (void) setUp
 {
   queue = [[MUFilterQueue alloc] init];
-  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting]]];
+  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting] delegate: nil]];
 }
 
 - (void) tearDown
@@ -540,7 +540,7 @@
   
   MUProfile *testingProfile = [MUProfile profileForTesting];
   testingProfile.font = [testingProfile.font fontWithTrait: NSBoldFontMask];
-  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile]];
+  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile delegate: nil]];
 
   output = [queue processAttributedString: input];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a"];
@@ -623,9 +623,19 @@
   [self assertInput: @"m" hasOutput: @""];
 }
 
+- (void) testEraseData
+{
+  [self assertInput: @"a\x1B[1J" hasOutput: @""];
+  [self assertInput: @"a\x1B[1Jb" hasOutput: @"b"];
+  [self assertInput: @"\x1B[1Jb" hasOutput: @"b"];
+  [self assertInput: @"a\x1B[2J" hasOutput: @""];
+  [self assertInput: @"a\x1B[2Jb" hasOutput: @"b"];
+  [self assertInput: @"\x1B[2Jb" hasOutput: @"b"];
+}
+
 - (void) testIgnoresUnhandledButValidCodes
 {
-  NSString *nonHandledCodes = @"ABCDEFGHJKSTfhlnsu";
+  NSString *nonHandledCodes = @"\007ABCDEFGHKSTfhlnsu";
   
   for (NSUInteger i = 0; i < nonHandledCodes.length; i++)
   {

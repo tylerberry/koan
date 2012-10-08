@@ -78,12 +78,12 @@
   [output close];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) string
+- (NSAttributedString *) filter: (NSAttributedString *) attributedString
 {
-  if (string.length > 0)
-    [self log: string];
+  if (attributedString.length > 0)
+    [self log: attributedString];
   
-  return string;
+  return attributedString;
 }
 
 #pragma mark - Private methods
@@ -128,7 +128,7 @@
   va_start (args, format);
   string = [[NSString alloc] initWithFormat: format arguments: args];
   va_end (args);
-  buffer = [string UTF8String];
+  buffer = string.UTF8String;
   [stream write: (uint8_t *) buffer maxLength: strlen (buffer)];  
 }
 

@@ -49,6 +49,8 @@ enum MUSearchDirections
 
 @implementation MUConnectionWindowController
 
+@dynamic isConnectedOrConnecting;
+
 - (id) initWithProfile: (MUProfile *) newProfile
 {
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow"]))
@@ -159,7 +161,7 @@ enum MUSearchDirections
   
   if (menuItemAction == @selector (connectOrDisconnect:))
   {
-    if ([self isConnectedOrConnecting])
+    if (self.isConnectedOrConnecting)
       [menuItem setTitle: _(MULDisconnect)];
     else
       [menuItem setTitle: _(MULConnect)];
@@ -188,14 +190,14 @@ enum MUSearchDirections
 
 - (BOOL) windowShouldClose: (id) sender
 {
-  return [self canCloseWindow];
+  return self.canCloseWindow;
 }
 
 - (void) windowWillClose: (NSNotification *) notification
 {
-  if ([notification object] == [self window])
+  if (notification.object == self.window)
   {
-  	[[self window] setDelegate: nil];
+  	[self.window setDelegate: nil];
   
   	[self postConnectionWindowControllerWillCloseNotification];
   }
@@ -213,9 +215,7 @@ enum MUSearchDirections
   if (delegate == newDelegate)
     return;
   
-  [[NSNotificationCenter defaultCenter] removeObserver: delegate
-                                                  name: nil
-                                                object: self];
+  [[NSNotificationCenter defaultCenter] removeObserver: delegate name: nil object: self];
   
   delegate = newDelegate;
   
@@ -238,20 +238,20 @@ enum MUSearchDirections
 
 - (BOOL) isConnectedOrConnecting
 {
-  return [telnetConnection isConnected] || [telnetConnection isConnecting];
+  return telnetConnection.isConnected || telnetConnection.isConnecting;
 }
 
 #pragma mark - Actions
 
 - (void) confirmClose: (SEL) callback
 {
-  [[self window] makeKeyAndOrderFront: nil];
+  [self.window makeKeyAndOrderFront: nil];
   
   NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), profile.windowTitle],
                      _(MULOK),
                      _(MULCancel),
                      nil,
-                     [self window],
+                     self.window,
                      self,
                      @selector (willEndCloseSheet:returnCode:contextInfo:),
                      @selector (didEndCloseSheet:returnCode:contextInfo:),
@@ -267,7 +267,7 @@ enum MUSearchDirections
 
 - (IBAction) connect: (id) sender
 {
-  if ([self isConnectedOrConnecting])
+  if (self.isConnectedOrConnecting)
     return;
   if (!telnetConnection)
     telnetConnection = [profile createNewTelnetConnectionWithDelegate: self];
@@ -286,10 +286,10 @@ enum MUSearchDirections
 
 - (IBAction) connectOrDisconnect: (id) sender
 {
-  if ([self isConnectedOrConnecting])
-    [self disconnect: nil];
+  if (self.isConnectedOrConnecting)
+    [self disconnect: sender];
   else
-    [self connect: nil];
+    [self connect: sender];
 }
 
 - (IBAction) disconnect: (id) sender
@@ -304,14 +304,14 @@ enum MUSearchDirections
 
 - (IBAction) sendInputText: (id) sender
 {
-  [telnetConnection writeLine: [inputView string]];
+  [telnetConnection writeLine: inputView.string];
   
   if (!telnetConnection.state.serverWillEcho)
   {
-    [historyRing saveString: [inputView string]];
+    [historyRing saveString: inputView.string];
   
     if (currentPrompt)
-      [self displayString: [inputView string] asPrompt: NO];
+      [self displayString: inputView.string asPrompt: NO];
   }
   
   if (currentPrompt)
@@ -321,19 +321,19 @@ enum MUSearchDirections
   }
   
   [inputView setString: @""];
-  [[self window] makeFirstResponder: inputView];
+  [self.window makeFirstResponder: inputView];
 }
 
 - (IBAction) nextCommand: (id) sender
 {
-  [historyRing updateString: [inputView string]];
+  [historyRing updateString: inputView.string];
   [inputView setString: [historyRing nextString]];
 }
 
 - (IBAction) previousCommand: (id) sender
 {
-  [historyRing updateString: [inputView string]];
-  [inputView setString: [historyRing previousString]];
+  [historyRing updateString: inputView.string];
+  [inputView setString: [historyRing previousString] ];
 }
 
 #pragma mark - Filter delegate methods
@@ -361,7 +361,7 @@ enum MUSearchDirections
   [self displayString: @"\n"];
   [MUGrowlService connectionOpenedForTitle: profile.windowTitle];
   
-  if ([profile hasLoginInformation])
+  if (profile.hasLoginInformation)
     [telnetConnection writeLine: profile.loginString];
 }
 
@@ -468,7 +468,7 @@ enum MUSearchDirections
       
       [self endCompletion];
       
-      if ([textView selectedRange].location == textView.textStorage.length
+      if (textView.selectedRange.location == textView.textStorage.length
           && key == NSDownArrowFunctionKey)
       {
         [self nextCommand: self];
@@ -480,12 +480,12 @@ enum MUSearchDirections
     {
       unichar key = 0;
       
-      if ([[[NSApp currentEvent] charactersIgnoringModifiers] length] > 0)
+      if ([[NSApp currentEvent] charactersIgnoringModifiers].length > 0)
         key = [[[NSApp currentEvent] charactersIgnoringModifiers] characterAtIndex: 0];
       
       [self endCompletion];
       
-      if ([textView selectedRange].location == 0
+      if (textView.selectedRange.location == 0
           && key == NSUpArrowFunctionKey)
       {
         [self previousCommand: self];
@@ -512,7 +512,7 @@ enum MUSearchDirections
   if (textView == receivedTextView)
   {
     [inputView insertText: string];
-    [[self window] makeFirstResponder: inputView];
+    [self.window makeFirstResponder: inputView];
     return YES;
   }
   else if (textView == inputView)
@@ -528,7 +528,7 @@ enum MUSearchDirections
   if (textView == receivedTextView)
   {
     [inputView pasteAsPlainText: originalSender];
-    [[self window] makeFirstResponder: inputView];
+    [self.window makeFirstResponder: inputView];
     return YES;
   }
   else if (textView == inputView)
@@ -543,7 +543,7 @@ enum MUSearchDirections
 
 - (BOOL) canCloseWindow
 {
-  if ([self isConnectedOrConnecting])
+  if (self.isConnectedOrConnecting)
   {
     [self confirmClose: NULL];
     return NO;
@@ -583,7 +583,7 @@ enum MUSearchDirections
 
 - (void) displayString: (NSString *) string asPrompt: (BOOL) stringIsPrompt
 {
-  if (!string || [string length] == 0)
+  if (!string || string.length == 0)
     return;
   
   if (stringIsPrompt)
@@ -591,16 +591,18 @@ enum MUSearchDirections
     currentPrompt = [string copy];
   }
   
-  NSAttributedString *unfilteredString = [NSAttributedString attributedStringWithString: string attributes: [receivedTextView typingAttributes]];
+  NSAttributedString *unfilteredString = [[NSAttributedString alloc] initWithString: string
+                                                                         attributes: receivedTextView.typingAttributes];
   NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
   
   [receivedTextView.textStorage appendAttributedString: filteredString];
   
-  [[receivedTextView window] invalidateCursorRectsForView: receivedTextView];
+  [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
   
   // Scroll to the bottom of the text window, but only if we were previously at the bottom.
   
-  if (1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001) // Avoiding inaccuracy of == for floats.
+  // Avoid inaccuracy of == for floats.
+  if (1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001)
     [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0)];
   
   [self postConnectionWindowControllerDidReceiveTextNotification];  
@@ -670,7 +672,7 @@ enum MUSearchDirections
   
   if (currentlySearching)
   {
-    currentPrefix = [[[inputView string] copy] substringToIndex: inputView.selectedRange.location];
+    currentPrefix = [[inputView.string copy] substringToIndex: inputView.selectedRange.location];
     
     if ([historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
@@ -680,14 +682,14 @@ enum MUSearchDirections
     }
   }
   else
-    currentPrefix = [[inputView string] copy];
+    currentPrefix = [inputView.string copy];
   
   foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
                                                 : [historyRing searchForwardForStringPrefix: currentPrefix];
   
   if (foundString)
   {
-    while ([foundString isEqualToString: [inputView string]])
+    while ([foundString isEqualToString: inputView.string])
       foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
                                                     : [historyRing searchForwardForStringPrefix: currentPrefix];
     
@@ -767,10 +769,10 @@ enum MUSearchDirections
 {
   if (returnCode == NSAlertDefaultReturn) /* Close. */
   {
-    if ([self isConnectedOrConnecting])
+    if (self.isConnectedOrConnecting)
       [self disconnect];
     
-    [[self window] close];
+    [self.window close];
 
     if (contextInfo)
       ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, YES);

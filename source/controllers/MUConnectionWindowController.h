@@ -32,6 +32,8 @@
   NSString *currentPrompt;
 }
 
+@property (readonly) BOOL isConnectedOrConnecting;
+
 // Designated initializer.
 - (id) initWithProfile: (MUProfile *) newProfile;
 
@@ -51,8 +53,6 @@
 - (IBAction) nextCommand: (id) sender;
 - (IBAction) previousCommand: (id) sender;
 - (IBAction) sendInputText: (id) sender;
-
-- (BOOL) isConnectedOrConnecting;
 
 @end
 

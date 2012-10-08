@@ -49,14 +49,13 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) setUp
 {
-  [super setUp];
   [self clearFlags];
   option = [[MUTelnetOption alloc] initWithOption: 0 delegate: self];
 }
 
 - (void) tearDown
 {
-  [super tearDown];
+  return;
 }
 
 - (void) testReceivedWont

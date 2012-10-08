@@ -34,6 +34,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testIACEscapedInData

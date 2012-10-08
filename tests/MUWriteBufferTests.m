@@ -27,6 +27,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testWriteNil

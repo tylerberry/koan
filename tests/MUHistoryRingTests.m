@@ -70,6 +70,7 @@ NSString *Third = @"Third";
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testSinglePrevious

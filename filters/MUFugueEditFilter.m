@@ -29,9 +29,9 @@
   return [self initWithDelegate: nil];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) string
+- (NSAttributedString *) filter: (NSAttributedString *) attributedString
 {
-  NSString *plainString = [string string];
+  NSString *plainString = attributedString.string;
   NSString *fugueEditPrefix = @"FugueEdit > ";
   
   if ([plainString hasPrefix: fugueEditPrefix])
@@ -42,7 +42,7 @@
     return [NSAttributedString attributedStringWithString: @""];
   }
   else
-    return string;
+    return attributedString;
 }
 
 @end

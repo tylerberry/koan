@@ -8,6 +8,16 @@
 
 @implementation MUFilterTestCase
 
+- (void) setUp
+{
+  return;
+}
+
+- (void) tearDown
+{
+  return;
+}
+
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output
 {
   [self assertInput: input hasOutput: output message: nil];

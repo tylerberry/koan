@@ -20,23 +20,19 @@
 
 - (void) assertInput: (NSString *) input producesURL: (NSURL *) url forRange: (NSRange) range
 {
-  NSAttributedString *attributedInput =
-  [NSAttributedString attributedStringWithString: input];
-  NSAttributedString *attributedOutput =
-    [queue processAttributedString: attributedInput];
+  NSAttributedString *attributedInput = [NSAttributedString attributedStringWithString: input];
+  NSAttributedString *attributedOutput = [queue processAttributedString: attributedInput];
   NSURL *foundURL;
   NSRange foundRange;
   
-  [self assert: [attributedInput string]
-        equals: [attributedOutput string]
-       message: @"Strings not equal."];  
+  [self assert: [attributedInput string] equals: [attributedOutput string] message: @"Strings not equal."];  
   
   if (range.location != 0)
   {
     foundURL = [attributedOutput attribute: NSLinkAttributeName
                                    atIndex: range.location - 1
                      longestEffectiveRange: &foundRange
-                                   inRange: NSMakeRange (0, [input length])];
+                                   inRange: NSMakeRange (0, input.length)];
     
     [self assertFalse: [foundURL isEqual: url]
               message: @"Preceding character matches url and shouldn't."];
@@ -47,7 +43,7 @@
     foundURL = [attributedOutput attribute: NSLinkAttributeName
                                    atIndex: NSMaxRange (range)
                      longestEffectiveRange: &foundRange
-                                   inRange: NSMakeRange (0, [input length])];
+                                   inRange: NSMakeRange (0, input.length)];
     
     [self assertFalse: [foundURL isEqual: url]
               message: @"Following character matches url and shouldn't."];
@@ -56,11 +52,9 @@
   foundURL = [attributedOutput attribute: NSLinkAttributeName
                                   atIndex: range.location
                     longestEffectiveRange: &foundRange
-                                  inRange: NSMakeRange (0, [input length])];
+                                  inRange: NSMakeRange (0, input.length)];
   
-  [self assert: foundURL
-        equals: url
-       message: @"Links don't match."];
+  [self assert: foundURL equals: url message: @"Links don't match."];
   
   if (foundURL)
   {
@@ -88,6 +82,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testNoLink

@@ -9,6 +9,16 @@
 
 @implementation MUTextLogDocumentTests
 
+- (void) setUp
+{
+  return;
+}
+
+- (void) tearDown
+{
+  return;
+}
+
 - (void) testExtractingOneHeader
 {
   MUTextLogDocument *logDocument = [[MUTextLogDocument alloc] mockInitWithString: @"Foo: Bar\n\nText"];

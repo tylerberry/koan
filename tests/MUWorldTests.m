@@ -18,6 +18,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testUniqueIdentifier

@@ -23,6 +23,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testIgnoresNormalInput

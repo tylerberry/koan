@@ -9,6 +9,16 @@
 
 @implementation MUByteSetTests
 
+- (void) setUp
+{
+  return;
+}
+
+- (void) tearDown
+{
+  return;
+}
+
 - (void) testEmptySet
 {
   MUByteSet *byteSet = [MUByteSet byteSet];
@@ -40,7 +50,7 @@
 - (void) testInverseSet
 {
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: 42, 71, -1];
-  MUByteSet *inverse = [byteSet inverseSet];
+  MUByteSet *inverse = byteSet.inverseSet;
   for (unsigned i = 0; i <= UINT8_MAX; ++i)
   {
     if ([byteSet containsByte: i])
@@ -54,7 +64,7 @@
 {
   uint8_t bytes[] = {31, 47, 73};
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: bytes length: 3];
-  [self assert: [byteSet dataValue] equals: [NSData dataWithBytes: bytes length: 3]];
+  [self assert: byteSet.dataValue equals: [NSData dataWithBytes: bytes length: 3]];
 }
 
 - (void) testRemoveByte

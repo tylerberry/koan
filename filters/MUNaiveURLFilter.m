@@ -23,9 +23,9 @@
   return [[self alloc] init];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) string
+- (NSAttributedString *) filter: (NSAttributedString *) attributedString
 {
-  NSMutableAttributedString *editString = [string mutableCopy];
+  NSMutableAttributedString *editString = [attributedString mutableCopy];
   
   [self linkifyURLs: editString];
   
@@ -36,10 +36,10 @@
 
 - (void) linkifyURLs: (NSMutableAttributedString *) editString
 {
-  NSString *sourceString = [editString string];
+  NSString *sourceString = editString.string;
   NSScanner *scanner = [NSScanner scannerWithString: sourceString];
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-  NSCharacterSet *nonwhitespace = [whitespace invertedSet];
+  NSCharacterSet *nonwhitespace = whitespace.invertedSet;
   NSCharacterSet *skips = [NSCharacterSet characterSetWithCharactersInString: @",.!?()[]{}<>'\""];
   
   while (!scanner.isAtEnd)

@@ -91,7 +91,7 @@
   
   if (font == nil)
   {
-    font = [NSFont systemFontOfSize: [NSFont systemFontSize]];
+    font = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   }
   
   [[NSFontManager sharedFontManager] setSelectedFont: font isMultiple: NO];

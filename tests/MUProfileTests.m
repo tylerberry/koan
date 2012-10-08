@@ -9,6 +9,16 @@
 
 @implementation MUProfileTests
 
+- (void) setUp
+{
+  return;
+}
+
+- (void) tearDown
+{
+  return;
+}
+
 - (void) testUniqueIdentifer
 {
   MUWorld *world = [[MUWorld alloc] init];
@@ -29,11 +39,11 @@
   MUWorld *world = [[MUWorld alloc] init];
   world.name = @"Test World";
   MUProfile *profile = [MUProfile profileWithWorld: world];
-  [self assertFalse: [profile hasLoginInformation] message: @"no login info"];
+  [self assertFalse: profile.hasLoginInformation message: @"no login info"];
   MUPlayer *player = [MUPlayer playerWithName: @"User" password: @"foo"];
   player.parent = world;
   profile.player = player;
-  [self assertTrue: [profile hasLoginInformation] message: @"has login info"];
+  [self assertTrue: profile.hasLoginInformation message: @"has login info"];
 }
 
 @end

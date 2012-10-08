@@ -21,7 +21,9 @@
 #import "MUWorldRegistry.h"
 #import "NSObject (BetterHashing).h"
 
-@interface MUApplicationController (Private)
+@interface MUApplicationController ()
+
+@property (readonly) BOOL shouldPlayNotificationSound;
 
 - (IBAction) changeFont: (id) sender;
 - (void) colorPanelColorDidChange: (NSNotification *) notification;
@@ -31,7 +33,6 @@
 - (void) playNotificationSound;
 - (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
 - (void) recursivelyConfirmClose: (BOOL) cont;
-- (BOOL) shouldPlayNotificationSound;
 - (void) updateApplicationBadge;
 - (void) worldsDidChange: (NSNotification *) notification;
 
@@ -62,8 +63,8 @@
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   
   NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
-  initialValues[MUPFontName] = [fixedPitchFont fontName];
-  initialValues[MUPFontSize] = @((float) [fixedPitchFont pointSize]);
+  initialValues[MUPFontName] = fixedPitchFont.fontName;
+  initialValues[MUPFontSize] = @(fixedPitchFont.pointSize);
 
   initialValues[MUPBackgroundColor] = [NSArchiver archivedDataWithRootObject: [NSColor blackColor]];
   initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
@@ -113,7 +114,7 @@
 
 - (BOOL) validateMenuItem: (NSMenuItem *) item
 {
-  if ([item action] == @selector (toggleUseProxy:))
+  if (item.action == @selector (toggleUseProxy:))
     [item setState: ([[MUSocketFactory defaultFactory] useProxy] ? NSOnState : NSOffState)];
   return YES;
 }
@@ -127,7 +128,7 @@
                                  size: [[values valueForKey: MUPFontSize] floatValue]];
   
   if (!font)
-    font = [NSFont systemFontOfSize: [NSFont systemFontSize]];
+    font = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   
   [[NSFontManager sharedFontManager] setSelectedFont: font isMultiple: NO];
   [[NSFontManager sharedFontManager] orderFrontFontPanel: self];
@@ -138,7 +139,7 @@
   if (!([url.scheme isEqualToString: @"telnet"] || [url.scheme isEqualToString: @"koan"]))
     return;
   
-  MUWorld *world = [MUWorld worldWithHostname: [url host] port: [url port]];
+  MUWorld *world = [MUWorld worldWithHostname: url.host port: url.port];
   
   MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
   
@@ -235,13 +236,13 @@
 
 - (NSApplicationTerminateReply) applicationShouldTerminate: (NSApplication *) application
 {
-  NSUInteger count = [connectionWindowControllers count];
+  NSUInteger count = connectionWindowControllers.count;
   NSUInteger openConnections = 0;
   
   while (count--)
   {
     MUConnectionWindowController *controller = connectionWindowControllers[count];
-    if (controller && [controller isConnectedOrConnecting])
+    if (controller && controller.isConnectedOrConnecting)
       openConnections++;
   }
   
@@ -296,7 +297,7 @@
 
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification
 {
-  if ([self shouldPlayNotificationSound])
+  if (self.shouldPlayNotificationSound)
     [self playNotificationSound];
   
   if (![NSApp isActive])
@@ -307,11 +308,9 @@
   }
 }
 
-@end
+#pragma mark - Private methods
 
-#pragma mark -
-
-@implementation MUApplicationController (Private)
+@dynamic shouldPlayNotificationSound;
 
 - (IBAction) changeFont: (id) sender
 {
@@ -338,7 +337,6 @@
   controller = [[MUConnectionWindowController alloc] initWithProfile: profile];
   
   [self openConnectionWithController: controller];
-  
 }
 
 - (void) openConnectionWithController: (MUConnectionWindowController *) controller
@@ -367,20 +365,17 @@
     [openConnectionMenu removeItemAtIndex: menuItemIndex];
   }
   
-  for (unsigned i = 0; i < worldRegistry.count; i++)
+  for (MUWorld *world in worldRegistry.worlds)
   {
-    MUWorld *world = [worldRegistry worldAtIndex: i];
     MUProfile *profile = [profileRegistry profileForWorld: world];
-    NSArray *players = [world children];
     NSMenuItem *worldItem = [[NSMenuItem alloc] init];
     NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name];
     NSMenuItem *connectItem = [[NSMenuItem alloc] initWithTitle: _(MULConnectWithoutLogin)
                                                          action: @selector (openConnection:)
                                                   keyEquivalent: @""];
-    NSUInteger playersCount = [players count];
     
-    [connectItem setTarget: self];
-    [connectItem setRepresentedObject: profile];
+    connectItem.target = self;
+    connectItem.representedObject = profile;
     
     if (autoconnect)
     {
@@ -389,22 +384,22 @@
         [self openConnection: connectItem];
     }
     
-    for (unsigned j = 0; j < playersCount; j++)
+    for (MUPlayer *player in world.children)
     {
-      MUPlayer *player = players[j];
       profile = [profileRegistry profileForWorld: world player: player];
       
       SEL action = @selector (openConnection:);
       NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name
                                                           action: action
                                                    keyEquivalent: @""];
-      [playerItem setTarget: self];
-      [playerItem setRepresentedObject: profile];
+      playerItem.target = self;
+      playerItem.representedObject = profile;
       
       if (autoconnect)
       {
         profile.world = world;
         profile.player = player;
+        
         if (profile.autoconnect)
           [self openConnection: playerItem];
       }
@@ -412,7 +407,7 @@
       [worldMenu addItem: playerItem];
     }
     
-    if (playersCount > 0)
+    if (world.children.count > 0)
     {
       [worldMenu addItem: [NSMenuItem separatorItem]];
     }
@@ -430,7 +425,7 @@
   {
     for (MUConnectionWindowController *controller in connectionWindowControllers)
     {
-      if ([controller isConnectedOrConnecting])
+      if (controller.isConnectedOrConnecting)
       {
         [controller confirmClose: @selector (recursivelyConfirmClose:)];
         return;

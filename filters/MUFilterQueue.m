@@ -32,9 +32,9 @@
   return self;
 }
 
-- (NSAttributedString *) processAttributedString: (NSAttributedString *) string
+- (NSAttributedString *) processAttributedString: (NSAttributedString *) attributedString
 {
-  NSAttributedString *returnString = string;
+  NSAttributedString *returnString = attributedString;
   
   for (NSObject <MUFiltering> *filter in self.filters)
     returnString = [filter filter: returnString];

@@ -13,7 +13,7 @@
   return [[self alloc] init];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) string
+- (NSAttributedString *) filter: (NSAttributedString *) attributedString
 {
   @throw [NSException exceptionWithName: @"SubclassResponsibility"
                                  reason: @"subclass failed to implement -[filter:]"

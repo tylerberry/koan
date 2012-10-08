@@ -51,6 +51,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testTextStateTransitions

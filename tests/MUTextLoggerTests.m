@@ -53,6 +53,7 @@
 
 - (void) tearDown
 {
+  return;
 }
 
 - (void) testEmptyString

@@ -109,9 +109,9 @@
   [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) string
+- (NSAttributedString *) filter: (NSAttributedString *) attributedString
 {
-  NSMutableAttributedString *editString = [string mutableCopy];
+  NSMutableAttributedString *editString = [attributedString mutableCopy];
   
   [self setAttributes: currentAttributes onString: editString fromLocation: 0];
   

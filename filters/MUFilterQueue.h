@@ -12,7 +12,7 @@
 
 + (id) filterQueue;
 
-- (NSAttributedString *) processAttributedString: (NSAttributedString *) string;
+- (NSAttributedString *) processAttributedString: (NSAttributedString *) attributedString;
 - (void) addFilter: (NSObject <MUFiltering> *) filter;
 - (void) clearFilters;
 

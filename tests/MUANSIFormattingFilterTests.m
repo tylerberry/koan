@@ -616,7 +616,8 @@
 
 - (void) testRetainsPartialCode
 {
-  @autoreleasepool {
+  @autoreleasepool
+  {
     [self assertInput: @"\x1B[" hasOutput: @""];
   }
   [self assertInput: @"m" hasOutput: @""];

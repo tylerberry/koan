@@ -6,7 +6,7 @@
 
 #import "MUPreferencesController.h"
 
-@interface MUPreferencesController (Private)
+@interface MUPreferencesController ()
 
 - (void) postGlobalBackgroundColorDidChangeNotification;
 - (void) postGlobalFontDidChangeNotification;
@@ -29,20 +29,17 @@
 - (IBAction) changeFont
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
-  NSFont *selectedFont = [fontManager selectedFont];
+  NSFont *selectedFont = fontManager.selectedFont;
   
   id currentPrefsValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
   
   if (selectedFont == nil)
-  {
     selectedFont = [NSFont systemFontOfSize: [NSFont systemFontSize]];
-  }
   
   NSFont *panelFont = [fontManager convertFont: selectedFont];
-  NSNumber *fontSize = [NSNumber numberWithFloat: (float) [panelFont pointSize]];
   
   [currentPrefsValues setValue: panelFont.fontName forKey: MUPFontName];
-  [currentPrefsValues setValue: fontSize forKey: MUPFontSize];
+  [currentPrefsValues setValue: @(panelFont.pointSize) forKey: MUPFontSize];
   
   [self postGlobalFontDidChangeNotification];
 }
@@ -71,11 +68,7 @@
   [preferencesWindow makeKeyAndOrderFront: self];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUPreferencesController (Private)
+#pragma mark - Private methods
 
 - (void) postGlobalBackgroundColorDidChangeNotification
 {
@@ -117,7 +110,7 @@
   	
   	for (NSString *filePath in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: searchPath error: NULL])
   	{
-      [foundPaths addObject: [filePath stringByDeletingPathExtension]];
+      [foundPaths addObject: filePath.stringByDeletingPathExtension];
   	}
   }
   

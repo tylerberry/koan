@@ -52,7 +52,7 @@
 {
   NSDictionary *attributes = [string attributesAtIndex: characterIndex
                                         effectiveRange: NULL];
-  [self assert: [attributes objectForKey: attributeName]
+  [self assert: attributes[attributeName]
         equals: expectedValue
        message: message];
 }

@@ -33,14 +33,12 @@ static const int32_t currentProfileVersion = 2;
   
   if (!keyArray)
   {
-  	keyArray = [NSArray arrayWithObjects:
-  		@"effectiveFont",
+  	keyArray = @[@"effectiveFont",
   		@"effectiveFontDisplayName",
       @"effectiveTextColor",
   		@"effectiveBackgroundColor",
   		@"effectiveLinkColor",
-  		@"effectiveVisitedLinkColor",
-  		nil];
+  		@"effectiveVisitedLinkColor"];
   }
   
   if ([keyArray containsObject: key])

@@ -59,24 +59,21 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 - (void) fillDictionaryWithMetadata: (NSMutableDictionary *) dictionary
 {
   if ([self headerForKey: @"World"])
-    [dictionary setObject: [self headerForKey: @"World"]
-                   forKey: MUKoanLogWorld];
+    dictionary[MUKoanLogWorld] = [self headerForKey: @"World"];
   
   if ([self headerForKey: @"Player"])
-    [dictionary setObject: [self headerForKey: @"Player"]
-                   forKey: MUKoanLogPlayer];
+    dictionary[MUKoanLogPlayer] = [self headerForKey: @"Player"];
   
   if ([self headerForKey: @"Date"])
-    [dictionary setObject: [NSDate dateWithNaturalLanguageString: [self headerForKey: @"Date"]]
-                   forKey: (NSString *) kMDItemContentCreationDate];
+    dictionary[(NSString *) kMDItemContentCreationDate] = [NSDate dateWithNaturalLanguageString: [self headerForKey: @"Date"]];
   
-  [dictionary setObject: self.spotlightDisplayName forKey: (NSString *) kMDItemDisplayName];
-  [dictionary setObject: self.content forKey: (NSString *) kMDItemTextContent];
+  dictionary[(NSString *) kMDItemDisplayName] = self.spotlightDisplayName;
+  dictionary[(NSString *) kMDItemTextContent] = self.content;
 }
 
 - (NSString *) headerForKey: (id) key
 {
-  return [headers objectForKey: key];
+  return headers[key];
 }
 
 #pragma mark - NSDocument overrides
@@ -132,7 +129,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   {
     NSString *value = [[string substringFromIndex: scanner.scanLocation + 2] stringByTrimmingCharactersInSet:
                        [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    [dictionary setObject: value forKey: header];     
+    dictionary[header] = value;     
   }
   return result;
 }

@@ -138,7 +138,7 @@ static MUWorldRegistry *defaultRegistry = nil;
     }
     
     [self willChangeValueForKey: @"worlds"];
-    [mutableWorlds replaceObjectAtIndex: [self.worlds indexOfObject: oldWorld] withObject: newWorld];
+    mutableWorlds[[self.worlds indexOfObject: oldWorld]] = newWorld;
     [self didChangeValueForKey: @"worlds"];
     [self postWorldsDidChangeNotification];
   }
@@ -162,7 +162,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   
   @synchronized (self)
   {
-    world = [self.worlds objectAtIndex: worldIndex];
+    world = (self.worlds)[worldIndex];
   }
   
   return world;

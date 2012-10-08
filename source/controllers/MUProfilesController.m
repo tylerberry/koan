@@ -156,7 +156,7 @@
     
     for (NSUInteger i = 0; i < items.count; i++)
     {
-      NSTreeNode *shadowObject = [items objectAtIndex: i];
+      NSTreeNode *shadowObject = items[i];
       MUTreeNode *node = shadowObject.representedObject;
       
       if ([node isKindOfClass: [MUWorld class]])
@@ -213,7 +213,7 @@
 
 - (void) outlineViewItemWillCollapse: (NSNotification *) notification
 {
-  id item = [[notification userInfo] objectForKey: @"NSObject"];
+  id item = [notification userInfo][@"NSObject"];
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
@@ -222,7 +222,7 @@
 
 - (void) outlineViewItemWillExpand: (NSNotification *) notification
 {
-  id item = [[notification userInfo] objectForKey: @"NSObject"];
+  id item = [notification userInfo][@"NSObject"];
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)

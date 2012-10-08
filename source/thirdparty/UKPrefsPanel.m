@@ -102,7 +102,7 @@
   willBeInsertedIntoToolbar: (BOOL) willBeInserted
 {
   NSToolbarItem *toolbarItem = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
-  NSString *itemLabel = [itemsList objectForKey: itemIdentifier];
+  NSString *itemLabel = itemsList[itemIdentifier];
   
   if (itemLabel)
   {
@@ -145,12 +145,10 @@
 {
   NSMutableArray *allowedItems = [[itemsList allKeys] mutableCopy];
   
-  [allowedItems addObjectsFromArray: [NSArray arrayWithObjects:
-    NSToolbarSeparatorItemIdentifier,
+  [allowedItems addObjectsFromArray: @[NSToolbarSeparatorItemIdentifier,
     NSToolbarSpaceItemIdentifier,
     NSToolbarFlexibleSpaceItemIdentifier,
-    NSToolbarCustomizeToolbarItemIdentifier,
-    nil]];
+    NSToolbarCustomizeToolbarItemIdentifier]];
   
   return allowedItems;
 }
@@ -188,8 +186,7 @@
   
   for (NSInteger i = 0; i < tabView.numberOfTabViewItems; i++)
   {
-  	[itemsList setObject: [tabView tabViewItemAtIndex: i].label
-                  forKey: [tabView tabViewItemAtIndex: i].identifier];
+  	itemsList[[tabView tabViewItemAtIndex: i].identifier] = [tabView tabViewItemAtIndex: i].label;
   }
   
   toolbar.delegate = self ;

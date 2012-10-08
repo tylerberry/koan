@@ -107,9 +107,9 @@
   {
     for (NSString *key in headers.allKeys)
     {
-      NSString *value = [headers objectForKey: key];
+      NSString *value = headers[key];
       if (value.length > 0)
-        [self writeToStream: stream withFormat: @"%@:  %@\n", key, [headers objectForKey: key]];
+        [self writeToStream: stream withFormat: @"%@:  %@\n", key, headers[key]];
     }
     [self writeToStream: stream withFormat: @"\n"];      
   }

@@ -96,7 +96,7 @@ static MUSocketFactory *defaultFactory = nil;
 - (void) writeProxySettingsToDefaults
 {
   NSData *proxySettingsData = [NSKeyedArchiver archivedDataWithRootObject: self.proxySettings];
-  NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: [NSNumber numberWithBool: self.useProxy]];
+  NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: @(self.useProxy)];
   
   [[NSUserDefaults standardUserDefaults] setObject: proxySettingsData forKey: MUPProxySettings];  
   [[NSUserDefaults standardUserDefaults] setObject: useProxyData forKey: MUPUseProxy];

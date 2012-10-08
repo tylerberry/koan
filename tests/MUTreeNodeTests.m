@@ -34,7 +34,7 @@
   MUTreeNode *child = [self testingNode];
   [node addChild: child];
   
-  [self assert: [node.children objectAtIndex: 0] equals: child];
+  [self assert: (node.children)[0] equals: child];
 }
 
 - (void) testContainsChild

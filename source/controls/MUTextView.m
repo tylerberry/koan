@@ -48,8 +48,7 @@
     [gridLine lineToPoint: NSMakePoint (x, rect.origin.y + rect.size.height)];
   }
   
-  NSColor *gridColor = [[NSColor whiteColor] colorWithAlphaComponent: 0.8];
-  [gridColor set];
+  [[[NSColor whiteColor] colorWithAlphaComponent: 0.8] set];
   [gridLine stroke];
 }
 
@@ -62,11 +61,9 @@
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem
 {
-  SEL menuItemAction = [menuItem action];
-  
-  if (menuItemAction == @selector (paste:)
-      || menuItemAction == @selector (pasteAsPlainText:)
-      || menuItemAction == @selector (pasteAsRichText:))
+  if (menuItem.action == @selector (paste:)
+      || menuItem.action == @selector (pasteAsPlainText:)
+      || menuItem.action == @selector (pasteAsRichText:))
   {
     if ([self.delegate respondsToSelector: @selector (textView:pasteAsPlainText:)])
       return YES;

@@ -82,21 +82,18 @@
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar *) toolbar
 {
-  return [NSArray arrayWithObjects:
-  	MUAddWorldToolbarItem,
+  return @[MUAddWorldToolbarItem,
   	MUAddPlayerToolbarItem,
   	MUEditSelectedRowToolbarItem,
   	MURemoveSelectedRowToolbarItem,
   	MUEditProfileForSelectedRowToolbarItem,
     NSToolbarFlexibleSpaceItemIdentifier,
-    NSToolbarCustomizeToolbarItemIdentifier,
-    nil];
+    NSToolbarCustomizeToolbarItemIdentifier];
 }
 
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar *) toolbar
 {
-  return [NSArray arrayWithObjects:
-    NSToolbarSeparatorItemIdentifier,
+  return @[NSToolbarSeparatorItemIdentifier,
     NSToolbarSpaceItemIdentifier,
     NSToolbarFlexibleSpaceItemIdentifier,
     NSToolbarCustomizeToolbarItemIdentifier,
@@ -105,8 +102,7 @@
   	MUEditSelectedRowToolbarItem,
   	MURemoveSelectedRowToolbarItem,
   	MUEditProfileForSelectedRowToolbarItem,
-    MUGoToURLToolbarItem,
-    nil];
+    MUGoToURLToolbarItem];
 }
 
 @end

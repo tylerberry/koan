@@ -36,7 +36,7 @@
   if ([string compare: @""] == NSOrderedSame || string == nil)
   {
     if (object)
-      *object = [NSNumber numberWithInt: 0];
+      *object = @0;
     return YES;
   }
   
@@ -45,7 +45,7 @@
   if ([scanner scanInt: &intResult] && scanner.isAtEnd && intResult > 0 && intResult < 65536)
   {
     if (object)
-      *object = [NSNumber numberWithInt: intResult];
+      *object = @(intResult);
     return YES;
   }
   

@@ -125,14 +125,14 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUReadBufferDidProvideDataNotification
                                                       object: self
-                                                    userInfo: [NSDictionary dictionaryWithObjectsAndKeys: data, @"data", nil]];
+                                                    userInfo: @{@"data": data}];
 }
 
 - (void) postDidProvideStringNotificationWithString: (NSString *) string
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUReadBufferDidProvideStringNotification
                                                       object: self
-                                                    userInfo: [NSDictionary dictionaryWithObjectsAndKeys: string, @"string", nil]];
+                                                    userInfo: @{@"string": string}];
 }
 
 @end

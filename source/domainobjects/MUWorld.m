@@ -68,7 +68,7 @@ static const int32_t currentWorldVersion = 7;
 {
   return [self initWithName: @"New world"
                    hostname: @""
-                       port: [NSNumber numberWithInt: 0]
+                       port: @0
                         URL: @""
                     players: nil];
 }
@@ -95,10 +95,10 @@ static const int32_t currentWorldVersion = 7;
   
   if (tokens.count > 0)
   {
-    [result appendFormat: @"%@", [[tokens objectAtIndex: 0] lowercaseString]];
+    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
     
     for (NSUInteger i = 1; i < tokens.count; i++)
-      [result appendFormat: @".%@", [[tokens objectAtIndex: i] lowercaseString]];
+      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
   }
   return result;
 }
@@ -140,7 +140,7 @@ static const int32_t currentWorldVersion = 7;
   }
   
   if (version >= 6)
-    self.port = [[NSNumber alloc] initWithInt: [decoder decodeIntForKey: @"port"]];
+    self.port = @([decoder decodeIntForKey: @"port"]);
   else if (version == 5)
     self.port = [decoder decodeObjectForKey: @"port"];
   else

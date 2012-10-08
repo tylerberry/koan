@@ -93,7 +93,7 @@
 {
   for (NSUInteger i = 0; i < self.children.count; i++)
   {
-    if (child == [self.children objectAtIndex: i])
+    if (child == (self.children)[i])
       return i;
   }
   
@@ -113,7 +113,7 @@
 - (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
 {
   [self willChangeValueForKey: @"children"];
-  ((MUTreeNode *) [self.children objectAtIndex: childIndex]).parent = nil;
+  ((MUTreeNode *) (self.children)[childIndex]).parent = nil;
   [self.children removeObjectAtIndex: childIndex];
   [self didChangeValueForKey: @"children"];
   
@@ -134,7 +134,7 @@
 {
   for (unsigned i = 0; i < self.children.count; i++)
   {
-    MUTreeNode *node = [self.children objectAtIndex: i];
+    MUTreeNode *node = (self.children)[i];
     
     if (node != oldChild)
       continue;
@@ -142,7 +142,7 @@
     [self willChangeValueForKey: @"children"];
     newChild.parent = self;
     oldChild.parent = nil;
-    [self.children replaceObjectAtIndex: i withObject: newChild];
+    (self.children)[i] = newChild;
     [self didChangeValueForKey: @"children"];
     
     [self postWorldsDidChangeNotification];

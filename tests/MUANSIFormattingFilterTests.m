@@ -567,7 +567,7 @@
              message: @"a"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSSingleUnderlineStyle]
+            hasValue: @(NSSingleUnderlineStyle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 1
              message: @"b"];
@@ -579,7 +579,7 @@
              message: @"c"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSSingleUnderlineStyle]
+            hasValue: @(NSSingleUnderlineStyle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 3
              message: @"d"];
@@ -591,7 +591,7 @@
              message: @"e"];
   
   [self assertString: output
-            hasValue: [NSNumber numberWithInt: NSSingleUnderlineStyle]
+            hasValue: @(NSSingleUnderlineStyle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 5
              message: @"f"];
@@ -611,7 +611,7 @@
   
   NSAttributedString *output = [queue processAttributedString: input2];
    
-  [self assertString: output hasValue: [NSNumber numberWithInt: NSSingleUnderlineStyle] forAttribute: NSUnderlineStyleAttributeName atIndex: 0 message: @"b"];
+  [self assertString: output hasValue: @(NSSingleUnderlineStyle) forAttribute: NSUnderlineStyleAttributeName atIndex: 0 message: @"b"];
 }
 
 - (void) testRetainsPartialCode

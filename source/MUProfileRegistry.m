@@ -68,7 +68,7 @@ static MUProfileRegistry *defaultRegistry = nil;
   if (!rval)
   {
     rval = profile;
-    [mutableProfiles setObject: rval forKey: rval.uniqueIdentifier];
+    mutableProfiles[rval.uniqueIdentifier] = rval;
     [self writeProfilesToUserDefaults];
   }
   return rval;
@@ -76,7 +76,7 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (MUProfile *) profileForUniqueIdentifier: (NSString *) identifier
 {
-  return [self.profiles objectForKey: identifier];
+  return (self.profiles)[identifier];
 }
 
 - (BOOL) containsProfileForWorld: (MUWorld *) world
@@ -128,7 +128,7 @@ static MUProfileRegistry *defaultRegistry = nil;
   for (unsigned i = 0; i < world.children.count; i++)
   {
     [self removeProfileForWorld: world
-                         player: [world.children objectAtIndex: i]];
+                         player: (world.children)[i]];
   }
   
   [self removeProfileForWorld: world];

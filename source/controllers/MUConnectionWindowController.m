@@ -710,7 +710,7 @@ enum MUSearchDirections
     NSRange attributeRange;
     NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
     
-    if ([attributes objectForKey: MUBoldFontAttributeName])
+    if (attributes[MUBoldFontAttributeName])
     {
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
                                            value: [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont]
@@ -736,8 +736,7 @@ enum MUSearchDirections
 - (void) updateLinkTextColor
 {
   NSMutableDictionary *linkTextAttributes = [[receivedTextView linkTextAttributes] mutableCopy];
-  [linkTextAttributes setObject: profile.effectiveLinkColor
-                         forKey: NSForegroundColorAttributeName];
+  linkTextAttributes[NSForegroundColorAttributeName] = profile.effectiveLinkColor;
   [receivedTextView setLinkTextAttributes: linkTextAttributes];
 }
 
@@ -750,7 +749,7 @@ enum MUSearchDirections
     NSRange attributeRange;
     NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
     
-    if (![attributes objectForKey: MUCustomColorAttributeName])
+    if (!attributes[MUCustomColorAttributeName])
     {
       [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
                                            value: profile.effectiveTextColor

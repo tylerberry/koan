@@ -176,7 +176,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   [super setStatusClosedWithError: error];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUSocketWasClosedWithErrorNotification
                                                       object: self
-                                                    userInfo: [NSDictionary dictionaryWithObjectsAndKeys: error, MUSocketErrorMessageKey, nil]];
+                                                    userInfo: @{MUSocketErrorMessageKey: error}];
 }
 
 #pragma mark - MUByteSource protocol

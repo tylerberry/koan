@@ -36,7 +36,7 @@
   {
     NSArray *valueWords = [value componentsSeparatedByString: @" "];
     
-    if ([[valueWords objectAtIndex: 0] isEqualToString: @"PennMUSH"])
+    if ([valueWords[0] isEqualToString: @"PennMUSH"])
     {
       definitiveCodebaseFound = YES;
       self.codebase = MUCodebasePennMUSH;

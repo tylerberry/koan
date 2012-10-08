@@ -189,7 +189,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self displayAndLogString: [NSString stringWithFormat: @"Connection closed with error: %@.", error]];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
-                                                    userInfo: [NSDictionary dictionaryWithObjectsAndKeys: error, MUMUDConnectionErrorMessageKey, nil]];
+                                                    userInfo: @{MUMUDConnectionErrorMessageKey: error}];
 }
 
 #pragma mark - MUSocketDelegate protocol

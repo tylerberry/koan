@@ -58,14 +58,14 @@ static NSArray *offerableCharsets;
 
 + (void) initialize
 {
-  offerableTerminalTypes = [[NSArray alloc] initWithObjects: @"KOAN", @"UNKNOWN", @"UNKNOWN", nil];
+  offerableTerminalTypes = @[@"KOAN", @"UNKNOWN", @"UNKNOWN"];
   
-  acceptableCharsets = [[NSArray alloc] initWithObjects: @"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
+  acceptableCharsets = @[@"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
                         @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII",
                         @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US",
-                        @"IBM367", @"CP367", @"CSASCII", nil];
+                        @"IBM367", @"CP367", @"CSASCII"];
   
-  offerableCharsets = [[NSArray alloc] initWithObjects: @"UTF-8", @"ISO-8859-1", @"US-ASCII", nil];
+  offerableCharsets = @[@"UTF-8", @"ISO-8859-1", @"US-ASCII"];
 }
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack
@@ -773,7 +773,7 @@ static NSArray *offerableCharsets;
   uint8_t prefixBytes[] = {MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs};
   NSMutableData *terminalTypeData = [NSMutableData dataWithBytes: prefixBytes length: 2];
   
-  NSString *terminalType = [offerableTerminalTypes objectAtIndex: self.connectionState.nextTerminalTypeIndex++];
+  NSString *terminalType = offerableTerminalTypes[self.connectionState.nextTerminalTypeIndex++];
   
   if (self.connectionState.nextTerminalTypeIndex >= offerableTerminalTypes.count)
     self.connectionState.nextTerminalTypeIndex = 0;

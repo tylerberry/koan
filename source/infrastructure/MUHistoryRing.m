@@ -55,12 +55,12 @@
     return self.buffer == nil ? @"" : self.buffer;
   else
   {
-    NSString *string = [self.updates objectForKey: [NSNumber numberWithUnsignedInteger: ringIndex]];
+    NSString *string = (self.updates)[@(ringIndex)];
     
     if (string)
       return string;
     else
-      return [self.ring objectAtIndex: ringIndex];
+      return (self.ring)[ringIndex];
   }
 }
 
@@ -70,11 +70,11 @@
 {
   NSString *copy = [string copy];
   
-  [self.updates removeObjectForKey: [NSNumber numberWithUnsignedInteger: cursor]];
+  [self.updates removeObjectForKey: @(cursor)];
   
   if (!(self.cursor != NSNotFound
         && self.cursor == self.count - 1
-        && [string isEqualToString: [self.ring objectAtIndex: cursor]]))
+        && [string isEqualToString: (self.ring)[cursor]]))
     [ring addObject: copy];
   
   self.buffer = nil;
@@ -92,7 +92,7 @@
   }
   else
   {
-    [self.updates setObject: copy forKey: [NSNumber numberWithUnsignedInteger: self.cursor]];
+    (self.updates)[@(self.cursor)] = copy;
   }
 }
 
@@ -148,9 +148,9 @@
     
     if ([candidate hasPrefix: prefix] && ![candidate isEqualToString: prefix])
     {
-      if (![uniqueMatchDictionary objectForKey: candidate])
+      if (!uniqueMatchDictionary[candidate])
       {
-        [uniqueMatchDictionary setObject: [NSNull null] forKey: candidate];
+        uniqueMatchDictionary[candidate] = [NSNull null];
         uniqueMatchCount++;
       }
     }

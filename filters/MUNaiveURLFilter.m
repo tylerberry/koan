@@ -87,10 +87,8 @@
     
     if ((foundURL = [self normalizedURLForString: scannedString]))
     {
-      linkAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-        foundURL, NSLinkAttributeName,
-        [NSNumber numberWithInt: NSSingleUnderlineStyle], NSUnderlineStyleAttributeName,
-        NULL];
+      linkAttributes = @{NSLinkAttributeName: foundURL,
+        NSUnderlineStyleAttributeName: @(NSSingleUnderlineStyle)};
       [editString addAttributes: linkAttributes range: scannedRange];
     }
   }

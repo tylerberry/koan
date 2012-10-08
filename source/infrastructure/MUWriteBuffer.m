@@ -93,7 +93,7 @@
 
 - (void) clear
 {
-  [self setBlocks: [NSArray array]];
+  [self setBlocks: @[]];
   lastBlock = nil;
   totalLength = 0;
 }
@@ -104,7 +104,7 @@
   
   for (NSUInteger i = 0; i < [blocks count]; i++)
   {
-    id block = [blocks objectAtIndex: i];
+    id block = blocks[i];
     
     if ([block isKindOfClass: [NSData class]])
       [accumulator appendData: (NSData *) block];
@@ -137,7 +137,7 @@
   
   for (NSUInteger i = 0; i < [blocks count]; i++)
   {
-    id block = [blocks objectAtIndex: i];
+    id block = blocks[i];
     
     if ([block isKindOfClass: [NSString class]])
       [accumulator appendString: (NSString *) block];
@@ -193,7 +193,7 @@
 {
   while (position > 0 && [blocks count] > 0)
   {
-    id lowestBlock = [blocks objectAtIndex: 0];
+    id lowestBlock = blocks[0];
     
     if (position >= [lowestBlock length])
     {

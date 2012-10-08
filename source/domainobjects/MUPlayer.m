@@ -73,10 +73,10 @@ static const int32_t currentPlayerVersion = 1;
   
   if (tokens.count > 0)
   {
-    [result appendFormat: @"%@", [[tokens objectAtIndex: 0] lowercaseString]];
+    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
     
     for (unsigned i = 1; i < tokens.count; i++)
-      [result appendFormat: @".%@", [[tokens objectAtIndex: i] lowercaseString]];
+      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
   }
   return result;
 }

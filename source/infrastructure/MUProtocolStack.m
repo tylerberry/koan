@@ -70,7 +70,7 @@
   NSUInteger dataLength = [data length];
   
   NSUInteger firstLevel = [byteProtocolHandlers count] - 1;
-  MUByteProtocolHandler *firstProtocolHandler = [byteProtocolHandlers objectAtIndex: firstLevel];
+  MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
   
   for (NSUInteger i = 0; i < dataLength; i++)
     [firstProtocolHandler parseByte: bytes[i]];
@@ -93,7 +93,7 @@
     [preprocessingBuffer appendData: [handler headerForPreprocessedData]];
   
   NSUInteger firstLevel = 0;
-  MUByteProtocolHandler *firstProtocolHandler = [byteProtocolHandlers objectAtIndex: firstLevel];
+  MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
   
   for (NSUInteger i = 0; i < dataLength; i++)
     [firstProtocolHandler preprocessByte: bytes[i]];
@@ -113,7 +113,7 @@
   if (previousLevel > 0)
   {
     NSUInteger nextLevel = previousLevel - 1;
-    MUByteProtocolHandler *nextProtocolHandler = [byteProtocolHandlers objectAtIndex: nextLevel];
+    MUByteProtocolHandler *nextProtocolHandler = byteProtocolHandlers[nextLevel];
     [nextProtocolHandler parseByte: byte];
   }
   else
@@ -131,7 +131,7 @@
   if (previousLevel < [byteProtocolHandlers count] - 1)
   {
     NSUInteger nextLevel = previousLevel + 1;
-    MUByteProtocolHandler *nextProtocolHandler = [byteProtocolHandlers objectAtIndex: nextLevel];
+    MUByteProtocolHandler *nextProtocolHandler = byteProtocolHandlers[nextLevel];
     [nextProtocolHandler preprocessByte: byte];
   }
   else

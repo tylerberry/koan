@@ -257,9 +257,8 @@ const float CTSmallLabelSize = (float) 11.;
   NSMutableParagraphStyle *pStyle = [[NSMutableParagraphStyle alloc] init];
   pStyle.alignment = NSCenterTextAlignment;
   
-  NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
-                              self.labelColor, NSForegroundColorAttributeName,
-                              labelFont, NSFontAttributeName, nil];
+  NSDictionary *attributes = @{NSForegroundColorAttributeName: self.labelColor,
+                              NSFontAttributeName: labelFont};
   
   // Label stuff
   
@@ -267,7 +266,7 @@ const float CTSmallLabelSize = (float) 11.;
                          // using the 5-wide badge
     
     label = [NSString stringWithFormat: @"%@%@",
-             [label substringToIndex: 3], [NSString stringWithUTF8String: "\xe2\x80\xa6\xe2\x80\x8b"]];
+             [label substringToIndex: 3], @"\xe2\x80\xa6\xe2\x80\x8b"];
   
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: label attributes: attributes];
   
@@ -279,7 +278,7 @@ const float CTSmallLabelSize = (float) 11.;
   if (value < 100000)
     return [NSString stringWithFormat: @"%lu", value];
   else // Give infinity
-    return [NSString stringWithUTF8String: "\xe2\x88\x9e"];
+    return @"\xe2\x88\x9e";
 }
 
 - (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length

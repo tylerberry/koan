@@ -22,7 +22,7 @@
     return nil;
   
   hostname = @"";
-  port = [[NSNumber alloc] initWithInt: 1080];
+  port = @1080;
   
   return self;
 }

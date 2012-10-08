@@ -129,14 +129,14 @@
   NSMutableArray *names = [NSMutableArray arrayWithCapacity: codeComponents.count];
   
   if (codeComponents.count == 3
-      && [[codeComponents objectAtIndex: 1] intValue] == 5)
+      && [codeComponents[1] intValue] == 5)
   {
-    if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIBackground256)
+    if ([codeComponents[0] intValue] == MUANSIBackground256)
     {
       [names addObject: NSBackgroundColorAttributeName];
       return names;
     }
-    else if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
+    else if ([codeComponents[0] intValue] == MUANSIForeground256)
     {
       [names addObject: MUCustomColorAttributeName];
       [names addObject: NSForegroundColorAttributeName];
@@ -199,14 +199,14 @@
   NSMutableArray *values = [NSMutableArray arrayWithCapacity: codeComponents.count];
   
   if (codeComponents.count == 3
-      && [[codeComponents objectAtIndex: 1] intValue] == 5)
+      && [codeComponents[1] intValue] == 5)
   {
-    if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIBackground256
-        || [[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
+    if ([codeComponents[0] intValue] == MUANSIBackground256
+        || [codeComponents[0] intValue] == MUANSIForeground256)
     {
-      int value = [[codeComponents objectAtIndex: 2] intValue];
+      int value = [codeComponents[2] intValue];
       
-      if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
+      if ([codeComponents[0] intValue] == MUANSIForeground256)
       {
         if (value >= 0 && value < 256)
           [values addObject: @YES];
@@ -520,7 +520,7 @@
   [string addAttribute: attribute
                  value: value
                  range: NSMakeRange (startLocation, string.length - startLocation)];
-  [currentAttributes setObject: value forKey: attribute];
+  currentAttributes[attribute] = value;
 }
 
 - (void) setAttributes: (NSDictionary *) attributes
@@ -591,18 +591,18 @@
 {
   NSFont *newEffectiveFont;
   
-  if ([currentAttributes objectForKey: MUBoldFontAttributeName])
+  if (currentAttributes[MUBoldFontAttributeName])
     newEffectiveFont = [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont];
   else
     newEffectiveFont = profile.effectiveFont;
   
-  [currentAttributes setObject: newEffectiveFont forKey: NSFontAttributeName];
+  currentAttributes[NSFontAttributeName] = newEffectiveFont;
 }
 
 - (void) updateFromProfileTextColor
 {
-  if (![currentAttributes objectForKey: MUCustomColorAttributeName])
-    [currentAttributes setObject: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
+  if (!currentAttributes[MUCustomColorAttributeName])
+    currentAttributes[NSForegroundColorAttributeName] = profile.effectiveTextColor;
 }
 
 @end

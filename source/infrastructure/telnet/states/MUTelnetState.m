@@ -19,13 +19,13 @@ static NSMutableDictionary *states;
   if (!states)
     states = [[NSMutableDictionary alloc] init];
   
-  if (![states objectForKey: [self description]])
+  if (!states[[self description]])
   {
     result = [[self alloc] init];
-    [states setObject: result forKey: [self description]];
+    states[[self description]] = result;
   }
   else
-    result = [states objectForKey: [self description]];
+    result = states[[self description]];
   
   return result;
 }

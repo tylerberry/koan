@@ -42,7 +42,7 @@
   
   if (![self fileExistsAtPath: path isDirectory: &isDirectory])
   {
-    if ([self fileExistsAtPath: [path stringByDeletingLastPathComponent] isDirectory: &isDirectory])
+    if ([self fileExistsAtPath: path.stringByDeletingLastPathComponent isDirectory: &isDirectory])
     {
       if (isDirectory)
         return [self createDirectoryAtPath: path attributes: attributes];
@@ -51,7 +51,7 @@
     }
     else
     {
-      if ([self createDirectoryRecursivelyAtPath: [path stringByDeletingLastPathComponent] attributes: attributes])
+      if ([self createDirectoryRecursivelyAtPath: path.stringByDeletingLastPathComponent attributes: attributes])
         return [self createDirectoryAtPath: path attributes: attributes];
       else
         return NO;

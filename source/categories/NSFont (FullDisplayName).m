@@ -35,7 +35,7 @@
   NSNumber *fontSizeNumber;
   
   if (CGFLOAT_IS_DOUBLE)
-    fontSizeNumber = [NSNumber numberWithDouble: [self pointSize]];
+    fontSizeNumber = @([self pointSize]);
   else
     fontSizeNumber = [NSNumber numberWithFloat: [self pointSize]];
   

@@ -30,7 +30,7 @@
 
 - (void) assertLoggedOutput: (NSString *) string
 {
-  NSString *outputString = [NSString stringWithUTF8String: (const char *) outputBuffer];
+  NSString *outputString = @((const char *) outputBuffer);
   
   [self assert: outputString equals: string];
 }

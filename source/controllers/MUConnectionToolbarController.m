@@ -54,24 +54,20 @@
 
 - (NSArray *) toolbarDefaultItemIdentifiers: (NSToolbar*) toolbar
 {
-  return [NSArray arrayWithObjects:
-    NSToolbarFlexibleSpaceItemIdentifier,
-    NSToolbarCustomizeToolbarItemIdentifier,
-    nil];
+  return @[NSToolbarFlexibleSpaceItemIdentifier,
+    NSToolbarCustomizeToolbarItemIdentifier];
 }
 
 - (NSArray *) toolbarAllowedItemIdentifiers: (NSToolbar*) toolbar
 {
-  return [NSArray arrayWithObjects:
-    NSToolbarSeparatorItemIdentifier,
+  return @[NSToolbarSeparatorItemIdentifier,
     NSToolbarSpaceItemIdentifier,
     NSToolbarFlexibleSpaceItemIdentifier,
     NSToolbarCustomizeToolbarItemIdentifier,
     NSToolbarShowColorsItemIdentifier,
     NSToolbarShowFontsItemIdentifier,
     NSToolbarPrintItemIdentifier,
-    MUGoToURLToolbarItem,
-    nil];
+    MUGoToURLToolbarItem];
 }
 
 @end

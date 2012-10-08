@@ -57,21 +57,21 @@
   NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
   
-  [defaults setObject: [NSArray array] forKey: MUPWorlds];
+  defaults[MUPWorlds] = @[];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   
   NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
-  [initialValues setObject: [fixedPitchFont fontName] forKey: MUPFontName];
-  [initialValues setObject: [NSNumber numberWithFloat: (float) [fixedPitchFont pointSize]] forKey: MUPFontSize];
+  initialValues[MUPFontName] = [fixedPitchFont fontName];
+  initialValues[MUPFontSize] = @((float) [fixedPitchFont pointSize]);
 
-  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blackColor]] forKey: MUPBackgroundColor];
-  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor blueColor]] forKey: MUPLinkColor];
-  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]] forKey: MUPTextColor];
-  [initialValues setObject: [NSArchiver archivedDataWithRootObject: [NSColor purpleColor]] forKey: MUPVisitedLinkColor];
-  [initialValues setObject: [NSNumber numberWithBool: YES] forKey: MUPPlaySounds];
-  [initialValues setObject: [NSNumber numberWithBool: NO] forKey: MUPPlayWhenActive];
-  [initialValues setObject: @"Pop" forKey: MUPSoundChoice];
+  initialValues[MUPBackgroundColor] = [NSArchiver archivedDataWithRootObject: [NSColor blackColor]];
+  initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
+  initialValues[MUPTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]];
+  initialValues[MUPVisitedLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor purpleColor]];
+  initialValues[MUPPlaySounds] = @YES;
+  initialValues[MUPPlayWhenActive] = @NO;
+  initialValues[MUPSoundChoice] = @"Pop";
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   
@@ -149,7 +149,7 @@
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
   MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
-                                         port: [NSNumber numberWithInt: newConnectionPortField.intValue]];;
+                                         port: @(newConnectionPortField.intValue)];;
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
   	[[MUWorldRegistry defaultRegistry] insertObject: world inWorldsAtIndex: [MUWorldRegistry defaultRegistry].count];
@@ -240,7 +240,7 @@
   
   while (count--)
   {
-    MUConnectionWindowController *controller = [connectionWindowControllers objectAtIndex: count];
+    MUConnectionWindowController *controller = connectionWindowControllers[count];
     if (controller && [controller isConnectedOrConnecting])
       openConnections++;
   }
@@ -325,10 +325,10 @@
 
 - (id) infoValueForKey: (NSString *) key
 {
-  if ([[NSBundle mainBundle].localizedInfoDictionary objectForKey: key])
-    return [[NSBundle mainBundle].localizedInfoDictionary objectForKey: key];
+  if (([NSBundle mainBundle].localizedInfoDictionary)[key])
+    return ([NSBundle mainBundle].localizedInfoDictionary)[key];
   
-  return [[NSBundle mainBundle].infoDictionary objectForKey: key];
+  return ([NSBundle mainBundle].infoDictionary)[key];
 }
 
 - (IBAction) openConnection: (id) sender
@@ -391,7 +391,7 @@
     
     for (unsigned j = 0; j < playersCount; j++)
     {
-      MUPlayer *player = [players objectAtIndex: j];
+      MUPlayer *player = players[j];
       profile = [profileRegistry profileForWorld: world player: player];
       
       SEL action = @selector (openConnection:);

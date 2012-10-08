@@ -56,14 +56,16 @@
 
 @implementation MUANSIFormattingFilter
 
-@synthesize profile;
+@synthesize delegate, profile;
 
 + (MUFilter *) filterWithProfile: (MUProfile *) newProfile
+                        delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate
 {
-  return [[self alloc] initWithProfile: newProfile];
+  return [[self alloc] initWithProfile: newProfile delegate: newDelegate];
 }
 
 - (id) initWithProfile: (MUProfile *) newProfile
+              delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate
 {
   if (!newProfile)
     return nil;
@@ -74,6 +76,7 @@
   ansiCode = nil;
   inCode = NO;
   profile = newProfile;
+  delegate = newDelegate;
   
   currentAttributes = [[NSMutableDictionary alloc] init];
   [currentAttributes setValue: profile.effectiveFont forKey: NSFontAttributeName];
@@ -130,8 +133,29 @@
           toString: (NSMutableAttributedString *) mutableString
         atLocation: (NSUInteger) startLocation
 {
-  if (code == MUANSISelectGraphicRendition)
-    [self setAttributesInString: mutableString atLocation: startLocation];
+  switch (code)
+  {
+    case MUANSISelectGraphicRendition:
+      [self setAttributesInString: mutableString atLocation: startLocation];
+      return;
+      
+    case MUANSIEraseData:
+      if (ansiCode.length == 3)
+      {
+        if ([ansiCode characterAtIndex: 2] == '1' || [ansiCode characterAtIndex: 2] == '2')
+          [mutableString deleteCharactersInRange: NSMakeRange (0, startLocation)];
+        
+        if ([ansiCode characterAtIndex: 2] == '2')
+        {
+          if ([self.delegate respondsToSelector: @selector (clearScreen)])
+            [self.delegate clearScreen];
+        }
+      }
+      return;
+      
+    default:
+      return;
+  }
 }
 
 - (NSArray *) attributeNamesForANSICode

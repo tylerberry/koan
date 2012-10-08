@@ -66,7 +66,7 @@ enum MUSearchDirections
   historyRing = [MUHistoryRing historyRing];
   filterQueue = [MUFilterQueue filterQueue];
   
-  [filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: profile]];
+  [filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: profile delegate: self]];
   [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
   [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
@@ -328,6 +328,11 @@ enum MUSearchDirections
 }
 
 #pragma mark - Filter delegate methods
+
+- (void) clearScreen
+{
+  [self clearWindow: nil];
+}
 
 - (void) setInputViewString: (NSString *) string
 {

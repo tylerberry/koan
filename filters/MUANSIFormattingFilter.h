@@ -69,13 +69,29 @@ typedef enum MUANSI256ColorCode
 
 typedef enum MUANSICommands
 {
+  MUANSIEraseData = 'J',
   MUANSISelectGraphicRendition = 'm'
 } MUANSICommand;
 
+@protocol MUANSIFormattingFilterDelegate;
+
 @interface MUANSIFormattingFilter : MUFilter
 
-+ (MUFilter *) filterWithProfile: (MUProfile *) newProfile;
+@property (weak) NSObject <MUANSIFormattingFilterDelegate> *delegate;
 
-- (id) initWithProfile: (MUProfile *) newProfile;
++ (MUFilter *) filterWithProfile: (MUProfile *) newProfile
+                        delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate;
+
+- (id) initWithProfile: (MUProfile *) newProfile
+              delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate;
+
+@end
+
+#pragma mark -
+
+@protocol MUANSIFormattingFilterDelegate
+
+@optional
+- (void) clearScreen;
 
 @end

@@ -6,6 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "MUANSIFormattingFilter.h"
 #import "MUFilterQueue.h"
 #import "MUFugueEditFilter.h"
 #import "MUHistoryRing.h"
@@ -21,7 +22,7 @@
 
 #pragma mark -
 
-@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
+@interface MUConnectionWindowController : NSWindowController <MUANSIFormattingFilterDelegate, MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
 {
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;

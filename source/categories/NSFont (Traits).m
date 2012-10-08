@@ -30,16 +30,22 @@
 
 @dynamic isBold, isItalic;
 
+- (NSFont *) boldFontWithRespectTo: (NSFont *) referenceFont
+{
+  if (referenceFont.isBold)
+    return [self fontWithTrait: NSUnboldFontMask];
+  else
+    return [self fontWithTrait: NSBoldFontMask];
+}
+
 - (NSFont *) fontWithTrait: (NSFontTraitMask) trait
 {
-  NSFontManager *fontManager = [NSFontManager sharedFontManager];
-  return [fontManager convertFont: self toHaveTrait: trait];
+  return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: trait];
 }
 
 - (BOOL) hasTrait: (NSFontTraitMask) trait
 {
-  NSFontManager *fontManager = [NSFontManager sharedFontManager];
-  return [fontManager fontNamed: [self fontName] hasTraits: trait];
+  return [[NSFontManager sharedFontManager] traitsOfFont: self] & trait;
 }
 
 - (BOOL) isBold
@@ -50,6 +56,14 @@
 - (BOOL) isItalic
 {
   return [self hasTrait: NSItalicFontMask];
+}
+
+- (NSFont *) unboldFontWithRespectTo: (NSFont *) referenceFont
+{
+  if (referenceFont.isBold)
+    return [self fontWithTrait: NSBoldFontMask];
+  else
+    return [self fontWithTrait: NSUnboldFontMask];
 }
 
 @end

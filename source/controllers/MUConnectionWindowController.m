@@ -11,6 +11,7 @@
 #import "MUNaiveURLFilter.h"
 #import "MUFugueEditFilter.h"
 #import "MUTextLogger.h"
+#import "NSFont (Traits).h"
 
 #import <objc/objc-runtime.h>
 
@@ -37,6 +38,7 @@ enum MUSearchDirections
 - (void) sendPeriodicPing: (NSTimer *) timer;
 - (NSString *) splitViewAutosaveName;
 - (void) tabCompleteWithDirection: (enum MUSearchDirections)direction;
+- (void) updateFonts;
 - (void) updateLinkTextColor;
 - (void) updateTextColors;
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
@@ -130,6 +132,7 @@ enum MUSearchDirections
   {
     if ([keyPath isEqualToString: @"effectiveFont"])
     {
+      [self updateFonts];
       return;
     }
     else if ([keyPath isEqualToString: @"effectiveLinkColor"])
@@ -461,11 +464,11 @@ enum MUSearchDirections
       
       [self endCompletion];
       
-      if ([textView selectedRange].location == [[textView textStorage] length]
+      if ([textView selectedRange].location == textView.textStorage.length
           && key == NSDownArrowFunctionKey)
       {
         [self nextCommand: self];
-        [textView setSelectedRange: NSMakeRange ([[textView textStorage] length], 0)];
+        [textView setSelectedRange: NSMakeRange (textView.textStorage.length, 0)];
         return YES;
       }
     }
@@ -663,11 +666,11 @@ enum MUSearchDirections
   
   if (currentlySearching)
   {
-    currentPrefix = [[[inputView string] copy] substringToIndex: [inputView selectedRange].location];
+    currentPrefix = [[[inputView string] copy] substringToIndex: inputView.selectedRange.location];
     
     if ([historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
-      [inputView setSelectedRange: NSMakeRange ([[inputView textStorage] length], 0)];
+      [inputView setSelectedRange: NSMakeRange (inputView.textStorage.length, 0)];
       [self endCompletion];
       return;
     }
@@ -685,10 +688,45 @@ enum MUSearchDirections
                                                     : [historyRing searchForwardForStringPrefix: currentPrefix];
     
     [inputView setString: foundString];
-    [inputView setSelectedRange: NSMakeRange ([currentPrefix length], [[inputView textStorage] length] - [currentPrefix length])];
+    [inputView setSelectedRange: NSMakeRange (currentPrefix.length, inputView.textStorage.length - currentPrefix.length)];
   }
   
   currentlySearching = YES;
+}
+
+- (void) updateFonts
+{
+  NSRect visibleRect = receivedTextView.enclosingScrollView.contentView.documentVisibleRect;
+  NSRange visibleRange = [receivedTextView.layoutManager glyphRangeForBoundingRect: visibleRect
+                                                                   inTextContainer: receivedTextView.textContainer];
+  
+  NSUInteger index = 0;
+  while (index < receivedTextView.textStorage.length)
+  {
+    NSRange attributeRange;
+    NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
+    
+    if ([attributes objectForKey: MUBoldFontAttributeName])
+    {
+      [receivedTextView.textStorage addAttribute: NSFontAttributeName
+                                           value: [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont]
+                                           range: attributeRange];
+    }
+    else
+    {
+      [receivedTextView.textStorage addAttribute: NSFontAttributeName
+                                           value: profile.effectiveFont
+                                           range: attributeRange];
+    }
+    
+    index += attributeRange.length;
+  }
+  
+  [receivedTextView scrollRangeToVisible: NSMakeRange (visibleRange.location + visibleRange.length, 0)];
+  [inputView scrollRangeToVisible: NSMakeRange (inputView.textStorage.length, 0)];
+  
+  [receivedTextView setNeedsDisplay: YES];
+  [inputView setNeedsDisplay: YES];
 }
 
 - (void) updateLinkTextColor
@@ -701,23 +739,25 @@ enum MUSearchDirections
 
 - (void) updateTextColors
 {
-  NSTextStorage *textStorage = receivedTextView.textStorage;
   NSUInteger index = 0;
   
-  while (index < textStorage.length)
+  while (index < receivedTextView.textStorage.length)
   {
     NSRange attributeRange;
-    NSDictionary *attributes = [textStorage attributesAtIndex: index effectiveRange: &attributeRange];
+    NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
     
     if (![attributes objectForKey: MUCustomColorAttributeName])
     {
-      [textStorage addAttribute: NSForegroundColorAttributeName
-                          value: profile.effectiveTextColor
-                          range: attributeRange];
+      [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
+                                           value: profile.effectiveTextColor
+                                           range: attributeRange];
     }
     
     index += attributeRange.length;
   }
+  
+  [receivedTextView setNeedsDisplay: YES];
+  [inputView setNeedsDisplay: YES];
 }
 
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo

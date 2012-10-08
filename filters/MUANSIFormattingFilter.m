@@ -19,12 +19,11 @@
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
 - (BOOL) extractCode: (NSMutableAttributedString *) editString;
 - (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location;
-- (NSFont *) makeFontBold: (NSFont *) font;
-- (NSFont *) makeFontUnbold: (NSFont *) font;
 - (NSUInteger) scanUpToCodeInString: (NSString *) string;
 - (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
 - (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
-- (void) updateProfileTextColor;
+- (void) updateFromProfileFont;
+- (void) updateFromProfileTextColor;
 
 #pragma mark - Attribute manipulation
 
@@ -33,6 +32,7 @@
             fromLocation: (NSUInteger) startLocation;
 - (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetCustomColorInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
@@ -73,6 +73,7 @@
   [currentAttributes setValue: profile.effectiveFont forKey: NSFontAttributeName];
   [currentAttributes setValue: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
   
+  [profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: NULL];
   [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
   
   return self;
@@ -85,9 +86,14 @@
 {
   if (object == profile)
   {
-    if ([keyPath isEqualToString: @"effectiveTextColor"])
+    if ([keyPath isEqualToString: @"effectiveFont"])
     {
-      [self updateProfileTextColor];
+      [self updateFromProfileFont];
+      return;
+    }
+    else if ([keyPath isEqualToString: @"effectiveTextColor"])
+    {
+      [self updateFromProfileTextColor];
       return;
     }
   }
@@ -160,6 +166,7 @@
         
       case MUANSIBoldOn:
       case MUANSIBoldOff:
+        [names addObject: MUBoldFontAttributeName];
         [names addObject: NSFontAttributeName];
         break;
         
@@ -193,7 +200,7 @@
       if ([[codeComponents objectAtIndex: 0] intValue] == MUANSIForeground256)
       {
         if (value >= 0 && value < 256)
-          [values addObject: @(YES)];
+          [values addObject: @YES];
         else
           [values addObject: [NSNull null]];
       }
@@ -271,22 +278,22 @@
   
   for (NSString *code in codeComponents)
   {
-    switch ([code intValue])
+    switch (code.intValue)
     {
       case MUANSIForegroundBlack:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundBlack:
         [values addObject: [NSColor darkGrayColor]];
         break;
         
       case MUANSIForegroundBlue:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundBlue:
         [values addObject: [NSColor blueColor]];
         break;
         
       case MUANSIForegroundCyan:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundCyan:
         [values addObject: [NSColor cyanColor]];
         break;
@@ -301,45 +308,47 @@
         break;
         
       case MUANSIForegroundGreen:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundGreen:
         [values addObject: [NSColor greenColor]];
         break;
         
       case MUANSIForegroundMagenta:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundMagenta:
         [values addObject: [NSColor magentaColor]];
         break;
         
       case MUANSIForegroundRed:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundRed:
         [values addObject: [NSColor redColor]];
         break;
         
       case MUANSIForegroundWhite:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundWhite:
         [values addObject: [NSColor whiteColor]];
         break;
         
       case MUANSIForegroundYellow:
-        [values addObject: @(YES)];
+        [values addObject: @YES];
       case MUANSIBackgroundYellow:
         [values addObject: [NSColor yellowColor]];
-        break;    
+        break;
         
       case MUANSIBoldOn:
-        [values addObject: [self makeFontBold: [self fontInString: string atLocation: location]]];
+        [values addObject: @YES];
+        [values addObject: [currentAttributes[NSFontAttributeName] boldFontWithRespectTo: profile.effectiveFont]];
         break;
         
       case MUANSIBoldOff:
-        [values addObject: [self makeFontUnbold: [self fontInString: string atLocation: location]]];
+        [values addObject: [NSNull null]];
+        [values addObject: [currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: profile.effectiveFont]];
         break;
         
       case MUANSIUnderlineOn:
-        [values addObject: [NSNumber numberWithInt: NSSingleUnderlineStyle]];
+        [values addObject: @(NSSingleUnderlineStyle)];
         break;
         
       case MUANSIUnderlineOff:
@@ -397,22 +406,6 @@
   return [string attribute: NSFontAttributeName atIndex: location effectiveRange: NULL];
 }
 
-- (NSFont *) makeFontBold: (NSFont *) font
-{  
-  if (profile.effectiveFont.isBold)
-    return [font fontWithTrait: NSUnboldFontMask];
-  else
-    return [font fontWithTrait: NSBoldFontMask];
-}
-
-- (NSFont *) makeFontUnbold: (NSFont *) font
-{
-  if (profile.effectiveFont.isBold)
-    return [font fontWithTrait: NSBoldFontMask];
-  else
-    return [font fontWithTrait: NSUnboldFontMask];
-}
-
 - (NSUInteger) scanUpToCodeInString: (NSString *) string
 {
   NSCharacterSet *stopSet = [NSCharacterSet characterSetWithCharactersInString: @"\x1B"];
@@ -467,6 +460,7 @@
 - (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self resetBackgroundInString: string fromLocation: startLocation];
+  [self resetBoldInString: string fromLocation: startLocation];
   [self resetCustomColorInString: string fromLocation: startLocation];
   [self resetForegroundInString: string fromLocation: startLocation];
   [self resetFontInString: string fromLocation: startLocation];
@@ -476,6 +470,11 @@
 - (void) resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self removeAttribute: NSBackgroundColorAttributeName inString: string fromLocation: startLocation];
+}
+
+- (void) resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+{
+  [self removeAttribute: MUBoldFontAttributeName inString: string fromLocation: startLocation];
 }
 
 - (void) resetCustomColorInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -551,30 +550,47 @@
   
   for (NSUInteger i = 0; i < attributeNames.count; i++)
   {
-    id attributeName = [attributeNames objectAtIndex: i];
-    id attributeValue = [attributeValues objectAtIndex: i];
+    id attributeName = attributeNames[i];
+    id attributeValue = attributeValues[i];
     
     if (attributeName == [NSNull null])
       continue;
     
     if (attributeValue != [NSNull null])
       [self setAttribute: attributeName toValue: attributeValue inString: string fromLocation: startLocation];
-    else if ([attributeName isEqualToString: NSForegroundColorAttributeName])
-      [self resetForegroundInString: string fromLocation: startLocation];
-    else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
-      [self resetBackgroundInString: string fromLocation: startLocation];
-    else if ([attributeName isEqualToString: NSUnderlineStyleAttributeName])
-      [self resetUnderlineInString: string fromLocation: startLocation];
-    else if ([attributeName isEqualToString: MUCustomColorAttributeName])
-      [self resetCustomColorInString: string fromLocation: startLocation];
     else
-      @throw [NSException exceptionWithName: @"MUANSIException"
-                                     reason: @"attributeValue was an invalid [NSNull null]"
-                                   userInfo: nil];
+    {
+      if ([attributeName isEqualToString: NSForegroundColorAttributeName])
+        [self resetForegroundInString: string fromLocation: startLocation];
+      else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
+        [self resetBackgroundInString: string fromLocation: startLocation];
+      else if ([attributeName isEqualToString: NSUnderlineStyleAttributeName])
+        [self resetUnderlineInString: string fromLocation: startLocation];
+      else if ([attributeName isEqualToString: MUBoldFontAttributeName])
+        [self resetBoldInString: string fromLocation: startLocation];
+      else if ([attributeName isEqualToString: MUCustomColorAttributeName])
+        [self resetCustomColorInString: string fromLocation: startLocation];
+      else
+        @throw [NSException exceptionWithName: @"MUANSIException"
+                                       reason: @"attributeValue was an invalid [NSNull null]"
+                                     userInfo: nil];
+    }
   }
 }
 
-- (void) updateProfileTextColor
+- (void) updateFromProfileFont
+{
+  NSFont *newEffectiveFont;
+  
+  if ([currentAttributes objectForKey: MUBoldFontAttributeName])
+    newEffectiveFont = [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont];
+  else
+    newEffectiveFont = profile.effectiveFont;
+  
+  [currentAttributes setObject: newEffectiveFont forKey: NSFontAttributeName];
+}
+
+- (void) updateFromProfileTextColor
 {
   if (![currentAttributes objectForKey: MUCustomColorAttributeName])
     [currentAttributes setObject: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];

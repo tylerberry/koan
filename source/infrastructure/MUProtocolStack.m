@@ -8,7 +8,7 @@
 
 #import "MUByteProtocolHandler.h"
 
-@interface MUProtocolStack (Private)
+@interface MUProtocolStack ()
 
 - (void) maybeUseBufferedDataAsPrompt;
 
@@ -30,7 +30,6 @@
   
   return self;
 }
-
 
 - (NSObject <MUProtocolStackDelegate> *) delegate
 {
@@ -54,7 +53,7 @@
 
 - (void) flushBufferedData
 {
-  if ([parsingBuffer length] > 0)
+  if (parsingBuffer.length > 0)
   {
     [delegate displayDataAsText: [NSData dataWithData: parsingBuffer]];
     [parsingBuffer setData: [NSData data]];
@@ -63,31 +62,29 @@
 
 - (void) parseInputData: (NSData *) data
 {
-  if ([byteProtocolHandlers count] == 0)
+  if (byteProtocolHandlers.count == 0)
     return;
   
-  const uint8_t *bytes = [data bytes];
-  NSUInteger dataLength = [data length];
+  const uint8_t *bytes = data.bytes;
   
-  NSUInteger firstLevel = [byteProtocolHandlers count] - 1;
+  NSUInteger firstLevel = byteProtocolHandlers.count - 1;
   MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
   
-  for (NSUInteger i = 0; i < dataLength; i++)
+  for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler parseByte: bytes[i]];
     
-  if ([parsingBuffer length] > 0)
+  if (parsingBuffer.length > 0)
     [self maybeUseBufferedDataAsPrompt];
 }
 
 - (NSData *) preprocessOutputData: (NSData *) data
 {
-  if ([byteProtocolHandlers count] == 0)
+  if (byteProtocolHandlers.count == 0)
     return nil;
   
-  const uint8_t *bytes = [data bytes];
-  NSUInteger dataLength = [data length];
+  const uint8_t *bytes = data.bytes;
   
-  preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: dataLength];
+  preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: data.length];
   
   for (MUByteProtocolHandler *handler in byteProtocolHandlers)
     [preprocessingBuffer appendData: [handler headerForPreprocessedData]];
@@ -95,7 +92,7 @@
   NSUInteger firstLevel = 0;
   MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
   
-  for (NSUInteger i = 0; i < dataLength; i++)
+  for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler preprocessByte: bytes[i]];
   
   for (MUByteProtocolHandler *handler in byteProtocolHandlers)
@@ -128,7 +125,7 @@
 - (void) preprocessOutputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
 {
   NSUInteger previousLevel = [byteProtocolHandlers indexOfObject: previousHandler];
-  if (previousLevel < [byteProtocolHandlers count] - 1)
+  if (previousLevel < byteProtocolHandlers.count - 1)
   {
     NSUInteger nextLevel = previousLevel + 1;
     MUByteProtocolHandler *nextProtocolHandler = byteProtocolHandlers[nextLevel];
@@ -140,30 +137,27 @@
 
 - (void) useBufferedDataAsPrompt
 {
-  if ([parsingBuffer length] > 0)
+  if (parsingBuffer.length > 0)
   {
     [delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
     [parsingBuffer setData: [NSData data]];
   }
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUProtocolStack (Private)
+#pragma mark - Private methods
 
 - (void) maybeUseBufferedDataAsPrompt
 {
-  NSString *promptCandidate = [[NSString alloc] initWithBytes: [parsingBuffer bytes]
-                                                        length: [parsingBuffer length]
-                                                      encoding: connectionState.stringEncoding];
+  NSString *promptCandidate = [[NSString alloc] initWithBytes: parsingBuffer.bytes
+                                                       length: parsingBuffer.length
+                                                     encoding: connectionState.stringEncoding];
   
   if ([promptCandidate hasSuffix: @" "])
   {
     promptCandidate = [promptCandidate stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
     
-    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember: [promptCandidate characterAtIndex: [promptCandidate length] - 1]])
+    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
+         [promptCandidate characterAtIndex: promptCandidate.length - 1]])
       [self useBufferedDataAsPrompt];
   }
 }

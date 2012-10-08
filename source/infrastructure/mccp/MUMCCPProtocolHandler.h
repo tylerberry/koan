@@ -16,24 +16,12 @@ typedef struct z_stream_s z_stream;
 @interface MUMCCPProtocolHandler : MUByteProtocolHandler
 {
   MUMUDConnectionState *connectionState;
-  NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
-  
-  z_stream *stream;
-  
-  uint8_t *inbuf;
-  unsigned inalloc;
-  unsigned insize;
-  
-  uint8_t *outbuf;
-  unsigned outalloc;
-  unsigned outsize;
 }
+
+@property (weak) NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
 - (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
-
-- (NSObject <MUMCCPProtocolHandlerDelegate> *) delegate;
-- (void) setDelegate: (NSObject <MUMCCPProtocolHandlerDelegate> *) object;
 
 @end
 

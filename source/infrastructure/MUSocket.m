@@ -32,25 +32,6 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 #pragma mark -
 
-@interface MUSocket (PrivateRunsInThread)
-
-- (void) connectSocket;
-- (void) createSocket;
-- (void) initializeKernelQueue;
-- (void) internalClose;
-- (void) internalOpen;
-- (void) internalRead;
-- (void) internalWrite;
-- (void) performPostConnectNegotiation;
-- (void) registerObjectForNotifications: (id) object;
-- (void) resolveHostname;
-- (void) runThread: (id) object;
-- (void) unregisterObjectForNotifications: (id) object;
-
-@end
-
-#pragma mark -
-
 @implementation MUSocketException
 
 + (void) socketError: (NSString *) errorMessage
@@ -74,6 +55,25 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 {
   [MUSocketException socketError: [NSString stringWithFormat: @"%@: %s", functionName, strerror (errno)]];
 }
+
+@end
+
+#pragma mark -
+
+@interface MUSocket ()
+
+- (void) connectSocket;
+- (void) createSocket;
+- (void) initializeKernelQueue;
+- (void) internalClose;
+- (void) internalOpen;
+- (void) internalRead;
+- (void) internalWrite;
+- (void) performPostConnectNegotiation;
+- (void) registerObjectForNotifications: (id) object;
+- (void) resolveHostname;
+- (void) runThread: (id) object;
+- (void) unregisterObjectForNotifications: (id) object;
 
 @end
 
@@ -108,11 +108,9 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   
   [self unregisterObjectForNotifications: delegate];
   delegate = nil;
-  
  
   if (server)
     free (server);
-  
 }
 
 - (NSObject <MUSocketDelegate> *) delegate
@@ -254,11 +252,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   }
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUSocket (PrivateRunsInThread)
+#pragma mark - Private methods
 
 - (void) connectSocket
 {
@@ -355,7 +349,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (void) internalClose
 {
-  if (!([self isConnected] || [self isConnecting]))
+  if (!(self.isConnected || self.isConnecting))
     return;
   
   errno = 0;
@@ -365,7 +359,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   // a final flush was interrupted and we may have lost data.
   /* int result = */ close (socketfd);
   socketfd = -1;
-  [self performSelectorOnMainThread: @selector(setStatusClosedByClient) withObject: nil waitUntilDone: YES];
+  [self performSelectorOnMainThread: @selector (setStatusClosedByClient) withObject: nil waitUntilDone: YES];
   
   /* int result = */ close (kq);
   
@@ -375,21 +369,23 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (void) internalOpen
 {
-  if ([self isConnected] || [self isConnecting])
+  if (self.isConnected || self.isConnecting)
     return;
   
   @try
   {
-    [self performSelectorOnMainThread: @selector(setStatusConnecting) withObject: nil waitUntilDone: YES];
+    [self performSelectorOnMainThread: @selector (setStatusConnecting) withObject: nil waitUntilDone: YES];
     [self resolveHostname];
     [self createSocket];
     [self connectSocket];
     [self performPostConnectNegotiation];
-    [self performSelectorOnMainThread: @selector(setStatusConnected) withObject: nil waitUntilDone: YES];
+    [self performSelectorOnMainThread: @selector (setStatusConnected) withObject: nil waitUntilDone: YES];
   }
   @catch (MUSocketException *socketException)
   {
-    [self performSelectorOnMainThread: @selector(setStatusClosedWithError:) withObject: [socketException reason] waitUntilDone: YES];
+    [self performSelectorOnMainThread: @selector (setStatusClosedWithError:)
+                           withObject: socketException.reason
+                        waitUntilDone: YES];
   }
 }
 
@@ -415,7 +411,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   
   if (triggered_event.flags & EV_EOF)
   {
-    [self performSelectorOnMainThread: @selector(setStatusClosedByServer) withObject: nil waitUntilDone: YES];
+    [self performSelectorOnMainThread: @selector (setStatusClosedByServer) withObject: nil waitUntilDone: YES];
     return;
   }
   
@@ -434,23 +430,23 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   NSData *data;
   @synchronized (dataToWriteLock)
   {
-    data = [dataToWrite lastObject];
+    data = dataToWrite.lastObject;
     if (data == nil)
       return;    
     [dataToWrite removeLastObject];
   }
     
   errno = 0; 
-  ssize_t bytes_written = full_write (socketfd, [data bytes], (size_t) [data length]);
+  ssize_t bytes_written = full_write (socketfd, data.bytes, (size_t) data.length);
   
   if (bytes_written == -1)
   {
     // TODO: Is this correct?
-    if (!([self isConnected] || [self isConnecting]))
+    if (!(self.isConnected || self.isConnecting))
       return;
     
     if (errno == EBADF || errno == EPIPE)
-      [self performSelectorOnMainThread: @selector(setStatusClosedByServer) withObject: nil waitUntilDone: YES];
+      [self performSelectorOnMainThread: @selector (setStatusClosedByServer) withObject: nil waitUntilDone: YES];
     
     [MUSocketException socketErrorWithErrnoForFunction: @"write"];
   }
@@ -579,4 +575,3 @@ safe_write (int file_descriptor, const void *bytes, size_t length)
   while (bytes_written == -1 && errno == EINTR);  
   return bytes_written;  
 }
-

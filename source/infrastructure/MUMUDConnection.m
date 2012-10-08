@@ -78,15 +78,18 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   // order with respect to outgoing data, and reverse order with respect to
   // incoming data.
   
-  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
+  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithStack: protocolStack
+                                                                            connectionState: state];
   [mcpProtocolHandler setDelegate: self];
   [protocolStack addByteProtocol: mcpProtocolHandler];
   
-  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
+  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack
+                                                                                     connectionState: state];
   [telnetProtocolHandler setDelegate: self];
   [protocolStack addByteProtocol: telnetProtocolHandler];
   
-  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithStack: protocolStack connectionState: state];
+  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithStack: protocolStack
+                                                                               connectionState: state];
   [mccpProtocolHandler setDelegate: self];
   [protocolStack addByteProtocol: mccpProtocolHandler];
   
@@ -222,7 +225,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 {
   [self.state reset];
   [self cleanUpPollTimer];
-  [self setStatusClosedWithError: [[notification userInfo] valueForKey: MUSocketErrorMessageKey]];
+  [self setStatusClosedWithError: [notification.userInfo valueForKey: MUSocketErrorMessageKey]];
 }
 
 #pragma mark - Various delegates

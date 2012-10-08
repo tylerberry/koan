@@ -36,7 +36,6 @@ extern NSString *MUSocketErrorMessageKey;
 @interface MUSocket : MUAbstractConnection <MUByteDestination, MUByteSource>
 {
   NSObject <MUSocketDelegate> *delegate;
-  
   NSString *hostname;
   int port;
   int socketfd;

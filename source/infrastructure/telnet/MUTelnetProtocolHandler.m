@@ -753,6 +753,13 @@ static NSArray *offerableCharsets;
    [[NSString alloc] initWithData: valueData encoding: NSASCIIStringEncoding]];
 }
 
+#pragma mark - NAWS
+
+- (void) sendNAWSSubnegotiation: (NSData *) subnegotiationData
+{
+  
+}
+
 #pragma mark - TERMINAL-TYPE
 
 - (void) handleTerminalTypeSubnegotiation: (NSData *) subnegotiationData

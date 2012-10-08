@@ -35,7 +35,7 @@
 
 - (BOOL) hasAuthentication
 {
-  return username && ([username length] > 0);
+  return username && username.length > 0;
 }
 
 #pragma mark - NSCoding protocol

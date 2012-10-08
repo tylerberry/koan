@@ -8,9 +8,21 @@
 
 #include <zlib.h>
 
-@interface MUMCCPProtocolHandler (Private)
+@interface MUMCCPProtocolHandler ()
+{  
+  z_stream *stream;
+  
+  uint8_t *inbuf;
+  unsigned inalloc;
+  unsigned insize;
+  
+  uint8_t *outbuf;
+  unsigned outalloc;
+  unsigned outsize;
+}
 
-- (unsigned) bytesPending;
+@property (readonly) unsigned bytesPending;
+
 - (void) cleanUpStream;
 - (void) decompressInbuf;
 - (void) decompressAfterClearingOutbuf;
@@ -24,6 +36,8 @@
 #pragma mark -
 
 @implementation MUMCCPProtocolHandler
+
+@synthesize delegate;
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
@@ -48,16 +62,6 @@
   [self cleanUpStream];
   if (inbuf) free (inbuf);
   if (outbuf) free (outbuf);
-}
-
-- (NSObject <MUMCCPProtocolHandlerDelegate> *) delegate
-{
-  return delegate;
-}
-
-- (void) setDelegate: (NSObject <MUMCCPProtocolHandlerDelegate> *) object
-{
-  delegate = object;
 }
 
 #pragma mark - MUByteProtocolHandler overrides
@@ -90,7 +94,7 @@
   
   [self decompressInbuf];
   
-  while ([self bytesPending])
+  while (self.bytesPending)
     [self decompressAfterClearingOutbuf];
 }
 
@@ -110,11 +114,9 @@
   [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
 }
 
-@end
+#pragma mark - Private methods
 
-#pragma mark -
-
-@implementation MUMCCPProtocolHandler (Private)
+@dynamic bytesPending;
 
 - (unsigned) bytesPending
 {
@@ -146,8 +148,6 @@
 
 - (void) decompressInbuf
 {
-  int status;
-  
   if (!insize)
     return;
   
@@ -156,7 +156,7 @@
   stream->avail_in = insize;
   stream->avail_out = outalloc - outsize;
   
-  status = inflate (stream, Z_SYNC_FLUSH);
+  int status = inflate (stream, Z_PARTIAL_FLUSH);
   
   if (status == Z_OK || status == Z_STREAM_END)
   {
@@ -221,7 +221,7 @@
   va_list args;
   va_start (args, message);
   
-  [delegate log: message arguments: args];
+  [self.delegate log: message arguments: args];
   
   va_end (args);
 }

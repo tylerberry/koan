@@ -12,7 +12,7 @@
 #import "MUSOCKS5Request.h"
 #import "MUWriteBuffer.h"
 
-@interface MUProxySocket (Private)
+@interface MUProxySocket ()
 
 - (void) makeRequest;
 - (void) performMethodSpecificNegotiation: (MUSOCKS5Method) method;
@@ -32,7 +32,7 @@
 
 - (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue proxySettings: (MUProxySettings *) settings
 {
-  if (!(self = [super initWithHostname: [settings hostname] port: [[settings port] intValue]]))
+  if (!(self = [super initWithHostname: settings.hostname port: settings.port.intValue]))
     return nil;
   
   realHostname = [hostnameValue copy];
@@ -44,18 +44,13 @@
   return self;
 }
 
-
 - (void) performPostConnectNegotiation
 {
-  [self performMethodSpecificNegotiation: [self selectMethod]];
+  [self performMethodSpecificNegotiation: self.selectMethod];
   [self makeRequest];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUProxySocket (Private)
+#pragma mark - Private methods
 
 - (void) makeRequest
 {
@@ -64,7 +59,7 @@
   [request appendToBuffer: outputBuffer];
   [outputBuffer flush];
   [request parseReplyFromByteSource: self];
-  if ([request reply] != MUSOCKS5Success)
+  if (request.reply != MUSOCKS5Success)
     [MUSocketException socketError: @"Unable to establish connection via proxy"];  
 }
 
@@ -78,12 +73,13 @@
 
 - (void) performUsernamePasswordNegotiation
 {
-  MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: [proxySettings username] password: [proxySettings password]];
+  MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: proxySettings.username
+                                                                                password: proxySettings.password];
   
   [auth appendToBuffer: outputBuffer];
   [outputBuffer flush];
   [auth parseReplyFromSource: self];
-  if (![auth authenticated])
+  if (!auth.authenticated)
     [MUSocketException socketError: @"Could not authenticate to proxy"];
 }
 
@@ -91,12 +87,12 @@
 {
   MUSOCKS5MethodSelection *methodSelection = [MUSOCKS5MethodSelection socksMethodSelection];
 
-  if ([proxySettings hasAuthentication])
+  if (proxySettings.hasAuthentication)
     [methodSelection addMethod: MUSOCKS5UsernamePassword];
   [methodSelection appendToBuffer: outputBuffer];
   [outputBuffer flush];
   [methodSelection parseResponseFromByteSource: self];
-  return [methodSelection method];  
+  return methodSelection.method;
 }
 
 @end

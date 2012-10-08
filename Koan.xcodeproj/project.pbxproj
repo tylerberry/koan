@@ -45,6 +45,7 @@
 		2F8CEAE4153AD1EA00B488E7 /* J3TestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CEAE3153AD1EA00B488E7 /* J3TestCase.m */; };
 		2F8CEAE6153AD20200B488E7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8CEAE5153AD20200B488E7 /* SenTestingKit.framework */; };
 		2F8E7E2F12ED2B2C00AFA68C /* MUByteProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F8E7E2E12ED2B2C00AFA68C /* MUByteProtocolHandler.m */; };
+		2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA24AD11623639A00A9D92B /* libz.dylib */; };
 		2FA60E5412E13939008BD147 /* MUSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA60E3A12E1379F008BD147 /* MUSection.m */; };
 		2FA60E5512E13939008BD147 /* MUProfilesSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA60E4A12E1384F008BD147 /* MUProfilesSection.m */; };
 		2FB1F7FC161BDC6E00AFD977 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F07054B1613F2E400A71314 /* Sparkle.framework */; };
@@ -303,6 +304,7 @@
 		2F8CEAE5153AD20200B488E7 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		2F8E7E2D12ED2B2C00AFA68C /* MUByteProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteProtocolHandler.h; sourceTree = "<group>"; };
 		2F8E7E2E12ED2B2C00AFA68C /* MUByteProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteProtocolHandler.m; sourceTree = "<group>"; };
+		2FA24AD11623639A00A9D92B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2FA60E3912E1379F008BD147 /* MUSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSection.h; sourceTree = "<group>"; };
 		2FA60E3A12E1379F008BD147 /* MUSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSection.m; sourceTree = "<group>"; };
 		2FA60E4912E1384F008BD147 /* MUProfilesSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfilesSection.h; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				2F8CEADB153ACD7500B488E7 /* BWToolkitFramework.framework in Frameworks */,
 				2F8CEADC153ACD7500B488E7 /* Growl.framework in Frameworks */,
@@ -548,6 +551,7 @@
 		1058C7A2FEA54F0111CA2CBB /* OS Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2FA24AD11623639A00A9D92B /* libz.dylib */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				2F8CEAE5153AD20200B488E7 /* SenTestingKit.framework */,
 			);
@@ -1654,11 +1658,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				OTHER_CFLAGS = "-DMAC_OS_X_VERSION_MIN_REQUIRED=MAC_OS_X_VERSION_10_4";
-				OTHER_LDFLAGS = (
-					"-lSystem",
-					"-lcrypto",
-					"-lz",
-				);
+				OTHER_LDFLAGS = "-lcrypto";
 				PRODUCT_NAME = Koan;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1687,11 +1687,7 @@
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
-				OTHER_LDFLAGS = (
-					"-lSystem",
-					"-lcrypto",
-					"-lz",
-				);
+				OTHER_LDFLAGS = "-lcrypto";
 				PRODUCT_NAME = Koan;
 				WRAPPER_EXTENSION = app;
 			};

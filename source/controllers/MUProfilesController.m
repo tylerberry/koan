@@ -106,12 +106,12 @@
 - (IBAction) showAddContextMenu: (id) sender
 {
   NSPoint point = [NSEvent mouseLocation];
-  NSPoint wp = [self.window convertScreenToBase: point];
-  NSLog (@"Location? x= %f, y = %f", (float)point.x, (float)point.y);
-  NSLog (@"Location? x= %f, y = %f", (float)wp.x, (float)wp.y);
+  NSPoint windowPoint = [self.window convertScreenToBase: point];
+  NSLog (@"Location? x= %f, y = %f", (float) point.x, (float) point.y);
+  NSLog (@"Location? x= %f, y = %f", (float) windowPoint.x, (float) windowPoint.y);
   
   NSEvent *event = [NSEvent mouseEventWithType: NSLeftMouseUp
-                                      location: wp
+                                      location: windowPoint
                                  modifierFlags: 0
                                      timestamp: NSTimeIntervalSince1970
                                   windowNumber: [self.window windowNumber]
@@ -154,9 +154,8 @@
       [items addObject: [outlineView itemAtRow: i]];
     }
     
-    for (NSUInteger i = 0; i < items.count; i++)
+    for (NSTreeNode *shadowObject in items)
     {
-      NSTreeNode *shadowObject = items[i];
       MUTreeNode *node = shadowObject.representedObject;
       
       if ([node isKindOfClass: [MUWorld class]])
@@ -173,10 +172,9 @@
 - (id) outlineView: (NSOutlineView *) outlineView persistentObjectForItem: (id) item
 {
   NSTreeNode *node = (NSTreeNode *) item;
-  id representedObject = node.representedObject;
   
-  if ([representedObject isKindOfClass: [MUWorld class]])
-  	return ((MUWorld *) representedObject).uniqueIdentifier;
+  if ([node.representedObject isKindOfClass: [MUWorld class]])
+  	return ((MUWorld *) node.representedObject).uniqueIdentifier;
   else
   	return nil;
 }
@@ -185,7 +183,9 @@
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView isGroupItem: (id) item
 {
-  return [[item representedObject] isKindOfClass: [MUSection class]] ? YES : NO;
+  NSTreeNode *node = (NSTreeNode *) item;
+  
+  return [node.representedObject isKindOfClass: [MUSection class]] ? YES : NO;
 }
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView shouldCollapseItem: (id) item
@@ -205,7 +205,9 @@
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView shouldShowOutlineCellForItem: (id) item
 {
-  return [[item representedObject] isKindOfClass: [MUProfilesSection class]] ? NO : YES;
+  NSTreeNode *node = (NSTreeNode *) item;
+  
+  return [node.representedObject isKindOfClass: [MUProfilesSection class]] ? NO : YES;
 }
 
 - (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
@@ -218,7 +220,7 @@
 
 - (void) outlineViewItemWillCollapse: (NSNotification *) notification
 {
-  id item = [notification userInfo][@"NSObject"];
+  id item = notification.userInfo[@"NSObject"];
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
@@ -227,7 +229,7 @@
 
 - (void) outlineViewItemWillExpand: (NSNotification *) notification
 {
-  id item = [notification userInfo][@"NSObject"];
+  id item = notification.userInfo[@"NSObject"];
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
@@ -237,7 +239,7 @@
 - (void) outlineViewSelectionDidChange: (NSNotification *) notification
 {
 #if 0
-	if ([selection count] == 1)
+	if (selection.count == 1)
   {
     [self changeItemView];
   }
@@ -272,7 +274,7 @@
 - (IBAction) changeFont: (id) sender
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
-  NSFont *selectedFont = [fontManager selectedFont];
+  NSFont *selectedFont = fontManager.selectedFont;
   NSFont *panelFont;
   
   if (selectedFont == nil)
@@ -289,7 +291,7 @@
 
 - (void) colorPanelColorDidChange: (NSNotification *) notification
 {
-  if ([profileBackgroundColorWell isActive])
+  if (profileBackgroundColorWell.isActive)
   {
     if (backgroundColorActive)
       [profileBackgroundColorUseGlobalButton setState: NSOffState];
@@ -301,7 +303,7 @@
       visitedLinkColorActive = NO;
     }
   }
-  else if ([profileLinkColorWell isActive])
+  else if (profileLinkColorWell.isActive)
   {
     if (linkColorActive)
       [profileLinkColorUseGlobalButton setState: NSOffState];
@@ -313,7 +315,7 @@
       visitedLinkColorActive = NO;
     }
   }
-  else if ([profileTextColorWell isActive])
+  else if (profileTextColorWell.isActive)
   {
     if (textColorActive)
       [profileTextColorUseGlobalButton setState: NSOffState];
@@ -325,7 +327,7 @@
       visitedLinkColorActive = NO;
     }
   }
-  else if ([profileVisitedLinkColorWell isActive])
+  else if (profileVisitedLinkColorWell.isActive)
   {
     if (visitedLinkColorActive)
       [profileVisitedLinkColorUseGlobalButton setState: NSOffState];
@@ -368,7 +370,7 @@
     [editingFont release];
     editingFont = nil;
     
-  	[profileFontField setStringValue: [[NSFont fontWithName: fontName size: [fontSize floatValue]] fullDisplayName]];
+  	[profileFontField setStringValue: [NSFont fontWithName: fontName size: fontSize.floatValue].fullDisplayName];
   }
 }
 
@@ -454,11 +456,11 @@
 {
   [profilesOutlineView collapseItem: nil collapseChildren: YES];
   
-  for (NSInteger i = 0; i < [profilesOutlineView numberOfRows]; i++)
+  for (NSInteger i = 0; i < profilesOutlineView.numberOfRows; i++)
   {
     NSTreeNode *node = [profilesOutlineView itemAtRow: i];
     
-    if ([((MUTreeNode *) [node representedObject]) isKindOfClass: [MUSection class]])
+    if ([((MUTreeNode *) node.representedObject) isKindOfClass: [MUSection class]])
       [profilesOutlineView expandItem: node];
   }
   

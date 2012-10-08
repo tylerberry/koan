@@ -64,7 +64,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 {
   NSData *subdata = [dataBuffer subdataWithRange: NSMakeRange (0, byteIndex)];
   
-  [dataBuffer setData: [dataBuffer subdataWithRange: NSMakeRange (byteIndex, [self length] - byteIndex)]];
+  [dataBuffer setData: [dataBuffer subdataWithRange: NSMakeRange (byteIndex, self.length - byteIndex)]];
   
   return subdata;
 }
@@ -76,21 +76,21 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 
 - (void) postBufferAsData
 {
-  if ([self length] > 0)
+  if (self.length > 0)
   {
-    [self postDidProvideDataNotificationWithData: [self dataValue]];
+    [self postDidProvideDataNotificationWithData: self.dataValue];
     [self clear];
   }
 }
 
 - (BOOL) isEmpty
 {
-  return [self length] == 0;
+  return self.length == 0;
 }
 
 - (NSUInteger) length
 {
-  return [dataBuffer length];
+  return dataBuffer.length;
 }
 
 - (NSString *) ASCIIStringByConsumingBuffer
@@ -105,14 +105,14 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 
 - (NSString *) stringByConsumingBufferWithEncoding: (NSStringEncoding) encoding
 {
-  NSString *string = [[NSString alloc] initWithData: [self dataValue] encoding: encoding];
+  NSString *string = [[NSString alloc] initWithData: self.dataValue encoding: encoding];
   [self clear];
   return string;
 }
 
 - (NSString *) stringValueWithEncoding: (NSStringEncoding) encoding
 {
-  return [[NSString alloc] initWithData: [self dataValue] encoding: encoding];
+  return [[NSString alloc] initWithData: self.dataValue encoding: encoding];
 }
 
 @end

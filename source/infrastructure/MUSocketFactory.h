@@ -10,10 +10,6 @@
 @class MUProxySettings;
 
 @interface MUSocketFactory : NSObject
-{
-  BOOL useProxy;
-  MUProxySettings *proxySettings;
-}
 
 @property (assign, nonatomic) BOOL useProxy;
 @property (strong) MUProxySettings *proxySettings;

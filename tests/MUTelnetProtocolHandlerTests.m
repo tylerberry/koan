@@ -358,6 +358,11 @@
   return;
 }
 
+- (void) reportWindowSizeToServer
+{
+  return;
+}
+
 - (void) writeDataToSocket: (NSData *) data
 {
   [mockSocketData appendData: data];

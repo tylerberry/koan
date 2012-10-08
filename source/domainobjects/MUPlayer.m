@@ -25,7 +25,7 @@ static const int32_t currentPlayerVersion = 1;
   if (!(self = [super initWithName: newName children: nil]))
     return nil;
   
-  password = newPassword;
+  password = [newPassword copy];
   
   return self;
 }
@@ -34,7 +34,6 @@ static const int32_t currentPlayerVersion = 1;
 {
   return [self initWithName: @"New player" password: @""];
 }
-
 
 #pragma mark - Property method implementations
 
@@ -47,7 +46,7 @@ static const int32_t currentPlayerVersion = 1;
 {
   if (!self.name)
   	return nil;
-
+  
   NSRange whitespaceRange = [self.name rangeOfCharacterFromSet: [NSCharacterSet whitespaceCharacterSet]];
   
   if (self.password && self.password.length > 0)
@@ -75,7 +74,7 @@ static const int32_t currentPlayerVersion = 1;
   {
     [result appendFormat: @"%@", [tokens[0] lowercaseString]];
     
-    for (unsigned i = 1; i < tokens.count; i++)
+    for (NSUInteger i = 1; i < tokens.count; i++)
       [result appendFormat: @".%@", [tokens[i] lowercaseString]];
   }
   return result;
@@ -99,13 +98,13 @@ static const int32_t currentPlayerVersion = 1;
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-  if (!(self = [super init]))
+  if (!(self = [super initWithName: nil children: nil]))
     return nil;
   
   // int32_t version = [decoder decodeInt32ForKey: @"version"];
   
   self.name = [decoder decodeObjectForKey: @"name"];
-  self.password = [decoder decodeObjectForKey: @"password"];
+  password = [decoder decodeObjectForKey: @"password"];
   
   return self;
 }

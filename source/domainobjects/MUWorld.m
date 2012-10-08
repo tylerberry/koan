@@ -47,9 +47,9 @@ static const int32_t currentWorldVersion = 7;
   if (!(self = [super initWithName: newName children: newPlayers]))
     return nil;
   
-  self.hostname = newHostname;
-  self.port = newPort;
-  self.url = newURL;
+  hostname = [newHostname copy];
+  port = [newPort copy];
+  url = [newURL copy];
   
   return self;
 }
@@ -131,20 +131,20 @@ static const int32_t currentWorldVersion = 7;
   if (version >= 5)
   {
     self.name = [decoder decodeObjectForKey: @"name"];
-    self.hostname = [decoder decodeObjectForKey: @"hostname"];
+    hostname = [decoder decodeObjectForKey: @"hostname"];
   }
   else
   {
     self.name = [decoder decodeObjectForKey: @"worldName"];
-    self.hostname = [decoder decodeObjectForKey: @"worldHostname"];
+    hostname = [decoder decodeObjectForKey: @"worldHostname"];
   }
   
   if (version >= 6)
-    self.port = @([decoder decodeIntForKey: @"port"]);
+    port = @([decoder decodeIntForKey: @"port"]);
   else if (version == 5)
-    self.port = [decoder decodeObjectForKey: @"port"];
+    port = [decoder decodeObjectForKey: @"port"];
   else
-    self.port = [decoder decodeObjectForKey: @"worldPort"];
+    port = [decoder decodeObjectForKey: @"worldPort"];
   
   if (version >= 7)
     self.children = [decoder decodeObjectForKey: @"children"];
@@ -152,11 +152,11 @@ static const int32_t currentWorldVersion = 7;
     self.children = [decoder decodeObjectForKey: @"players"];
   
   if (version >= 5)
-    self.url = [decoder decodeObjectForKey: @"URL"];
+    url = [decoder decodeObjectForKey: @"URL"];
   else if (version >= 1)
-    self.url = [decoder decodeObjectForKey: @"worldURL"];
+    url = [decoder decodeObjectForKey: @"worldURL"];
   else
-    self.url = @"";
+    url = @"";
   
   return self;
 }

@@ -132,7 +132,7 @@
 
 - (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
 {
-  for (unsigned i = 0; i < self.children.count; i++)
+  for (NSUInteger i = 0; i < self.children.count; i++)
   {
     MUTreeNode *node = (self.children)[i];
     

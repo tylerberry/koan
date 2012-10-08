@@ -23,9 +23,10 @@ static const int32_t currentProfileVersion = 2;
 
 @implementation MUProfile
 
+@synthesize font, backgroundColor, linkColor, textColor, visitedLinkColor;
 @synthesize world, player, autoconnect;
-@dynamic hostname, loginString, uniqueIdentifier, windowTitle;
 @dynamic effectiveBackgroundColor, effectiveFont, effectiveFontDisplayName, effectiveLinkColor, effectiveTextColor;
+@dynamic hasLoginInformation, hostname, loginString, uniqueIdentifier, windowTitle;
 
 + (BOOL) automaticallyNotifiesObserversForKey: (NSString *) key
 {
@@ -33,18 +34,42 @@ static const int32_t currentProfileVersion = 2;
   
   if (!keyArray)
   {
-  	keyArray = @[@"effectiveFont",
-  		@"effectiveFontDisplayName",
-      @"effectiveTextColor",
-  		@"effectiveBackgroundColor",
-  		@"effectiveLinkColor",
-  		@"effectiveVisitedLinkColor"];
+  	keyArray = @[@"effectiveFont", @"effectiveFontDisplayName", @"effectiveTextColor", @"effectiveBackgroundColor",
+    @"effectiveLinkColor", @"effectiveVisitedLinkColor"];
   }
   
   if ([keyArray containsObject: key])
   	return NO;
   else
-  	return YES;
+  	return [super automaticallyNotifiesObserversForKey: key];
+}
+
++ (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
+{
+  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+  
+  if ([key isEqualToString: @"effectiveFont"] || [key isEqualToString: @"effectiveFontDisplayName"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"font"];
+  }
+  else if ([key isEqualToString: @"effectiveBackgroundColor"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"backgroundColor"];
+  }
+  else if ([key isEqualToString: @"effectiveLinkColor"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"linkColor"];
+  }
+  else if ([key isEqualToString: @"effectiveTextColor"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"textColor"];
+  }
+  else if ([key isEqualToString: @"effectiveVisitedLinkColor"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"visitedLinkColor"];
+  }
+  
+  return keyPaths;
 }
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
@@ -52,14 +77,14 @@ static const int32_t currentProfileVersion = 2;
                      autoconnect: (BOOL) newAutoconnect
 {
   return [[self alloc] initWithWorld: newWorld
-                               player: newPlayer
-                          autoconnect: newAutoconnect];
+                              player: newPlayer
+                         autoconnect: newAutoconnect];
 }
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [[self alloc] initWithWorld: newWorld
-                               player: newPlayer];
+                              player: newPlayer];
 }
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
@@ -82,11 +107,11 @@ static const int32_t currentProfileVersion = 2;
   world = newWorld;
   player = newPlayer;
   autoconnect = newAutoconnect;
-  [self setFont: newFont];
-  [self setTextColor: newTextColor];
-  [self setBackgroundColor: newBackgroundColor];
-  [self setLinkColor: newLinkColor];
-  [self setVisitedLinkColor: newVisitedLinkColor];
+  font = newFont;
+  textColor = [newTextColor copy];
+  backgroundColor = [newBackgroundColor copy];
+  linkColor = [newLinkColor copy];
+  visitedLinkColor = [newVisitedLinkColor copy];
   
   [self registerForNotifications];
   
@@ -124,91 +149,27 @@ static const int32_t currentProfileVersion = 2;
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
 }
 
-#pragma mark - Accessors
+#pragma mark - Actions
 
-- (NSFont *) font
+- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return font;
+  return [self.world newTelnetConnectionWithDelegate: delegate];
 }
 
-- (void) setFont: (NSFont *) newFont
+- (MUFilter *) createLogger
 {
-  if ([font isEqual: newFont])
-    return;
-  
-  [self willChangeValueForKey: @"effectiveFont"];
-  [self willChangeValueForKey: @"effectiveFontDisplayName"];
-  font = [newFont copy];
-  [self didChangeValueForKey: @"effectiveFont"];
-  [self didChangeValueForKey: @"effectiveFontDisplayName"];
+  if (self.player)
+    return [MUTextLogger filterWithWorld: self.world player: self.player];
+  else
+    return [MUTextLogger filterWithWorld: self.world];
 }
 
-- (NSColor *) textColor
-{
-  return textColor;
-}
-
-- (void) setTextColor: (NSColor *) newTextColor
-{
-  if ([textColor isEqual: newTextColor])
-    return;
-  
-  [self willChangeValueForKey: @"effectiveTextColor"];
-  textColor = [newTextColor copy];
-  [self didChangeValueForKey: @"effectiveTextColor"];
-}
-
-- (NSColor *) backgroundColor
-{
-  return backgroundColor;
-}
-
-- (void) setBackgroundColor: (NSColor *) newBackgroundColor
-{
-  if ([backgroundColor isEqual: newBackgroundColor])
-    return;
-  
-  [self willChangeValueForKey: @"effectiveBackgroundColor"];
-  backgroundColor = [newBackgroundColor copy];
-  [self didChangeValueForKey: @"effectiveBackgroundColor"];
-}
-
-- (NSColor *) linkColor
-{
-  return linkColor;
-}
-
-- (void) setLinkColor: (NSColor *) newLinkColor
-{
-  if ([linkColor isEqual: newLinkColor])
-    return;
-  
-  [self willChangeValueForKey: @"effectiveLinkColor"];
-  linkColor = [newLinkColor copy];
-  [self didChangeValueForKey: @"effectiveLinkColor"];
-}
-
-- (NSColor *) visitedLinkColor
-{
-  return visitedLinkColor;
-}
-
-- (void) setVisitedLinkColor: (NSColor *) newVisitedLinkColor
-{
-  if ([visitedLinkColor isEqual: newVisitedLinkColor])
-    return;
-  
-  [self willChangeValueForKey: @"effectiveVisitedLinkColor"];
-  visitedLinkColor = [newVisitedLinkColor copy];
-  [self didChangeValueForKey: @"effectiveVisitedLinkColor"];
-}
-
-#pragma mark - Accessors for bindings
+#pragma mark - Derived property method implementations
 
 - (NSColor *) effectiveBackgroundColor
 {
-  if (backgroundColor)
-  	return backgroundColor;
+  if (self.backgroundColor)
+  	return self.backgroundColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
@@ -219,13 +180,13 @@ static const int32_t currentProfileVersion = 2;
 
 - (NSFont *) effectiveFont
 {
-  if (font)
-  	return font;
+  if (self.font)
+  	return self.font;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	NSString *fontName = [defaults.values valueForKey: MUPFontName];
-  	float fontSize = ((NSNumber *) [defaults.values valueForKey: MUPFontSize]).floatValue;
+  	CGFloat fontSize = ((NSNumber *) [defaults.values valueForKey: MUPFontSize]).floatValue;
   	
   	return [NSFont fontWithName: fontName size: fontSize];
   }
@@ -233,8 +194,8 @@ static const int32_t currentProfileVersion = 2;
 
 - (NSString *) effectiveFontDisplayName
 {
-  if (font)
-  	return font.fullDisplayName;
+  if (self.font)
+  	return self.font.fullDisplayName;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
@@ -247,8 +208,8 @@ static const int32_t currentProfileVersion = 2;
 
 - (NSColor *) effectiveLinkColor
 {
-  if (linkColor)
-  	return linkColor;
+  if (self.linkColor)
+  	return self.linkColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
@@ -259,8 +220,8 @@ static const int32_t currentProfileVersion = 2;
 
 - (NSColor *) effectiveTextColor
 {
-  if (textColor)
-  	return textColor;
+  if (self.textColor)
+  	return self.textColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
@@ -271,8 +232,8 @@ static const int32_t currentProfileVersion = 2;
 
 - (NSColor *) effectiveVisitedLinkColor
 {
-  if (visitedLinkColor)
-  	return visitedLinkColor;
+  if (self.visitedLinkColor)
+  	return self.visitedLinkColor;
   else
   {
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
@@ -281,37 +242,22 @@ static const int32_t currentProfileVersion = 2;
   }
 }
 
-#pragma mark - Actions
-
-- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
-{
-  return [world newTelnetConnectionWithDelegate: delegate];
-}
-
-- (MUFilter *) createLogger
-{
-  if (player)
-    return [MUTextLogger filterWithWorld: world player: player];
-  else
-    return [MUTextLogger filterWithWorld: world];
-}
+#pragma mark - Property method implementations
 
 - (BOOL) hasLoginInformation
 {
   return self.loginString != nil;
 }
 
-#pragma mark - Property method implementations
-
 - (NSString *) hostname
 {
-  return world.hostname;
+  return self.world.hostname;
 }
 
 - (NSString *) loginString
 {
-  if (player)
-    return player.loginString;
+  if (self.player)
+    return self.player.loginString;
   else
     return nil;
 }
@@ -319,21 +265,21 @@ static const int32_t currentProfileVersion = 2;
 - (NSString *) uniqueIdentifier
 {
   NSString *identifier = nil;
-  if (player)
+  if (self.player)
   {
     // FIXME:  Consider offloading the generation of a unique name for the player on MUPlayer.
-    identifier = [NSString stringWithFormat: @"%@;%@", world.uniqueIdentifier, player.uniqueIdentifier];
+    identifier = [NSString stringWithFormat: @"%@;%@", self.world.uniqueIdentifier, self.player.uniqueIdentifier];
   }
   else
   {
-    identifier = world.uniqueIdentifier;
+    identifier = self.world.uniqueIdentifier;
   }
   return identifier;
 }
 
 - (NSString *) windowTitle
 {
-  return (player ? player.windowTitle : world.windowTitle);
+  return (self.player ? self.player.windowTitle : self.world.windowTitle);
 }
 
 #pragma mark - NSCoding protocol
@@ -375,7 +321,7 @@ static const int32_t currentProfileVersion = 2;
 
 - (void) globalBackgroundColorDidChange: (NSNotification *) notification
 {
-  if (!backgroundColor)
+  if (!self.backgroundColor)
   {
   	[self willChangeValueForKey: @"effectiveBackgroundColor"];
   	[self didChangeValueForKey: @"effectiveBackgroundColor"];
@@ -384,7 +330,7 @@ static const int32_t currentProfileVersion = 2;
 
 - (void) globalFontDidChange: (NSNotification *) notification
 {
-  if (!font)
+  if (!self.font)
   {
   	[self willChangeValueForKey: @"effectiveFont"];
   	[self willChangeValueForKey: @"effectiveFontDisplayName"];
@@ -395,7 +341,7 @@ static const int32_t currentProfileVersion = 2;
 
 - (void) globalLinkColorDidChange: (NSNotification *) notification
 {
-  if (!linkColor)
+  if (!self.linkColor)
   {
   	[self willChangeValueForKey: @"effectiveLinkColor"];
   	[self didChangeValueForKey: @"effectiveLinkColor"];
@@ -404,7 +350,7 @@ static const int32_t currentProfileVersion = 2;
 
 - (void) globalTextColorDidChange: (NSNotification *) notification
 {
-  if (!textColor)
+  if (!self.textColor)
   {
   	[self willChangeValueForKey: @"effectiveTextColor"];
   	[self didChangeValueForKey: @"effectiveTextColor"];

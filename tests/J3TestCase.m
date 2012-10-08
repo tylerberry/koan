@@ -54,7 +54,7 @@
 
 - (void) assertFloat: (float) actual equals: (float) expected message: (NSString *) message;
 {
-  [self assert: [NSNumber numberWithFloat: actual] equals: [NSNumber numberWithFloat: expected] message: message];
+  [self assertTrue: (abs (expected - actual) < 0.000001) message: message];
 }
 
 - (void) assertInt: (int) actual equals: (int) expected;
@@ -64,7 +64,7 @@
 
 - (void) assertInt: (int) actual equals: (int) expected message: (NSString *) message;
 {
-  [self assert: [NSNumber numberWithInt: actual] equals: [NSNumber numberWithInt: expected] message: message];
+  [self assertTrue: (actual == expected) message: message];
 }
 
 - (void) assertInteger: (NSInteger) actual equals: (NSInteger) expected;
@@ -92,7 +92,7 @@
   [self assertNil: actual message: @""];
 }
 
-- (void) assertNil:(id)actual message:(NSString *)message;
+- (void) assertNil: (id) actual message: (NSString *) message;
 {
   NSString *error = [NSString stringWithFormat: @"%@ expected nil but was [%@]", message, actual];
   

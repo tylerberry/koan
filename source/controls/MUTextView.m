@@ -23,12 +23,10 @@
 
 #pragma mark - Overrides
 
-- (void) drawRect: (NSRect) rect
+- (void) drawGrid: (NSRect) rect
 {
-  [super drawRect: rect];
-  
   NSBezierPath *gridLine = [NSBezierPath bezierPath];
-  [gridLine setLineWidth: 0.5];
+  gridLine.lineWidth = 0.5;
   
   for (CGFloat y = self.textContainerInset.height;
        y <= self.bounds.size.height - self.textContainerInset.height;
@@ -53,6 +51,13 @@
   NSColor *gridColor = [[NSColor whiteColor] colorWithAlphaComponent: 0.8];
   [gridColor set];
   [gridLine stroke];
+}
+
+- (void) drawRect: (NSRect) rect
+{
+  [super drawRect: rect];
+
+  // [self drawGrid: rect];
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem

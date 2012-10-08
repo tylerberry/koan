@@ -176,7 +176,7 @@ static NSArray *offerableCharsets;
 {
   if (subnegotiationBuffer.length == 0)
   {
-    [self log: @"Telnet irregularity: Received zero-length subnegotiation."];
+    [self log: @"  Telnet: Received zero-length subnegotiation."];
   }
   
   const uint8_t *bytes = subnegotiationBuffer.bytes;
@@ -415,11 +415,11 @@ static NSArray *offerableCharsets;
   NSUInteger length = [subnegotiationData length];
   
   if (![self optionYesForHim: MUTelnetOptionCharset])
-    [self log: @"Telnet irregularity: Server sent %@ REQUEST without WILL %@.", [MUTelnetOption optionNameForByte: bytes[0]], [MUTelnetOption optionNameForByte: bytes[0]]];
+    [self log: @"  Telnet: Server sent %@ REQUEST without WILL %@.", [MUTelnetOption optionNameForByte: bytes[0]], [MUTelnetOption optionNameForByte: bytes[0]]];
   
   if (length == 1)
   {
-    [self log: @"Telnet irregularity: Invalid length of %u for %@ subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    [self log: @"  Telnet: Invalid length of %u for %@ subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
     return;
   }
   
@@ -433,7 +433,7 @@ static NSArray *offerableCharsets;
       
       if (length == 2)
       {
-        [self log: @"Telnet irregularity: Invalid length of %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: Invalid length of %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
         return;
       }
       
@@ -444,14 +444,14 @@ static NSArray *offerableCharsets;
         byteOffset += strlen ("[TTABLE]");
         translationTableVersion = bytes[byteOffset++];
         if (translationTableVersion != 1)
-          [self log: @"Telnet irregularity: Invalid TTABLE version %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+          [self log: @"  Telnet: Invalid TTABLE version %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       }
       
       uint8_t separatorCharacter = bytes[byteOffset];
       NSString *separatorCharacterString = [[NSString alloc] initWithBytes: &separatorCharacter length: 1 encoding: NSASCIIStringEncoding];
       
       if (separatorCharacter == MUTelnetInterpretAsCommand)
-        [self log: @"Telnet irregularity: IAC used as separator in %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: IAC used as separator in %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       
       NSString *offeredCharsetsString = [[NSString alloc] initWithBytes: bytes + byteOffset + 1 length: length - byteOffset - 1 encoding: NSASCIIStringEncoding];
       NSArray *offeredCharsets = [offeredCharsetsString componentsSeparatedByString: separatorCharacterString];
@@ -490,12 +490,12 @@ static NSArray *offerableCharsets;
     {
       if (self.connectionState.charsetNegotiationStatus != MUTelnetCharsetNegotiationActive)
       {
-        [self log: @"Telnet irregularity: Received %@ ACCEPTED subnegotiation, but no active negotiation in progress.", [MUTelnetOption optionNameForByte: bytes[0]]];
+        [self log: @"  Telnet: Received %@ ACCEPTED subnegotiation, but no active negotiation in progress.", [MUTelnetOption optionNameForByte: bytes[0]]];
       }
       
       if (length == 2)
       {
-        [self log: @"Telnet irregularity: Invalid length of %u for %@ ACCEPTED subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: Invalid length of %u for %@ ACCEPTED subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
         return;
       }
       
@@ -521,42 +521,42 @@ static NSArray *offerableCharsets;
         [self log: @"Received: IAC SB %@ ACCEPTED %@ IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]], acceptedCharset];
       }
       else
-        [self log: @"Telnet irregularity: Server sent %@ ACCEPTED subnegotiation for %@, which was not offered.", [MUTelnetOption optionNameForByte: bytes[0]], acceptedCharset];
+        [self log: @"  Telnet: Server sent %@ ACCEPTED subnegotiation for %@, which was not offered.", [MUTelnetOption optionNameForByte: bytes[0]], acceptedCharset];
       
       return;
     }
       
     case MUTelnetCharsetRejected:
       if (self.connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationInactive)
-        [self log: @"Telnet irregularity: Received %@ REJECTED subnegotiation, but no active negotiation in progress.", length, [MUTelnetOption optionNameForByte: bytes[0]]];
+        [self log: @"  Telnet: Received %@ REJECTED subnegotiation, but no active negotiation in progress.", length, [MUTelnetOption optionNameForByte: bytes[0]]];
       
       self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
       
       if (length > 2)
-        [self log: @"Telnet irregularity: Invalid length of %u for %@ REJECTED subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: Invalid length of %u for %@ REJECTED subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       else
         [self log: @"Received: IAC SB %@ REJECTED IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]]];
       return;
       
     case MUTelnetCharsetTTableIs:
-      [self log: @"Telnet irregularity: Received %@ TTABLE-IS subnegotiation without offering to accept a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+      [self log: @"  Telnet: Received %@ TTABLE-IS subnegotiation without offering to accept a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       [self sendCharsetTTableRejectedSubnegotiation];
       return;
       
     case MUTelnetCharsetTTableAck:
-      [self log: @"Telnet irregularity: Received %@ TTABLE-ACK subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+      [self log: @"  Telnet: Received %@ TTABLE-ACK subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       return;
       
     case MUTelnetCharsetTTableNak:
-      [self log: @"Telnet irregularity: Received %@ TTABLE-NAK subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+      [self log: @"  Telnet: Received %@ TTABLE-NAK subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       return;
       
     case MUTelnetCharsetTTableRejected:
-      [self log: @"Telnet irregularity: Received %@ TTABLE-REJECTED subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+      [self log: @"  Telnet: Received %@ TTABLE-REJECTED subnegotiation without offering a translation table. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
       return;
       
     default:
-      [self log: @"Telnet irregularity: %u is an unsupported %@ subnegotiation request. [%@]", bytes[1], [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+      [self log: @"  Telnet: %u is an unsupported %@ subnegotiation request. [%@]", bytes[1], [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
   }
 }
 
@@ -761,14 +761,14 @@ static NSArray *offerableCharsets;
   
   if (subnegotiationData.length != 2)
   {
-    [self log: @"Telnet irregularity: Invalid length of %u for %@ subnegotiation request. [%@]",
+    [self log: @"  Telnet: Invalid length of %u for %@ subnegotiation request. [%@]",
      subnegotiationData.length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
     return;
   }
   
   if (bytes[1] != MUTelnetTerminalTypeSend)
   {
-    [self log: @"Telnet irregularity: %u is not a known %@ subnegotiation request. [%@]", bytes[1], [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    [self log: @"  Telnet: %u is not a known %@ subnegotiation request. [%@]", bytes[1], [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
     return;
   }
   

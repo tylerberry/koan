@@ -21,7 +21,7 @@
       return [MUTelnetSubnegotiationIACState stateWithReturnState: [MUTelnetMCCP1SubnegotiationState class]];
   
     case MUTelnetInterpretAsCommand:
-      [protocolHandler log: @"Telnet irregularity: Received IAC while subnegotiating %@ option; expected WILL.", [MUTelnetOption optionNameForByte: MUTelnetOptionMCCP1]];
+      [protocolHandler log: @"  Telnet: Received IAC while subnegotiating %@ option; expected WILL.", [MUTelnetOption optionNameForByte: MUTelnetOptionMCCP1]];
       return [MUTelnetSubnegotiationIACState stateWithReturnState: [MUTelnetMCCP1SubnegotiationState class]];
 
     default:

@@ -97,7 +97,7 @@
         return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
       }
       
-      [protocolHandler log: @"Telnet irregularity: IAC SE while not in subnegotiation."];
+      [protocolHandler log: @"  Telnet: IAC SE while not in subnegotiation."];
       return [MUTelnetTextState state];
   }
 }

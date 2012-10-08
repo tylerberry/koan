@@ -272,13 +272,24 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   uint8_t height0 = numberOfLines % 255;
   
   [constructedData appendBytes: &width1 length: 1];
+  if (width1 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &width1 length: 1];
+    
   [constructedData appendBytes: &width0 length: 1];
+  if (width0 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &width0 length: 1];
+  
   [constructedData appendBytes: &height1 length: 1];
+  if (height1 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &height1 length: 1];
+  
   [constructedData appendBytes: &height0 length: 1];
+  if (height0 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &height0 length: 1];
   
   [constructedData appendBytes: nawsSubnegotiationFooter length: 2];
   
-  [self writeDataWithPreprocessing: constructedData];
+  [self writeDataToSocket: constructedData];
   [self log: @"    Sent: IAC SB %@ %d %d %d %d IAC SE.",
    [MUTelnetOption optionNameForByte: MUTelnetOptionNegotiateAboutWindowSize], width1, width0, height1, height0];
 }

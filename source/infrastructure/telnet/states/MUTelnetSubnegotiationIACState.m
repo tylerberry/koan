@@ -41,7 +41,7 @@
       return [returnState state];
 
     default:
-      [protocolHandler log: @"Telnet irregularity: IAC %u while in subnegotiation.", byte];
+      [protocolHandler log: @"  Telnet: IAC %u while in subnegotiation.", byte];
       return [returnState state];
   }
 }

@@ -623,4 +623,19 @@
   [self assertInput: @"m" hasOutput: @""];
 }
 
+- (void) testIgnoresUnhandledButValidCodes
+{
+  NSString *nonHandledCodes = @"ABCDEFGHJKSTfhlnsu";
+  
+  for (NSUInteger i = 0; i < nonHandledCodes.length; i++)
+  {
+    unichar code = [nonHandledCodes characterAtIndex: i];
+    NSString *testString = [NSString stringWithFormat: @"\x1B[%cm", (char) code];
+    [self assertInput: testString
+            hasOutput: @"m"
+              message: [NSString stringWithCharacters: &code length: 1]];
+    
+  }
+}
+
 @end

@@ -16,6 +16,9 @@
 
 @property (strong, nonatomic) MUProfile *profile;
 
+- (void) applyCode: (unichar) code
+          toString: (NSMutableAttributedString *) mutableString
+        atLocation: (NSUInteger) startLocation;
 - (NSArray *) attributeNamesForANSICode;
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
 - (BOOL) extractCode: (NSMutableAttributedString *) editString;
@@ -26,7 +29,7 @@
 - (void) updateFromProfileFont;
 - (void) updateFromProfileTextColor;
 
-#pragma mark - Attribute manipulation
+#pragma mark - Font attribute manipulation
 
 - (void) removeAttribute: (NSString *) attribute
                 inString: (NSMutableAttributedString *) string
@@ -122,6 +125,14 @@
 }
 
 #pragma mark - Private methods
+
+- (void) applyCode: (unichar) code
+          toString: (NSMutableAttributedString *) mutableString
+        atLocation: (NSUInteger) startLocation
+{
+  if (code == MUANSISelectGraphicRendition)
+    [self setAttributesInString: mutableString atLocation: startLocation];
+}
 
 - (NSArray *) attributeNamesForANSICode
 {
@@ -400,9 +411,10 @@
     
     if (codeRange.location < editString.length)
     {
+      unichar code = [editString.string characterAtIndex: codeRange.location + codeRange.length - 1];
       inCode = NO;
       [editString deleteCharactersInRange: codeRange];
-      [self setAttributesInString: editString atLocation: codeRange.location];
+      [self applyCode: code toString: editString atLocation: codeRange.location];
       return YES;
     }
   }
@@ -436,7 +448,7 @@
   [scanner setScanLocation: codeIndex];
   [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
-  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"m"];
+  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"ABCDEFGHJKSTfhlmnsu"];
   
   NSString *charactersFromThisScan = @"";
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];

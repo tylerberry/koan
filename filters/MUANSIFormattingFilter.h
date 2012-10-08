@@ -67,6 +67,11 @@ typedef enum MUANSI256ColorCode
   MUANSI256BrightWhite = 15,
 } MUANSI256ColorCode;
 
+typedef enum MUANSICommands
+{
+  MUANSISelectGraphicRendition = 'm'
+} MUANSICommand;
+
 @interface MUANSIFormattingFilter : MUFilter
 
 + (MUFilter *) filterWithProfile: (MUProfile *) newProfile;

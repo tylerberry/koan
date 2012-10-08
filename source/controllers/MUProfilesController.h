@@ -9,7 +9,7 @@
 @class MUProfile;
 @class MUWorldRegistry;
 
-@interface MUProfilesController : NSWindowController
+@interface MUProfilesController : NSWindowController <NSOutlineViewDelegate>
 {
   NSMutableArray *profilesTreeArray;
   NSMutableArray *profilesExpandedItems;

@@ -203,6 +203,11 @@
   return [self outlineView: outlineView isGroupItem: item] ? NO : YES;
 }
 
+- (BOOL) outlineView: (NSOutlineView *) outlineView shouldShowOutlineCellForItem: (id) item
+{
+  return [[item representedObject] isKindOfClass: [MUProfilesSection class]] ? NO : YES;
+}
+
 - (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
 {
   if ([self outlineView: outlineView isGroupItem: item])

@@ -226,13 +226,21 @@ static NSArray *offerableCharsets;
 {
   [options[option] receivedDo];
   
-  if (option == MUTelnetOptionCharset)
+  if (option == MUTelnetOptionNegotiateAboutWindowSize)
+  {
+    connectionState.shouldReportWindowSizeChanges = YES;
+    [delegate reportWindowSizeToServer];
+  }
+  else if (option == MUTelnetOptionCharset)
     [self sendCharsetRequestSubnegotiation];
 }
 
 - (void) receivedDont: (uint8_t) option
 {
   [options[option] receivedDont];
+  
+  if (option == MUTelnetOptionNegotiateAboutWindowSize)
+    connectionState.shouldReportWindowSizeChanges = NO;
 }
 
 - (void) receivedWill: (uint8_t) option
@@ -241,8 +249,7 @@ static NSArray *offerableCharsets;
   
   if (option == MUTelnetOptionEcho)
     connectionState.serverWillEcho = YES;
-  
-  if (option == MUTelnetOptionMCCP2)
+  else if (option == MUTelnetOptionMCCP2)
     [self forOption: MUTelnetOptionMCCP1 allowWill: NO allowDo: NO];
 }
 
@@ -347,6 +354,7 @@ static NSArray *offerableCharsets;
   [self forOption: MUTelnetOptionSuppressGoAhead allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
   [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
+  [self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
   [self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];
@@ -680,7 +688,7 @@ static NSArray *offerableCharsets;
       break;
   }
   
-  self.connectionState.incomingStreamCompressed = YES;
+  self.connectionState.isIncomingStreamCompressed = YES;
 }
 
 #pragma mark - MSSP

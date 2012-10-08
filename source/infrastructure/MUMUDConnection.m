@@ -251,6 +251,49 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 #pragma mark - MUTelnetProtocolHandlerDelegate
 
+- (void) reportWindowSizeToServer
+{
+  [delegate reportWindowSizeToServer];
+}
+
+- (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
+{
+  if (!state.shouldReportWindowSizeChanges)
+    return;
+  
+  uint8_t nawsSubnegotiationHeader[3] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionNegotiateAboutWindowSize};
+  uint8_t nawsSubnegotiationFooter[2] = {MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
+  
+  NSMutableData *constructedData = [NSMutableData dataWithBytes: nawsSubnegotiationHeader length: 3];
+  
+  uint8_t width1 = numberOfColumns / 255;
+  uint8_t width0 = numberOfColumns % 255;
+  uint8_t height1 = numberOfLines / 255;
+  uint8_t height0 = numberOfLines % 255;
+  
+  [constructedData appendBytes: &width1 length: 1];
+  if (width1 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &width1 length: 1];
+  
+  [constructedData appendBytes: &width0 length: 1];
+  if (width0 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &width0 length: 1];
+  
+  [constructedData appendBytes: &height1 length: 1];
+  if (height1 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &height1 length: 1];
+  
+  [constructedData appendBytes: &height0 length: 1];
+  if (height0 == MUTelnetInterpretAsCommand)
+    [constructedData appendBytes: &height0 length: 1];
+  
+  [constructedData appendBytes: nawsSubnegotiationFooter length: 2];
+  
+  [self.socket write: constructedData];
+  [self log: @"    Sent: IAC SB %@ %d %d %d %d IAC SE.",
+   [MUTelnetOption optionNameForByte: MUTelnetOptionNegotiateAboutWindowSize], width1, width0, height1, height0];
+}
+
 - (void) writeDataToSocket: (NSData *) data
 {
   [self.socket write: data];

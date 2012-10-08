@@ -64,7 +64,7 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  if (!connectionState.incomingStreamCompressed)
+  if (!connectionState.isIncomingStreamCompressed)
   {
     [protocolStack parseInputByte: byte previousProtocolHandler: self];
     return;
@@ -175,7 +175,7 @@
       
       [self cleanUpStream];
       [self log: @"    MCCP: Decompression of incoming data ended."];
-      connectionState.incomingStreamCompressed = NO;
+      connectionState.isIncomingStreamCompressed = NO;
     }
     
     return;

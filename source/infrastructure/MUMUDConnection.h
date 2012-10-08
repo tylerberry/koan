@@ -61,6 +61,7 @@ extern NSString *MUMUDConnectionErrorMessageKey;
                     delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
 - (void) log: (NSString *) message, ...;
+- (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
 - (void) writeLine: (NSString *) line;
 
 @end
@@ -69,9 +70,12 @@ extern NSString *MUMUDConnectionErrorMessageKey;
 
 @protocol MUMUDConnectionDelegate
 
+@required
 - (void) displayPrompt: (NSString *) promptString;
 - (void) displayString: (NSString *) string;
+- (void) reportWindowSizeToServer;
 
+@optional
 - (void) telnetConnectionDidConnect: (NSNotification *) notification;
 - (void) telnetConnectionIsConnecting: (NSNotification *) notification;
 - (void) telnetConnectionWasClosedByClient: (NSNotification *) notification;

@@ -9,16 +9,51 @@
 @implementation MUTextView
 
 @synthesize pasteDelegate;
-@dynamic monospaceCharacterSize;
+@dynamic monospaceCharacterHeight, monospaceCharacterSize, monospaceCharacterWidth, numberOfColumns, numberOfLines;
 
 #pragma mark - Properties
 
+- (CGFloat) monospaceCharacterHeight
+{
+  return [self.layoutManager defaultLineHeightForFont: [self.layoutManager substituteFontForFont: self.font]];
+}
+
 - (NSSize) monospaceCharacterSize
 {
-  NSFont *displayFont = [[self layoutManager] substituteFontForFont: [self font]];
+  return NSMakeSize (self.monospaceCharacterWidth, self.monospaceCharacterHeight);
+}
+
+- (CGFloat) monospaceCharacterWidth
+{
+  return [self.layoutManager substituteFontForFont: self.font].maximumAdvancement.width;
+}
+
+- (NSUInteger) numberOfColumns
+{
+  CGFloat availableHorizontalSpace;
   
-  return NSMakeSize ([displayFont maximumAdvancement].width,
-                     [[self layoutManager] defaultLineHeightForFont: displayFont]);
+  if (self.enclosingScrollView)
+    availableHorizontalSpace = self.enclosingScrollView.contentSize.width;
+  else
+    availableHorizontalSpace = self.bounds.size.width;
+  
+  availableHorizontalSpace -= 2 * (self.textContainerInset.width + self.textContainer.lineFragmentPadding);
+  
+  return (NSUInteger) availableHorizontalSpace / self.monospaceCharacterWidth;
+}
+
+- (NSUInteger) numberOfLines
+{
+  CGFloat availableVerticalSpace;
+  
+  if (self.enclosingScrollView)
+    availableVerticalSpace = self.enclosingScrollView.contentSize.height;
+  else
+    availableVerticalSpace = self.bounds.size.height;
+  
+  availableVerticalSpace -= 2 * self.textContainerInset.height;
+  
+  return (NSUInteger) availableVerticalSpace / self.monospaceCharacterHeight;
 }
 
 #pragma mark - Overrides
@@ -56,7 +91,7 @@
 {
   [super drawRect: rect];
 
-  // [self drawGrid: rect];
+  //[self drawGrid: rect];
 }
 
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem

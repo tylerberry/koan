@@ -11,7 +11,12 @@
 @interface MUTextView : NSTextView
 
 @property (weak) IBOutlet NSObject <MUTextViewPasteDelegate> *pasteDelegate;
+
+@property (readonly) CGFloat monospaceCharacterWidth;
 @property (readonly) NSSize monospaceCharacterSize;
+@property (readonly) CGFloat monospaceCharacterHeight;
+@property (readonly) NSUInteger numberOfColumns;
+@property (readonly) NSUInteger numberOfLines;
 
 @end
 

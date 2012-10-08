@@ -12,13 +12,22 @@
 #import "MUProfile.h"
 #import "MUTextView.h"
 
-@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate>
+@protocol MUConnectionWindowControllerDelegate
+
+- (void) connectionWindowControllerWillClose: (NSNotification *) notification;
+- (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification;
+
+@end
+
+#pragma mark -
+
+@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
 {
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;
   IBOutlet NSSplitView *splitView;
   
-  id delegate;
+  NSObject <MUConnectionWindowControllerDelegate> *delegate;
   
   MUProfile *profile;
   MUMUDConnection *telnetConnection;
@@ -40,8 +49,8 @@
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 - (id) initWithWorld: (MUWorld *) newWorld;
 
-- (id) delegate;
-- (void) setDelegate: (id) delegate;
+- (NSObject <MUConnectionWindowControllerDelegate> *) delegate;
+- (void) setDelegate: (NSObject <MUConnectionWindowControllerDelegate> *) delegate;
 
 - (void) confirmClose: (SEL) callback;
 
@@ -53,14 +62,5 @@
 - (IBAction) nextCommand: (id) sender;
 - (IBAction) previousCommand: (id) sender;
 - (IBAction) sendInputText: (id) sender;
-
-@end
-
-#pragma mark -
-
-@interface NSObject (MUConnectionWindowControllerDelegate)
-
-- (void) connectionWindowControllerWillClose: (NSNotification *) notification;
-- (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification;
 
 @end

@@ -22,6 +22,9 @@ enum MUSearchDirections
 };
 
 @interface MUConnectionWindowController ()
+{
+  NSTimer *windowSizeNotificationTimer;
+}
 
 - (BOOL) canCloseWindow;
 - (void) cleanUpPingTimer;
@@ -33,11 +36,13 @@ enum MUSearchDirections
 - (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
 - (void) postConnectionWindowControllerWillCloseNotification;
-- (void) setTextViewsNeedDisplay: (NSNotification *) notification;
+- (void) prepareDelayedReportWindowSizeToServer;
 - (void) registerForNotifications;
 - (void) sendPeriodicPing: (NSTimer *) timer;
+- (void) setTextViewsNeedDisplay: (NSNotification *) notification;
 - (NSString *) splitViewAutosaveName;
-- (void) tabCompleteWithDirection: (enum MUSearchDirections)direction;
+- (void) tabCompleteWithDirection: (enum MUSearchDirections) direction;
+- (void) triggerDelayedReportWindowSizeToServer;
 - (void) updateFonts;
 - (void) updateLinkTextColor;
 - (void) updateTextColors;
@@ -68,6 +73,7 @@ enum MUSearchDirections
   
   currentPrompt = nil;
   currentlySearching = NO;
+  windowSizeNotificationTimer = nil;
   
   return self;
 }
@@ -186,21 +192,6 @@ enum MUSearchDirections
   }
   
   return NO;
-}
-
-- (BOOL) windowShouldClose: (id) sender
-{
-  return self.canCloseWindow;
-}
-
-- (void) windowWillClose: (NSNotification *) notification
-{
-  if (notification.object == self.window)
-  {
-  	[self.window setDelegate: nil];
-  
-  	[self postConnectionWindowControllerWillCloseNotification];
-  }
 }
   
 #pragma mark - Accessors
@@ -355,6 +346,12 @@ enum MUSearchDirections
   [self displayString: string asPrompt: NO];
 }
 
+- (void) reportWindowSizeToServer
+{
+  [telnetConnection sendNumberOfWindowLines: [receivedTextView numberOfLines]
+                                    columns: [receivedTextView numberOfColumns]];
+}
+
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
 {
   [self displayString: _(MULConnectionOpen)];
@@ -396,7 +393,50 @@ enum MUSearchDirections
   [MUGrowlService connectionClosedByErrorForTitle: profile.windowTitle error: errorMessage];
 }
 
-#pragma mark - NSTextView delegate
+#pragma mark - MUTextViewPasteDelegate protocol
+
+- (BOOL) textView: (MUTextView *) textView insertText: (id) string
+{
+  if (textView == receivedTextView)
+  {
+    [inputView insertText: string];
+    [self.window makeFirstResponder: inputView];
+    return YES;
+  }
+  else if (textView == inputView)
+  {
+    [self endCompletion];
+    return NO;
+  }
+  return NO;
+}
+
+- (BOOL) textView: (MUTextView *) textView pasteAsPlainText: (id) originalSender
+{
+  if (textView == receivedTextView)
+  {
+    [inputView pasteAsPlainText: originalSender];
+    [self.window makeFirstResponder: inputView];
+    return YES;
+  }
+  else if (textView == inputView)
+  {
+    [self endCompletion];
+    return NO;
+  }
+  return NO;
+}
+
+#pragma mark - NSSplitViewDelegate protocol
+
+- (void) splitViewDidResizeSubviews: (NSNotification *) notification
+{
+  if (![NSApp currentEvent].type == NSLeftMouseUp)
+    NSLog (@"UP");
+  [self prepareDelayedReportWindowSizeToServer];
+}
+
+#pragma mark - NSTextViewDelegate protocol
 
 - (BOOL) textView: (NSTextView *) textView doCommandBySelector: (SEL) commandSelector
 {
@@ -505,38 +545,26 @@ enum MUSearchDirections
   return NO;
 }
 
-#pragma mark - MUTextView delegate
+#pragma mark - NSWindowDelegate protocol
 
-- (BOOL) textView: (MUTextView *) textView insertText: (id) string
+- (void) windowDidResize: (NSNotification *) notification
 {
-  if (textView == receivedTextView)
-  {
-    [inputView insertText: string];
-    [self.window makeFirstResponder: inputView];
-    return YES;
-  }
-  else if (textView == inputView)
-  {
-    [self endCompletion];
-    return NO;
-  }
-  return NO;
+  [self prepareDelayedReportWindowSizeToServer];
 }
 
-- (BOOL) textView: (MUTextView *) textView pasteAsPlainText: (id) originalSender
+- (BOOL) windowShouldClose: (id) sender
 {
-  if (textView == receivedTextView)
+  return self.canCloseWindow;
+}
+
+- (void) windowWillClose: (NSNotification *) notification
+{
+  if (notification.object == self.window)
   {
-    [inputView pasteAsPlainText: originalSender];
-    [self.window makeFirstResponder: inputView];
-    return YES;
+  	[self.window setDelegate: nil];
+    
+  	[self postConnectionWindowControllerWillCloseNotification];
   }
-  else if (textView == inputView)
-  {
-    [self endCompletion];
-    return NO;
-  }
-  return NO;
 }
 
 #pragma mark - Private methods
@@ -649,6 +677,18 @@ enum MUSearchDirections
   																					 object: nil];
 }
 
+- (void) prepareDelayedReportWindowSizeToServer
+{
+  if (windowSizeNotificationTimer)
+    return;
+  
+  windowSizeNotificationTimer = [NSTimer scheduledTimerWithTimeInterval: 0.01
+                                                                 target: self
+                                                               selector: @selector (triggerDelayedReportWindowSizeToServer)
+                                                               userInfo: nil
+                                                                repeats: NO];
+}
+
 - (void) sendPeriodicPing: (NSTimer *) timer
 {
   [telnetConnection writeLine: @"@@"];
@@ -700,6 +740,13 @@ enum MUSearchDirections
   currentlySearching = YES;
 }
 
+- (void) triggerDelayedReportWindowSizeToServer
+{
+  [windowSizeNotificationTimer invalidate];
+  windowSizeNotificationTimer = nil;
+  [self reportWindowSizeToServer];
+}
+
 - (void) updateFonts
 {
   NSRect visibleRect = receivedTextView.enclosingScrollView.contentView.documentVisibleRect;
@@ -730,6 +777,8 @@ enum MUSearchDirections
   
   [receivedTextView scrollRangeToVisible: NSMakeRange (visibleRange.location + visibleRange.length, 0)];
   [inputView scrollRangeToVisible: NSMakeRange (inputView.textStorage.length, 0)];
+  
+  [self reportWindowSizeToServer];
   
   [receivedTextView setNeedsDisplay: YES];
   [inputView setNeedsDisplay: YES];

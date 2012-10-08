@@ -7,12 +7,14 @@
 #import <Cocoa/Cocoa.h>
 
 #import "CTBadge.h"
+#import "MUConnectionWindowController.h"
+
 @class MUAcknowledgementsController;
 @class MUPreferencesController;
 @class MUProfilesController;
 @class MUProxySettingsController;
 
-@interface MUApplicationController : NSObject
+@interface MUApplicationController : NSObject <MUConnectionWindowControllerDelegate>
 {
   IBOutlet NSMenu *openConnectionMenu;
   

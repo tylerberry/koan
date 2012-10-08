@@ -14,19 +14,13 @@ enum charsetNegotiationStatus
 };
 
 @interface MUMUDConnectionState : NSObject
-{
-  enum charsetNegotiationStatus charsetNegotiationStatus;
-  BOOL incomingStreamCompressed;
-  unsigned nextTerminalTypeIndex;
-  BOOL serverWillEcho;
-  NSStringEncoding stringEncoding;
-}
 
-@property (assign, nonatomic) enum charsetNegotiationStatus charsetNegotiationStatus;
-@property (assign, nonatomic) BOOL incomingStreamCompressed;
-@property (assign, nonatomic) unsigned nextTerminalTypeIndex;
-@property (assign, nonatomic) BOOL serverWillEcho;
-@property (assign, nonatomic) NSStringEncoding stringEncoding;
+@property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
+@property (assign) BOOL isIncomingStreamCompressed;
+@property (assign) unsigned nextTerminalTypeIndex;
+@property (assign) BOOL shouldReportWindowSizeChanges;
+@property (assign) BOOL serverWillEcho;
+@property (assign) NSStringEncoding stringEncoding;
 
 + (id) connectionState;
 

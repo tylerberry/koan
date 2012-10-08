@@ -144,9 +144,6 @@
       {
         if ([ansiCode characterAtIndex: 2] == '1' || [ansiCode characterAtIndex: 2] == '2')
           [mutableString deleteCharactersInRange: NSMakeRange (0, startLocation)];
-        
-        if ([ansiCode characterAtIndex: 2] == '2')
-        {
           if ([self.delegate respondsToSelector: @selector (clearScreen)])
             [self.delegate clearScreen];
         }

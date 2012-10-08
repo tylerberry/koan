@@ -24,4 +24,6 @@ enum charsetNegotiationStatus
 
 + (id) connectionState;
 
+- (void) reset;
+
 @end

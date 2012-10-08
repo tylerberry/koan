@@ -206,18 +206,21 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) socketWasClosedByClient: (NSNotification *) notification
 {
+  [self.state reset];
   [self cleanUpPollTimer]; 
   [self setStatusClosedByClient];
 }
 
 - (void) socketWasClosedByServer: (NSNotification *) notification
 {
+  [self.state reset];
   [self cleanUpPollTimer];
   [self setStatusClosedByServer];
 }
 
 - (void) socketWasClosedWithError: (NSNotification *) notification
 {
+  [self.state reset];
   [self cleanUpPollTimer];
   [self setStatusClosedWithError: [[notification userInfo] valueForKey: MUSocketErrorMessageKey]];
 }
@@ -338,13 +341,13 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   // It is possible for the connection to have been released but for there to
   // be a pending timer fire that was registered before the timers were
   // invalidated.
-  if (!self.socket || ![self.socket isConnected])
+  if (!self.socket || !self.socket.isConnected)
     return;
   
   [self.socket poll];
   
-  if ([self.socket hasDataAvailable])
-    [protocolStack parseInputData: [self.socket readUpToLength: [self.socket availableBytes]]];
+  if (self.socket.hasDataAvailable)
+    [protocolStack parseInputData: [self.socket readUpToLength: self.socket.availableBytes]];
 }
 
 - (void) registerObjectForNotifications: (id) object
@@ -352,19 +355,19 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   
   [notificationCenter addObserver: object
-                         selector: @selector(telnetConnectionDidConnect:)
+                         selector: @selector (telnetConnectionDidConnect:)
                              name: MUMUDConnectionDidConnectNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(telnetConnectionIsConnecting:)
+                         selector: @selector (telnetConnectionIsConnecting:)
                              name: MUMUDConnectionIsConnectingNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(telnetConnectionWasClosedByClient:)
+                         selector: @selector (telnetConnectionWasClosedByClient:)
                              name: MUMUDConnectionWasClosedByClientNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(telnetConnectionWasClosedByServer:)
+                         selector: @selector (telnetConnectionWasClosedByServer:)
                              name: MUMUDConnectionWasClosedByServerNotification
                            object: self];
   [notificationCenter addObserver: object

@@ -31,4 +31,14 @@
   return self;
 }
 
+- (void) reset
+{
+  self.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+  self.isIncomingStreamCompressed = NO;
+  self.nextTerminalTypeIndex = 0;
+  self.serverWillEcho = NO;
+  self.shouldReportWindowSizeChanges = NO;
+  self.stringEncoding = NSASCIIStringEncoding;
+}
+
 @end

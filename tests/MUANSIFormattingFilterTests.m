@@ -234,11 +234,31 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36mbc\x1B[35md\x1B[39me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 3
+             message: @"d"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 4
+             message: @"e"];
 }
 
 - (void) testStandardForegroundColors
@@ -246,14 +266,46 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[30ma\x1B[31mb\x1B[32mc\x1B[33md\x1B[34me\x1B[35mf\x1B[36mg\x1B[37mh"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [NSColor darkGrayColor] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a"];
-  [self assertString: output hasValue: [NSColor redColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b"];
-  [self assertString: output hasValue: [NSColor greenColor] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c"];
-  [self assertString: output hasValue: [NSColor yellowColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: [NSColor blueColor] forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 5 message: @"f"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 6 message: @"g"];
-  [self assertString: output hasValue: [NSColor whiteColor] forAttribute: NSForegroundColorAttributeName atIndex: 7 message: @"h"];
+  [self assertString: output
+            hasValue: [NSColor darkGrayColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a"];
+  [self assertString: output
+            hasValue: [NSColor redColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b"];
+  [self assertString: output
+            hasValue: [NSColor greenColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c"];
+  [self assertString: output
+            hasValue: [NSColor yellowColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 3
+             message: @"d"];
+  [self assertString: output
+            hasValue: [NSColor blueColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 4
+             message: @"e"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 5
+             message: @"f"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 6
+             message: @"g"];
+  [self assertString: output
+            hasValue: [NSColor whiteColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 7
+             message: @"h"];
 }
 
 - (void) testXTerm256ForegroundColor
@@ -307,7 +359,11 @@
         targetColor = [NSColor whiteColor];
     }
     
-    [self assertString: output hasValue: targetColor forAttribute: NSForegroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: targetColor
+          forAttribute: NSForegroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
   
   for (unsigned i = 16; i < 232; i++)
@@ -325,7 +381,11 @@
                                                     blue: 1. / 6. * blue
                                                    alpha: 1.0];
     
-    [self assertString: output hasValue: cubeColor forAttribute: NSForegroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: cubeColor
+          forAttribute: NSForegroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
   
   for (unsigned i = 232; i < 256; i++)
@@ -338,7 +398,11 @@
     NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1. / 25. * adjustedValue
                                                           alpha: 1.0];
     
-    [self assertString: output hasValue: grayscaleColor forAttribute: NSForegroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: grayscaleColor
+          forAttribute: NSForegroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
 }
 
@@ -347,11 +411,31 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[46mbc\x1B[45md\x1B[49me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: @"a"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSBackgroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 0
+             message: @"a"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 2
+             message: @"c"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 3
+             message: @"d"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 4
+             message: @"e"];
 }
 
 - (void) testStandardBackgroundColors
@@ -359,14 +443,46 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[40ma\x1B[41mb\x1B[42mc\x1B[43md\x1B[44me\x1B[45mf\x1B[46mg\x1B[47mh"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [NSColor darkGrayColor] forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: @"a"];
-  [self assertString: output hasValue: [NSColor redColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b"];
-  [self assertString: output hasValue: [NSColor greenColor] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c"];
-  [self assertString: output hasValue: [NSColor yellowColor] forAttribute: NSBackgroundColorAttributeName atIndex: 3 message: @"d"];
-  [self assertString: output hasValue: [NSColor blueColor] forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSBackgroundColorAttributeName atIndex: 5 message: @"f"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 6 message: @"g"];
-  [self assertString: output hasValue: [NSColor whiteColor] forAttribute: NSBackgroundColorAttributeName atIndex: 7 message: @"h"];
+  [self assertString: output
+            hasValue: [NSColor darkGrayColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 0
+             message: @"a"];
+  [self assertString: output
+            hasValue: [NSColor redColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b"];
+  [self assertString: output
+            hasValue: [NSColor greenColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 2
+             message: @"c"];
+  [self assertString: output
+            hasValue: [NSColor yellowColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 3
+             message: @"d"];
+  [self assertString: output
+            hasValue: [NSColor blueColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 4
+             message: @"e"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 5
+             message: @"f"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 6
+             message: @"g"];
+  [self assertString: output
+            hasValue: [NSColor whiteColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 7
+             message: @"h"];
 }
 
 - (void) testXTerm256BackgroundColor
@@ -420,7 +536,11 @@
         targetColor = [NSColor whiteColor];
     }
     
-    [self assertString: output hasValue: targetColor forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: targetColor
+          forAttribute: NSBackgroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
   
   for (unsigned i = 16; i < 232; i++)
@@ -438,7 +558,11 @@
                                                     blue: 1. / 6. * blue
                                                    alpha: 1.0];
     
-    [self assertString: output hasValue: cubeColor forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: cubeColor
+          forAttribute: NSBackgroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
   
   for (unsigned i = 232; i < 256; i++)
@@ -451,7 +575,11 @@
     NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1. / 25. * adjustedValue
                                                           alpha: 1.0];
     
-    [self assertString: output hasValue: grayscaleColor forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: [NSString stringWithFormat: @"%d", i]];
+    [self assertString: output
+              hasValue: grayscaleColor
+          forAttribute: NSBackgroundColorAttributeName
+               atIndex: 0
+               message: [NSString stringWithFormat: @"%d", i]];
   }
 }
 
@@ -460,16 +588,56 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mbc\x1B[45;35md\x1B[39;49me"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"a foreground"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 0 message: @"a background"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSForegroundColorAttributeName atIndex: 3 message: @"d foreground"];
-  [self assertString: output hasValue: [NSColor magentaColor] forAttribute: NSBackgroundColorAttributeName atIndex: 3 message: @"d background"];
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 4 message: @"e foreground"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 4 message: @"e background"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 0
+             message: @"a background"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b background"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 2
+             message: @"c background"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 3
+             message: @"d foreground"];
+  [self assertString: output
+            hasValue: [NSColor magentaColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 3
+             message: @"d background"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 4
+             message: @"e foreground"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 4
+             message: @"e background"];
 }
 
 - (void) testResetDisplayMode
@@ -477,10 +645,26 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36m\x1B[46mb\x1B[0mc"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b background"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 2
+             message: @"c background"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
 }
 
 - (void) testCompoundSetThenResetDisplayMode
@@ -488,10 +672,25 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mb\x1B[0mc"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"];  
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b background"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName atIndex: 2
+             message: @"c background"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
 }
 
 - (void) testShortFormOfResetDisplayMode
@@ -499,10 +698,26 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36m\x1B[46mb\x1B[mc"];
   NSAttributedString *output = [queue processAttributedString: input];
   
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSBackgroundColorAttributeName atIndex: 1 message: @"b background"];
-  [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 1 message: @"b foreground"];
-  [self assertString: output hasValue: nil forAttribute: NSBackgroundColorAttributeName atIndex: 2 message: @"c background"];
-  [self assertString: output hasValue: TESTING_TEXT_COLOR forAttribute: NSForegroundColorAttributeName atIndex: 2 message: @"c foreground"]; 
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 1
+             message: @"b background"];
+  [self assertString: output
+            hasValue: [NSColor cyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSBackgroundColorAttributeName
+             atIndex: 2
+             message: @"c background"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
 }
 
 - (void) testPersistColorsBetweenLines
@@ -611,7 +826,10 @@
   
   NSAttributedString *output = [queue processAttributedString: input2];
    
-  [self assertString: output hasValue: @(NSSingleUnderlineStyle) forAttribute: NSUnderlineStyleAttributeName atIndex: 0 message: @"b"];
+  [self assertString: output hasValue: @(NSSingleUnderlineStyle)
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 0
+             message: @"b"];
 }
 
 - (void) testRetainsPartialCode

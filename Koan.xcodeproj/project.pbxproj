@@ -35,6 +35,7 @@
 		2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FB70BCAC1FD00C1586D /* MUDocumentController.m */; };
 		2F7B4FED0BCAC40F00C1586D /* MUTextLogDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */; };
 		2F7CDB76121EFC22001B4879 /* MUMCCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */; };
+		2F7E48DC1623D6D000C6AF4D /* MUSSLProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7E48DB1623D6D000C6AF4D /* MUSSLProtocolHandler.m */; };
 		2F82CADA1241F81300D32655 /* MUFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CAD91241F81300D32655 /* MUFolder.m */; };
 		2F82CB9F12422DFC00D32655 /* MUTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CB9E12422DFC00D32655 /* MUTreeNode.m */; };
 		2F861FB811FD53F2007136D5 /* MUProtocolStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F861FB711FD53F2007136D5 /* MUProtocolStack.m */; };
@@ -291,6 +292,8 @@
 		2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLogDocument.m; sourceTree = "<group>"; };
 		2F7CDB74121EFC22001B4879 /* MUMCCPProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMCCPProtocolHandler.h; sourceTree = "<group>"; };
 		2F7CDB75121EFC22001B4879 /* MUMCCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCCPProtocolHandler.m; sourceTree = "<group>"; };
+		2F7E48DA1623D6D000C6AF4D /* MUSSLProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSSLProtocolHandler.h; sourceTree = "<group>"; };
+		2F7E48DB1623D6D000C6AF4D /* MUSSLProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSSLProtocolHandler.m; sourceTree = "<group>"; };
 		2F82CAD81241F81300D32655 /* MUFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFolder.h; sourceTree = "<group>"; };
 		2F82CAD91241F81300D32655 /* MUFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFolder.m; sourceTree = "<group>"; };
 		2F82CB9D12422DFC00D32655 /* MUTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNode.h; sourceTree = "<group>"; };
@@ -737,8 +740,11 @@
 		2F8E7BFA12ECC5AC00AFA68C /* SSL */ = {
 			isa = PBXGroup;
 			children = (
+				2F7E48DA1623D6D000C6AF4D /* MUSSLProtocolHandler.h */,
+				2F7E48DB1623D6D000C6AF4D /* MUSSLProtocolHandler.m */,
 			);
 			name = SSL;
+			path = ssl;
 			sourceTree = "<group>";
 		};
 		2FE366630BCAC8D40068A6AA /* Third Party */ = {
@@ -1424,6 +1430,7 @@
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
 				2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */,
 				2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */,
+				2F7E48DC1623D6D000C6AF4D /* MUSSLProtocolHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

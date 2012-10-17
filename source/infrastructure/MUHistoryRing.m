@@ -20,7 +20,6 @@
 
 @implementation MUHistoryRing
 
-@synthesize buffer, cursor, ring, searchCursor, updates;
 @dynamic count;
 
 + (id) historyRing
@@ -33,11 +32,11 @@
   if (!(self = [super init]))
     return nil;
 
-  buffer = nil;
-  cursor = NSNotFound;
-  ring = [[NSMutableArray alloc] init];
-  searchCursor = NSNotFound;
-  updates = [[NSMutableDictionary alloc] init];
+  _buffer = nil;
+  _cursor = NSNotFound;
+  _ring = [[NSMutableArray alloc] init];
+  _searchCursor = NSNotFound;
+  _updates = [[NSMutableDictionary alloc] init];
   
   return self;
 }
@@ -60,7 +59,7 @@
     if (string)
       return string;
     else
-      return (self.ring)[ringIndex];
+      return self.ring[ringIndex];
   }
 }
 
@@ -70,12 +69,12 @@
 {
   NSString *copy = [string copy];
   
-  [self.updates removeObjectForKey: @(cursor)];
+  [self.updates removeObjectForKey: @(self.cursor)];
   
   if (!(self.cursor != NSNotFound
         && self.cursor == self.count - 1
-        && [string isEqualToString: (self.ring)[cursor]]))
-    [ring addObject: copy];
+        && [string isEqualToString: self.ring[self.cursor]]))
+    [self.ring addObject: copy];
   
   self.buffer = nil;
   self.cursor = NSNotFound;
@@ -92,7 +91,7 @@
   }
   else
   {
-    (self.updates)[@(self.cursor)] = copy;
+    self.updates[@(self.cursor)] = copy;
   }
 }
 

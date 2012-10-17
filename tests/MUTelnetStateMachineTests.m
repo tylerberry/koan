@@ -23,7 +23,7 @@
 
 #define C(x) ([x class])
 
-@interface MUTelnetStateMachineTests (Private)
+@interface MUTelnetStateMachineTests ()
 
 - (void) assertByteConfirmsTelnet: (uint8_t) byte;
 - (void) assertByteInvalidatesTelnet: (uint8_t) byte;
@@ -191,11 +191,7 @@
   return;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTelnetStateMachineTests (Private)
+#pragma mark - Private methods
 
 - (void) assertByteConfirmsTelnet: (uint8_t) byte;
 {

@@ -61,6 +61,18 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 #pragma mark -
 
 @interface MUSocket ()
+{
+  NSString *hostname;
+  int port;
+  int socketfd;
+  int kq;
+  struct hostent *server;
+  NSUInteger availableBytes;
+  BOOL hasError;
+  NSMutableArray *dataToWrite;
+  NSObject *dataToWriteLock;
+  NSObject *availableBytesLock;
+}
 
 - (void) connectSocket;
 - (void) createSocket;
@@ -80,6 +92,8 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 #pragma mark -
 
 @implementation MUSocket
+
+@synthesize delegate = _delegate;
 
 + (id) socketWithHostname: (NSString *) hostname port: (int) port
 {
@@ -106,27 +120,22 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 {
   [self close];
   
-  [self unregisterObjectForNotifications: delegate];
-  delegate = nil;
+  [self unregisterObjectForNotifications: _delegate];
+  _delegate = nil;
  
   if (server)
     free (server);
 }
 
-- (NSObject <MUSocketDelegate> *) delegate
+- (void) setDelegate: (NSObject <MUSocketDelegate> *) newDelegate
 {
-  return delegate;
-}
-
-- (void) setDelegate: (NSObject <MUSocketDelegate> *) object
-{
-  if (delegate == object)
+  if (_delegate == newDelegate)
     return;
   
-  [self unregisterObjectForNotifications: delegate];
-  [self registerObjectForNotifications: object];
+  [self unregisterObjectForNotifications: _delegate];
+  [self registerObjectForNotifications: newDelegate];
   
-  delegate = object;
+  _delegate = newDelegate;
 }
 
 - (void) close

@@ -22,7 +22,7 @@ NSString *MUMUDConnectionWasClosedByServerNotification = @"MUMUDConnectionWasClo
 NSString *MUMUDConnectionWasClosedWithErrorNotification = @"MUMUDConnectionWasClosedWithErrorNotification";
 NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
-@interface MUMUDConnection (Private)
+@interface MUMUDConnection ()
 
 - (void) cleanUpPollTimer;
 - (void) displayAndLogString: (NSString *) string;
@@ -41,6 +41,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 @implementation MUMUDConnection
 
+@synthesize delegate = _delegate;
 @synthesize socket, state;
 
 + (id) telnetWithSocketFactory: (MUSocketFactory *) factory
@@ -98,34 +99,29 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                                                                             connectionState: state];
   [protocolStack addByteProtocol: sslProtocolHandler];
   
-  delegate = newDelegate;
+  _delegate = newDelegate;
   return self;
 }
 
 - (void) dealloc
 {
-  [self unregisterObjectForNotifications: delegate];
-  delegate = nil;
+  [self unregisterObjectForNotifications: _delegate];
+  _delegate = nil;
   
   [self close];
   [self cleanUpPollTimer];
   
 }
 
-- (NSObject <MUMUDConnectionDelegate> *) delegate
-{
-  return delegate;
-}
-
 - (void) setDelegate: (NSObject <MUMUDConnectionDelegate> *) object
 {
-  if (delegate == object)
+  if (_delegate == object)
     return;
   
-  [self unregisterObjectForNotifications: delegate];
+  [self unregisterObjectForNotifications: _delegate];
   [self registerObjectForNotifications: object];
   
-  delegate = object;
+  _delegate = object;
 }
 
 - (void) log: (NSString *) message, ...
@@ -264,7 +260,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) reportWindowSizeToServer
 {
-  [delegate reportWindowSizeToServer];
+  [self.delegate reportWindowSizeToServer];
 }
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
@@ -310,11 +306,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self.socket write: data];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUMUDConnection (Private)
+#pragma mark - Private methods
 
 - (void) cleanUpPollTimer
 {

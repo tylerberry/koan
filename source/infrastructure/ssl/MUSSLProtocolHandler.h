@@ -14,8 +14,8 @@
 }
 
 + (id) protocolHandlerWithStack: (MUProtocolStack *) stack
-                connectionState: (MUMUDConnectionState *) telnetConnectionState;
+                connectionState: (MUMUDConnectionState *) newConnectionState;
 - (id) initWithStack: (MUProtocolStack *) stack
-     connectionState: (MUMUDConnectionState *) telnetConnectionState;
+     connectionState: (MUMUDConnectionState *) newConnectionState;
 
 @end

@@ -63,7 +63,7 @@
 
 #pragma mark -
 
-@interface MUSOCKS5PrimitiveTests (Private)
+@interface MUSOCKS5PrimitiveTests ()
 
 - (void) assertObject: (id) selection writes: (NSString *) output;
 
@@ -210,11 +210,7 @@
   [self assertFalse: auth.authenticated];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUSOCKS5PrimitiveTests (Private)
+#pragma mark - Private methods
 
 - (void) assertObject: (id) object writes: (NSString *) output
 {

@@ -34,26 +34,12 @@ extern NSString *MUSocketErrorMessageKey;
 #pragma mark -
 
 @interface MUSocket : MUAbstractConnection <MUByteDestination, MUByteSource>
-{
-  NSObject <MUSocketDelegate> *delegate;
-  NSString *hostname;
-  int port;
-  int socketfd;
-  int kq;
-  struct hostent *server;
-  NSUInteger availableBytes;
-  BOOL hasError;
-  NSMutableArray *dataToWrite;
-  NSObject *dataToWriteLock;
-  NSObject *availableBytesLock;
-}
+
+@property (weak, nonatomic) NSObject <MUSocketDelegate> *delegate;
 
 + (id) socketWithHostname: (NSString *) hostname port: (int) port;
 
 - (id) initWithHostname: (NSString *) hostname port: (int) port;
-
-- (NSObject <MUSocketDelegate> *) delegate;
-- (void) setDelegate: (NSObject <MUSocketDelegate> *) object;
 
 @end
 

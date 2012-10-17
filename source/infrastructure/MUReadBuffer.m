@@ -9,7 +9,7 @@
 NSString *MUReadBufferDidProvideDataNotification = @"MUReadBufferDidProvideDataNotification";
 NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStringNotification";
 
-@interface MUReadBuffer (Private)
+@interface MUReadBuffer ()
 
 - (void) postDidProvideDataNotificationWithData: (NSData *) data;
 - (void) postDidProvideStringNotificationWithString: (NSString *) string;
@@ -115,11 +115,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
   return [[NSString alloc] initWithData: self.dataValue encoding: encoding];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUReadBuffer (Private)
+#pragma mark - Private methods
 
 - (void) postDidProvideDataNotificationWithData: (NSData *) data
 {

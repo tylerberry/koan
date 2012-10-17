@@ -10,7 +10,7 @@ NSString *First = @"First";
 NSString *Second = @"Second";
 NSString *Third = @"Third";
 
-@interface MUHistoryRingTests (Private)
+@interface MUHistoryRingTests ()
 
 - (void) assertCurrent: (NSString *) expected;
 - (void) assertPrevious: (NSString *) expected;
@@ -18,44 +18,6 @@ NSString *Third = @"Third";
 - (void) saveOne;
 - (void) saveTwo;
 - (void) saveThree;
-
-@end
-
-#pragma mark -
-
-@implementation MUHistoryRingTests (Private)
-
-- (void) assertCurrent: (NSString *) expected
-{
-  [self assert: [ring currentString] equals: expected];
-}
-
-- (void) assertPrevious: (NSString *) expected
-{
-  [self assert: [ring previousString] equals: expected];
-}
-
-- (void) assertNext: (NSString *) expected
-{
-  [self assert: [ring nextString] equals: expected];
-}
-
-- (void) saveOne
-{
-  [ring saveString: First];
-}
-
-- (void) saveTwo
-{
-  [self saveOne];
-  [ring saveString: Second];
-}
-
-- (void) saveThree
-{
-  [self saveTwo];
-  [ring saveString: Third];
-}
 
 @end
 
@@ -463,6 +425,40 @@ NSString *Third = @"Third";
   
   [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
                 equals: 2];
+}
+
+#pragma mark - Private methods
+
+- (void) assertCurrent: (NSString *) expected
+{
+  [self assert: [ring currentString] equals: expected];
+}
+
+- (void) assertPrevious: (NSString *) expected
+{
+  [self assert: [ring previousString] equals: expected];
+}
+
+- (void) assertNext: (NSString *) expected
+{
+  [self assert: [ring nextString] equals: expected];
+}
+
+- (void) saveOne
+{
+  [ring saveString: First];
+}
+
+- (void) saveTwo
+{
+  [self saveOne];
+  [ring saveString: Second];
+}
+
+- (void) saveThree
+{
+  [self saveTwo];
+  [ring saveString: Third];
 }
 
 @end

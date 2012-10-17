@@ -9,7 +9,7 @@
 #import "MUProfile.h"
 #import "MUWorld.h"
 
-@interface MUProfileRegistryTests (Private)
+@interface MUProfileRegistryTests ()
 
 - (void) assertProfile: (MUProfile *) profile
                  world: (MUWorld *) world
@@ -123,11 +123,7 @@
             message: @"World and player"];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUProfileRegistryTests (Private)
+#pragma mark - Private methods
 
 - (void) assertProfile: (MUProfile *) profile
                  world: (MUWorld *) world

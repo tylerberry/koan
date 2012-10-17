@@ -13,7 +13,7 @@
 
 #pragma mark -
 
-@interface MUWriteBuffer (Private)
+@interface MUWriteBuffer ()
 
 - (void) ensureLastBlockIsBinary;
 - (void) ensureLastBlockIsString;
@@ -163,11 +163,7 @@
   [destination write: data];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUWriteBuffer (Private)
+#pragma mark - Private methods
 
 - (void) ensureLastBlockIsBinary
 {

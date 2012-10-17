@@ -59,7 +59,7 @@
 {
   NSMutableData *result = [NSMutableData data];
   uint8_t byte[1];
-  for (unsigned i = 0; i <= UINT8_MAX; i++)
+  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
   {
     if (contains[i])
     {
@@ -75,7 +75,7 @@
   if (!(self = [super init]))
     return nil;
   
-  for (unsigned i = 0; i <= UINT8_MAX; i++)
+  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
     contains[i] = NO;
   
   return self;
@@ -86,7 +86,7 @@
   if (![self init])
     return nil;
   
-  for (unsigned i = 0; i < length; i++)
+  for (NSUInteger i = 0; i < length; i++)
     [self addByte: bytes[i]];
   
   return self;
@@ -106,7 +106,7 @@
 {
   MUByteSet *set = [MUByteSet byteSet];
   
-  for (unsigned i = 0; i <= UINT8_MAX; i++)
+  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
     set->contains[i] = !contains[i];
   
   return set;

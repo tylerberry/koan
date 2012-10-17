@@ -19,7 +19,10 @@ const float CTSmallBadgeSize = (float) 23.;
 const float CTLargeLabelSize = (float) 30.; // 24. was Weider's value. -- TB
 const float CTSmallLabelSize = (float) 11.;
 
-@interface CTBadge (Private)
+@interface CTBadge ()
+
+//gradient used to fill badge mask
+- (NSGradient *) badgeGradient;
 
 // Return a badge with height of <size> to fit <length> characters
 - (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length;
@@ -29,9 +32,6 @@ const float CTSmallLabelSize = (float) 11.;
 
 // Returns string for display (replaces large numbers with infinity)
 - (NSString *) stringForValue: (NSUInteger) value;									
-
-//gradient used to fill badge mask
-- (NSGradient *) badgeGradient;
 
 @end
 
@@ -232,7 +232,7 @@ const float CTSmallLabelSize = (float) 11.;
   [self badgeApplicationDockIconWithString: [self stringForValue: value] insetX: dx y: dy];
 }
 
-#pragma mark - Misc.
+#pragma mark - Private methods
 
 - (NSGradient *) badgeGradient
 {
@@ -241,6 +241,29 @@ const float CTSmallLabelSize = (float) 11.;
                           [self.badgeColor shadowWithLevel:1/3.], 1.0, nil];
   
   return gradient;
+}
+
+- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length
+{
+  NSImage *badgeMask;
+  
+  if (length <=2)
+    badgeMask = [NSImage imageNamed: @"CTBadge_1.pdf"];
+  else if (length <=3)
+    badgeMask = [NSImage imageNamed: @"CTBadge_3.pdf"];
+  else if (length <=4)
+    badgeMask = [NSImage imageNamed: @"CTBadge_4.pdf"];
+  else
+    badgeMask = [NSImage imageNamed: @"CTBadge_5.pdf"];
+  
+  if (size > 0 && size != badgeMask.size.height)
+	{
+    badgeMask.name = nil;
+    badgeMask.scalesWhenResized = YES;
+    badgeMask.size = NSMakeSize (badgeMask.size.width * (size / badgeMask.size.height), size);
+	}
+  
+  return badgeMask;
 }
 
 - (NSAttributedString *) labelForString: (NSString *) label size: (NSUInteger) size
@@ -279,29 +302,6 @@ const float CTSmallLabelSize = (float) 11.;
     return [NSString stringWithFormat: @"%lu", value];
   else // Give infinity
     return @"\xe2\x88\x9e";
-}
-
-- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length
-{
-  NSImage *badgeMask;
-  
-  if (length <=2)
-    badgeMask = [NSImage imageNamed: @"CTBadge_1.pdf"];
-  else if (length <=3)
-    badgeMask = [NSImage imageNamed: @"CTBadge_3.pdf"];
-  else if (length <=4)
-    badgeMask = [NSImage imageNamed: @"CTBadge_4.pdf"];
-  else
-    badgeMask = [NSImage imageNamed: @"CTBadge_5.pdf"];
-  
-  if (size > 0 && size != badgeMask.size.height)
-	{
-    badgeMask.name = nil;
-    badgeMask.scalesWhenResized = YES;
-    badgeMask.size = NSMakeSize (badgeMask.size.width * (size / badgeMask.size.height), size);
-	}
-  
-  return badgeMask;
 }
 
 @end

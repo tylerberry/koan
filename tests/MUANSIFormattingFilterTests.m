@@ -46,7 +46,7 @@
 
 #pragma mark -
 
-@interface MUANSIFormattingFilterTests (Private)
+@interface MUANSIFormattingFilterTests ()
 
 - (void) assertFinalCharacter: (unsigned char) finalChar;
 - (void) assertString: (NSAttributedString *) string
@@ -62,50 +62,6 @@
            hasntTrait: (NSFontTraitMask) trait
               atIndex: (int) characterIndex
               message: (NSString *) message;
-
-@end
-
-#pragma mark -
-
-@implementation MUANSIFormattingFilterTests (Private)
-
-- (void) assertFinalCharacter: (unsigned char) finalChar
-{
-  [self assertInput: [NSString stringWithFormat: @"F\x1B[%coo", finalChar]
-          hasOutput: @"Foo"
-            message: [NSString stringWithFormat: @"[%X]", finalChar]];
-}
-
-- (void) assertString: (NSAttributedString *) string
-             hasValue: (id) value
-         forAttribute: (NSString *) attribute
-              atIndex: (int) characterIndex
-              message: (NSString *) message
-{
-  NSDictionary *attributes = [string attributesAtIndex: characterIndex effectiveRange: NULL];
-  
-  [self assert: [attributes valueForKey: attribute] equals: value message: message];
-}
-
-- (void) assertString: (NSAttributedString *) string
-             hasTrait: (NSFontTraitMask) trait
-              atIndex: (int) characterIndex
-              message: (NSString *) message
-{
-  NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
-  
-  [self assertTrue: [font hasTrait: trait] message: message];
-}
-
-- (void) assertString: (NSAttributedString *) string
-           hasntTrait: (NSFontTraitMask) trait
-              atIndex: (int) characterIndex
-              message: (NSString *) message
-{
-  NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
-  
-  [self assertFalse: [font hasTrait: trait] message: message];
-}
 
 @end
 
@@ -864,6 +820,46 @@
               message: [NSString stringWithCharacters: &code length: 1]];
     
   }
+}
+
+#pragma mark - Private methods
+
+- (void) assertFinalCharacter: (unsigned char) finalChar
+{
+  [self assertInput: [NSString stringWithFormat: @"F\x1B[%coo", finalChar]
+          hasOutput: @"Foo"
+            message: [NSString stringWithFormat: @"[%X]", finalChar]];
+}
+
+- (void) assertString: (NSAttributedString *) string
+             hasValue: (id) value
+         forAttribute: (NSString *) attribute
+              atIndex: (int) characterIndex
+              message: (NSString *) message
+{
+  NSDictionary *attributes = [string attributesAtIndex: characterIndex effectiveRange: NULL];
+  
+  [self assert: [attributes valueForKey: attribute] equals: value message: message];
+}
+
+- (void) assertString: (NSAttributedString *) string
+             hasTrait: (NSFontTraitMask) trait
+              atIndex: (int) characterIndex
+              message: (NSString *) message
+{
+  NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
+  
+  [self assertTrue: [font hasTrait: trait] message: message];
+}
+
+- (void) assertString: (NSAttributedString *) string
+           hasntTrait: (NSFontTraitMask) trait
+              atIndex: (int) characterIndex
+              message: (NSString *) message
+{
+  NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
+  
+  [self assertFalse: [font hasTrait: trait] message: message];
 }
 
 @end

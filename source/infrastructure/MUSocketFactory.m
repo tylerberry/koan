@@ -11,7 +11,7 @@
 
 static MUSocketFactory *defaultFactory = nil;
 
-@interface MUSocketFactory (Private)
+@interface MUSocketFactory ()
 
 - (void) cleanUpDefaultFactory: (NSNotification *) notification;
 - (void) loadProxySettingsFromDefaults;
@@ -70,11 +70,7 @@ static MUSocketFactory *defaultFactory = nil;
   self.useProxy = !self.useProxy;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUSocketFactory (Private)
+#pragma mark - Private methods
 
 - (void) cleanUpDefaultFactory: (NSNotification *) notification
 {

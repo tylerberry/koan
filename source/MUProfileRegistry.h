@@ -12,7 +12,7 @@
 
 @interface MUProfileRegistry : NSObject
 
-@property (strong, readonly) NSDictionary *profiles;
+@property (readonly) NSDictionary *profiles;
 
 + (MUProfileRegistry *) defaultRegistry;
 

@@ -10,7 +10,7 @@
 #import "MUMUDConnectionState.h"
 #import "MUTelnetConstants.h"
 
-@interface MUTelnetProtocolHandlerTests (Private)
+@interface MUTelnetProtocolHandlerTests ()
 
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes;
 - (void) confirmTelnetWithDontEcho;
@@ -368,11 +368,7 @@
   [mockSocketData appendData: data];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTelnetProtocolHandlerTests (Private)
+#pragma mark - Private methods
 
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes
 {

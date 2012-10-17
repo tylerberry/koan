@@ -7,21 +7,15 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MUProxySettings : NSObject <NSCoding>
-{
-  NSString *hostname;
-  NSNumber *port;
-  NSString *username;
-  NSString *password;
-}
 
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;
 @property (copy) NSString *username;
 @property (copy) NSString *password;
 
-+ (id) proxySettings;
+@property (readonly) NSString *description;
+@property (readonly) BOOL hasAuthentication;
 
-- (NSString *) description;
-- (BOOL) hasAuthentication;
++ (id) proxySettings;
 
 @end

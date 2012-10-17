@@ -10,9 +10,6 @@
 static MUWorldRegistry *defaultRegistry = nil;
 
 @interface MUWorldRegistry ()
-{
-  NSMutableArray *mutableWorlds;
-}
 
 - (void) cleanUpDefaultRegistry: (NSNotification *) notification;
 - (void) postWorldsDidChangeNotification;
@@ -26,7 +23,6 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 @implementation MUWorldRegistry
 
-@synthesize mutableWorlds;
 @dynamic count, worlds;
 
 + (MUWorldRegistry *) defaultRegistry
@@ -54,11 +50,10 @@ static MUWorldRegistry *defaultRegistry = nil;
   if (!(self = [super init]))
     return nil;
   
-  mutableWorlds = [[NSMutableArray alloc] init];
+  _mutableWorlds = [[NSMutableArray alloc] init];
   
   return self;
 }
-
 
 #pragma mark - Key-value coding accessors
 
@@ -67,7 +62,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     [self willChangeValueForKey: @"worlds"];
-    [mutableWorlds insertObject: world atIndex: worldIndex];
+    [self.mutableWorlds insertObject: world atIndex: worldIndex];
     [self didChangeValueForKey: @"worlds"];
     [self postWorldsDidChangeNotification];
   }
@@ -78,7 +73,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     [self willChangeValueForKey: @"worlds"];
-    [mutableWorlds removeObjectAtIndex: worldIndex];
+    [self.mutableWorlds removeObjectAtIndex: worldIndex];
     [self didChangeValueForKey: @"worlds"];
     [self postWorldsDidChangeNotification];
   }
@@ -121,7 +116,7 @@ static MUWorldRegistry *defaultRegistry = nil;
     }
     
     [self willChangeValueForKey: @"worlds"];
-    [mutableWorlds removeObject: world];
+    [self.mutableWorlds removeObject: world];
     [self didChangeValueForKey: @"worlds"];
     [self postWorldsDidChangeNotification];
   }
@@ -138,7 +133,7 @@ static MUWorldRegistry *defaultRegistry = nil;
     }
     
     [self willChangeValueForKey: @"worlds"];
-    mutableWorlds[[self.worlds indexOfObject: oldWorld]] = newWorld;
+    self.mutableWorlds[[self.worlds indexOfObject: oldWorld]] = newWorld;
     [self didChangeValueForKey: @"worlds"];
     [self postWorldsDidChangeNotification];
   }
@@ -150,7 +145,7 @@ static MUWorldRegistry *defaultRegistry = nil;
     return;
   
   [self willChangeValueForKey: @"worlds"];
-  mutableWorlds = [newWorlds mutableCopy];
+  _mutableWorlds = [newWorlds mutableCopy];
   [self didChangeValueForKey: @"worlds"];
   
   [self postWorldsDidChangeNotification];
@@ -162,7 +157,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   
   @synchronized (self)
   {
-    world = (self.worlds)[worldIndex];
+    world = self.worlds[worldIndex];
   }
   
   return world;
@@ -189,7 +184,7 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (NSArray *) worlds
 {
-  return (NSArray *) mutableWorlds;
+  return (NSArray *) self.mutableWorlds;
 }
 
 #pragma mark - Private methods
@@ -213,7 +208,7 @@ static MUWorldRegistry *defaultRegistry = nil;
   if (!worldsData)
     return;
   
-  [self setMutableWorlds: [NSKeyedUnarchiver unarchiveObjectWithData: worldsData]];
+  self.mutableWorlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
   
   for (MUTreeNode *topLevelNode in self.worlds)
     [topLevelNode recursivelyUpdateParentsWithParentNode: nil];

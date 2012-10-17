@@ -5,11 +5,12 @@
 //
 
 #import "MUProxySettings.h"
-#import "MUCodingService.h"
+
+static const int32_t currentProxyVersion = 2;
 
 @implementation MUProxySettings
 
-@synthesize hostname, port, username, password;
+@dynamic description, hasAuthentication;
 
 + (id) proxySettings
 {
@@ -21,34 +22,58 @@
   if (!(self = [super init]))
     return nil;
   
-  hostname = @"";
-  port = @1080;
+  _hostname = @"";
+  _port = @1080;
+  _username = @"";
+  _password = @"";
   
   return self;
 }
 
-
 - (NSString *) description
 {
-  return [NSString stringWithFormat: @"%@: %@", hostname, port];
+  return [NSString stringWithFormat: @"%@: %@", self.hostname, self.port];
 }
 
 - (BOOL) hasAuthentication
 {
-  return username && username.length > 0;
+  return self.username && self.username.length > 0;
 }
 
 #pragma mark - NSCoding protocol
 
 - (id) initWithCoder: (NSCoder *) coder
 {
-  [MUCodingService decodeProxySettings: self withCoder: coder];
+  if (!(self = [super init]))
+    return nil;
+  
+  int32_t version = [coder decodeInt32ForKey: @"version"];
+  
+  _hostname = [coder decodeObjectForKey: @"hostname"];
+  _port = [coder decodeObjectForKey: @"port"];
+  
+  if (version >= 2)
+  {
+    _username = [coder decodeObjectForKey: @"username"];
+    _password = [coder decodeObjectForKey: @"password"];
+  }
+  else
+  {
+    _username = @"";
+    _password = @"";
+  }
+  
   return self;
 }
 
 - (void) encodeWithCoder: (NSCoder *) coder
 {
-  [MUCodingService encodeProxySettings: self withCoder: coder];
+  [coder encodeInt32: currentProxyVersion forKey: @"version"];
+  
+  [coder encodeObject: self.hostname forKey: @"hostname"];
+  [coder encodeObject: self.port forKey: @"port"];
+  [coder encodeObject: self.username forKey: @"username"];
+  [coder encodeObject: self.password forKey: @"password"];
 }
 
 @end

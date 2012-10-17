@@ -20,14 +20,11 @@
   NSMutableArray *byteProtocolHandlers;
   NSMutableData *parsingBuffer;
   NSMutableData *preprocessingBuffer;
-  
-  NSObject <MUProtocolStackDelegate> *delegate;
 }
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
+@property (weak) NSObject <MUProtocolStackDelegate> *delegate;
 
-- (NSObject <MUProtocolStackDelegate> *) delegate;
-- (void) setDelegate: (NSObject <MUProtocolStackDelegate> *) newDelegate;
+- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
 - (void) addByteProtocol: (MUByteProtocolHandler *) protocol;
 - (void) clearAllProtocols;

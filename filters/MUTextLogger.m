@@ -9,7 +9,7 @@
 #import "MUPlayer.h"
 #import "MUWorld.h"
 
-@interface MUTextLogger (Private)
+@interface MUTextLogger ()
 
 - (void) log: (NSAttributedString *) attributedString;
 - (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers;

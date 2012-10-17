@@ -30,7 +30,6 @@ extern NSString *MUMUDConnectionErrorMessageKey;
 
 @interface MUMUDConnection : MUAbstractConnection <MUSocketDelegate, MUProtocolStackDelegate, MUTelnetProtocolHandlerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate>
 {
-  NSObject <MUMUDConnectionDelegate> *delegate;
   MUMUDConnectionState *state;
   MUProtocolStack *protocolStack;
   

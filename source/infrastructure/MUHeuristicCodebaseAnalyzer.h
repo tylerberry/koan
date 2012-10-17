@@ -25,11 +25,6 @@ typedef enum MUCodebaseFamily
 } MUCodebaseFamily;
 
 @interface MUHeuristicCodebaseAnalyzer : NSObject
-{
-  MUCodebase codebase;
-  MUCodebaseFamily codebaseFamily;
-  BOOL definitiveCodebaseFound;
-}
 
 @property (assign, nonatomic) MUCodebase codebase;
 @property (assign, nonatomic) MUCodebaseFamily codebaseFamily;

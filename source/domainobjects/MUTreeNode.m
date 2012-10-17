@@ -16,7 +16,6 @@
 
 @implementation MUTreeNode
 
-@synthesize children, name, parent;
 @dynamic icon, isLeaf;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
@@ -24,12 +23,13 @@
   if (!(self = [super init]))
     return nil;
   
-  name = [newName copy];
+  _name = [newName copy];
+  _parent = nil;
   
   if (newChildren)
-    children = [newChildren mutableCopy];
+    _children = [newChildren mutableCopy];
   else
-    children = [[NSMutableArray alloc] init];
+    _children = [[NSMutableArray alloc] init];
 
   return self;
 }
@@ -53,14 +53,14 @@
 
 - (BOOL) isLeaf
 {
-  return children.count == 0;
+  return self.children.count == 0;
 }
 
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode
 {
   self.parent = topParentNode;
   
-  for (MUTreeNode *node in children)
+  for (MUTreeNode *node in self.children)
   {
     if (node.isLeaf)
       node.parent = self;
@@ -78,7 +78,7 @@
   
   [self willChangeValueForKey: @"children"];
   child.parent = self;
-  [children addObject: child];
+  [self.children addObject: child];
   [self didChangeValueForKey: @"children"];
   
   [self postWorldsDidChangeNotification];
@@ -93,7 +93,7 @@
 {
   for (NSUInteger i = 0; i < self.children.count; i++)
   {
-    if (child == (self.children)[i])
+    if (child == self.children[i])
       return i;
   }
   
@@ -113,7 +113,7 @@
 - (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
 {
   [self willChangeValueForKey: @"children"];
-  ((MUTreeNode *) (self.children)[childIndex]).parent = nil;
+  ((MUTreeNode *) self.children[childIndex]).parent = nil;
   [self.children removeObjectAtIndex: childIndex];
   [self didChangeValueForKey: @"children"];
   
@@ -134,7 +134,7 @@
 {
   for (NSUInteger i = 0; i < self.children.count; i++)
   {
-    MUTreeNode *node = (self.children)[i];
+    MUTreeNode *node = self.children[i];
     
     if (node != oldChild)
       continue;
@@ -142,7 +142,7 @@
     [self willChangeValueForKey: @"children"];
     newChild.parent = self;
     oldChild.parent = nil;
-    (self.children)[i] = newChild;
+    self.children[i] = newChild;
     [self didChangeValueForKey: @"children"];
     
     [self postWorldsDidChangeNotification];

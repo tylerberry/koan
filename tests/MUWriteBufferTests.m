@@ -7,7 +7,7 @@
 #import "MUWriteBufferTests.h"
 #import "MUWriteBuffer.h"
 
-@interface MUWriteBufferTests (Private)
+@interface MUWriteBufferTests ()
 
 - (NSString *) output;
 - (void) assertOutputAfterFlushIsString: (NSString *) string;
@@ -103,11 +103,7 @@
   [output appendData: data];
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUWriteBufferTests (Private)
+#pragma mark - Private methods
 
 - (void) assertOutputAfterFlushIsString: (NSString *) string
 {

@@ -355,6 +355,7 @@ static NSArray *offerableCharsets;
   [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
   [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionNewEnvironment allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];

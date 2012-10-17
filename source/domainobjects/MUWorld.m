@@ -12,7 +12,6 @@ static const int32_t currentWorldVersion = 7;
 
 @implementation MUWorld
 
-@synthesize hostname, port, url;
 @dynamic uniqueIdentifier, windowTitle;
 
 + (MUWorld *) worldWithName: (NSString *) newName
@@ -47,9 +46,9 @@ static const int32_t currentWorldVersion = 7;
   if (!(self = [super initWithName: newName children: newPlayers]))
     return nil;
   
-  hostname = [newHostname copy];
-  port = [newPort copy];
-  url = [newURL copy];
+  _hostname = [newHostname copy];
+  _port = [newPort copy];
+  _url = [newURL copy];
   
   return self;
 }
@@ -131,20 +130,20 @@ static const int32_t currentWorldVersion = 7;
   if (version >= 5)
   {
     self.name = [decoder decodeObjectForKey: @"name"];
-    hostname = [decoder decodeObjectForKey: @"hostname"];
+    _hostname = [decoder decodeObjectForKey: @"hostname"];
   }
   else
   {
     self.name = [decoder decodeObjectForKey: @"worldName"];
-    hostname = [decoder decodeObjectForKey: @"worldHostname"];
+    _hostname = [decoder decodeObjectForKey: @"worldHostname"];
   }
   
   if (version >= 6)
-    port = @([decoder decodeIntForKey: @"port"]);
+    _port = @([decoder decodeIntForKey: @"port"]);
   else if (version == 5)
-    port = [decoder decodeObjectForKey: @"port"];
+    _port = [decoder decodeObjectForKey: @"port"];
   else
-    port = [decoder decodeObjectForKey: @"worldPort"];
+    _port = [decoder decodeObjectForKey: @"worldPort"];
   
   if (version >= 7)
     self.children = [decoder decodeObjectForKey: @"children"];
@@ -152,11 +151,11 @@ static const int32_t currentWorldVersion = 7;
     self.children = [decoder decodeObjectForKey: @"players"];
   
   if (version >= 5)
-    url = [decoder decodeObjectForKey: @"URL"];
+    _url = [decoder decodeObjectForKey: @"URL"];
   else if (version >= 1)
-    url = [decoder decodeObjectForKey: @"worldURL"];
+    _url = [decoder decodeObjectForKey: @"worldURL"];
   else
-    url = @"";
+    _url = @"";
   
   return self;
 }

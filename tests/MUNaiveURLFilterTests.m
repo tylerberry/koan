@@ -8,65 +8,9 @@
 #import "MUNaiveURLFilter.h"
 #import "categories/NSURL (Allocating).h"
 
-@interface MUNaiveURLFilterTests (Private)
+@interface MUNaiveURLFilterTests ()
 
 - (void) assertInput: (NSString *) input producesURL: (NSURL *) url forRange: (NSRange) range;
-
-@end
-
-#pragma mark -
-
-@implementation MUNaiveURLFilterTests (Private)
-
-- (void) assertInput: (NSString *) input producesURL: (NSURL *) url forRange: (NSRange) range
-{
-  NSAttributedString *attributedInput = [NSAttributedString attributedStringWithString: input];
-  NSAttributedString *attributedOutput = [queue processAttributedString: attributedInput];
-  NSURL *foundURL;
-  NSRange foundRange;
-  
-  [self assert: [attributedInput string] equals: [attributedOutput string] message: @"Strings not equal."];  
-  
-  if (range.location != 0)
-  {
-    foundURL = [attributedOutput attribute: NSLinkAttributeName
-                                   atIndex: range.location - 1
-                     longestEffectiveRange: &foundRange
-                                   inRange: NSMakeRange (0, input.length)];
-    
-    [self assertFalse: [foundURL isEqual: url]
-              message: @"Preceding character matches url and shouldn't."];
-  }
-  
-  if (NSMaxRange (range) < [input length])
-  {
-    foundURL = [attributedOutput attribute: NSLinkAttributeName
-                                   atIndex: NSMaxRange (range)
-                     longestEffectiveRange: &foundRange
-                                   inRange: NSMakeRange (0, input.length)];
-    
-    [self assertFalse: [foundURL isEqual: url]
-              message: @"Following character matches url and shouldn't."];
-  }
-  
-  foundURL = [attributedOutput attribute: NSLinkAttributeName
-                                  atIndex: range.location
-                    longestEffectiveRange: &foundRange
-                                  inRange: NSMakeRange (0, input.length)];
-  
-  [self assert: foundURL equals: url message: @"Links don't match."];
-  
-  if (foundURL)
-  {
-    [self assertUInteger: foundRange.location
-                  equals: range.location
-                 message: @"Range locations don't match."];
-    
-    [self assertUInteger: foundRange.length
-                  equals: range.length
-                 message: @"Range lengths don't match."];
-  }
-}
 
 @end
 
@@ -180,6 +124,59 @@
   [self assertInput: input
         producesURL: [NSURL URLWithString: @"mailto:test@example.com"]
            forRange: [input rangeOfString: @"test@example.com"]];
+}
+
+
+#pragma mark - Private methods
+
+- (void) assertInput: (NSString *) input producesURL: (NSURL *) url forRange: (NSRange) range
+{
+  NSAttributedString *attributedInput = [NSAttributedString attributedStringWithString: input];
+  NSAttributedString *attributedOutput = [queue processAttributedString: attributedInput];
+  NSURL *foundURL;
+  NSRange foundRange;
+  
+  [self assert: [attributedInput string] equals: attributedOutput.string message: @"Strings not equal."];
+  
+  if (range.location != 0)
+  {
+    foundURL = [attributedOutput attribute: NSLinkAttributeName
+                                   atIndex: range.location - 1
+                     longestEffectiveRange: &foundRange
+                                   inRange: NSMakeRange (0, input.length)];
+    
+    [self assertFalse: [foundURL isEqual: url]
+              message: @"Preceding character matches url and shouldn't."];
+  }
+  
+  if (NSMaxRange (range) < [input length])
+  {
+    foundURL = [attributedOutput attribute: NSLinkAttributeName
+                                   atIndex: NSMaxRange (range)
+                     longestEffectiveRange: &foundRange
+                                   inRange: NSMakeRange (0, input.length)];
+    
+    [self assertFalse: [foundURL isEqual: url]
+              message: @"Following character matches url and shouldn't."];
+  }
+  
+  foundURL = [attributedOutput attribute: NSLinkAttributeName
+                                 atIndex: range.location
+                   longestEffectiveRange: &foundRange
+                                 inRange: NSMakeRange (0, input.length)];
+  
+  [self assert: foundURL equals: url message: @"Links don't match."];
+  
+  if (foundURL)
+  {
+    [self assertUInteger: foundRange.location
+                  equals: range.location
+                 message: @"Range locations don't match."];
+    
+    [self assertUInteger: foundRange.length
+                  equals: range.length
+                 message: @"Range lengths don't match."];
+  }
 }
 
 @end

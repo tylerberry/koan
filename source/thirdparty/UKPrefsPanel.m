@@ -22,7 +22,7 @@
 
 #import "UKPrefsPanel.h"
 
-@interface UKPrefsPanel (Private)
+@interface UKPrefsPanel ()
 
 - (IBAction) changePanes: (id) sender;
 - (void) mapTabsToToolbar;
@@ -153,11 +153,7 @@
   return allowedItems;
 }
 
-@end
-
-#pragma mark -
-
-@implementation UKPrefsPanel (Private)
+#pragma mark - Private methods
 
 - (IBAction) changePanes: (id) sender
 {

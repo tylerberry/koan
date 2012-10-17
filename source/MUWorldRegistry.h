@@ -11,8 +11,8 @@
 
 @interface MUWorldRegistry : NSObject
 
-@property (unsafe_unretained, readonly) NSUInteger count;
-@property (unsafe_unretained, readonly) NSArray *worlds;
+@property (readonly) NSUInteger count;
+@property (readonly) NSArray *worlds;
 @property (strong, nonatomic) NSMutableArray *mutableWorlds;
 
 + (MUWorldRegistry *) defaultRegistry;

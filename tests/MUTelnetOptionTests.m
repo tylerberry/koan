@@ -19,7 +19,44 @@ typedef int QMethodTable[QSTATES][3];
 
 #pragma mark -
 
-@interface MUTelnetOptionTests (Private)
+@interface MUTelnetOption (TestAccessors)
+
+- (MUTelnetQState) him;
+- (void) setHim: (MUTelnetQState) state;
+- (MUTelnetQState) us;
+- (void) setUs: (MUTelnetQState) state;
+
+@end
+
+#pragma mark -
+
+@implementation MUTelnetOption (TestAccessors)
+
+- (MUTelnetQState) him
+{
+  return him;
+}
+
+- (void) setHim: (MUTelnetQState) state
+{
+  him = state;
+}
+
+- (MUTelnetQState) us
+{
+  return us;
+}
+
+- (void) setUs: (MUTelnetQState) state
+{
+  us = state;
+}
+
+@end
+
+#pragma mark -
+
+@interface MUTelnetOptionTests ()
 
 - (void) assertQMethodTable: (QMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs;
 - (void) assertWhenSelector: (SEL) selector
@@ -29,17 +66,6 @@ typedef int QMethodTable[QSTATES][3];
                    andCalls: (char) flags;
 - (void) clearFlags;
 - (NSString *) qStateName: (MUTelnetQState) state;
-
-@end
-
-#pragma mark -
-
-@interface MUTelnetOption (TestAccessors)
-
-- (MUTelnetQState) him;
-- (void) setHim: (MUTelnetQState) state;
-- (MUTelnetQState) us;
-- (void) setUs: (MUTelnetQState) state;
 
 @end
 
@@ -240,11 +266,7 @@ typedef int QMethodTable[QSTATES][3];
   flags = flags | WONT;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTelnetOptionTests (Private)
+#pragma mark - Private methods
 
 - (void) assertQMethodTable: (QMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs
 {
@@ -313,30 +335,6 @@ typedef int QMethodTable[QSTATES][3];
     default:
       return @"Unknown";
   }
-}
-
-@end
-
-@implementation MUTelnetOption (TestAccessors)
-
-- (MUTelnetQState) him
-{
-  return him;
-}
-
-- (void) setHim: (MUTelnetQState) state
-{
-  him = state;
-}
-
-- (MUTelnetQState) us
-{
-  return us;
-}
-
-- (void) setUs: (MUTelnetQState) state
-{
-  us = state;
 }
 
 @end

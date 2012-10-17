@@ -10,7 +10,6 @@ static const int32_t currentPlayerVersion = 1;
 
 @implementation MUPlayer
 
-@synthesize password;
 @dynamic loginString, uniqueIdentifier, windowTitle;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
@@ -25,7 +24,7 @@ static const int32_t currentPlayerVersion = 1;
   if (!(self = [super initWithName: newName children: nil]))
     return nil;
   
-  password = [newPassword copy];
+  _password = [newPassword copy];
   
   return self;
 }
@@ -104,7 +103,7 @@ static const int32_t currentPlayerVersion = 1;
   // int32_t version = [decoder decodeInt32ForKey: @"version"];
   
   self.name = [decoder decodeObjectForKey: @"name"];
-  password = [decoder decodeObjectForKey: @"password"];
+  _password = [decoder decodeObjectForKey: @"password"];
   
   return self;
 }

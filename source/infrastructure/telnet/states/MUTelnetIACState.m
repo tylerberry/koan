@@ -15,7 +15,7 @@
 #import "MUTelnetWillState.h"
 #import "MUTelnetWontState.h"
 
-@interface MUTelnetIACState (Private)
+@interface MUTelnetIACState ()
 
 - (MUTelnetState *) notTelnetFromByte: (uint8_t) byte
                       forStateMachine: (MUTelnetStateMachine *) stateMachine
@@ -102,11 +102,7 @@
   }
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTelnetIACState (Private)
+#pragma mark - Private methods
 
 - (MUTelnetState *) notTelnetFromByte: (uint8_t) byte
                       forStateMachine: (MUTelnetStateMachine *) stateMachine

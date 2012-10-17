@@ -51,12 +51,12 @@
 {
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: 42, 71, -1];
   MUByteSet *inverse = byteSet.inverseSet;
-  for (unsigned i = 0; i <= UINT8_MAX; ++i)
+  for (NSUInteger i = 0; i <= UINT8_MAX; ++i)
   {
     if ([byteSet containsByte: i])
-      [self assertFalse: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should not contain %d", i]];
+      [self assertFalse: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should not contain %lu", i]];
     else
-      [self assertTrue: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should contain %d", i]];
+      [self assertTrue: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should contain %lu", i]];
   }
 }
 

@@ -79,7 +79,6 @@
 		7E13B9B709AE8B7600508460 /* MUProxySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13B9B509AE8B7600508460 /* MUProxySettingsController.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
 		7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */; };
-		7E23103C079A374B00E7CBA6 /* MUCodingService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E23103A079A374B00E7CBA6 /* MUCodingService.m */; };
 		7E26CB1E0BD808A500FC3843 /* MUByteSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */; };
 		7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */; };
 		7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E39EF9C0783938F0042A17A /* MUProfile.m */; };
@@ -362,8 +361,6 @@
 		7E13FA5A0788C75F0071D30C /* MUWorldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUWorldTests.m; sourceTree = "<group>"; };
 		7E1FC01A0787A2220070AF39 /* MUProfileRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileRegistry.h; sourceTree = "<group>"; };
 		7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileRegistry.m; sourceTree = "<group>"; };
-		7E231039079A374B00E7CBA6 /* MUCodingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MUCodingService.h; path = source/MUCodingService.h; sourceTree = SOURCE_ROOT; };
-		7E23103A079A374B00E7CBA6 /* MUCodingService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MUCodingService.m; path = source/MUCodingService.m; sourceTree = SOURCE_ROOT; };
 		7E26CB1C0BD808A500FC3843 /* MUByteSetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSetTests.h; sourceTree = "<group>"; };
 		7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteSetTests.m; sourceTree = "<group>"; };
 		7E26CB2D0BD80AAF00FC3843 /* MUByteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSet.h; sourceTree = "<group>"; };
@@ -598,8 +595,6 @@
 				2F6C71F00BB460CA00709320 /* Scripting */,
 				2FE366630BCAC8D40068A6AA /* Third Party */,
 				32CA4F630368D1EE00C91783 /* Koan-Prefix.pch */,
-				7E231039079A374B00E7CBA6 /* MUCodingService.h */,
-				7E23103A079A374B00E7CBA6 /* MUCodingService.m */,
 				E622A550074231A60069335B /* MUConstants.h */,
 				E622A551074231A60069335B /* MUConstants.m */,
 				E653A7CF07AEFAB900023476 /* MUGrowlService.h */,
@@ -1364,7 +1359,6 @@
 				E62C905D07422595005662BC /* MUApplicationController.m in Sources */,
 				2F8E7E2F12ED2B2C00AFA68C /* MUByteProtocolHandler.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
-				7E23103C079A374B00E7CBA6 /* MUCodingService.m in Sources */,
 				E670A84207420FDF00E2DAEB /* MUConnectionWindowController.m in Sources */,
 				E62C8FBE07421D83005662BC /* MUConnectionToolbarController.m in Sources */,
 				E622A553074231A60069335B /* MUConstants.m in Sources */,

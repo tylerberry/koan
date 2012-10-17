@@ -6,18 +6,25 @@
 
 #import "MUHeuristicCodebaseAnalyzer.h"
 
-@implementation MUHeuristicCodebaseAnalyzer
+@interface MUHeuristicCodebaseAnalyzer ()
+{
+  BOOL _definitiveCodebaseFound;
+}
 
-@synthesize codebase, codebaseFamily;
+@end
+
+#pragma mark -
+
+@implementation MUHeuristicCodebaseAnalyzer
 
 - (id) init
 {
   if (!(self = [super init]))
     return nil;
   
-  codebase = MUCodebaseUnknown;
-  codebaseFamily = MUCodebaseFamilyUnknown;
-  definitiveCodebaseFound = NO;
+  _codebase = MUCodebaseUnknown;
+  _codebaseFamily = MUCodebaseFamilyUnknown;
+  _definitiveCodebaseFound = NO;
   
   return self;
 }
@@ -26,7 +33,7 @@
 
 - (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
   
   // MSSP data is provided directly from the codebase. If it's lying, we're screwed anyway,
@@ -38,7 +45,7 @@
     
     if ([valueWords[0] isEqualToString: @"PennMUSH"])
     {
-      definitiveCodebaseFound = YES;
+      _definitiveCodebaseFound = YES;
       self.codebase = MUCodebasePennMUSH;
       self.codebaseFamily = MUCodebaseFamilyMUSH;
     }
@@ -47,31 +54,31 @@
 
 - (void) noteTelnetDo: (uint8_t) byte
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
 }
 
 - (void) noteTelnetDont: (uint8_t) byte
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
 }
 
 - (void) noteTelnetWill: (uint8_t) byte
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
 }
 
 - (void) noteTelnetWont: (uint8_t) byte
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
 }
 
 - (void) noteTextLine: (NSString *) text
 {
-  if (definitiveCodebaseFound)
+  if (_definitiveCodebaseFound)
     return;
 }
 

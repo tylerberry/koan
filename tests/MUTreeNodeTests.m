@@ -9,7 +9,7 @@
 #import "MUTreeNodeTests.h"
 #import "MUTreeNode.h"
 
-@interface MUTreeNodeTests (Private)
+@interface MUTreeNodeTests ()
 
 - (MUTreeNode *) testingNode;
 
@@ -97,11 +97,7 @@
   }
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUTreeNodeTests (Private)
+#pragma mark - Private methods
 
 - (MUTreeNode *) testingNode
 {

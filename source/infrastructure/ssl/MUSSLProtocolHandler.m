@@ -8,19 +8,23 @@
 
 #import "MUSSLProtocolHandler.h"
 
+#include "openssl/bio.h"
+#include "openssl/ssl.h"
+#include "openssl/err.h"
+
 @implementation MUSSLProtocolHandler
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) newConnectionState
 {
-  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
+  return [[self alloc] initWithStack: stack connectionState: newConnectionState];
 }
 
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) newConnectionState
 {
   if (!(self = [super initWithStack: stack]))
     return nil;
   
-  connectionState = telnetConnectionState;
+  connectionState = newConnectionState;
   
   return self;
 }

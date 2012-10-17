@@ -9,7 +9,7 @@
 static BOOL growlIsReady = NO;
 static MUGrowlService *defaultGrowlService;
 
-@interface MUGrowlService (Private)
+@interface MUGrowlService ()
 
 - (void) cleanUpDefaultGrowlService: (NSNotification *) notification;
 - (void) notifyWithName: (NSString *) name
@@ -89,11 +89,7 @@ static MUGrowlService *defaultGrowlService;
   growlIsReady = YES;
 }
 
-@end
-
-#pragma mark -
-
-@implementation MUGrowlService (Private)
+#pragma mark - Private methods
 
 - (void) cleanUpDefaultGrowlService: (NSNotification *) notification
 {

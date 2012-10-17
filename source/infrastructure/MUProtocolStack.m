@@ -31,16 +31,6 @@
   return self;
 }
 
-- (NSObject <MUProtocolStackDelegate> *) delegate
-{
-  return delegate;
-}
-
-- (void) setDelegate: (NSObject <MUProtocolStackDelegate> *) newDelegate
-{
-  delegate = newDelegate;
-}
-
 - (void) addByteProtocol: (MUByteProtocolHandler *) protocol
 {
   [byteProtocolHandlers addObject: protocol];
@@ -55,7 +45,7 @@
 {
   if (parsingBuffer.length > 0)
   {
-    [delegate displayDataAsText: [NSData dataWithData: parsingBuffer]];
+    [self.delegate displayDataAsText: [NSData dataWithData: parsingBuffer]];
     [parsingBuffer setData: [NSData data]];
   }
 }
@@ -139,7 +129,7 @@
 {
   if (parsingBuffer.length > 0)
   {
-    [delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
+    [self.delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
     [parsingBuffer setData: [NSData data]];
   }
 }

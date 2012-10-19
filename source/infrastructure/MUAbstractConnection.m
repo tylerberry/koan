@@ -12,11 +12,6 @@
 @synthesize status;
 @dynamic isClosed, isConnected, isConnecting;
 
-- (void) close
-{
-  return;
-}
-
 - (id) init
 {
   if (!(self = [super init]))
@@ -26,6 +21,8 @@
   
   return self;
 }
+
+#pragma mark - Properties
 
 - (BOOL) isClosed
 {
@@ -42,10 +39,19 @@
   return self.status == MUConnectionStatusConnecting;
 }
 
+#pragma mark - Methods
+
+- (void) close
+{
+  return;
+}
+
 - (void) open
 {
   return;
 }
+
+#pragma mark - Subclass-only methods
 
 - (void) setStatusConnected
 {

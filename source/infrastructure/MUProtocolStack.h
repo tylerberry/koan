@@ -7,37 +7,25 @@
 #import <Cocoa/Cocoa.h>
 
 #import "MUMUDConnectionState.h"
-
-@class MUByteProtocolHandler;
+#import "MUProtocolHandler.h"
 
 @class MUProtocolStack;
 @protocol MUProtocolStackDelegate;
 
-@interface MUProtocolStack : NSObject
-{
-  MUMUDConnectionState *connectionState;
-  
-  NSMutableArray *byteProtocolHandlers;
-  NSMutableData *parsingBuffer;
-  NSMutableData *preprocessingBuffer;
-}
+@interface MUProtocolStack : NSObject <MUProtocolHandler>
 
+@property (readonly) NSArray *protocolHandlers;
 @property (weak) NSObject <MUProtocolStackDelegate> *delegate;
 
 - (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
-- (void) addByteProtocol: (MUByteProtocolHandler *) protocol;
+- (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler;
 - (void) clearAllProtocols;
 
 - (void) flushBufferedData;
 
 - (void) parseInputData: (NSData *) data;
 - (NSData *) preprocessOutputData: (NSData *) data;
-
-- (void) parseInputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
-- (void) preprocessOutputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler;
-
-- (void) useBufferedDataAsPrompt;
 
 @end
 

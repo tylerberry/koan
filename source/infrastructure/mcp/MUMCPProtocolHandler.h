@@ -6,22 +6,20 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MUByteProtocolHandler.h"
+#import "MUProtocolHandler.h"
 #import "MUMUDConnectionState.h"
 
 @protocol MUMCPProtocolHandlerDelegate;
 
-@interface MUMCPProtocolHandler : MUByteProtocolHandler
+@interface MUMCPProtocolHandler : MUProtocolHandler
 {
   MUMUDConnectionState *connectionState;
 }
 
 @property (weak, nonatomic) NSObject <MUMCPProtocolHandlerDelegate> *delegate;
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack
-                connectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithStack: (MUProtocolStack *) stack
-     connectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 @end
 

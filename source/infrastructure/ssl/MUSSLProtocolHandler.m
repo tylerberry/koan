@@ -7,6 +7,7 @@
 //
 
 #import "MUSSLProtocolHandler.h"
+#import "MUProtocolHandlerSubclass.h"
 
 #include "openssl/bio.h"
 #include "openssl/ssl.h"
@@ -14,14 +15,14 @@
 
 @implementation MUSSLProtocolHandler
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) newConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) newConnectionState
 {
-  return [[self alloc] initWithStack: stack connectionState: newConnectionState];
+  return [[self alloc] initWithConnectionState: newConnectionState];
 }
 
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) newConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState
 {
-  if (!(self = [super initWithStack: stack]))
+  if (!(self = [super init]))
     return nil;
   
   connectionState = newConnectionState;
@@ -31,22 +32,12 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  [protocolStack parseInputByte: byte previousProtocolHandler: self];
-}
-
-- (NSData *) headerForPreprocessedData
-{
-  return nil;
-}
-
-- (NSData *) footerForPreprocessedData
-{
-  return nil;
+  [self passOnParsedByte: byte];
 }
 
 - (void) preprocessByte: (uint8_t) byte
 {
-  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
+  [self passOnPreprocessedByte: byte];
 }
 
 

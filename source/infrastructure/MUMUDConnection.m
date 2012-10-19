@@ -80,24 +80,20 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   // order with respect to outgoing data, and reverse order with respect to
   // incoming data.
   
-  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithStack: protocolStack
-                                                                            connectionState: state];
+  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithConnectionState: state];
   [mcpProtocolHandler setDelegate: self];
-  [protocolStack addByteProtocol: mcpProtocolHandler];
+  [protocolStack addProtocolHandler: mcpProtocolHandler];
   
-  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack
-                                                                                     connectionState: state];
+  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: state];
   [telnetProtocolHandler setDelegate: self];
-  [protocolStack addByteProtocol: telnetProtocolHandler];
+  [protocolStack addProtocolHandler: telnetProtocolHandler];
   
-  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithStack: protocolStack
-                                                                               connectionState: state];
+  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: state];
   [mccpProtocolHandler setDelegate: self];
-  [protocolStack addByteProtocol: mccpProtocolHandler];
+  [protocolStack addProtocolHandler: mccpProtocolHandler];
   
-  MUSSLProtocolHandler *sslProtocolHandler = [MUSSLProtocolHandler protocolHandlerWithStack: protocolStack
-                                                                            connectionState: state];
-  [protocolStack addByteProtocol: sslProtocolHandler];
+  MUSSLProtocolHandler *sslProtocolHandler = [MUSSLProtocolHandler protocolHandlerWithConnectionState: state];
+  [protocolStack addProtocolHandler: sslProtocolHandler];
   
   _delegate = newDelegate;
   return self;

@@ -6,11 +6,20 @@
 
 #import "MUProtocolStack.h"
 
-#import "MUByteProtocolHandler.h"
+#import "MUProtocolHandler.h"
 
 @interface MUProtocolStack ()
+{
+  MUMUDConnectionState *connectionState;
+  
+  NSMutableData *parsingBuffer;
+  NSMutableData *preprocessingBuffer;
+}
+
+@property (strong) NSMutableArray *mutableProtocolHandlers;
 
 - (void) maybeUseBufferedDataAsPrompt;
+- (void) useBufferedDataAsPrompt;
 
 @end
 
@@ -18,27 +27,44 @@
 
 @implementation MUProtocolStack
 
+@dynamic protocolHandlers;
+
 - (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState
 {
   if (!(self = [super init]))
     return nil;
                                              
   connectionState = newConnectionState;
-  byteProtocolHandlers = [[NSMutableArray alloc] init];
+  _mutableProtocolHandlers = [[NSMutableArray alloc] init];
   parsingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
   preprocessingBuffer = nil;
   
   return self;
 }
 
-- (void) addByteProtocol: (MUByteProtocolHandler *) protocol
+- (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler
 {
-  [byteProtocolHandlers addObject: protocol];
+  @synchronized (self)
+  {
+    MUProtocolHandler *lastHandler = [self.mutableProtocolHandlers lastObject];
+    if (lastHandler)
+    {
+      protocolHandler.previousHandler = lastHandler;
+      lastHandler.nextHandler = protocolHandler;
+    }
+    else
+      protocolHandler.previousHandler = self;
+    protocolHandler.nextHandler = self;
+    [self.mutableProtocolHandlers addObject: protocolHandler];
+  }
 }
 
 - (void) clearAllProtocols
 {
-  [byteProtocolHandlers removeAllObjects];
+  @synchronized (self)
+  {
+    [_mutableProtocolHandlers removeAllObjects];
+  }
 }
 
 - (void) flushBufferedData
@@ -50,15 +76,27 @@
   }
 }
 
+#pragma mark - Properties
+
+- (NSArray *) protocolHandlers
+{
+  @synchronized (self)
+  {
+    return self.mutableProtocolHandlers;
+  }
+}
+
+#pragma mark - Methods
+
 - (void) parseInputData: (NSData *) data
 {
-  if (byteProtocolHandlers.count == 0)
+  if (self.protocolHandlers.count == 0)
     return;
   
   const uint8_t *bytes = data.bytes;
   
-  NSUInteger firstLevel = byteProtocolHandlers.count - 1;
-  MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
+  NSUInteger firstLevel = self.protocolHandlers.count - 1;
+  MUProtocolHandler *firstProtocolHandler = self.protocolHandlers[firstLevel];
   
   for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler parseByte: bytes[i]];
@@ -69,24 +107,19 @@
 
 - (NSData *) preprocessOutputData: (NSData *) data
 {
-  if (byteProtocolHandlers.count == 0)
+  if (self.protocolHandlers.count == 0)
     return nil;
   
   const uint8_t *bytes = data.bytes;
   
   preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: data.length];
   
-  for (MUByteProtocolHandler *handler in byteProtocolHandlers)
-    [preprocessingBuffer appendData: [handler headerForPreprocessedData]];
-  
-  NSUInteger firstLevel = 0;
-  MUByteProtocolHandler *firstProtocolHandler = byteProtocolHandlers[firstLevel];
+  MUProtocolHandler *firstProtocolHandler = self.protocolHandlers[0];
   
   for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler preprocessByte: bytes[i]];
   
-  for (MUByteProtocolHandler *handler in byteProtocolHandlers)
-    [preprocessingBuffer appendData: [handler footerForPreprocessedData]];
+  [firstProtocolHandler preprocessFooterData: [NSData data]];
   
   NSData *preprocessedData = preprocessingBuffer;
   preprocessingBuffer = nil;
@@ -94,44 +127,38 @@
   return preprocessedData;
 }
 
-- (void) parseInputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
+#pragma mark - MUProtocolHandler protocol
+
+// These methods handle the endpoints of the protocol stack. Once parsing or preprocessing is completed, the last
+// handler with respect to direction pass the final parsed or preprocessed byte back to the stack. The structure looks
+// like this, with arrows representing previousHandler and nextHandler properties on the protocol handlers:
+//
+// stack <-- protocol 1 <--> protocol 2 <--> protocol 3 --> stack
+//
+// The stack's job is to buffer the incoming bytes and either 1. for parsed data, buffer it into lines then send it to
+// the view controller for display, or 2. for preprocessed data, to buffer it and send it to the socket.
+
+- (void) notePromptMarker
 {
-  NSUInteger previousLevel = [byteProtocolHandlers indexOfObject: previousHandler];
-  if (previousLevel > 0)
-  {
-    NSUInteger nextLevel = previousLevel - 1;
-    MUByteProtocolHandler *nextProtocolHandler = byteProtocolHandlers[nextLevel];
-    [nextProtocolHandler parseByte: byte];
-  }
-  else
-  {
-    [parsingBuffer appendBytes: &byte length: 1];
+  [self useBufferedDataAsPrompt];
+}
+
+- (void) parseByte: (uint8_t) byte
+{
+  [parsingBuffer appendBytes: &byte length: 1];
     
-    if (byte == '\n')
-      [self flushBufferedData];
-  }
+  if (byte == '\n')
+    [self flushBufferedData];
 }
 
-- (void) preprocessOutputByte: (uint8_t) byte previousProtocolHandler: (MUByteProtocolHandler *) previousHandler
+- (void) preprocessByte: (uint8_t) byte
 {
-  NSUInteger previousLevel = [byteProtocolHandlers indexOfObject: previousHandler];
-  if (previousLevel < byteProtocolHandlers.count - 1)
-  {
-    NSUInteger nextLevel = previousLevel + 1;
-    MUByteProtocolHandler *nextProtocolHandler = byteProtocolHandlers[nextLevel];
-    [nextProtocolHandler preprocessByte: byte];
-  }
-  else
-    [preprocessingBuffer appendBytes: &byte length: 1];
+  [preprocessingBuffer appendBytes: &byte length: 1];
 }
 
-- (void) useBufferedDataAsPrompt
+- (void) preprocessFooterData: (NSData *) data
 {
-  if (parsingBuffer.length > 0)
-  {
-    [self.delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
-    [parsingBuffer setData: [NSData data]];
-  }
+  [preprocessingBuffer appendData: data];
 }
 
 #pragma mark - Private methods
@@ -149,6 +176,15 @@
     if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
          [promptCandidate characterAtIndex: promptCandidate.length - 1]])
       [self useBufferedDataAsPrompt];
+  }
+}
+
+- (void) useBufferedDataAsPrompt
+{
+  if (parsingBuffer.length > 0)
+  {
+    [self.delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
+    [parsingBuffer setData: [NSData data]];
   }
 }
 

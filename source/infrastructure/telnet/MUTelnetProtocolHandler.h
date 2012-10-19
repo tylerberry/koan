@@ -5,7 +5,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MUByteProtocolHandler.h"
+#import "MUProtocolHandler.h"
 #import "MUMUDConnectionState.h"
 #import "MUTelnetConstants.h"
 #import "MUTelnetOption.h"
@@ -35,7 +35,7 @@
 
 #pragma mark -
 
-@interface MUTelnetProtocolHandler : MUByteProtocolHandler <MUTelnetProtocolHandler, MUTelnetOptionDelegate>
+@interface MUTelnetProtocolHandler : MUProtocolHandler <MUTelnetProtocolHandler, MUTelnetOptionDelegate>
 {
   MUMUDConnectionState *connectionState;
   MUTelnetStateMachine *stateMachine;
@@ -50,8 +50,8 @@
 
 @property (readonly) MUMUDConnectionState *connectionState;
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 - (NSObject <MUTelnetProtocolHandlerDelegate> *) delegate;
 - (void) setDelegate: (NSObject <MUTelnetProtocolHandlerDelegate> *) object;

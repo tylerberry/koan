@@ -5,6 +5,7 @@
 //
 
 #import "MUTelnetProtocolHandler.h"
+#import "MUProtocolHandlerSubclass.h"
 
 #import "MUTelnetStateMachine.h"
 #import "MUWriteBuffer.h"
@@ -68,15 +69,14 @@ static NSArray *offerableCharsets;
   offerableCharsets = @[@"UTF-8", @"ISO-8859-1", @"US-ASCII"];
 }
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack
-                connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
+  return [[self alloc] initWithConnectionState: telnetConnectionState];
 }
 
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  if (!(self = [super initWithStack: stack]))
+  if (!(self = [super init]))
     return nil;
   
   subnegotiationBuffer = [[NSMutableData alloc] initWithCapacity: 64];
@@ -162,14 +162,14 @@ static NSArray *offerableCharsets;
   {
     receivedCR = NO;
     if (byte == '\0')
-      [protocolStack parseInputByte: '\r' previousProtocolHandler: self];
+      [self passOnParsedByte: '\r'];
     else
-      [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      [self passOnParsedByte: byte];
   } 
   else if (byte == '\r')
     receivedCR = YES;
   else
-    [protocolStack parseInputByte: byte previousProtocolHandler: self];
+    [self passOnParsedByte: byte];
 }
 
 - (void) handleBufferedSubnegotiation
@@ -263,10 +263,10 @@ static NSArray *offerableCharsets;
 
 - (void) useBufferedDataAsPrompt
 {
-  [protocolStack useBufferedDataAsPrompt];
+  [self notePromptMarker];
 }
 
-#pragma mark - MUByteProtocolHandler overrides
+#pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
@@ -279,14 +279,16 @@ static NSArray *offerableCharsets;
   }
 }
 
-- (NSData *) headerForPreprocessedData
+- (void) preprocessByte: (uint8_t) byte
 {
-  return nil;
+  if (byte == MUTelnetInterpretAsCommand)
+    [self passOnPreprocessedByte: MUTelnetInterpretAsCommand];
+  [self passOnPreprocessedByte: byte];
 }
 
-- (NSData *) footerForPreprocessedData
+- (void) preprocessFooterData: (NSData *) data
 {
-  NSMutableData *footerData = [NSMutableData dataWithCapacity: 4];
+  NSMutableData *footerData = [NSMutableData dataWithData: data];
   
   if ([self optionYesForUs: MUTelnetOptionEndOfRecord])
   {
@@ -300,14 +302,7 @@ static NSArray *offerableCharsets;
     [footerData appendBytes: &goAheadBytes length: 2];
   }
   
-  return footerData;
-}
-
-- (void) preprocessByte: (uint8_t) byte
-{
-  if (byte == MUTelnetInterpretAsCommand)
-    [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
-  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
+  [self passOnPreprocessedFooterData: footerData];
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol

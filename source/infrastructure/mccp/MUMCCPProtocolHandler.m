@@ -5,6 +5,7 @@
 //
 
 #import "MUMCCPProtocolHandler.h"
+#import "MUProtocolHandlerSubclass.h"
 
 #include <zlib.h>
 
@@ -39,14 +40,14 @@
 
 @synthesize delegate;
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
+  return [[self alloc] initWithConnectionState: telnetConnectionState];
 }
 
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  if (!(self = [super initWithStack: stack]))
+  if (!(self = [super init]))
     return nil;
   
   connectionState = telnetConnectionState;
@@ -64,13 +65,13 @@
   if (outbuf) free (outbuf);
 }
 
-#pragma mark - MUByteProtocolHandler overrides
+#pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
   if (!connectionState.isIncomingStreamCompressed)
   {
-    [protocolStack parseInputByte: byte previousProtocolHandler: self];
+    [self passOnParsedByte: byte];
     return;
   }
   
@@ -98,22 +99,6 @@
     [self decompressAfterClearingOutbuf];
 }
 
-- (NSData *) headerForPreprocessedData
-{
-  return nil;
-}
-
-- (NSData *) footerForPreprocessedData
-{
-  return nil;
-}
-
-- (void) preprocessByte: (uint8_t) byte
-{
-  // We don't compress outgoing. There's no point, and no servers support it.
-  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
-}
-
 #pragma mark - Private methods
 
 @dynamic bytesPending;
@@ -139,7 +124,7 @@
     return;
   
   for (unsigned i = 0; i < outsize; i++)
-    [protocolStack parseInputByte: outbuf[i] previousProtocolHandler: self];
+    [self passOnParsedByte: outbuf[i]];
   
   outsize = 0;
   

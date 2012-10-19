@@ -5,6 +5,7 @@
 //
 
 #import "MUMCPProtocolHandler.h"
+#import "MUProtocolHandlerSubclass.h"
 
 enum MCPStates
 {
@@ -30,14 +31,14 @@ enum MCPStates
 
 @synthesize delegate;
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  return [[self alloc] initWithStack: stack connectionState: telnetConnectionState];
+  return [[self alloc] initWithConnectionState: telnetConnectionState];
 }
 
-- (id) initWithStack: (MUProtocolStack *) stack connectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
-  if (!(self = [super initWithStack: stack]))
+  if (!(self = [super init]))
     return nil;
   
   connectionState = telnetConnectionState;
@@ -46,7 +47,7 @@ enum MCPStates
   return self;
 }
 
-#pragma mark - MUByteProtocolHandler overrides
+#pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
@@ -59,7 +60,7 @@ enum MCPStates
       {
         if (byte != '\n')
           self.mcpState = MUMCPPassThroughState;
-        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+        [self passOnParsedByte: byte];
       }
       break;
       
@@ -72,8 +73,8 @@ enum MCPStates
           self.mcpState = MUMCPNewLineState;
         else
           self.mcpState = MUMCPPassThroughState;
-        [protocolStack parseInputByte: '#' previousProtocolHandler: self];
-        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+        [self passOnParsedByte: '#'];
+        [self passOnParsedByte: byte];
       }
       break;
       
@@ -88,16 +89,16 @@ enum MCPStates
           self.mcpState = MUMCPNewLineState;
         else
           self.mcpState = MUMCPPassThroughState;
-        [protocolStack parseInputByte: '#' previousProtocolHandler: self];
-        [protocolStack parseInputByte: '$' previousProtocolHandler: self];
-        [protocolStack parseInputByte: byte previousProtocolHandler: self];
+        [self passOnParsedByte: '#'];
+        [self passOnParsedByte: '$'];
+        [self passOnParsedByte: byte];
       }
       break;
       
     case MUMCPPassThroughState:
       if (byte == '\n')
         self.mcpState = MUMCPNewLineState;
-      [protocolStack parseInputByte: byte previousProtocolHandler: self];
+      [self passOnParsedByte: byte];
       break;
       
     case MUMCPBufferMCPCommandState:
@@ -110,22 +111,6 @@ enum MCPStates
         [self bufferMCPByte: byte];
       break;
   }
-}
-
-- (NSData *) headerForPreprocessedData
-{
-  return nil;
-}
-
-- (NSData *) footerForPreprocessedData
-{
-  return nil;
-}
-
-- (void) preprocessByte: (uint8_t) byte
-{
-  // Outgoing MCP commands are sent independently.
-  [protocolStack preprocessOutputByte: byte previousProtocolHandler: self];
 }
 
 #pragma mark - Private methods

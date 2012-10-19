@@ -6,16 +6,15 @@
 //  Copyright (c) 2012 3James Software. All rights reserved.
 //
 
-#import "MUByteProtocolHandler.h"
+#import "MUProtocolHandler.h"
+#import "MUMUDConnectionState.h"
 
-@interface MUSSLProtocolHandler : MUByteProtocolHandler
+@interface MUSSLProtocolHandler : MUProtocolHandler
 {
   MUMUDConnectionState *connectionState;
 }
 
-+ (id) protocolHandlerWithStack: (MUProtocolStack *) stack
-                connectionState: (MUMUDConnectionState *) newConnectionState;
-- (id) initWithStack: (MUProtocolStack *) stack
-     connectionState: (MUMUDConnectionState *) newConnectionState;
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) newConnectionState;
+- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
 @end

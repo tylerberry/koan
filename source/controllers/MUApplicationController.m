@@ -324,10 +324,10 @@
 
 - (id) infoValueForKey: (NSString *) key
 {
-  if (([NSBundle mainBundle].localizedInfoDictionary)[key])
-    return ([NSBundle mainBundle].localizedInfoDictionary)[key];
+  if ([NSBundle mainBundle].localizedInfoDictionary[key])
+    return [NSBundle mainBundle].localizedInfoDictionary[key];
   
-  return ([NSBundle mainBundle].infoDictionary)[key];
+  return [NSBundle mainBundle].infoDictionary[key];
 }
 
 - (IBAction) openConnection: (id) sender

@@ -54,7 +54,7 @@
     return self.buffer == nil ? @"" : self.buffer;
   else
   {
-    NSString *string = (self.updates)[@(ringIndex)];
+    NSString *string = self.updates[@(ringIndex)];
     
     if (string)
       return string;

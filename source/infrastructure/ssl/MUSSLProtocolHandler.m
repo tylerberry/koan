@@ -32,12 +32,12 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  [self passOnParsedByte: byte];
+  PASS_ON_PARSED_BYTE (byte);
 }
 
 - (void) preprocessByte: (uint8_t) byte
 {
-  [self passOnPreprocessedByte: byte];
+  PASS_ON_PREPROCESSED_BYTE (byte);
 }
 
 

@@ -60,7 +60,7 @@ enum MCPStates
       {
         if (byte != '\n')
           self.mcpState = MUMCPPassThroughState;
-        [self passOnParsedByte: byte];
+        PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
@@ -73,8 +73,8 @@ enum MCPStates
           self.mcpState = MUMCPNewLineState;
         else
           self.mcpState = MUMCPPassThroughState;
-        [self passOnParsedByte: '#'];
-        [self passOnParsedByte: byte];
+        PASS_ON_PARSED_BYTE ('#');
+        PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
@@ -89,16 +89,16 @@ enum MCPStates
           self.mcpState = MUMCPNewLineState;
         else
           self.mcpState = MUMCPPassThroughState;
-        [self passOnParsedByte: '#'];
-        [self passOnParsedByte: '$'];
-        [self passOnParsedByte: byte];
+        PASS_ON_PARSED_BYTE ('#');
+        PASS_ON_PARSED_BYTE ('$');
+        PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
     case MUMCPPassThroughState:
       if (byte == '\n')
         self.mcpState = MUMCPNewLineState;
-      [self passOnParsedByte: byte];
+      PASS_ON_PARSED_BYTE (byte);
       break;
       
     case MUMCPBufferMCPCommandState:

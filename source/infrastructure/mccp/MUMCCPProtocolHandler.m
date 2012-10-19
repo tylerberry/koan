@@ -71,7 +71,7 @@
 {
   if (!connectionState.isIncomingStreamCompressed)
   {
-    [self passOnParsedByte: byte];
+    PASS_ON_PARSED_BYTE (byte);
     return;
   }
   
@@ -124,7 +124,7 @@
     return;
   
   for (unsigned i = 0; i < outsize; i++)
-    [self passOnParsedByte: outbuf[i]];
+    PASS_ON_PARSED_BYTE (outbuf[i]);
   
   outsize = 0;
   

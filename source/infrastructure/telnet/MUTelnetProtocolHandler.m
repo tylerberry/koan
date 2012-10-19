@@ -162,14 +162,14 @@ static NSArray *offerableCharsets;
   {
     receivedCR = NO;
     if (byte == '\0')
-      [self passOnParsedByte: '\r'];
+      PASS_ON_PARSED_BYTE ('\r');
     else
-      [self passOnParsedByte: byte];
+      PASS_ON_PARSED_BYTE (byte);
   } 
   else if (byte == '\r')
     receivedCR = YES;
   else
-    [self passOnParsedByte: byte];
+    PASS_ON_PARSED_BYTE (byte);
 }
 
 - (void) handleBufferedSubnegotiation
@@ -282,8 +282,8 @@ static NSArray *offerableCharsets;
 - (void) preprocessByte: (uint8_t) byte
 {
   if (byte == MUTelnetInterpretAsCommand)
-    [self passOnPreprocessedByte: MUTelnetInterpretAsCommand];
-  [self passOnPreprocessedByte: byte];
+    PASS_ON_PREPROCESSED_BYTE (MUTelnetInterpretAsCommand);
+  PASS_ON_PREPROCESSED_BYTE (byte);
 }
 
 - (void) preprocessFooterData: (NSData *) data
@@ -302,7 +302,7 @@ static NSArray *offerableCharsets;
     [footerData appendBytes: &goAheadBytes length: 2];
   }
   
-  [self passOnPreprocessedFooterData: footerData];
+  PASS_ON_PREPROCESSED_FOOTER_DATA (footerData);
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol

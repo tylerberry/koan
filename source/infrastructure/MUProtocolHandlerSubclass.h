@@ -6,10 +6,6 @@
 
 #import "MUProtocolHandler.h"
 
-@interface MUProtocolHandler ()
-
-- (void) passOnParsedByte: (uint8_t) byte;
-- (void) passOnPreprocessedByte: (uint8_t) byte;
-- (void) passOnPreprocessedFooterData: (NSData *) footerData;
-
-@end
+#define PASS_ON_PARSED_BYTE(byte) [self.previousHandler parseByte:(byte)]
+#define PASS_ON_PREPROCESSED_BYTE(byte) [self.nextHandler preprocessByte:(byte)]
+#define PASS_ON_PREPROCESSED_FOOTER_DATA(data) [self.nextHandler preprocessFooterData:(data)]

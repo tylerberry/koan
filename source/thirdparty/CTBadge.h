@@ -20,10 +20,6 @@ extern const float CTLargeLabelSize;
 extern const float CTSmallLabelSize;
 
 @interface CTBadge : NSObject
-{
-  NSColor *badgeColor;
-  NSColor *labelColor;
-}
 
 @property (strong) NSColor *badgeColor;
 @property (strong) NSColor *labelColor;
@@ -42,7 +38,8 @@ extern const float CTSmallLabelSize;
 - (NSImage *) largeBadgeForValue: (NSUInteger) value;
 - (NSImage *) largeBadgeForString: (NSString *) string;
 
-// A badge of arbitrary size. <size> is the size in pixels of the badge not counting the shadow effect (image returned will be larger than <size>).
+// A badge of arbitrary size. <size> is the size in pixels of the badge not counting the shadow effect (image returned
+// will be larger than <size>).
 - (NSImage *) badgeOfSize: (float) size forValue: (NSUInteger) value;
 - (NSImage *) badgeOfSize: (float) size forString: (NSString *) string;
 

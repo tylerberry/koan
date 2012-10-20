@@ -9,12 +9,6 @@
 
 #import "MUTextLogger.h"
 
-#define MUTextLogTestBufferMax 1024
-
 @interface MUTextLoggerTests : J3TestCase
-{
-  MUTextLogger *filter;
-  uint8_t outputBuffer[1024];
-}
 
 @end

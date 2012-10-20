@@ -10,12 +10,12 @@
 
 - (void) setUp
 {
-  return;
+  self.queue = [MUFilterQueue filterQueue];
 }
 
 - (void) tearDown
 {
-  return;
+  self.queue = nil;
 }
 
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output
@@ -27,7 +27,7 @@
 {
   NSAttributedString *attributedInput = [self constructAttributedStringForString: input];
   NSAttributedString *attributedExpectedOutput = [NSAttributedString attributedStringWithString: output];
-  NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [queue processAttributedString: attributedInput]];
+  NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [self.queue processAttributedString: attributedInput]];
   
   [actualOutput setAttributes: @{} range: NSMakeRange (0, actualOutput.length)];
   [self assert: actualOutput equals: attributedExpectedOutput message: message];  

@@ -71,13 +71,15 @@
 
 - (void) setUp
 {
-  queue = [[MUFilterQueue alloc] init];
-  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting] delegate: nil]];
+  [super setUp];
+  
+  [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting]
+                                                          delegate: nil]];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testNoCode
@@ -188,7 +190,7 @@
 - (void) testForegroundColor
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36mbc\x1B[35md\x1B[39me"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: TESTING_TEXT_COLOR
@@ -220,7 +222,7 @@
 - (void) testStandardForegroundColors
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[30ma\x1B[31mb\x1B[32mc\x1B[33md\x1B[34me\x1B[35mf\x1B[36mg\x1B[37mh"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: [NSColor darkGrayColor]
@@ -269,7 +271,7 @@
   for (unsigned i = 0; i < 16; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     NSColor *targetColor;
     
@@ -325,7 +327,7 @@
   for (unsigned i = 16; i < 232; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     int adjustedValue = i - 16;
     int red = adjustedValue / 36;
@@ -347,7 +349,7 @@
   for (unsigned i = 232; i < 256; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     int adjustedValue = i - 231;
     
@@ -365,7 +367,7 @@
 - (void) testBackgroundColor
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[46mbc\x1B[45md\x1B[49me"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: nil
@@ -397,7 +399,7 @@
 - (void) testStandardBackgroundColors
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[40ma\x1B[41mb\x1B[42mc\x1B[43md\x1B[44me\x1B[45mf\x1B[46mg\x1B[47mh"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: [NSColor darkGrayColor]
@@ -446,7 +448,7 @@
   for (unsigned i = 0; i < 16; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     NSColor *targetColor;
     
@@ -502,7 +504,7 @@
   for (unsigned i = 16; i < 232; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     int adjustedValue = i - 16;
     int red = adjustedValue / 36;
@@ -524,7 +526,7 @@
   for (unsigned i = 232; i < 256; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
-    NSAttributedString *output = [queue processAttributedString: input];
+    NSAttributedString *output = [self.queue processAttributedString: input];
     
     int adjustedValue = i - 231;
     
@@ -542,7 +544,7 @@
 - (void) testForegroundAndBackgroundColorAsCompoundCode
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mbc\x1B[45;35md\x1B[39;49me"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: TESTING_TEXT_COLOR
@@ -599,7 +601,7 @@
 - (void) testResetDisplayMode
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36m\x1B[46mb\x1B[0mc"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: [NSColor cyanColor]
@@ -626,7 +628,7 @@
 - (void) testCompoundSetThenResetDisplayMode
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36;46mb\x1B[0mc"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: [NSColor cyanColor]
@@ -652,7 +654,7 @@
 - (void) testShortFormOfResetDisplayMode
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[36m\x1B[46mb\x1B[mc"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: [NSColor cyanColor]
@@ -682,8 +684,8 @@
   NSAttributedString *secondInput = [self constructAttributedStringForString: @"c"];
   NSAttributedString *output;
   
-  [queue processAttributedString: firstInput];
-  output = [queue processAttributedString: secondInput];
+  [self.queue processAttributedString: firstInput];
+  output = [self.queue processAttributedString: secondInput];
   
   [self assertString: output hasValue: [NSColor cyanColor] forAttribute: NSForegroundColorAttributeName atIndex: 0 message: @"c"];
 }
@@ -691,7 +693,7 @@
 - (void) testBold
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[22mc\x1B[1md\x1B[0me\x1B[1mf\x1B[mg"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
 
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 0 message: @"a"];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 1 message: @"b"];
@@ -707,13 +709,13 @@
   NSMutableAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[22mc\x1B[1md\x1B[0me\x1B[1mf\x1B[mg"];
   NSAttributedString *output;
   
-  [queue clearFilters];
+  [self.queue clearFilters];
   
   MUProfile *testingProfile = [MUProfile profileForTesting];
   testingProfile.font = [testingProfile.font fontWithTrait: NSBoldFontMask];
-  [queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile delegate: nil]];
+  [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile delegate: nil]];
 
-  output = [queue processAttributedString: input];
+  output = [self.queue processAttributedString: input];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a"];
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 1 message: @"b"];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 2 message: @"c"];
@@ -722,14 +724,14 @@
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 5 message: @"f"];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 6 message: @"g"];
   
-  output = [queue processAttributedString: input];
+  output = [self.queue processAttributedString: input];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a2"];
 }
 
 - (void) testUnderline
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[4mb\x1B[24mc\x1B[4md\x1B[0me\x1B[4mf\x1B[mg"];  
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [self.queue processAttributedString: input];
   
   [self assertString: output
             hasValue: nil
@@ -778,9 +780,9 @@
 {
   NSAttributedString *input1 = [self constructAttributedStringForString: @"a\x1B["];  
   NSAttributedString *input2 = [self constructAttributedStringForString: @"4mb"];  
-  [queue processAttributedString: input1];
+  [self.queue processAttributedString: input1];
   
-  NSAttributedString *output = [queue processAttributedString: input2];
+  NSAttributedString *output = [self.queue processAttributedString: input2];
    
   [self assertString: output hasValue: @(NSSingleUnderlineStyle)
         forAttribute: NSUnderlineStyleAttributeName

@@ -8,8 +8,5 @@
 #import "MUFugueEditFilter.h"
 
 @interface MUFugueEditFilterTests : MUFilterTestCase <MUFugueEditFilterDelegate>
-{
-  NSString *editString;
-}
 
 @end

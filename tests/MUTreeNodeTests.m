@@ -10,6 +10,9 @@
 #import "MUTreeNode.h"
 
 @interface MUTreeNodeTests ()
+{
+  MUTreeNode *_node;
+}
 
 - (MUTreeNode *) testingNode;
 
@@ -21,46 +24,46 @@
 
 - (void) setUp
 {
-  node = [[MUTreeNode alloc] init];
+  _node = [[MUTreeNode alloc] init];
 }
 
 - (void) tearDown
 {
-  return;
+  _node = nil;
 }
 
 - (void) testAddChild
 {
   MUTreeNode *child = [self testingNode];
-  [node addChild: child];
+  [_node addChild: child];
   
-  [self assert: node.children[0] equals: child];
+  [self assert: _node.children[0] equals: child];
 }
 
 - (void) testContainsChild
 {
   MUTreeNode *child = [self testingNode];
-  [node addChild: child];
+  [_node addChild: child];
   
-  [self assertTrue: [node containsChild: child]];
+  [self assertTrue: [_node containsChild: child]];
 }
 
 - (void) testNoDuplicateChildren
 {
   MUTreeNode *child = [self testingNode];
-  [node addChild: child];
-  [node addChild: child];
+  [_node addChild: child];
+  [_node addChild: child];
   
-  [self assertUInteger: node.children.count equals: 1];
+  [self assertUInteger: _node.children.count equals: 1];
 }
 
 - (void) testRemoveChild
 {
   MUTreeNode *child = [self testingNode];
-  [node addChild: child];
-  [node removeChild: child];
+  [_node addChild: child];
+  [_node removeChild: child];
   
-  [self assertFalse: [node containsChild: child]];
+  [self assertFalse: [_node containsChild: child]];
   [self assertNil: child.parent];
 }
 
@@ -69,17 +72,17 @@
   MUTreeNode *child = [self testingNode];
   MUTreeNode *otherChild = [self testingNode];
 
-  [node addChild: child];
+  [_node addChild: child];
   
-  [self assertTrue: [node containsChild: child]];
-  [self assert: child.parent equals: node];
+  [self assertTrue: [_node containsChild: child]];
+  [self assert: child.parent equals: _node];
     
-  [node replaceChild: child withChild: otherChild];
+  [_node replaceChild: child withChild: otherChild];
     
-  [self assertFalse: [node containsChild: child]];
+  [self assertFalse: [_node containsChild: child]];
   [self assertNil: child.parent];
-  [self assertTrue: [node containsChild: otherChild]];
-  [self assert: otherChild.parent equals: node];
+  [self assertTrue: [_node containsChild: otherChild]];
+  [self assert: otherChild.parent equals: _node];
 }
 
 - (void) testNilChildren

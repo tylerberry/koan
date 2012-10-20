@@ -10,8 +10,5 @@
 @class MUTreeNode;
 
 @interface MUTreeNodeTests : J3TestCase
-{
-  MUTreeNode *node;
-}
 
 @end

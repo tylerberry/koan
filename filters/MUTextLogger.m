@@ -10,6 +10,9 @@
 #import "MUWorld.h"
 
 @interface MUTextLogger ()
+{
+  NSOutputStream *_outputStream;
+}
 
 - (void) log: (NSAttributedString *) attributedString;
 - (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers;
@@ -31,13 +34,13 @@
   return [[self alloc] initWithWorld: world player: player];
 }
 
-- (id) initWithOutputStream: (NSOutputStream *) stream
+- (id) initWithOutputStream: (NSOutputStream *) outputStream
 {
-  if (!stream || !(self = [super init]))
+  if (!outputStream || !(self = [super init]))
     return nil;
   
-  output = stream;
-  [output open];
+  _outputStream = outputStream;
+  [_outputStream open];
   
   return self;
 }
@@ -75,7 +78,7 @@
 
 - (void) dealloc
 {
-  [output close];
+  [_outputStream close];
 }
 
 - (NSAttributedString *) filter: (NSAttributedString *) attributedString
@@ -90,7 +93,7 @@
 
 - (void) log: (NSAttributedString *) attributedString
 {
-  [self writeToStream: output withFormat: @"%@", attributedString.string];
+  [self writeToStream: _outputStream withFormat: @"%@", attributedString.string];
 }
 
 - (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers

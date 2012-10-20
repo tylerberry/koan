@@ -8,34 +8,39 @@
 #import "MUFugueEditFilter.h"
 
 @implementation MUFugueEditFilterTests
+{
+  NSString *_editString;
+}
 
 - (void) setInputViewString: (NSString *) string
 {
-  editString = [string copy];
+  _editString = [string copy];
 }
 
 - (void) setUp
 {
-  editString = nil;
-  queue = [[MUFilterQueue alloc] init];
-  [queue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
+  [super setUp];
+  
+  _editString = nil;
+  
+  [self.queue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testIgnoresNormalInput
 {
   [self assertInput: @"Just a normal line of text.\n" hasOutput: @"Just a normal line of text.\n"];
-  [self assertNil: editString]; 
+  [self assertNil: _editString]; 
 }
 
 - (void) testElidesFugueEdit
 {
   [self assertInput: @"FugueEdit > &test me=Test\n" hasOutput: @""];
-  [self assert: editString equals: @"&test me=Test"];
+  [self assert: _editString equals: @"&test me=Test"];
 }
 
 @end

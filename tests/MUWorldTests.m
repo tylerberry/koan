@@ -9,22 +9,27 @@
 #import "MUPlayer.h"
 
 @implementation MUWorldTests
+{
+  MUWorld *_world;
+  MUPlayer *_player;
+}
 
 - (void) setUp
 {
-  world = [[MUWorld alloc] init];
-  player = [[MUPlayer alloc] init];
+  _world = [[MUWorld alloc] init];
+  _player = [[MUPlayer alloc] init];
 }
 
 - (void) tearDown
 {
-  return;
+  _world = nil;
+  _player = nil;
 }
 
 - (void) testUniqueIdentifier
 {
-  world.name = @"Test World";
-  [self assert: world.uniqueIdentifier equals: @"world:test.world"];
+  _world.name = @"Test World";
+  [self assert: _world.uniqueIdentifier equals: @"world:test.world"];
 }
 
 @end

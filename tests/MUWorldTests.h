@@ -11,9 +11,5 @@
 @class MUPlayer;
 
 @interface MUWorldTests : J3TestCase
-{
-  MUWorld *world;
-  MUPlayer *player;
-}
 
 @end

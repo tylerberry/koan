@@ -12,9 +12,5 @@
 @class MUWriteBuffer;
 
 @interface MUWriteBufferTests : J3TestCase <MUByteDestination>
-{
-  MUWriteBuffer *buffer;
-  NSMutableData *output;
-}
 
 @end

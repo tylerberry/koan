@@ -9,9 +9,8 @@
 #import "MUFilterQueue.h"
 
 @interface MUFilterTestCase : J3TestCase
-{
-  MUFilterQueue *queue;
-}
+
+@property (strong) MUFilterQueue *queue;
 
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output;
 - (void) assertInput: (NSString *) input

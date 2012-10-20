@@ -6,7 +6,13 @@
 
 #import "MUTextLoggerTests.h"
 
+#define MUTEXTLOG_BUFFER_MAX 1024
+
 @interface MUTextLoggerTests ()
+{
+  MUTextLogger *_textLogger;
+  uint8_t _outputBuffer[MUTEXTLOG_BUFFER_MAX];
+}
 
 - (void) assertFilter: (id) object;
 - (void) assertFilterString: (NSString *) string;
@@ -20,17 +26,17 @@
 
 - (void) setUp
 {
-  memset (outputBuffer, 0, MUTextLogTestBufferMax);
-  NSOutputStream *output = [NSOutputStream outputStreamToBuffer: outputBuffer
-                                                       capacity: MUTextLogTestBufferMax];
-  [output open];
+  memset (_outputBuffer, 0, MUTEXTLOG_BUFFER_MAX);
+  NSOutputStream *outputStream = [NSOutputStream outputStreamToBuffer: _outputBuffer
+                                                             capacity: MUTEXTLOG_BUFFER_MAX];
+  [outputStream open];
   
-  filter = [[MUTextLogger alloc] initWithOutputStream: output];
+  _textLogger = [[MUTextLogger alloc] initWithOutputStream: outputStream];
 }
 
 - (void) tearDown
 {
-  return;
+  _textLogger = nil;
 }
 
 - (void) testEmptyString
@@ -111,7 +117,7 @@
 
 - (void) assertFilter: (id) object
 {
-  [self assert: [filter filter: object] equals: object message: nil];
+  [self assert: [_textLogger filter: object] equals: object message: nil];
 }
 
 - (void) assertFilterString: (NSString *) string
@@ -121,7 +127,7 @@
 
 - (void) assertLoggedOutput: (NSString *) string
 {
-  NSString *outputString = @((const char *) outputBuffer);
+  NSString *outputString = @((const char *) _outputBuffer);
   
   [self assert: outputString equals: string];
 }

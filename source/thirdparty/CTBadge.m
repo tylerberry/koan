@@ -39,15 +39,13 @@ const float CTSmallLabelSize = (float) 11.;
 
 @implementation CTBadge
 
-@synthesize badgeColor, labelColor;
-
 - (id) init
 {
   if (!(self = [super init]))
     return nil;
   
-  self.badgeColor = [NSColor redColor];
-  self.labelColor = [NSColor whiteColor];
+  _badgeColor = [NSColor redColor];
+  _labelColor = [NSColor whiteColor];
 	
   return self;
 }

@@ -75,6 +75,5 @@
 @required
 - (void) log: (NSString *) message arguments: (va_list) args;
 - (void) reportWindowSizeToServer;
-- (void) writeDataToSocket: (NSData *) data;
 
 @end

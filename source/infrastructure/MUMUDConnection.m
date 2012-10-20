@@ -252,6 +252,11 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self.delegate displayPrompt: parsedPromptString];
 }
 
+- (void) writeDataToSocket: (NSData *) data
+{
+  [self.socket write: data];
+}
+
 #pragma mark - MUTelnetProtocolHandlerDelegate
 
 - (void) reportWindowSizeToServer
@@ -297,11 +302,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
    [MUTelnetOption optionNameForByte: MUTelnetOptionNegotiateAboutWindowSize], width1, width0, height1, height0];
 }
 
-- (void) writeDataToSocket: (NSData *) data
-{
-  [self.socket write: data];
-}
-
 #pragma mark - Private methods
 
 - (void) cleanUpPollTimer
@@ -337,6 +337,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   // It is possible for the connection to have been released but for there to
   // be a pending timer fire that was registered before the timers were
   // invalidated.
+  
   if (!self.socket || !self.socket.isConnected)
     return;
   
@@ -394,7 +395,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) writeDataWithPreprocessing: (NSData *) data
 {
-  [self writeDataToSocket: [protocolStack preprocessOutputData: data]];
+  [protocolStack preprocessOutputData: data];
 }
 
 @end

@@ -8,9 +8,6 @@
 
 @implementation MUMUDConnectionState
 
-@synthesize charsetNegotiationStatus, isIncomingStreamCompressed, nextTerminalTypeIndex, serverWillEcho;
-@synthesize shouldReportWindowSizeChanges, stringEncoding;
-
 + (id) connectionState
 {
   return [[self alloc] init];
@@ -21,12 +18,12 @@
   if (!(self = [super init]))
     return nil;
   
-  charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
-  isIncomingStreamCompressed = NO;
-  nextTerminalTypeIndex = 0;
-  serverWillEcho = NO;
-  shouldReportWindowSizeChanges = NO;
-  stringEncoding = NSASCIIStringEncoding;
+  _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+  _isIncomingStreamCompressed = NO;
+  _nextTerminalTypeIndex = 0;
+  _serverWillEcho = NO;
+  _shouldReportWindowSizeChanges = NO;
+  _stringEncoding = NSASCIIStringEncoding;
 
   return self;
 }

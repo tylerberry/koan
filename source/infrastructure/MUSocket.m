@@ -69,8 +69,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   struct hostent *server;
   NSUInteger availableBytes;
   BOOL hasError;
-  NSMutableArray *dataToWrite;
-  NSObject *dataToWriteLock;
+  NSMutableData *_dataToWrite;
   NSObject *availableBytesLock;
 }
 
@@ -109,8 +108,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   socketfd = -1;
   port = newPort;
   server = NULL;
-  dataToWrite = [[NSMutableArray alloc] init];
-  dataToWriteLock = [[NSObject alloc] init];
+  _dataToWrite = [[NSMutableData alloc] initWithCapacity: 2048];
   availableBytesLock = [[NSObject alloc] init];
   
   return self;
@@ -206,7 +204,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (NSData *) readExactlyLength: (size_t) length
 {
-  while (([self isConnected] || [self isConnecting])
+  while ((self.isConnected || self.isConnecting)
          && availableBytes < length)
     [self poll];
   
@@ -232,7 +230,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
     free (bytes);
     
     // TODO: Is this correct?
-    if (!([self isConnected] || [self isConnecting]))
+    if (!(self.isConnected || self.isConnecting))
       return nil;
     
     if (errno == EBADF || errno == EPIPE)
@@ -255,9 +253,9 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (void) write: (NSData *) data
 {
-  @synchronized (dataToWriteLock)
+  @synchronized (_dataToWrite)
   {
-    [dataToWrite insertObject: data atIndex: 0];
+    [_dataToWrite appendData: data];
   }
 }
 
@@ -436,30 +434,28 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 - (void) internalWrite
 {
-  NSData *data;
-  @synchronized (dataToWriteLock)
+  @synchronized (_dataToWrite)
   {
-    data = dataToWrite.lastObject;
-    if (data == nil)
-      return;    
-    [dataToWrite removeLastObject];
-  }
-    
-  errno = 0; 
-  ssize_t bytes_written = full_write (socketfd, data.bytes, (size_t) data.length);
-  
-  if (bytes_written == -1)
-  {
-    // TODO: Is this correct?
-    if (!(self.isConnected || self.isConnecting))
+    if (_dataToWrite.length == 0)
       return;
     
-    if (errno == EBADF || errno == EPIPE)
-      [self performSelectorOnMainThread: @selector (setStatusClosedByServer) withObject: nil waitUntilDone: YES];
+    errno = 0;
+    ssize_t bytes_written = full_write (socketfd, _dataToWrite.bytes, (size_t) _dataToWrite.length);
     
-    [MUSocketException socketErrorWithErrnoForFunction: @"write"];
+    if (bytes_written == -1)
+    {
+      // TODO: Is this correct?
+      if (!(self.isConnected || self.isConnecting))
+        return;
+      
+      if (errno == EBADF || errno == EPIPE)
+        [self performSelectorOnMainThread: @selector (setStatusClosedByServer) withObject: nil waitUntilDone: YES];
+      
+      [MUSocketException socketErrorWithErrnoForFunction: @"write"];
+    }
+    
+    [_dataToWrite setData: [NSData data]];
   }
-
 }
 
 - (void) performPostConnectNegotiation

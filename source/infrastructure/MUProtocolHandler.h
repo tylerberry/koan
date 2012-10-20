@@ -6,6 +6,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class MUProtocolStack;
+
 @protocol MUProtocolHandler
 
 @required
@@ -13,6 +15,7 @@
 - (void) parseByte: (uint8_t) byte;
 - (void) preprocessByte: (uint8_t) byte;
 - (void) preprocessFooterData: (NSData *) data;
+- (void) sendPreprocessedData;
 
 @end
 
@@ -21,6 +24,7 @@
 @interface MUProtocolHandler : NSObject <MUProtocolHandler>
 
 @property (weak) NSObject <MUProtocolHandler> *previousHandler;
+@property (weak) MUProtocolStack *protocolStack;
 @property (weak) NSObject <MUProtocolHandler> *nextHandler;
 
 @end

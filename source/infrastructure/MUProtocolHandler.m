@@ -7,6 +7,8 @@
 #import "MUProtocolHandler.h"
 #import "MUProtocolHandlerSubclass.h"
 
+#import "MUProtocolStack.h"
+
 @implementation MUProtocolHandler
 
 + (id) protocolHandler
@@ -18,7 +20,7 @@
 
 - (void) notePromptMarker
 {
-  [self.previousHandler notePromptMarker];
+  [self.protocolStack notePromptMarker];
 }
 
 - (void) parseByte: (uint8_t) byte
@@ -34,6 +36,11 @@
 - (void) preprocessFooterData: (NSData *) footerData
 {
   [self passOnPreprocessedFooterData: footerData];
+}
+
+- (void) sendPreprocessedData
+{
+  [self.protocolStack sendPreprocessedData];
 }
 
 #pragma mark - Subclass-only methods

@@ -19,13 +19,12 @@
 
 - (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
+- (void) flushBufferedData;
+- (void) parseInputData: (NSData *) data;
+- (void) preprocessOutputData: (NSData *) data;
+
 - (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler;
 - (void) clearAllProtocols;
-
-- (void) flushBufferedData;
-
-- (void) parseInputData: (NSData *) data;
-- (NSData *) preprocessOutputData: (NSData *) data;
 
 @end
 
@@ -35,5 +34,6 @@
 
 - (void) displayDataAsText: (NSData *) parsedData;
 - (void) displayDataAsPrompt: (NSData *) parsedData;
+- (void) writeDataToSocket: (NSData *) preprocessedData;
 
 @end

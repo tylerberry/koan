@@ -10,15 +10,16 @@
 
 @interface MUProtocolStack ()
 {
-  MUMUDConnectionState *connectionState;
+  MUMUDConnectionState *_connectionState;
   
-  NSMutableData *parsingBuffer;
-  NSMutableData *preprocessingBuffer;
+  NSMutableArray *_mutableProtocolHandlers;
+  NSMutableData *_parsingBuffer;
+  NSMutableData *_preprocessingBuffer;
+  NSMutableArray *_preprocessingBufferStack;
 }
 
-@property (strong) NSMutableArray *mutableProtocolHandlers;
-
 - (void) maybeUseBufferedDataAsPrompt;
+- (void) sendPreprocessedDataToSocket;
 - (void) useBufferedDataAsPrompt;
 
 @end
@@ -33,60 +34,37 @@
 {
   if (!(self = [super init]))
     return nil;
-                                             
-  connectionState = newConnectionState;
+  
+  _connectionState = newConnectionState;
+  
   _mutableProtocolHandlers = [[NSMutableArray alloc] init];
-  parsingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
-  preprocessingBuffer = nil;
+  _parsingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
+  _preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
+  _preprocessingBufferStack = [[NSMutableArray alloc] init];
   
   return self;
-}
-
-- (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler
-{
-  @synchronized (self)
-  {
-    MUProtocolHandler *lastHandler = [self.mutableProtocolHandlers lastObject];
-    if (lastHandler)
-    {
-      protocolHandler.previousHandler = lastHandler;
-      lastHandler.nextHandler = protocolHandler;
-    }
-    else
-      protocolHandler.previousHandler = self;
-    protocolHandler.nextHandler = self;
-    [self.mutableProtocolHandlers addObject: protocolHandler];
-  }
-}
-
-- (void) clearAllProtocols
-{
-  @synchronized (self)
-  {
-    [_mutableProtocolHandlers removeAllObjects];
-  }
-}
-
-- (void) flushBufferedData
-{
-  if (parsingBuffer.length > 0)
-  {
-    [self.delegate displayDataAsText: [NSData dataWithData: parsingBuffer]];
-    [parsingBuffer setData: [NSData data]];
-  }
 }
 
 #pragma mark - Properties
 
 - (NSArray *) protocolHandlers
 {
-  @synchronized (self)
+  @synchronized (_mutableProtocolHandlers)
   {
-    return self.mutableProtocolHandlers;
+    return _mutableProtocolHandlers;
   }
 }
 
 #pragma mark - Methods
+
+- (void) flushBufferedData
+{
+  if (_parsingBuffer.length > 0)
+  {
+    [self.delegate displayDataAsText: [NSData dataWithData: _parsingBuffer]];
+    [_parsingBuffer setData: [NSData data]];
+  }
+}
 
 - (void) parseInputData: (NSData *) data
 {
@@ -101,30 +79,55 @@
   for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler parseByte: bytes[i]];
     
-  if (parsingBuffer.length > 0)
+  if (_parsingBuffer.length > 0)
     [self maybeUseBufferedDataAsPrompt];
 }
 
-- (NSData *) preprocessOutputData: (NSData *) data
+- (void) preprocessOutputData: (NSData *) data
 {
   if (self.protocolHandlers.count == 0)
-    return nil;
-  
-  const uint8_t *bytes = data.bytes;
-  
-  preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: data.length];
+    return;
   
   MUProtocolHandler *firstProtocolHandler = self.protocolHandlers[0];
+  const uint8_t *bytes = data.bytes;
   
   for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler preprocessByte: bytes[i]];
   
   [firstProtocolHandler preprocessFooterData: [NSData data]];
   
-  NSData *preprocessedData = preprocessingBuffer;
-  preprocessingBuffer = nil;
-  
-  return preprocessedData;
+  [self sendPreprocessedDataToSocket];
+}
+
+#pragma mark - Methods - managing protocol handlers
+
+- (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler
+{
+  @synchronized (_mutableProtocolHandlers)
+  {
+    MUProtocolHandler *lastProtocolHandler = [_mutableProtocolHandlers lastObject];
+    
+    if (lastProtocolHandler)
+    {
+      protocolHandler.previousHandler = lastProtocolHandler;
+      lastProtocolHandler.nextHandler = protocolHandler;
+    }
+    else
+      protocolHandler.previousHandler = self;
+    
+    protocolHandler.nextHandler = self;
+    protocolHandler.protocolStack = self;
+    
+    [_mutableProtocolHandlers addObject: protocolHandler];
+  }
+}
+
+- (void) clearAllProtocols
+{
+  @synchronized (_mutableProtocolHandlers)
+  {
+    [_mutableProtocolHandlers removeAllObjects];
+  }
 }
 
 #pragma mark - MUProtocolHandler protocol
@@ -145,7 +148,7 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  [parsingBuffer appendBytes: &byte length: 1];
+  [_parsingBuffer appendBytes: &byte length: 1];
     
   if (byte == '\n')
     [self flushBufferedData];
@@ -153,21 +156,26 @@
 
 - (void) preprocessByte: (uint8_t) byte
 {
-  [preprocessingBuffer appendBytes: &byte length: 1];
+  [_preprocessingBuffer appendBytes: &byte length: 1];
 }
 
 - (void) preprocessFooterData: (NSData *) data
 {
-  [preprocessingBuffer appendData: data];
+  [_preprocessingBuffer appendData: data];
+}
+
+- (void) sendPreprocessedData
+{
+  [self sendPreprocessedDataToSocket];
 }
 
 #pragma mark - Private methods
 
 - (void) maybeUseBufferedDataAsPrompt
 {
-  NSString *promptCandidate = [[NSString alloc] initWithBytes: parsingBuffer.bytes
-                                                       length: parsingBuffer.length
-                                                     encoding: connectionState.stringEncoding];
+  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsingBuffer.bytes
+                                                       length: _parsingBuffer.length
+                                                     encoding: _connectionState.stringEncoding];
   
   if ([promptCandidate hasSuffix: @" "])
   {
@@ -179,12 +187,21 @@
   }
 }
 
+- (void) sendPreprocessedDataToSocket
+{
+  if (_preprocessingBuffer.length > 0)
+  {
+    [self.delegate writeDataToSocket: _preprocessingBuffer];
+    [_preprocessingBuffer setData: [NSData data]];
+  }
+}
+
 - (void) useBufferedDataAsPrompt
 {
-  if (parsingBuffer.length > 0)
+  if (_parsingBuffer.length > 0)
   {
-    [self.delegate displayDataAsPrompt: [NSData dataWithData: parsingBuffer]];
-    [parsingBuffer setData: [NSData data]];
+    [self.delegate displayDataAsPrompt: _parsingBuffer];
+    [_parsingBuffer setData: [NSData data]];
   }
 }
 

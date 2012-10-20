@@ -350,7 +350,6 @@ static NSArray *offerableCharsets;
   [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
   [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
-  [self forOption: MUTelnetOptionNewEnvironment allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];
@@ -369,14 +368,17 @@ static NSArray *offerableCharsets;
 
 - (void) sendCommand: (uint8_t) command withByte: (uint8_t) byte
 {
-  uint8_t bytes[] = {MUTelnetInterpretAsCommand, command, byte};
-  [delegate writeDataToSocket: [NSData dataWithBytes: bytes length: 3]];
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetInterpretAsCommand);
+  PASS_ON_PREPROCESSED_BYTE (command);
+  PASS_ON_PREPROCESSED_BYTE (byte);
+  [self sendPreprocessedData];
 }
 
 - (void) sendEscapedByte: (uint8_t) byte
 {
-  uint8_t bytes[] = {MUTelnetInterpretAsCommand, byte};
-  [delegate writeDataToSocket: [NSData dataWithBytes: bytes length: 2]];
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetInterpretAsCommand);
+  PASS_ON_PREPROCESSED_BYTE (byte);
+  [self sendPreprocessedData];
 }
 
 @end
@@ -387,15 +389,16 @@ static NSArray *offerableCharsets;
 
 - (void) sendSubnegotiationWithBytes: (const uint8_t *) payloadBytes length: (NSUInteger) payloadLength
 {
-  const uint8_t headerBytes[2] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation};
-  const uint8_t footerBytes[2] = {MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
-  NSMutableData *data = [NSMutableData data];
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetInterpretAsCommand);
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetBeginSubnegotiation);
   
-  [data appendBytes: headerBytes length: 2];
-  [data appendBytes: payloadBytes length: payloadLength];
-  [data appendBytes: footerBytes length: 2];
+  for (NSUInteger i = 0; i < payloadLength; i++)
+    PASS_ON_PREPROCESSED_BYTE (payloadBytes[i]);
   
-  [delegate writeDataToSocket: data];
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetInterpretAsCommand);
+  PASS_ON_PREPROCESSED_BYTE (MUTelnetEndSubnegotiation);
+  
+  [self sendPreprocessedData];
 }
 
 - (void) sendSubnegotiationWithData: (NSData *) payloadData

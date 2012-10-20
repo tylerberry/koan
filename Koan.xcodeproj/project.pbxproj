@@ -12,6 +12,7 @@
 		2F0705541613F34A00A71314 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F07054B1613F2E400A71314 /* Sparkle.framework */; };
 		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
+		2F10B17616323C6400948438 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F10B17516323C6400948438 /* libssl.dylib */; };
 		2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* MUFilterQueue.m */; };
 		2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* MUMUDConnectionState.m */; };
 		2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* MUReadBuffer.m */; };
@@ -257,6 +258,7 @@
 		2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MMTabBarView.xcodeproj; path = MMTabBarView/MMTabBarView/MMTabBarView.xcodeproj; sourceTree = "<group>"; };
 		2F0B277912196B9C00AE6B62 /* MUTelnetStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachine.h; sourceTree = "<group>"; };
 		2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachine.m; sourceTree = "<group>"; };
+		2F10B17516323C6400948438 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		2F1C1796122854B90079F1E1 /* MUFilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterQueue.h; sourceTree = "<group>"; };
 		2F1C1797122854B90079F1E1 /* MUFilterQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterQueue.m; sourceTree = "<group>"; };
 		2F2718E912141166006710C7 /* MUMUDConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionState.h; sourceTree = "<group>"; };
@@ -465,8 +467,6 @@
 		E6505497077EA20E0016F30E /* MUNaiveURLFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUNaiveURLFilterTests.h; sourceTree = "<group>"; };
 		E6505498077EA20E0016F30E /* MUNaiveURLFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNaiveURLFilterTests.m; sourceTree = "<group>"; };
 		E65055A9077EBA820016F30E /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		E6505679077ECE760016F30E /* NSURL (Allocating).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL (Allocating).h"; sourceTree = "<group>"; };
-		E650567A077ECE760016F30E /* NSURL (Allocating).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL (Allocating).m"; sourceTree = "<group>"; };
 		E6505ABF07820CC00016F30E /* User Stories.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "User Stories.rtf"; sourceTree = "<group>"; };
 		E653A7CF07AEFAB900023476 /* MUGrowlService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUGrowlService.h; sourceTree = "<group>"; };
 		E653A7D007AEFAB900023476 /* MUGrowlService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUGrowlService.m; sourceTree = "<group>"; };
@@ -531,6 +531,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F10B17616323C6400948438 /* libssl.dylib in Frameworks */,
 				2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				2F8CEADB153ACD7500B488E7 /* BWToolkitFramework.framework in Frameworks */,
@@ -554,6 +555,7 @@
 		1058C7A2FEA54F0111CA2CBB /* OS Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2F10B17516323C6400948438 /* libssl.dylib */,
 				2FA24AD11623639A00A9D92B /* libz.dylib */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				2F8CEAE5153AD20200B488E7 /* SenTestingKit.framework */,
@@ -852,8 +854,6 @@
 				7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */,
 				E6550DFE07763B72002E81FF /* NSObject (BetterHashing).h */,
 				E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */,
-				E6505679077ECE760016F30E /* NSURL (Allocating).h */,
-				E650567A077ECE760016F30E /* NSURL (Allocating).m */,
 			);
 			name = Categories;
 			path = categories;

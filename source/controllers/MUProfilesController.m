@@ -11,6 +11,18 @@
 #import "MUSection.h"
 
 @interface MUProfilesController ()
+{
+  NSMutableArray *profilesTreeArray;
+  NSMutableArray *profilesExpandedItems;
+  
+  BOOL backgroundColorActive;
+  BOOL linkColorActive;
+  BOOL textColorActive;
+  BOOL visitedLinkColorActive;
+  
+  MUProfile *editingProfile;
+  NSFont *editingFont;
+}
 
 - (void) applicationWillTerminate: (NSNotification *) notification;
 

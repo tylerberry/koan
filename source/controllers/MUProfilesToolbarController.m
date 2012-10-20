@@ -8,7 +8,19 @@
 
 #import "MUProfilesController.h"
 
+@interface MUProfilesToolbarController ()
+{
+  NSToolbar *toolbar;
+}
+
+@end
+
+#pragma mark -
+
 @implementation MUProfilesToolbarController
+{
+  NSToolbar *toolbar;
+}
 
 - (void) awakeFromNib
 {

@@ -27,21 +27,9 @@
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;
   IBOutlet NSSplitView *splitView;
-  
-  NSObject <MUConnectionWindowControllerDelegate> *delegate;
-  
-  MUProfile *profile;
-  MUMUDConnection *telnetConnection;
-  
-  BOOL currentlySearching;
-  
-  NSTimer *pingTimer;
-  MUFilterQueue *filterQueue;
-  MUHistoryRing *historyRing;
-  
-  NSString *currentPrompt;
 }
 
+@property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;
 @property (readonly) BOOL isConnectedOrConnecting;
 
 // Designated initializer.

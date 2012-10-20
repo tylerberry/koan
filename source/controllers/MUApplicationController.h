@@ -24,14 +24,6 @@
   IBOutlet NSButton *newConnectionSaveWorldButton;
   
   IBOutlet MUPreferencesController *preferencesController;
-  
-  NSUInteger unreadCount;
-  CTBadge *dockBadge;
-  
-  NSMutableArray *connectionWindowControllers;
-  MUAcknowledgementsController *acknowledgementsController;
-  MUProfilesController *profilesController;
-  MUProxySettingsController *proxySettingsController;
 }
 
 - (IBAction) chooseNewFont: (id) sender;

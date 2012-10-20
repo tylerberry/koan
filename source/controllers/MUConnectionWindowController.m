@@ -23,6 +23,17 @@ enum MUSearchDirections
 
 @interface MUConnectionWindowController ()
 {
+  MUProfile *profile;
+  MUMUDConnection *telnetConnection;
+  
+  BOOL currentlySearching;
+  
+  NSTimer *pingTimer;
+  MUFilterQueue *filterQueue;
+  MUHistoryRing *historyRing;
+  
+  NSString *currentPrompt;
+  
   NSTimer *windowSizeNotificationTimer;
 }
 
@@ -196,35 +207,30 @@ enum MUSearchDirections
   
 #pragma mark - Accessors
 
-- (id) delegate
-{
-  return delegate;
-}
-
 - (void) setDelegate: (id) newDelegate
 {
-  if (delegate == newDelegate)
+  if (_delegate == newDelegate)
     return;
   
-  [[NSNotificationCenter defaultCenter] removeObserver: delegate name: nil object: self];
+  [[NSNotificationCenter defaultCenter] removeObserver: _delegate name: nil object: self];
   
-  delegate = newDelegate;
-  
-  if ([delegate respondsToSelector: @selector (connectionWindowControllerWillClose:)])
+  if ([newDelegate respondsToSelector: @selector (connectionWindowControllerWillClose:)])
   {
-    [[NSNotificationCenter defaultCenter] addObserver: delegate
+    [[NSNotificationCenter defaultCenter] addObserver: newDelegate
                                              selector: @selector (connectionWindowControllerWillClose:)
                                                  name: MUConnectionWindowControllerWillCloseNotification
                                                object: self];
   }
   
-  if ([delegate respondsToSelector: @selector (connectionWindowControllerDidReceiveText:)])
+  if ([newDelegate respondsToSelector: @selector (connectionWindowControllerDidReceiveText:)])
   {
-    [[NSNotificationCenter defaultCenter] addObserver: delegate
+    [[NSNotificationCenter defaultCenter] addObserver: newDelegate
                                              selector: @selector (connectionWindowControllerDidReceiveText:)
                                                  name: MUConnectionWindowControllerDidReceiveTextNotification
                                                object: self];
   }
+  
+  _delegate = newDelegate;
 }
 
 - (BOOL) isConnectedOrConnecting

@@ -5,7 +5,6 @@
 //
 
 #import "MUNaiveURLFilter.h"
-#import "categories/NSURL (Allocating).h"
 
 @interface MUNaiveURLFilter ()
 

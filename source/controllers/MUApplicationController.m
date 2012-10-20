@@ -22,6 +22,15 @@
 #import "NSObject (BetterHashing).h"
 
 @interface MUApplicationController ()
+{  
+  NSUInteger unreadCount;
+  CTBadge *dockBadge;
+  
+  NSMutableArray *connectionWindowControllers;
+  MUAcknowledgementsController *acknowledgementsController;
+  MUProfilesController *profilesController;
+  MUProxySettingsController *proxySettingsController;
+}
 
 @property (readonly) BOOL shouldPlayNotificationSound;
 

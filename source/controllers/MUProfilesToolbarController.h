@@ -8,8 +8,6 @@
 
 @interface MUProfilesToolbarController : NSObject <NSToolbarDelegate>
 {
-  NSToolbar *toolbar;
-  
   IBOutlet NSWindow *window;
   IBOutlet NSWindowController *windowController;
 }

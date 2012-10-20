@@ -30,17 +30,15 @@
 
 - (BOOL) getObjectValue: (id *) object forString: (NSString *) string errorDescription: (NSString **) error
 {
-  int intResult;
-  NSScanner *scanner;
-  
-  if ([string compare: @""] == NSOrderedSame || string == nil)
+  if (string == nil || [string compare: @""] == NSOrderedSame)
   {
     if (object)
       *object = @0;
     return YES;
   }
   
-  scanner = [NSScanner scannerWithString: string];
+  NSScanner *scanner = [NSScanner scannerWithString: string];
+  int intResult;
   
   if ([scanner scanInt: &intResult] && scanner.isAtEnd && intResult > 0 && intResult < 65536)
   {
@@ -59,15 +57,11 @@
              newEditingString: (NSString **) newString
              errorDescription: (NSString **) error
 {
-  int intResult;
-  NSScanner *scanner;
-  
-  if ([partialString compare: @""] == NSOrderedSame || partialString == nil)
-  {
+  if (partialString == nil || [partialString compare: @""] == NSOrderedSame)
   	return YES;
-  }
   
-  scanner = [NSScanner scannerWithString: partialString];
+  NSScanner *scanner = [NSScanner scannerWithString: partialString];
+  int intResult;
   
   if (!([scanner scanInt: &intResult] && scanner.isAtEnd))
   {

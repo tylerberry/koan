@@ -32,6 +32,7 @@
 
 @protocol MUProtocolStackDelegate
 
+@required
 - (void) displayDataAsText: (NSData *) parsedData;
 - (void) displayDataAsPrompt: (NSData *) parsedData;
 - (void) writeDataToSocket: (NSData *) preprocessedData;

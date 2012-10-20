@@ -11,11 +11,5 @@
 @class MUProtocolStack;
 
 @interface MUTelnetProtocolHandlerTests : J3TestCase <MUProtocolStackDelegate, MUTelnetProtocolHandlerDelegate>
-{
-  MUProtocolStack *protocolStack;
-  MUTelnetProtocolHandler *protocolHandler;
-  NSMutableData *mockSocketData;
-  NSMutableData *parsedData;
-}
 
 @end

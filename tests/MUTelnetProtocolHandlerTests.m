@@ -11,8 +11,15 @@
 #import "MUTelnetConstants.h"
 
 @interface MUTelnetProtocolHandlerTests ()
+{
+  MUProtocolStack *protocolStack;
+  MUTelnetProtocolHandler *protocolHandler;
+  NSMutableData *mockSocketData;
+  NSMutableData *parsedData;
+}
 
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes;
+- (void) sendMockSocketData;
 - (void) confirmTelnetWithDontEcho;
 - (void) parseBytesWithZeroTerminator: (const uint8_t *) bytes;
 - (void) parseCString: (const char *) string;
@@ -41,10 +48,11 @@
 {
   uint8_t bytes[] = {MUTelnetInterpretAsCommand};
   NSData *data = [NSData dataWithBytes: bytes length: 1];
-  NSData *preprocessedData = [protocolStack preprocessOutputData: data];
+  
+  [protocolStack preprocessOutputData: data];
   
   const char expectedBytes[] = {MUTelnetInterpretAsCommand, MUTelnetInterpretAsCommand, 0};
-  [self assertData: preprocessedData hasBytesWithZeroTerminator: expectedBytes];
+  [self assertData: mockSocketData hasBytesWithZeroTerminator: expectedBytes];
 }
 
 - (void) testTelnetNotSentWhenNotConfirmed
@@ -176,19 +184,20 @@
 {
   [self confirmTelnetWithDontEcho];
   
-  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
+  [protocolStack preprocessOutputData: [NSData data]];
   
   const char bytes[] = {MUTelnetInterpretAsCommand, MUTelnetGoAhead, 0};
-  [self assertData: preprocessedData hasBytesWithZeroTerminator: bytes];
+  [self assertData: mockSocketData hasBytesWithZeroTerminator: bytes];
 }
 
 - (void) testSuppressedGoAhead
 {
   [protocolHandler enableOptionForUs: MUTelnetOptionSuppressGoAhead];
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
+  [self sendMockSocketData];
   
-  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
-  [self assertUInteger: [preprocessedData length] equals: 0];
+  [protocolStack preprocessOutputData: [NSData data]];
+  [self assertUInteger: mockSocketData.length equals: 0];
 }
 
 - (void) testDoTerminalType
@@ -327,16 +336,18 @@
 - (void) testEndOfRecord
 {
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
+  [self sendMockSocketData];
   
-  NSData *preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
-  [self assertUInteger: [preprocessedData length] equals: 0];
+  [protocolStack preprocessOutputData: [NSData data]];
+  [self assertUInteger: mockSocketData.length equals: 0];
   
   [self simulateDo: MUTelnetOptionEndOfRecord];
+  [self sendMockSocketData];
   
-  preprocessedData = [protocolStack preprocessOutputData: [NSData data]];
+  [protocolStack preprocessOutputData: [NSData data]];
   
   uint8_t expectedBytes[2] = {MUTelnetInterpretAsCommand, MUTelnetEndOfRecord};
-  [self assert: preprocessedData equals: [NSData dataWithBytes: expectedBytes length: 2]];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: expectedBytes length: 2]];
 }
 
 #pragma mark - MUProtocolStackDelegate protocol
@@ -351,6 +362,11 @@
   return;
 }
 
+- (void) writeDataToSocket: (NSData *) data
+{
+  [mockSocketData appendData: data];
+}
+
 #pragma mark - MUTelnetProtocolHandlerDelegate protocol
 
 - (void) log: (NSString *) message arguments: (va_list) args
@@ -361,11 +377,6 @@
 - (void) reportWindowSizeToServer
 {
   return;
-}
-
-- (void) writeDataToSocket: (NSData *) data
-{
-  [mockSocketData appendData: data];
 }
 
 #pragma mark - Private methods
@@ -394,22 +405,23 @@
 
 - (void) resetTest
 {
-
   MUMUDConnectionState *connectionState = [MUMUDConnectionState connectionState];
   
   protocolStack = [[MUProtocolStack alloc] initWithConnectionState: connectionState];
-  [protocolStack setDelegate: self];
+  protocolStack.delegate = self;
   
-  protocolHandler = [MUTelnetProtocolHandler protocolHandlerWithStack: protocolStack connectionState: connectionState];
-  [protocolHandler setDelegate: self];
+  protocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: connectionState];
+  protocolHandler.delegate = self;
   
-  [protocolStack addByteProtocol: protocolHandler];
-  
+  [protocolStack addProtocolHandler: protocolHandler];
   
   parsedData = [[NSMutableData alloc] initWithCapacity: 64];
-  
-  
   mockSocketData = [[NSMutableData alloc] initWithCapacity: 64];
+}
+
+- (void) sendMockSocketData
+{
+  [mockSocketData setData: [NSData data]];
 }
 
 - (void) simulateDo: (uint8_t) option
@@ -422,10 +434,12 @@
 {
   const uint8_t header[] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation};
   const uint8_t footer[] = {MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
+  
   NSMutableData *data = [NSMutableData data];
   [data appendBytes: header length: 2];
   [data appendBytes: payload length: payloadLength];
   [data appendBytes: footer length: 2];
+  
   [protocolStack parseInputData: data];
 }
 

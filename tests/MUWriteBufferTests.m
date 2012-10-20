@@ -13,8 +13,8 @@
   NSMutableData *_output;
 }
 
-- (NSString *) outputString;
-- (void) assertOutputAfterFlushIsString: (NSString *) string;
+- (NSString *) _outputString;
+- (void) _assertOutputAfterFlushIsString: (NSString *) string;
 
 @end
 
@@ -38,14 +38,14 @@
 - (void) testWriteNil
 {
   [_buffer appendString: nil];
-  [self assertOutputAfterFlushIsString: @""];
+  [self _assertOutputAfterFlushIsString: @""];
 }
 
 - (void) testWriteMultipleTimes
 {
   [_buffer appendString: @"foo"];
   [_buffer appendString: @"bar"];
-  [self assertOutputAfterFlushIsString: @"foobar"];
+  [self _assertOutputAfterFlushIsString: @"foobar"];
 }
 
 - (void) testWriteMultipleTimesWithInterspersedNil
@@ -53,14 +53,14 @@
   [_buffer appendString: @"foo"];
   [_buffer appendString: nil];
   [_buffer appendString: @"bar"];
-  [self assertOutputAfterFlushIsString: @"foobar"];
+  [self _assertOutputAfterFlushIsString: @"foobar"];
 }
 
 - (void) testClearBufferAndWrite
 {
   [_buffer appendString: @"foo"];
   [_buffer clear];
-  [self assertOutputAfterFlushIsString: @""];
+  [self _assertOutputAfterFlushIsString: @""];
 }
 
 - (void) testClearBufferThenAddMoreAndWrite
@@ -68,7 +68,7 @@
   [_buffer appendString: @"foo"];
   [_buffer clear];
   [_buffer appendString: @"bar"];
-  [self assertOutputAfterFlushIsString: @"bar"];
+  [self _assertOutputAfterFlushIsString: @"bar"];
 }
 
 #ifdef TYLER_WILL_FIX
@@ -76,29 +76,29 @@
 {
   [_buffer appendString: @"foop"];
   [_buffer removeLastCharacter];
-  [self assertOutputAfterFlushIsString: @"foo"];
+  [self _assertOutputAfterFlushIsString: @"foo"];
 }
 #endif
 
 - (void) testWriteAll
 {
   [_buffer appendString: @"foo"];
-  [self assertOutputAfterFlushIsString: @"foo"];
+  [self _assertOutputAfterFlushIsString: @"foo"];
 }
 
 - (void) testWriteLine
 {
   [_buffer appendLine: @"foo"];
-  [self assertOutputAfterFlushIsString: @"foo\n"];
+  [self _assertOutputAfterFlushIsString: @"foo\n"];
 }
 
 - (void) testWriteBytesWithPriority
 {
   [_buffer appendString: @"foo"];
   [_buffer writeDataWithPriority: [NSData dataWithBytes: (uint8_t *) "ab" length: 2]];
-  [self assert: [self outputString] equals: @"ab"];
+  [self assert: [self _outputString] equals: @"ab"];
   [_buffer flush];
-  [self assert: [self outputString] equals: @"abfoo"];
+  [self assert: [self _outputString] equals: @"abfoo"];
 }
 
 #pragma mark - MUByteDestination protocol
@@ -110,13 +110,13 @@
 
 #pragma mark - Private methods
 
-- (void) assertOutputAfterFlushIsString: (NSString *) string
+- (void) _assertOutputAfterFlushIsString: (NSString *) string
 {
   [_buffer flush];
-  [self assert: [self outputString] equals: string];
+  [self assert: [self _outputString] equals: string];
 }
 
-- (NSString *) outputString
+- (NSString *) _outputString
 {
   return [[NSString alloc] initWithData: _output encoding: NSASCIIStringEncoding];
 }

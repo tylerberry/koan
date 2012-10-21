@@ -8,10 +8,15 @@
 
 @implementation MUUpperCaseFilter
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   return [NSAttributedString attributedStringWithString: attributedString.string.uppercaseString
                                              attributes: [attributedString attributesAtIndex: 0 effectiveRange: 0]];
+}
+
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
+{
+  return [self filterCompleteLine: attributedString];
 }
 
 @end
@@ -35,7 +40,7 @@
   MUFilterQueue *queue = [[MUFilterQueue alloc] init];
   
   NSAttributedString *input = [NSAttributedString attributedStringWithString: @"Foo"];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [queue processCompleteLine: input];
   [self assert: output equals: input];
 }
 
@@ -48,7 +53,7 @@
   NSString *baseString = @"Foo";
   NSString *uppercaseString = baseString.uppercaseString;
   NSAttributedString *input = [NSAttributedString attributedStringWithString: baseString];
-  NSAttributedString *output = [queue processAttributedString: input];
+  NSAttributedString *output = [queue processCompleteLine: input];
   [self assert: output.string equals: uppercaseString];
 }
 

@@ -117,7 +117,7 @@
 
 - (void) assertFilter: (id) object
 {
-  [self assert: [_textLogger filter: object] equals: object message: nil];
+  [self assert: [_textLogger filterCompleteLine: object] equals: object message: nil];
 }
 
 - (void) assertFilterString: (NSString *) string

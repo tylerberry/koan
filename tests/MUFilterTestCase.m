@@ -27,7 +27,7 @@
 {
   NSAttributedString *attributedInput = [self constructAttributedStringForString: input];
   NSAttributedString *attributedExpectedOutput = [NSAttributedString attributedStringWithString: output];
-  NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [self.queue processAttributedString: attributedInput]];
+  NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [self.queue processCompleteLine: attributedInput]];
   
   [actualOutput setAttributes: @{} range: NSMakeRange (0, actualOutput.length)];
   [self assert: actualOutput equals: attributedExpectedOutput message: message];  

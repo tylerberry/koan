@@ -81,11 +81,16 @@
   [_outputStream close];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   if (attributedString.length > 0)
     [self log: attributedString];
   
+  return attributedString;
+}
+
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
+{
   return attributedString;
 }
 

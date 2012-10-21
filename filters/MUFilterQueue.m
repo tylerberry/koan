@@ -7,8 +7,9 @@
 #import "MUFilterQueue.h"
 
 @interface MUFilterQueue ()
-
-@property (strong, nonatomic) NSMutableArray *filters;
+{
+  NSMutableArray *_filters;
+}
 
 @end
 
@@ -16,7 +17,7 @@
 
 @implementation MUFilterQueue
 
-@synthesize filters;
+@dynamic filters;
 
 + (id) filterQueue
 {
@@ -28,28 +29,62 @@
   if (!(self = [super init]))
     return nil;
   
-  self.filters = [[NSMutableArray alloc] init];
+  _filters = [[NSMutableArray alloc] init];
   return self;
 }
 
-- (NSAttributedString *) processAttributedString: (NSAttributedString *) attributedString
+#pragma mark - Properties
+
+- (NSArray *) filters
+{
+  @synchronized (_filters)
+  {
+    return _filters;
+  }
+}
+
+#pragma mark - Methods
+
+- (NSAttributedString *) processCompleteLine: (NSAttributedString *) attributedString
 {
   NSAttributedString *returnString = attributedString;
   
-  for (NSObject <MUFiltering> *filter in self.filters)
-    returnString = [filter filter: returnString];
+  @synchronized (_filters)
+  {
+    for (NSObject <MUFiltering> *filter in self.filters)
+      returnString = [filter filterCompleteLine: returnString];
+  }
+  
+  return returnString;
+}
 
+- (NSAttributedString *) processPartialLine: (NSAttributedString *) attributedString
+{
+  NSAttributedString *returnString = attributedString;
+  
+  @synchronized (_filters)
+  {
+    for (NSObject <MUFiltering> *filter in self.filters)
+      returnString = [filter filterPartialLine: returnString];
+  }
+  
   return returnString;
 }
 
 - (void) addFilter: (NSObject <MUFiltering> *) filter
 {
-  [self.filters addObject: filter];
+  @synchronized (_filters)
+  {
+    [_filters addObject: filter];
+  }
 }
 
 - (void) clearFilters
 {
-  [self.filters removeAllObjects];
+  @synchronized (_filters)
+  {
+    [_filters removeAllObjects];
+  }
 }
 
 @end

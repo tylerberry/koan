@@ -21,6 +21,14 @@ enum MUSearchDirections
   MUForwardSearch
 };
 
+enum MUTextDisplayModes
+{
+  MUSystemTextDisplayMode,
+  MUNormalTextDisplayMode,
+  MUPromptTextDisplayMode,
+  MUEchoedTextDisplayMode
+};
+
 @interface MUConnectionWindowController ()
 {
   MUProfile *profile;
@@ -32,7 +40,8 @@ enum MUSearchDirections
   MUFilterQueue *filterQueue;
   MUHistoryRing *historyRing;
   
-  NSString *currentPrompt;
+  NSAttributedString *_currentPrompt;
+  NSRange _currentTextRangeWithoutPrompt;
   
   NSTimer *windowSizeNotificationTimer;
 }
@@ -42,7 +51,7 @@ enum MUSearchDirections
 - (MUFilter *) createLogger;
 - (void) didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 - (void) disconnect;
-- (void) displayString: (NSString *) string asPrompt: (BOOL) stringIsPrompt;
+- (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
 - (void) endCompletion;
 - (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
@@ -82,7 +91,8 @@ enum MUSearchDirections
   [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
   
-  currentPrompt = nil;
+  _currentPrompt = nil;
+  _currentTextRangeWithoutPrompt = NSMakeRange (0, 0);
   currentlySearching = NO;
   windowSizeNotificationTimer = nil;
   
@@ -307,14 +317,17 @@ enum MUSearchDirections
   {
     [historyRing saveString: inputView.string];
   
-    if (currentPrompt)
-      [self displayString: inputView.string asPrompt: NO];
+    if (_currentPrompt)
+    {
+      [self _displayString: [NSString stringWithFormat: @"%@\n", inputView.string]
+           textDisplayMode: MUEchoedTextDisplayMode];
+      _currentPrompt = nil;
+    }
   }
-  
-  if (currentPrompt)
+  else if (_currentPrompt)
   {
-    [self displayString: @"\n"];
-    currentPrompt = nil;
+    [self _displayString: @"\n" textDisplayMode: MUEchoedTextDisplayMode];
+    _currentPrompt = nil;
   }
   
   [inputView setString: @""];
@@ -349,12 +362,12 @@ enum MUSearchDirections
 
 - (void) displayPrompt: (NSString *) promptString
 {
-  [self displayString: promptString asPrompt: YES];
+  [self _displayString: promptString textDisplayMode: MUPromptTextDisplayMode];
 }
 
 - (void) displayString: (NSString *) string
 {  
-  [self displayString: string asPrompt: NO];
+  [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
 }
 
 - (void) reportWindowSizeToServer
@@ -365,8 +378,8 @@ enum MUSearchDirections
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
 {
-  [self displayString: _(MULConnectionOpen)];
-  [self displayString: @"\n"];
+  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpen)]
+       textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionOpenedForTitle: profile.windowTitle];
   
   if (profile.hasLoginInformation)
@@ -375,23 +388,23 @@ enum MUSearchDirections
 
 - (void) telnetConnectionIsConnecting: (NSNotification *) notification
 {
-  [self displayString: _(MULConnectionOpening)];
-  [self displayString: @"\n"];
+  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpening)]
+       textDisplayMode: MUSystemTextDisplayMode];
 }
 
 - (void) telnetConnectionWasClosedByClient: (NSNotification *) notification
 {
   [self cleanUpPingTimer];
-  [self displayString: _(MULConnectionClosed)];
-  [self displayString: @"\n"];
+  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
+       textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedForTitle: profile.windowTitle];
 }
 
 - (void) telnetConnectionWasClosedByServer: (NSNotification *) notification
 {
   [self cleanUpPingTimer];
-  [self displayString: _(MULConnectionClosedByServer)];
-  [self displayString: @"\n"];
+  [self _displayString: [NSString stringWithFormat: @"%@\n", (MULConnectionClosedByServer)]
+       textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByServerForTitle: profile.windowTitle];
 }
 
@@ -399,8 +412,9 @@ enum MUSearchDirections
 {
   NSString *errorMessage = [[notification userInfo] valueForKey: MUMUDConnectionErrorMessageKey];
   [self cleanUpPingTimer];
-  [self displayString: [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]];
-  [self displayString: @"\n"];
+  [self _displayString: [NSString stringWithFormat: @"%@\n",
+                         [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
+       textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByErrorForTitle: profile.windowTitle error: errorMessage];
 }
 
@@ -620,21 +634,66 @@ enum MUSearchDirections
     [telnetConnection close];
 }
 
-- (void) displayString: (NSString *) string asPrompt: (BOOL) stringIsPrompt
+- (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
 {
   if (!string || string.length == 0)
     return;
   
-  if (stringIsPrompt)
+  NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string
+                                                                             attributes: receivedTextView.typingAttributes];
+  
+  if (_currentPrompt)
   {
-    currentPrompt = [string copy];
+    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
+                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
+    
+    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
   }
   
-  NSAttributedString *unfilteredString = [[NSAttributedString alloc] initWithString: string
-                                                                         attributes: receivedTextView.typingAttributes];
-  NSAttributedString *filteredString = [filterQueue processAttributedString: unfilteredString];
-  
-  [receivedTextView.textStorage appendAttributedString: filteredString];
+  switch (textDisplayMode)
+  {
+    case MUSystemTextDisplayMode:
+    case MUNormalTextDisplayMode:
+    {
+      [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: attributedString]];
+      _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
+      
+      if (_currentPrompt)
+        [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: _currentPrompt]];
+      
+      break;
+    }
+      
+    case MUPromptTextDisplayMode:
+    {
+      _currentPrompt = [attributedString copy];
+      
+      [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: attributedString]];
+      
+      break;
+    }
+      
+    case MUEchoedTextDisplayMode:
+    {
+      NSMutableAttributedString *combinedString;
+      
+      if (_currentPrompt)
+      {
+        combinedString = [_currentPrompt mutableCopy];
+        [combinedString appendAttributedString: attributedString];
+      }
+      else
+      {
+        NSLog (@"Warning: Echoed text without a prompt.");
+        combinedString = [attributedString mutableCopy];
+      }
+      
+      [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: combinedString]];
+      _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
+      
+      break;
+    }
+  }
   
   [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
   

@@ -8,7 +8,8 @@
 
 @protocol MUFiltering
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString;
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString;
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString;
 
 @end
 

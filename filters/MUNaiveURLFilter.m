@@ -22,13 +22,18 @@
   return [[self alloc] init];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
-  NSMutableAttributedString *editString = [attributedString mutableCopy];
+  NSMutableAttributedString *mutableString = [attributedString mutableCopy];
   
-  [self linkifyURLs: editString];
+  [self linkifyURLs: mutableString];
   
-  return editString;
+  return mutableString;
+}
+
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
+{
+  return [self filterCompleteLine: attributedString];
 }
 
 #pragma mark - Private methods

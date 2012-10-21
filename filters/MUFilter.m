@@ -13,10 +13,17 @@
   return [[self alloc] init];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   @throw [NSException exceptionWithName: @"SubclassResponsibility"
-                                 reason: @"subclass failed to implement -[filter:]"
+                                 reason: @"subclass failed to implement -[filterCompleteLine:]"
+                               userInfo: nil];
+}
+
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
+{
+  @throw [NSException exceptionWithName: @"SubclassResponsibility"
+                                 reason: @"subclass failed to implement -[filterPartialLine:]"
                                userInfo: nil];
 }
 

@@ -9,9 +9,9 @@
 
 @interface MUANSIFormattingFilter ()
 {
-  BOOL inCode;
-  NSString *ansiCode;
-  NSMutableDictionary *currentAttributes;
+  BOOL _inCode;
+  NSString *_ansiCode;
+  NSMutableDictionary *_currentAttributes;
 }
 
 @property (strong, nonatomic) MUProfile *profile;
@@ -56,8 +56,6 @@
 
 @implementation MUANSIFormattingFilter
 
-@synthesize delegate, profile;
-
 + (MUFilter *) filterWithProfile: (MUProfile *) newProfile
                         delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate
 {
@@ -73,14 +71,15 @@
   if (!(self = [super init]))
     return nil;
   
-  ansiCode = nil;
-  inCode = NO;
-  profile = newProfile;
-  delegate = newDelegate;
+  _profile = newProfile;
+  _delegate = newDelegate;
   
-  currentAttributes = [[NSMutableDictionary alloc] init];
-  [currentAttributes setValue: profile.effectiveFont forKey: NSFontAttributeName];
-  [currentAttributes setValue: profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
+  _ansiCode = nil;
+  _inCode = NO;
+  
+  _currentAttributes = [[NSMutableDictionary alloc] init];
+  [_currentAttributes setValue: _profile.effectiveFont forKey: NSFontAttributeName];
+  [_currentAttributes setValue: _profile.effectiveTextColor forKey: NSForegroundColorAttributeName];
   
   [self.profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: NULL];
   [self.profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
@@ -99,7 +98,7 @@
                          change: (NSDictionary *) changeDictionary
                         context: (void *) context
 {
-  if (object == profile)
+  if (object == _profile)
   {
     if ([keyPath isEqualToString: @"effectiveFont"])
     {
@@ -115,16 +114,27 @@
   [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
-- (NSAttributedString *) filter: (NSAttributedString *) attributedString
+- (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   NSMutableAttributedString *editString = [attributedString mutableCopy];
   
-  [self setAttributes: currentAttributes onString: editString fromLocation: 0];
+  [self setAttributes: _currentAttributes onString: editString fromLocation: 0];
   
   while ([self extractCode: editString])
     ;
   
   return editString;
+}
+
+- (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
+{
+  NSMutableDictionary *savedAttributes = [_currentAttributes mutableCopy];
+  
+  NSAttributedString *filteredString = [self filterCompleteLine: attributedString];
+  
+  _currentAttributes = savedAttributes;
+  
+  return filteredString;
 }
 
 #pragma mark - Private methods
@@ -140,9 +150,9 @@
       return;
       
     case MUANSIEraseData:
-      if (ansiCode.length == 3)
+      if (_ansiCode.length == 3)
       {
-        if ([ansiCode characterAtIndex: 2] == '1' || [ansiCode characterAtIndex: 2] == '2')
+        if ([_ansiCode characterAtIndex: 2] == '1' || [_ansiCode characterAtIndex: 2] == '2')
         {
           [mutableString deleteCharactersInRange: NSMakeRange (0, startLocation)];
           if ([self.delegate respondsToSelector: @selector (clearScreen)])
@@ -152,14 +162,14 @@
       return;
       
     default:
-      NSLog (@"Received unhandled ANSI command 'ESC %@%c'", [ansiCode substringFromIndex: 1], code);
+      NSLog (@"Received unhandled ANSI command 'ESC %@%c'", [_ansiCode substringFromIndex: 1], code);
       return;
   }
 }
 
 - (NSArray *) attributeNamesForANSICode
 {
-  NSArray *codeComponents = [[ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
+  NSArray *codeComponents = [[_ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
   NSMutableArray *names = [NSMutableArray arrayWithCapacity: codeComponents.count];
   
   if (codeComponents.count == 3
@@ -229,7 +239,7 @@
 
 - (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) location
 {
-  NSArray *codeComponents = [[ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
+  NSArray *codeComponents = [[_ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
   NSMutableArray *values = [NSMutableArray arrayWithCapacity: codeComponents.count];
   
   if (codeComponents.count == 3
@@ -343,7 +353,7 @@
         
       case MUANSIForegroundDefault:
         [values addObject: [NSNull null]];
-        [values addObject: profile.effectiveTextColor];
+        [values addObject: _profile.effectiveTextColor];
         break;
         
       case MUANSIBackgroundDefault:
@@ -382,12 +392,12 @@
         
       case MUANSIBoldOn:
         [values addObject: @YES];
-        [values addObject: [currentAttributes[NSFontAttributeName] boldFontWithRespectTo: profile.effectiveFont]];
+        [values addObject: [_currentAttributes[NSFontAttributeName] boldFontWithRespectTo: _profile.effectiveFont]];
         break;
         
       case MUANSIBoldOff:
         [values addObject: [NSNull null]];
-        [values addObject: [currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: profile.effectiveFont]];
+        [values addObject: [_currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: _profile.effectiveFont]];
         break;
         
       case MUANSIUnderlineOn:
@@ -410,18 +420,18 @@
 {
   NSRange codeRange;
   
-  if (!inCode)
+  if (!_inCode)
   {
     codeRange.location = [self scanUpToCodeInString: editString.string];
     
-    ansiCode = @"";
+    _ansiCode = @"";
   }
   else
     codeRange.location = 0;
   
-  if (inCode || codeRange.location != NSNotFound)
+  if (_inCode || codeRange.location != NSNotFound)
   {
-    inCode = YES;
+    _inCode = YES;
     codeRange.length = [self scanThroughEndOfCodeAt: codeRange.location
                                            inString: editString.string];
     
@@ -435,7 +445,7 @@
     if (codeRange.location < editString.length)
     {
       unichar code = [editString.string characterAtIndex: codeRange.location + codeRange.length - 1];
-      inCode = NO;
+      _inCode = NO;
       [editString deleteCharactersInRange: codeRange];
       [self applyCode: code toString: editString atLocation: codeRange.location];
       return YES;
@@ -476,8 +486,8 @@
   NSString *charactersFromThisScan = @"";
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];
   
-  NSString *newAnsiCode = [[NSString alloc] initWithFormat: @"%@%@", ansiCode, charactersFromThisScan];
-  ansiCode = newAnsiCode;
+  NSString *newAnsiCode = [[NSString alloc] initWithFormat: @"%@%@", _ansiCode, charactersFromThisScan];
+  _ansiCode = newAnsiCode;
   
   if (scanner.scanLocation == string.length)
     return NSNotFound;
@@ -498,7 +508,7 @@
 {
   [string removeAttribute: attribute
                     range: NSMakeRange (startLocation, string.length - startLocation)];
-  [currentAttributes removeObjectForKey: attribute];
+  [_currentAttributes removeObjectForKey: attribute];
 }
 
 - (void) resetAllAttributesInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -529,7 +539,7 @@
 - (void) resetFontInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSFontAttributeName
-             toValue: profile.effectiveFont
+             toValue: _profile.effectiveFont
             inString: string
         fromLocation: startLocation];
 }
@@ -537,7 +547,7 @@
 - (void) resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self setAttribute: NSForegroundColorAttributeName
-             toValue: profile.effectiveTextColor
+             toValue: _profile.effectiveTextColor
             inString: string
         fromLocation: startLocation];
 }
@@ -555,7 +565,7 @@
   [string addAttribute: attribute
                  value: value
                  range: NSMakeRange (startLocation, string.length - startLocation)];
-  currentAttributes[attribute] = value;
+  _currentAttributes[attribute] = value;
 }
 
 - (void) setAttributes: (NSDictionary *) attributes
@@ -576,7 +586,7 @@
   if (string.length <= startLocation)
     return;
   
-  if ([[ansiCode substringFromIndex: 2] intValue] == 0)
+  if ([[_ansiCode substringFromIndex: 2] intValue] == 0)
     [self resetAllAttributesInString: string fromLocation: startLocation];
   
   NSArray *attributeNames = [self attributeNamesForANSICode];
@@ -626,18 +636,18 @@
 {
   NSFont *newEffectiveFont;
   
-  if (currentAttributes[MUBoldFontAttributeName])
-    newEffectiveFont = [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont];
+  if (_currentAttributes[MUBoldFontAttributeName])
+    newEffectiveFont = [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont];
   else
-    newEffectiveFont = profile.effectiveFont;
+    newEffectiveFont = _profile.effectiveFont;
   
-  currentAttributes[NSFontAttributeName] = newEffectiveFont;
+  _currentAttributes[NSFontAttributeName] = newEffectiveFont;
 }
 
 - (void) updateFromProfileTextColor
 {
-  if (!currentAttributes[MUCustomColorAttributeName])
-    currentAttributes[NSForegroundColorAttributeName] = profile.effectiveTextColor;
+  if (!_currentAttributes[MUCustomColorAttributeName])
+    _currentAttributes[NSForegroundColorAttributeName] = _profile.effectiveTextColor;
 }
 
 @end

@@ -174,7 +174,7 @@
 										</object>
 										<object class="NSScroller" id="424044393">
 											<reference key="NSNextResponder" ref="433606926"/>
-											<int key="NSvFlags">256</int>
+											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{518, 0}, {16, 341}}</string>
 											<reference key="NSSuperview" ref="433606926"/>
 											<reference key="NSWindow"/>
@@ -183,6 +183,7 @@
 											<reference key="NSTarget" ref="433606926"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
+											<int key="NSKnobStyle">2</int>
 										</object>
 										<object class="NSScroller" id="381857141">
 											<reference key="NSNextResponder" ref="433606926"/>
@@ -197,16 +198,18 @@
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
 											<double key="NSPercent">0.94565218687057495</double>
+											<int key="NSKnobStyle">2</int>
 										</object>
 									</array>
 									<string key="NSFrameSize">{534, 341}</string>
 									<reference key="NSSuperview" ref="570977921"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="362385187"/>
-									<int key="NSsFlags">133136</int>
+									<int key="NSsFlags">133648</int>
 									<reference key="NSVScroller" ref="424044393"/>
 									<reference key="NSHScroller" ref="381857141"/>
 									<reference key="NSContentView" ref="362385187"/>
+									<int key="NSScrollerKnobStyle">2</int>
 									<double key="NSMinMagnification">0.25</double>
 									<double key="NSMaxMagnification">4</double>
 									<double key="NSMagnification">1</double>
@@ -222,6 +225,25 @@
 												<object class="NSTextView" id="716212387">
 													<reference key="NSNextResponder" ref="908576080"/>
 													<int key="NSvFlags">2322</int>
+													<set class="NSMutableSet" key="NSDragTypes">
+														<string>Apple HTML pasteboard type</string>
+														<string>Apple PDF pasteboard type</string>
+														<string>Apple PICT pasteboard type</string>
+														<string>Apple PNG pasteboard type</string>
+														<string>Apple URL pasteboard type</string>
+														<string>CorePasteboardFlavorType 0x6D6F6F76</string>
+														<string>NSColor pasteboard type</string>
+														<string>NSFilenamesPboardType</string>
+														<string>NSStringPboardType</string>
+														<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
+														<string>NeXT RTFD pasteboard type</string>
+														<string>NeXT Rich Text Format v1.0 pasteboard type</string>
+														<string>NeXT TIFF v4.0 pasteboard type</string>
+														<string>NeXT font pasteboard type</string>
+														<string>NeXT ruler pasteboard type</string>
+														<string>WebURLsWithTitlesPboardType</string>
+														<string>public.url</string>
+													</set>
 													<string key="NSFrameSize">{534, 80}</string>
 													<reference key="NSSuperview" ref="908576080"/>
 													<reference key="NSWindow"/>
@@ -433,7 +455,7 @@ wGw</bytes>
 										</object>
 										<object class="NSScroller" id="902248184">
 											<reference key="NSNextResponder" ref="34121738"/>
-											<int key="NSvFlags">256</int>
+											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{518, 0}, {16, 80}}</string>
 											<reference key="NSSuperview" ref="34121738"/>
 											<reference key="NSWindow"/>
@@ -442,6 +464,7 @@ wGw</bytes>
 											<reference key="NSTarget" ref="34121738"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
+											<int key="NSKnobStyle">2</int>
 										</object>
 										<object class="NSScroller" id="1023902253">
 											<reference key="NSNextResponder" ref="34121738"/>
@@ -456,16 +479,18 @@ wGw</bytes>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
 											<double key="NSPercent">0.94565218687057495</double>
+											<int key="NSKnobStyle">2</int>
 										</object>
 									</array>
 									<string key="NSFrame">{{0, 351}, {534, 80}}</string>
 									<reference key="NSSuperview" ref="570977921"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="908576080"/>
-									<int key="NSsFlags">133136</int>
+									<int key="NSsFlags">133648</int>
 									<reference key="NSVScroller" ref="902248184"/>
 									<reference key="NSHScroller" ref="1023902253"/>
 									<reference key="NSContentView" ref="908576080"/>
+									<int key="NSScrollerKnobStyle">2</int>
 									<double key="NSMinMagnification">0.25</double>
 									<double key="NSMaxMagnification">4</double>
 									<double key="NSMagnification">1</double>
@@ -517,7 +542,7 @@ wGw</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="570977921"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMinSize">{213, 129}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>

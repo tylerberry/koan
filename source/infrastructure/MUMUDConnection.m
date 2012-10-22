@@ -157,7 +157,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusConnected
 {
   [super setStatusConnected];
-  [self displayAndLogString: @"Connected to server."];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionDidConnectNotification
                                                       object: self];
 }
@@ -165,7 +164,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusConnecting
 {
   [super setStatusConnecting];
-  [self.delegate displayString: @"Connecting...\n"];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionIsConnectingNotification
                                                       object: self];
 }
@@ -173,7 +171,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedByClient
 {
   [super setStatusClosedByClient];
-  [self displayAndLogString: @"Connection closed by client."];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
                                                       object: self];
 }
@@ -181,7 +178,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedByServer
 {
   [super setStatusClosedByServer];
-  [self displayAndLogString: @"Connection closed by server."];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                       object: self];
 }
@@ -189,7 +185,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedWithError: (NSString *) error
 {
   [super setStatusClosedWithError: error];
-  [self displayAndLogString: [NSString stringWithFormat: @"Connection closed with error: %@.", error]];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
                                                     userInfo: @{MUMUDConnectionErrorMessageKey: error}];

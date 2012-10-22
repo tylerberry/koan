@@ -403,7 +403,7 @@ enum MUTextDisplayModes
 - (void) telnetConnectionWasClosedByServer: (NSNotification *) notification
 {
   [self cleanUpPingTimer];
-  [self _displayString: [NSString stringWithFormat: @"%@\n", (MULConnectionClosedByServer)]
+  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByServerForTitle: profile.windowTitle];
 }
@@ -637,6 +637,11 @@ enum MUTextDisplayModes
   if (!string || string.length == 0)
     return;
   
+  BOOL forceScrollToBottom = NO;
+  
+  if (receivedTextView.enclosingScrollView.verticalScroller.isHidden)
+    forceScrollToBottom = YES;
+  
   NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string
                                                                              attributes: receivedTextView.typingAttributes];
   
@@ -694,12 +699,11 @@ enum MUTextDisplayModes
   
   [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
   
-  // Scroll to the bottom of the text window, but only if we were previously at the bottom.
-  
-  // Avoid inaccuracy of == for floats.
-  if (1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001)
+  if (1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001  // Avoid == for floats.
+      || forceScrollToBottom)
+  {
     [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0)];
-  
+  }
   [self postConnectionWindowControllerDidReceiveTextNotification];  
 }
 

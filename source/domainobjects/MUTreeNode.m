@@ -8,7 +8,7 @@
 
 @interface MUTreeNode ()
 
-- (void) postWorldsDidChangeNotification;
+- (void) _postWorldsDidChangeNotification;
 
 @end
 
@@ -16,7 +16,7 @@
 
 @implementation MUTreeNode
 
-@dynamic icon, isLeaf;
+@dynamic icon, isLeaf, uniqueIdentifier;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
 {
@@ -39,22 +39,41 @@
   return [self initWithName: @"Empty node" children: nil];
 }
 
+#pragma mark - Properties
+
+/*
+ - (NSUInteger) count
+ {
+ return children.count;
+ }
+ */
+
 - (NSImage *) icon
 {
   return nil;
 }
 
-/*
-- (NSUInteger) count
-{
-  return children.count;
-}
- */
-
 - (BOOL) isLeaf
 {
   return self.children.count == 0;
 }
+
+- (NSString *) uniqueIdentifier
+{
+  NSMutableString *result = [NSMutableString stringWithString: @"treenode:"];
+  NSArray *tokens = [self.name componentsSeparatedByString: @" "];
+  
+  if (tokens.count > 0)
+  {
+    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
+    
+    for (NSUInteger i = 1; i < tokens.count; i++)
+      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
+  }
+  return result;
+}
+
+#pragma mark - Actions
 
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode
 {
@@ -69,7 +88,7 @@
   }
 }
 
-#pragma mark - Array-like accessors for players
+#pragma mark - Array-like accessors for children
 
 - (void) addChild: (MUTreeNode *) child
 {
@@ -81,7 +100,7 @@
   [self.children addObject: child];
   [self didChangeValueForKey: @"children"];
   
-  [self postWorldsDidChangeNotification];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (BOOL) containsChild: (MUTreeNode *) child
@@ -107,7 +126,7 @@
   [self.children insertObject: child atIndex: childIndex];
   [self didChangeValueForKey: @"children"];
   
-  [self postWorldsDidChangeNotification];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
@@ -117,7 +136,7 @@
   [self.children removeObjectAtIndex: childIndex];
   [self didChangeValueForKey: @"children"];
   
-  [self postWorldsDidChangeNotification];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeChild: (MUTreeNode *) child
@@ -127,7 +146,7 @@
   [self.children removeObject: child];
   [self didChangeValueForKey: @"children"];
   
-  [self postWorldsDidChangeNotification];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
@@ -145,14 +164,14 @@
     self.children[i] = newChild;
     [self didChangeValueForKey: @"children"];
     
-    [self postWorldsDidChangeNotification];
+    [self _postWorldsDidChangeNotification];
     break;
   }
 }
 
 #pragma mark - Private methods
 
-- (void) postWorldsDidChangeNotification
+- (void) _postWorldsDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUWorldsDidChangeNotification
                                                       object: self];

@@ -7,15 +7,16 @@
 #import "MUWorldRegistry.h"
 #import "MUProfile.h"
 
-static MUWorldRegistry *defaultRegistry = nil;
+static MUWorldRegistry *_defaultRegistry = nil;
 
 @interface MUWorldRegistry ()
 
-- (void) cleanUpDefaultRegistry: (NSNotification *) notification;
-- (void) postWorldsDidChangeNotification;
-- (void) readWorldsFromUserDefaults;
-- (void) worldsDidChange: (NSNotification *) notification;
-- (void) writeWorldsToUserDefaults;
+- (void) _cleanUpDefaultRegistry: (NSNotification *) notification;
+- (void) _postWorldsDidChangeNotification;
+- (void) _startObservingWritableValuesForWorld: (MUWorld *) world;
+- (void) _stopObservingWritableValuesForWorld: (MUWorld *) world;
+- (void) _worldsDidChange: (NSNotification *) notification;
+- (void) _writeWorldsToUserDefaults;
 
 @end
 
@@ -27,22 +28,11 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 + (MUWorldRegistry *) defaultRegistry
 {
-  if (!defaultRegistry)
-  {
-    defaultRegistry = [[MUWorldRegistry alloc] init];
-    [defaultRegistry readWorldsFromUserDefaults];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: defaultRegistry
-                                             selector: @selector (worldsDidChange:)
-                                                 name: MUWorldsDidChangeNotification
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: defaultRegistry
-                                             selector: @selector (cleanUpDefaultRegistry:)
-                                                 name: NSApplicationWillTerminateNotification
-                                               object: NSApp];
-  }
-  return defaultRegistry;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUWorldRegistry alloc] init]; });
+
+  return _defaultRegistry;
 }
 
 - (id) init
@@ -50,9 +40,55 @@ static MUWorldRegistry *defaultRegistry = nil;
   if (!(self = [super init]))
     return nil;
   
-  _mutableWorlds = [[NSMutableArray alloc] init];
+  NSData *worldsData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPWorlds];
+  
+  if (!worldsData)
+    return nil;
+  
+  _mutableWorlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
+  
+  for (MUWorld *world in _mutableWorlds)
+    [self _startObservingWritableValuesForWorld: world];
+  
+  for (MUTreeNode *topLevelNode in self.worlds)
+    [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_worldsDidChange:)
+                                               name: MUWorldsDidChangeNotification
+                                             object: nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_cleanUpDefaultRegistry:)
+                                               name: NSApplicationWillTerminateNotification
+                                             object: NSApp];
   
   return self;
+}
+
+- (void) dealloc
+{
+  for (MUWorld *world in _mutableWorlds)
+    [self _stopObservingWritableValuesForWorld: world];
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if ([object isKindOfClass: [MUWorld class]])
+  {
+    MUWorld *world = (MUWorld *) object;
+    
+    if ([world.writableProperties containsObject: keyPath])
+    {
+      [self _postWorldsDidChangeNotification];
+      return;
+    }
+  }
+  
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 #pragma mark - Key-value coding accessors
@@ -62,9 +98,12 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     [self willChangeValueForKey: @"worlds"];
+    
     [self.mutableWorlds insertObject: world atIndex: worldIndex];
+    [self _startObservingWritableValuesForWorld: world];
+    
     [self didChangeValueForKey: @"worlds"];
-    [self postWorldsDidChangeNotification];
+    [self _postWorldsDidChangeNotification];
   }
 }
 
@@ -73,9 +112,12 @@ static MUWorldRegistry *defaultRegistry = nil;
   @synchronized (self)
   {
     [self willChangeValueForKey: @"worlds"];
+    
+    [self _stopObservingWritableValuesForWorld: _mutableWorlds[worldIndex]];
     [self.mutableWorlds removeObjectAtIndex: worldIndex];
+    
     [self didChangeValueForKey: @"worlds"];
-    [self postWorldsDidChangeNotification];
+    [self _postWorldsDidChangeNotification];
   }
 }
 
@@ -83,42 +125,37 @@ static MUWorldRegistry *defaultRegistry = nil;
 
 - (NSUInteger) count
 {
-  NSUInteger count = 0;
-  
   @synchronized (self)
   {
-    count = self.worlds.count;
+    return _mutableWorlds.count;
   }
-  
-  return count;
 }
 
 - (NSUInteger) indexOfWorld: (MUWorld *) world
 {
-  NSUInteger worldIndex = NSNotFound;
-  
   @synchronized (self)
   {
-    worldIndex = [self.worlds indexOfObject: world];
+    return [_mutableWorlds indexOfObject: world];
   }
-  
-  return worldIndex;
 }
 
 - (void) removeWorld: (MUWorld *) world
 {
   @synchronized (self)
   {
-    if (![self.worlds containsObject: world])
+    if (![_mutableWorlds containsObject: world])
     {
       NSLog (@"Called MUWorldRegistry-removeWorld: with argument not in worlds array.");
       return;
     }
     
     [self willChangeValueForKey: @"worlds"];
+    
+    [self _stopObservingWritableValuesForWorld: world];
     [self.mutableWorlds removeObject: world];
+    
     [self didChangeValueForKey: @"worlds"];
-    [self postWorldsDidChangeNotification];
+    [self _postWorldsDidChangeNotification];
   }
 }
 
@@ -126,100 +163,111 @@ static MUWorldRegistry *defaultRegistry = nil;
 {
   @synchronized (self)
   {
-    if (![self.worlds containsObject: oldWorld])
+    if (![_mutableWorlds containsObject: oldWorld])
     {
       NSLog (@"Called MUWorldRegistry-replaceWorld:withWorld: with oldWorld argument not in worlds array.");
       return;
     }
     
     [self willChangeValueForKey: @"worlds"];
-    self.mutableWorlds[[self.worlds indexOfObject: oldWorld]] = newWorld;
+    
+    [self _stopObservingWritableValuesForWorld: oldWorld];
+    [_mutableWorlds replaceObjectAtIndex: [_mutableWorlds indexOfObject: oldWorld] withObject: newWorld];
+    [self _startObservingWritableValuesForWorld: newWorld];
+    
     [self didChangeValueForKey: @"worlds"];
-    [self postWorldsDidChangeNotification];
+    [self _postWorldsDidChangeNotification];
   }
 }
 
 - (void) setMutableWorlds: (NSArray *) newWorlds
 {
-  if ([self.worlds isEqualToArray: newWorlds])
-    return;
-  
-  [self willChangeValueForKey: @"worlds"];
-  _mutableWorlds = [newWorlds mutableCopy];
-  [self didChangeValueForKey: @"worlds"];
-  
-  [self postWorldsDidChangeNotification];
+  @synchronized (self)
+  {
+    if ([_mutableWorlds isEqualToArray: newWorlds])
+      return;
+    
+    [self willChangeValueForKey: @"worlds"];
+    
+    for (MUWorld *world in _mutableWorlds)
+      [self _stopObservingWritableValuesForWorld: world];
+    
+    _mutableWorlds = [newWorlds mutableCopy];
+    
+    for (MUWorld *world in _mutableWorlds)
+      [self _startObservingWritableValuesForWorld: world];
+    
+    [self didChangeValueForKey: @"worlds"];
+    [self _postWorldsDidChangeNotification];
+  }
 }
 
 - (MUWorld *) worldAtIndex: (NSUInteger) worldIndex
 {
-  MUWorld *world = nil;
-  
   @synchronized (self)
   {
-    world = self.worlds[worldIndex];
+    return _mutableWorlds[worldIndex];
   }
-  
-  return world;
 }
 
 - (MUWorld *) worldForUniqueIdentifier: (NSString *) identifier
 {
-  MUWorld *world = nil;
-  
   @synchronized (self)
   {
     for (MUWorld *candidate in self.worlds)
     {
       if ([identifier isEqualToString: candidate.uniqueIdentifier])
-      {
-        world = candidate;
-        break;
-      }
+        return candidate;
     }
   }
   
-  return world;
+  return nil;
 }
 
 - (NSArray *) worlds
 {
-  return (NSArray *) self.mutableWorlds;
+  @synchronized (self)
+  {
+    return (NSArray *) self.mutableWorlds;
+  }
 }
 
 #pragma mark - Private methods
 
-- (void) cleanUpDefaultRegistry: (NSNotification *) notification
+- (void) _cleanUpDefaultRegistry: (NSNotification *) notification
 {
-  [[NSNotificationCenter defaultCenter] removeObserver: defaultRegistry];
-  defaultRegistry = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
+  _defaultRegistry = nil;
 }
 
-- (void) postWorldsDidChangeNotification
+- (void) _postWorldsDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUWorldsDidChangeNotification
                                                       object: self];
 }
 
-- (void) readWorldsFromUserDefaults
+- (void) _startObservingWritableValuesForWorld: (MUWorld *) world
 {
-  NSData *worldsData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPWorlds];
-  
-  if (!worldsData)
-    return;
-  
-  self.mutableWorlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
-  
-  for (MUTreeNode *topLevelNode in self.worlds)
-    [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
+  for (NSString *keyPath in world.writableProperties)
+  {
+    [world addObserver: self forKeyPath: keyPath options: 0 context: nil];
+  }
 }
 
-- (void) worldsDidChange: (NSNotification *) notification;
+- (void) _stopObservingWritableValuesForWorld: (MUWorld *) world
 {
-  [self writeWorldsToUserDefaults];
+  for (NSString *keyPath in world.writableProperties)
+  {
+    [world removeObserver: self forKeyPath: keyPath];
+  }
 }
 
-- (void) writeWorldsToUserDefaults
+- (void) _worldsDidChange: (NSNotification *) notification;
+{
+  [self _writeWorldsToUserDefaults];
+}
+
+- (void) _writeWorldsToUserDefaults
 {
   [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: self.worlds]
                                             forKey: MUPWorlds];

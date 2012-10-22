@@ -7,15 +7,17 @@
 #import "MUProfileRegistry.h"
 #import "MUProfile.h"
 
-static MUProfileRegistry *defaultRegistry = nil;
+static MUProfileRegistry *_defaultRegistry = nil;
 
 @interface MUProfileRegistry ()
+{
+  NSMutableDictionary *_mutableProfiles;
+}
 
-@property (strong) NSMutableDictionary *mutableProfiles;
-
-- (void) cleanUpDefaultRegistry: (NSNotification *) notification;
-- (void) readProfilesFromUserDefaults;
-- (void) writeProfilesToUserDefaults;
+- (void) _cleanUpDefaultRegistry: (NSNotification *) notification;
+- (void) _startObservingWritableValuesForProfile: (MUProfile *) profile;
+- (void) _stopObservingWritableValuesForProfile: (MUProfile *) profile;
+- (void) _writeProfilesToUserDefaults;
 
 @end
 
@@ -27,17 +29,11 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 + (MUProfileRegistry *) defaultRegistry
 {
-  if (!defaultRegistry)
-  {
-    defaultRegistry = [[MUProfileRegistry alloc] init];
-    [defaultRegistry readProfilesFromUserDefaults];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: defaultRegistry
-                                             selector: @selector (cleanUpDefaultRegistry:)
-                                                 name: NSApplicationWillTerminateNotification
-                                               object: NSApp];
-  }
-  return defaultRegistry;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUProfileRegistry alloc] init]; });
+  
+  return _defaultRegistry;
 }
 
 - (id) init
@@ -45,16 +41,58 @@ static MUProfileRegistry *defaultRegistry = nil;
   if (!(self = [super init]))
     return nil;
   
-  _mutableProfiles = [[NSMutableDictionary alloc] init];
+  NSData *profilesData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];
   
+  if (!profilesData)
+    return nil;
+  
+  _mutableProfiles = [NSKeyedUnarchiver unarchiveObjectWithData: profilesData];
+  
+  for (NSString *key in _mutableProfiles.allKeys)
+  {
+    MUProfile *profile = _mutableProfiles[key];
+    
+    [self _startObservingWritableValuesForProfile: profile];
+  }
+
   return self;
+}
+
+- (void) dealloc
+{
+  for (MUProfile *profile in _mutableProfiles)
+  {
+    [self _stopObservingWritableValuesForProfile: profile];
+  }
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if ([object isKindOfClass: [MUProfile class]])
+  {
+    MUProfile *profile = (MUProfile *) object;
+    
+    if ([profile.writableProperties containsObject: keyPath])
+    {
+      [self _writeProfilesToUserDefaults];
+      return;
+    }
+  }
+  
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 #pragma mark - Properties
 
 - (NSDictionary *) profiles
 {
-  return self.mutableProfiles;
+  @synchronized (self)
+  {
+    return _mutableProfiles;
+  }
 }
 
 #pragma mark - Accessor methods
@@ -71,19 +109,26 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (MUProfile *) profileForProfile: (MUProfile *) profile
 {
-  MUProfile *rval = [self profileForUniqueIdentifier: profile.uniqueIdentifier];
-  if (!rval)
+  @synchronized (self)
   {
-    rval = profile;
-    self.mutableProfiles[rval.uniqueIdentifier] = rval;
-    [self writeProfilesToUserDefaults];
+    MUProfile *rval = _mutableProfiles[profile.uniqueIdentifier];
+    if (!rval)
+    {
+      rval = profile;
+      _mutableProfiles[rval.uniqueIdentifier] = rval;
+      [self _startObservingWritableValuesForProfile: rval];
+      [self _writeProfilesToUserDefaults];
+    }
+    return rval;
   }
-  return rval;
 }
 
 - (MUProfile *) profileForUniqueIdentifier: (NSString *) identifier
 {
-  return self.profiles[identifier];
+  @synchronized (self)
+  {
+    return _mutableProfiles[identifier];
+  }
 }
 
 - (BOOL) containsProfileForWorld: (MUWorld *) world
@@ -126,16 +171,19 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 - (void) removeProfileForUniqueIdentifier: (NSString *) identifier
 {
-  [self.mutableProfiles removeObjectForKey: identifier];
-  [self writeProfilesToUserDefaults];
+  @synchronized (self)
+  {
+    [self _stopObservingWritableValuesForProfile: _mutableProfiles[identifier]];
+    [_mutableProfiles removeObjectForKey: identifier];
+    [self _writeProfilesToUserDefaults];
+  }
 }
 
 - (void) removeAllProfilesForWorld: (MUWorld *) world
 {
   for (NSUInteger i = 0; i < world.children.count; i++)
   {
-    [self removeProfileForWorld: world
-                         player: world.children[i]];
+    [self removeProfileForWorld: world player: world.children[i]];
   }
   
   [self removeProfileForWorld: world];
@@ -143,35 +191,31 @@ static MUProfileRegistry *defaultRegistry = nil;
 
 #pragma mark - Private methods
 
-- (void) cleanUpDefaultRegistry: (NSNotification *) notification
+- (void) _cleanUpDefaultRegistry: (NSNotification *) notification
 {
-  [[NSNotificationCenter defaultCenter] removeObserver: defaultRegistry];
-  defaultRegistry = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
+  _defaultRegistry = nil;
 }
 
-- (void) readProfilesFromUserDefaults
+- (void) _startObservingWritableValuesForProfile: (MUProfile *) profile
 {
-  NSData *profilesData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];
-  
-  if (profilesData)
-    self.mutableProfiles = [NSKeyedUnarchiver unarchiveObjectWithData: profilesData];
+  for (NSString *keyPath in profile.writableProperties)
+  {
+    [profile addObserver: self forKeyPath: keyPath options: 0 context: nil];
+  }
 }
 
-#if 0
-- (void) setMutableProfiles: (NSDictionary *) newProfiles
+- (void) _stopObservingWritableValuesForProfile: (MUProfile *) profile
 {
-  if ([self.mutableProfiles isEqual: newProfiles])
-    return;
-  
-  _mutableProfiles = [newProfiles mutableCopy];
-  
-  [self writeProfilesToUserDefaults];
+  for (NSString *keyPath in profile.writableProperties)
+  {
+    [profile removeObserver: self forKeyPath: keyPath];
+  }
 }
-#endif
 
-- (void) writeProfilesToUserDefaults
+- (void) _writeProfilesToUserDefaults
 {
-  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: self.mutableProfiles]
+  [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject: self.profiles]
                                             forKey: MUPProfiles];
   
   [[NSUserDefaults standardUserDefaults] synchronize];

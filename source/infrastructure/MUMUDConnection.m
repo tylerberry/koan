@@ -96,6 +96,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [protocolStack addProtocolHandler: sslProtocolHandler];
   
   _delegate = newDelegate;
+  if (_delegate)
+    [self registerObjectForNotifications: _delegate];
+  
   return self;
 }
 

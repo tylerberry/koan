@@ -1,5 +1,5 @@
 //
-// MUProfilesController.m
+// MUProfilesWindowController.m
 //
 // Copyright (c) 2012 3James Software.
 //
@@ -26,18 +26,17 @@
   [self systemSoundsArray];
 }
 
-- (IBAction) changeFont
+- (IBAction) changeFont: (id) sender
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
   NSFont *selectedFont = fontManager.selectedFont;
   
-  id currentPrefsValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
-  
   if (selectedFont == nil)
-    selectedFont = [NSFont systemFontOfSize: [NSFont systemFontSize]];
+    selectedFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
   
   NSFont *panelFont = [fontManager convertFont: selectedFont];
   
+  id currentPrefsValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
   [currentPrefsValues setValue: panelFont.fontName forKey: MUPFontName];
   [currentPrefsValues setValue: @(panelFont.pointSize) forKey: MUPFontSize];
   

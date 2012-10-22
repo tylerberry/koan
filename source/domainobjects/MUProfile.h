@@ -12,15 +12,15 @@
 
 @interface MUProfile : NSObject <NSCoding>
 
+@property (strong) MUWorld *world;
+@property (strong) MUPlayer *player;
+
 @property (strong) NSFont *font;
 
 @property (copy) NSColor *backgroundColor;
 @property (copy) NSColor *linkColor;
 @property (copy) NSColor *textColor;
-@property (copy) NSColor *visitedLinkColor;
 
-@property (strong) MUWorld *world;
-@property (strong) MUPlayer *player;
 @property (assign) BOOL autoconnect;
 
 @property (readonly) NSFont *effectiveFont;
@@ -36,6 +36,8 @@
 @property (readonly) NSString *uniqueIdentifier;
 @property (readonly) NSString *windowTitle;
 
+@property (readonly) NSArray *writableProperties;
+
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld
                           player: (MUPlayer *) newPlayer
                      autoconnect: (BOOL) autoconnect;
@@ -49,8 +51,7 @@
   							font: (NSFont *) newFont
   				 textColor: (NSColor *) newTextColor
   	 backgroundColor: (NSColor *) newBackgroundColor
-  				 linkColor: (NSColor *) newLinkColor
-  	visitedLinkColor: (NSColor *) newVisitedLinkColor;
+  				 linkColor: (NSColor *) newLinkColor;
 
 - (id) initWithWorld: (MUWorld *) newWorld
               player: (MUPlayer *) newPlayer

@@ -1,5 +1,5 @@
 //
-// MUProfilesController.h
+// MUProfilesWindowController.h
 //
 // Copyright (c) 2012 3James Software.
 //
@@ -16,7 +16,7 @@
   IBOutlet NSColorWell *globalVisitedLinkColorWell;
 }
 
-- (IBAction) changeFont;
+- (IBAction) changeFont: (id) sender;
 - (void) colorPanelColorDidChange;
 - (void) playSelectedSound: (id) sender;
 - (void) showPreferencesWindow: (id) sender;

@@ -17,27 +17,33 @@
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;
 @property (copy) NSString *url;
-@property (unsafe_unretained, readonly) NSString *uniqueIdentifier;
-@property (unsafe_unretained, readonly) NSString *windowTitle;
+@property (readonly) NSString *windowTitle;
 
-+ (MUWorld *) worldWithName: (NSString *) newName
-  								 hostname: (NSString *) newHostname
-  										 port: (NSNumber *) newPort
-  											URL: (NSString *) newURL
-  									players: (NSArray *) newPlayers;
+// This is a "fake" property that is triggered when a child object's properties have changed, but the actual child
+// objects have not been modified. It has no value of its own. It is used to notify objects that are interested in these
+// changes without forcing a reread of the entire MUTreeNode substructure.
+@property (readonly) void childProperties;
 
-+ (MUWorld *) worldWithHostname: (NSString *) newHostname
-                           port: (NSNumber *) newPort;
+@property (readonly) NSArray *writableProperties;
+
++ (MUWorld *) worldWithName: (NSString *) name
+                   hostname: (NSString *) hostname
+                       port: (NSNumber *) port
+                        URL: (NSString *) url
+                   children: (NSArray *) children;
+
++ (MUWorld *) worldWithHostname: (NSString *) hostname
+                           port: (NSNumber *) port;
 
 // Designated initializer.
-- (id) initWithName: (NSString *) newName
-           hostname: (NSString *) newHostname
-               port: (NSNumber *) newPort
-                URL: (NSString *) newURL
-            players: (NSArray *) newPlayers;
+- (id) initWithName: (NSString *) name
+           hostname: (NSString *) hostname
+               port: (NSNumber *) port
+                URL: (NSString *) url
+           children: (NSArray *) children;
 
-- (id) initWithHostname: (NSString *) newHostname
-                   port: (NSNumber *) newPort;
+- (id) initWithHostname: (NSString *) hostname
+                   port: (NSNumber *) port;
 
 // Actions.
 - (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;

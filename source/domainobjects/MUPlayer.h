@@ -10,9 +10,10 @@
 @interface MUPlayer : MUTreeNode <NSCoding, NSCopying>
 
 @property (copy) NSString *password;
-@property (unsafe_unretained, readonly) NSString *loginString;
-@property (unsafe_unretained, readonly) NSString *uniqueIdentifier;
-@property (unsafe_unretained, readonly) NSString *windowTitle;
+@property (readonly) NSString *loginString;
+@property (readonly) NSString *windowTitle;
+
+@property (readonly) NSArray *writableProperties;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword;

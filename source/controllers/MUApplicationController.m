@@ -14,7 +14,7 @@
 #import "MUPlayer.h"
 #import "MUPreferencesController.h"
 #import "MUProfileRegistry.h"
-#import "MUProfilesController.h"
+#import "MUProfilesWindowController.h"
 #import "MUProxySettingsController.h"
 #import "MUSocketFactory.h"
 #import "MUWorld.h"
@@ -28,7 +28,7 @@
   
   NSMutableArray *connectionWindowControllers;
   MUAcknowledgementsController *acknowledgementsController;
-  MUProfilesController *profilesController;
+  MUProfilesWindowController *profilesController;
   MUProxySettingsController *proxySettingsController;
 }
 
@@ -68,6 +68,7 @@
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
   
   defaults[MUPWorlds] = @[];
+  defaults[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   
@@ -207,7 +208,7 @@
 - (IBAction) showProfilesPanel: (id) sender
 {
   if (!profilesController)
-    profilesController = [[MUProfilesController alloc] init];
+    profilesController = [[MUProfilesWindowController alloc] init];
   if (profilesController)
     [profilesController showWindow: self];
 }
@@ -323,7 +324,7 @@
 
 - (IBAction) changeFont: (id) sender
 {
-  [preferencesController changeFont];
+  [preferencesController changeFont: sender];
 }
 
 - (void) colorPanelColorDidChange: (NSNotification *) notification
@@ -374,11 +375,13 @@
     [openConnectionMenu removeItemAtIndex: menuItemIndex];
   }
   
+  BOOL didAutoconnect = NO;
+  
   for (MUWorld *world in worldRegistry.worlds)
   {
     MUProfile *profile = [profileRegistry profileForWorld: world];
     NSMenuItem *worldItem = [[NSMenuItem alloc] init];
-    NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name];
+    NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name ? world.name : @""];
     NSMenuItem *connectItem = [[NSMenuItem alloc] initWithTitle: _(MULConnectWithoutLogin)
                                                          action: @selector (openConnection:)
                                                   keyEquivalent: @""];
@@ -390,7 +393,10 @@
     {
       profile.world = world;
       if (profile.autoconnect)
+      {
+        didAutoconnect = YES;
         [self openConnection: connectItem];
+      }
     }
     
     for (MUPlayer *player in world.children)
@@ -398,7 +404,7 @@
       profile = [profileRegistry profileForWorld: world player: player];
       
       SEL action = @selector (openConnection:);
-      NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name
+      NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name ? player.name : @""
                                                           action: action
                                                    keyEquivalent: @""];
       playerItem.target = self;
@@ -410,7 +416,10 @@
         profile.player = player;
         
         if (profile.autoconnect)
+        {
+          didAutoconnect = YES;
           [self openConnection: playerItem];
+        }
       }
       
       [worldMenu addItem: playerItem];
@@ -422,10 +431,13 @@
     }
     
     [worldMenu addItem: connectItem];
-    [worldItem setTitle: world.name];
+    [worldItem setTitle: world.name ? world.name : @""];
     [worldItem setSubmenu: worldMenu];
     [openConnectionMenu addItem: worldItem];
   }
+  
+  if (!didAutoconnect)
+    [self showProfilesPanel: self];
 }
 
 - (void) recursivelyConfirmClose: (BOOL) cont

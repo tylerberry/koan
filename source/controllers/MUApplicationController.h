@@ -11,7 +11,7 @@
 
 @class MUAcknowledgementsController;
 @class MUPreferencesController;
-@class MUProfilesController;
+@class MUProfilesWindowController;
 @class MUProxySettingsController;
 
 @interface MUApplicationController : NSObject <MUConnectionWindowControllerDelegate>

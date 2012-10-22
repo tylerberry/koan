@@ -32,4 +32,9 @@
   return [MUWorldRegistry defaultRegistry].count == 0;
 }
 
+- (NSString *) uniqueIdentifier
+{
+  return @"profilessection:";
+}
+
 @end

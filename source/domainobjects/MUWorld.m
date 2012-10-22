@@ -10,57 +10,72 @@
 
 static const int32_t currentWorldVersion = 7;
 
+@interface MUWorld ()
+
+- (void) _startObservingWritableValuesForPlayer: (MUPlayer *) player;
+- (void) _stopObservingWritableValuesForPlayer: (MUPlayer *) player;
+
+@end
+
+#pragma mark -
+
 @implementation MUWorld
 
-@dynamic uniqueIdentifier, windowTitle;
+@dynamic childProperties, uniqueIdentifier, windowTitle, writableProperties;
 
-+ (MUWorld *) worldWithName: (NSString *) newName
-  								 hostname: (NSString *) newHostname
-  										 port: (NSNumber *) newPort
-  											URL: (NSString *) newURL
-  									players: (NSArray *) newPlayers
++ (MUWorld *) worldWithName: (NSString *) name
+                   hostname: (NSString *) hostname
+                       port: (NSNumber *) port
+                        URL: (NSString *) url
+                   children: (NSArray *) children
 {
-  return [[self alloc] initWithName: newName
-  													hostname: newHostname
-  															port: newPort
-  															 URL: newURL
-  													 players: newPlayers];
+  return [[self alloc] initWithName: name
+                           hostname: hostname
+                               port: port
+                                URL: url
+                           children: children];
 }
 
-+ (MUWorld *) worldWithHostname: (NSString *) newHostname
-                           port: (NSNumber *) newPort
++ (MUWorld *) worldWithHostname: (NSString *) hostname
+                           port: (NSNumber *) port
 {
-  return [self worldWithName: newHostname
-                    hostname: newHostname
-                        port: newPort
-                         URL: @""
-                     players: nil];
+  return [[self alloc] initWithName: hostname
+                           hostname: hostname
+                               port: port
+                                URL: nil
+                           children: nil];
 }
 
-- (id) initWithName: (NSString *) newName
-           hostname: (NSString *) newHostname
-               port: (NSNumber *) newPort
-                URL: (NSString *) newURL
-            players: (NSArray *) newPlayers
+- (id) initWithName: (NSString *) name
+           hostname: (NSString *) hostname
+               port: (NSNumber *) port
+                URL: (NSString *) url
+           children: (NSArray *) children
 {
-  if (!(self = [super initWithName: newName children: newPlayers]))
+  if (!(self = [super initWithName: name children: children]))
     return nil;
   
-  _hostname = [newHostname copy];
-  _port = [newPort copy];
-  _url = [newURL copy];
+  for (MUTreeNode *node in self.children)
+  {
+    if ([node isKindOfClass: [MUPlayer class]])
+      [self _startObservingWritableValuesForPlayer: (MUPlayer *) node];
+  }
+  
+  _hostname = [hostname copy];
+  _port = [port copy];
+  _url = [url copy];
   
   return self;
 }
 
-- (id) initWithHostname: (NSString *) newHostname
-                   port: (NSNumber *) newPort
+- (id) initWithHostname: (NSString *) hostname
+                   port: (NSNumber *) port
 {
-  return [self initWithName: newHostname
-                   hostname: newHostname
-                       port: newPort
+  return [self initWithName: hostname
+                   hostname: hostname
+                       port: port
                         URL: @""
-                    players: nil];
+                   children: nil];
 }
 
 - (id) init
@@ -69,9 +84,37 @@ static const int32_t currentWorldVersion = 7;
                    hostname: @""
                        port: @0
                         URL: @""
-                    players: nil];
+                   children: nil];
 }
 
+- (void) dealloc
+{
+  for (MUTreeNode *node in self.children)
+  {
+    if ([node isKindOfClass: [MUPlayer class]])
+      [self _stopObservingWritableValuesForPlayer: (MUPlayer *) node];
+  }
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if ([object isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) object;
+    
+    if ([player.writableProperties containsObject: keyPath])
+    {
+      [self willChangeValueForKey: @"childProperties"];
+      [self didChangeValueForKey: @"childProperties"];
+      return;
+    }
+  }
+  
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
+}
 
 #pragma mark - Actions
 
@@ -81,6 +124,11 @@ static const int32_t currentWorldVersion = 7;
 }
 
 #pragma mark - Property method implementations
+
+- (void) childProperties
+{
+  return;
+}
 
 - (NSImage *) icon
 {
@@ -105,6 +153,11 @@ static const int32_t currentWorldVersion = 7;
 - (NSString *) windowTitle
 {
   return [NSString stringWithFormat: @"%@", self.name];
+}
+
+- (NSArray *) writableProperties
+{
+  return @[@"name", @"hostname", @"port", @"url", @"children", @"childProperties"];
 }
 
 #pragma mark - NSCoding protocol
@@ -150,13 +203,19 @@ static const int32_t currentWorldVersion = 7;
   else
     self.children = [decoder decodeObjectForKey: @"players"];
   
+  for (MUTreeNode *node in self.children)
+  {
+    if ([node isKindOfClass: [MUPlayer class]])
+      [self _startObservingWritableValuesForPlayer: (MUPlayer *) node];
+  }
+  
   if (version >= 5)
     _url = [decoder decodeObjectForKey: @"URL"];
   else if (version >= 1)
     _url = [decoder decodeObjectForKey: @"worldURL"];
   else
     _url = @"";
-  
+
   return self;
 }
 
@@ -168,7 +227,21 @@ static const int32_t currentWorldVersion = 7;
                                             hostname: self.hostname
                                                 port: self.port
                                                  URL: self.url
-                                             players: self.children];
+                                            children: self.children];
+}
+
+#pragma mark - Private methods
+
+- (void) _startObservingWritableValuesForPlayer: (MUPlayer *) player
+{
+  for (NSString *keyPath in player.writableProperties)
+    [player addObserver: self forKeyPath: keyPath options: 0 context: nil];
+}
+
+- (void) _stopObservingWritableValuesForPlayer: (MUPlayer *) player
+{
+  for (NSString *keyPath in player.writableProperties)
+    [player removeObserver: self forKeyPath: keyPath];
 }
 
 @end

@@ -113,18 +113,18 @@ enum MUTextDisplayModes
 {
   // Initial window colors and fonts.
   
-  [receivedTextView setFont: profile.effectiveFont];
-  [receivedTextView setTextColor: profile.effectiveTextColor];
+  receivedTextView.font = profile.effectiveFont;
+  receivedTextView.textColor = profile.effectiveTextColor;
   
   [self updateLinkTextColor];
   
   // Restore window and split view title, size, and position.
   
-  [self.window setTitle: profile.windowTitle];
-  [self.window setFrameAutosaveName: profile.uniqueIdentifier];
-  [self.window setFrameUsingName: profile.uniqueIdentifier];
+  self.window.title = profile.windowTitle;
+  self.window.frameAutosaveName = profile.uniqueIdentifier;
+  self.window.frameUsingName = profile.uniqueIdentifier;
   
-  [splitView setAutosaveName: self.splitViewAutosaveName];
+  splitView.autosaveName = self.splitViewAutosaveName;
   [splitView adjustSubviews];
   
   // Bindings and notifications.
@@ -283,10 +283,10 @@ enum MUTextDisplayModes
   [telnetConnection open];
   
   pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
-                                                target: self
-                                              selector: @selector (sendPeriodicPing:)
-                                              userInfo: nil
-                                               repeats: YES];
+                                               target: self
+                                             selector: @selector (sendPeriodicPing:)
+                                             userInfo: nil
+                                              repeats: YES];
   
   [[self window] makeFirstResponder: inputView];
 }
@@ -372,8 +372,8 @@ enum MUTextDisplayModes
 
 - (void) reportWindowSizeToServer
 {
-  [telnetConnection sendNumberOfWindowLines: [receivedTextView numberOfLines]
-                                    columns: [receivedTextView numberOfColumns]];
+  [telnetConnection sendNumberOfWindowLines: receivedTextView.numberOfLines
+                                    columns: receivedTextView.numberOfColumns];
 }
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
@@ -456,8 +456,6 @@ enum MUTextDisplayModes
 
 - (void) splitViewDidResizeSubviews: (NSNotification *) notification
 {
-  if (![NSApp currentEvent].type == NSLeftMouseUp)
-    NSLog (@"UP");
   [self prepareDelayedReportWindowSizeToServer];
 }
 
@@ -690,7 +688,6 @@ enum MUTextDisplayModes
       
       [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: combinedString]];
       _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
-      
       break;
     }
   }
@@ -778,7 +775,6 @@ enum MUTextDisplayModes
 - (void) tabCompleteWithDirection: (enum MUSearchDirections) direction
 {
   NSString *currentPrefix;
-  NSString *foundString;
   
   if (currentlySearching)
   {
@@ -786,7 +782,7 @@ enum MUTextDisplayModes
     
     if ([historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
-      [inputView setSelectedRange: NSMakeRange (inputView.textStorage.length, 0)];
+      inputView.selectedRange = NSMakeRange (inputView.textStorage.length, 0);
       [self endCompletion];
       return;
     }
@@ -794,7 +790,7 @@ enum MUTextDisplayModes
   else
     currentPrefix = [inputView.string copy];
   
-  foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
+  NSString *foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
                                                 : [historyRing searchForwardForStringPrefix: currentPrefix];
   
   if (foundString)
@@ -803,8 +799,8 @@ enum MUTextDisplayModes
       foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
                                                     : [historyRing searchForwardForStringPrefix: currentPrefix];
     
-    [inputView setString: foundString];
-    [inputView setSelectedRange: NSMakeRange (currentPrefix.length, inputView.textStorage.length - currentPrefix.length)];
+    inputView.string = foundString;
+    inputView.selectedRange = NSMakeRange (currentPrefix.length, inputView.textStorage.length - currentPrefix.length);
   }
   
   currentlySearching = YES;

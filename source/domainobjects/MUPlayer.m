@@ -10,7 +10,7 @@ static const int32_t currentPlayerVersion = 1;
 
 @implementation MUPlayer
 
-@dynamic loginString, uniqueIdentifier, windowTitle;
+@dynamic loginString, uniqueIdentifier, windowTitle, writableProperties;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword
@@ -83,6 +83,11 @@ static const int32_t currentPlayerVersion = 1;
 {
   // FIXME: This is not the right way to get the window title.
   return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
+}
+
+- (NSArray *) writableProperties
+{
+  return @[@"name", @"password"];
 }
 
 #pragma mark - NSCoding protocol

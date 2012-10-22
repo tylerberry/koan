@@ -6,7 +6,7 @@
 
 #import "MUProfilesToolbarController.h"
 
-#import "MUProfilesController.h"
+#import "MUProfilesWindowController.h"
 
 @interface MUProfilesToolbarController ()
 {

@@ -7,7 +7,9 @@
 #import "MUProfile.h"
 #import "MUTextLogger.h"
 
-static const int32_t currentProfileVersion = 2;
+#import "MUWorldRegistry.h"
+
+static const int32_t currentProfileVersion = 3;
 
 @interface MUProfile ()
 
@@ -23,30 +25,12 @@ static const int32_t currentProfileVersion = 2;
 
 @implementation MUProfile
 
-@synthesize font, backgroundColor, linkColor, textColor, visitedLinkColor;
-@synthesize world, player, autoconnect;
 @dynamic effectiveBackgroundColor, effectiveFont, effectiveFontDisplayName, effectiveLinkColor, effectiveTextColor;
 @dynamic hasLoginInformation, hostname, loginString, uniqueIdentifier, windowTitle;
 
-+ (BOOL) automaticallyNotifiesObserversForKey: (NSString *) key
-{
-  static NSArray *keyArray;
-  
-  if (!keyArray)
-  {
-  	keyArray = @[@"effectiveFont", @"effectiveFontDisplayName", @"effectiveTextColor", @"effectiveBackgroundColor",
-    @"effectiveLinkColor", @"effectiveVisitedLinkColor"];
-  }
-  
-  if ([keyArray containsObject: key])
-  	return NO;
-  else
-  	return [super automaticallyNotifiesObserversForKey: key];
-}
-
 + (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
 {
-  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey: key];
   
   if ([key isEqualToString: @"effectiveFont"] || [key isEqualToString: @"effectiveFontDisplayName"])
   {
@@ -99,19 +83,17 @@ static const int32_t currentProfileVersion = 2;
   				 textColor: (NSColor *) newTextColor
   	 backgroundColor: (NSColor *) newBackgroundColor
   				 linkColor: (NSColor *) newLinkColor
-  	visitedLinkColor: (NSColor *) newVisitedLinkColor
 {
   if (!(self = [super init]))
     return nil;
   
-  world = newWorld;
-  player = newPlayer;
-  autoconnect = newAutoconnect;
-  font = newFont;
-  textColor = [newTextColor copy];
-  backgroundColor = [newBackgroundColor copy];
-  linkColor = [newLinkColor copy];
-  visitedLinkColor = [newVisitedLinkColor copy];
+  _world = newWorld;
+  _player = newPlayer;
+  _autoconnect = newAutoconnect;
+  _font = newFont;
+  _textColor = [newTextColor copy];
+  _backgroundColor = [newBackgroundColor copy];
+  _linkColor = [newLinkColor copy];
   
   [self registerForNotifications];
   
@@ -128,8 +110,7 @@ static const int32_t currentProfileVersion = 2;
   											font: nil
   								 textColor: nil
   					 backgroundColor: nil
-  								 linkColor: nil
-  					visitedLinkColor: nil];
+  								 linkColor: nil];
 }
 
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
@@ -230,18 +211,6 @@ static const int32_t currentProfileVersion = 2;
   }
 }
 
-- (NSColor *) effectiveVisitedLinkColor
-{
-  if (self.visitedLinkColor)
-  	return self.visitedLinkColor;
-  else
-  {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	
-  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPVisitedLinkColor]];
-  }
-}
-
 #pragma mark - Property method implementations
 
 - (BOOL) hasLoginInformation
@@ -267,7 +236,6 @@ static const int32_t currentProfileVersion = 2;
   NSString *identifier = nil;
   if (self.player)
   {
-    // FIXME:  Consider offloading the generation of a unique name for the player on MUPlayer.
     identifier = [NSString stringWithFormat: @"%@;%@", self.world.uniqueIdentifier, self.player.uniqueIdentifier];
   }
   else
@@ -282,34 +250,60 @@ static const int32_t currentProfileVersion = 2;
   return (self.player ? self.player.windowTitle : self.world.windowTitle);
 }
 
+- (NSArray *) writableProperties
+{
+  return @[@"autoconnect", @"font", @"backgroundColor", @"linkColor", @"textColor"];
+}
+
 #pragma mark - NSCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
   [encoder encodeInt32: currentProfileVersion forKey: @"version"];
+  [encoder encodeObject: self.world.uniqueIdentifier forKey: @"worldIdentifier"];
+  [encoder encodeObject: self.player.uniqueIdentifier forKey: @"playerIdentifier"];
   [encoder encodeBool: self.autoconnect forKey: @"autoconnect"];
   [encoder encodeObject: self.font.fontName forKey: @"fontName"];
   [encoder encodeFloat: (float) self.font.pointSize forKey: @"fontSize"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.textColor] forKey: @"textColor"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.backgroundColor] forKey: @"backgroundColor"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.linkColor] forKey: @"linkColor"];
-  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.visitedLinkColor] forKey: @"visitedLinkColor"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   int32_t version = [decoder decodeInt32ForKey: @"version"];
   
-  self.autoconnect = [decoder decodeBoolForKey: @"autoconnect"];
+  if (version < 3)
+    return nil;
+  
+  NSString *worldIdentifier = [decoder decodeObjectForKey: @"worldIdentifier"];
+  MUWorld *world = [[MUWorldRegistry defaultRegistry] worldForUniqueIdentifier: worldIdentifier];
+  
+  NSString *playerIdentifier = [decoder decodeObjectForKey: @"playerIdentifier"];
+  MUPlayer *player = nil;
+  
+  if (playerIdentifier)
+  {
+    for (MUPlayer *candidatePlayer in world.children)
+    {
+      if ([candidatePlayer.uniqueIdentifier isEqualToString: playerIdentifier])
+        player = candidatePlayer;
+    }
+  }
+  
+  if (!(self = [self initWithWorld: world player: player]))
+    return nil;
+  
+  _autoconnect = [decoder decodeBoolForKey: @"autoconnect"];
   
   if (version >= 2)
   {
-  	self.font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
-                                size: [decoder decodeFloatForKey: @"fontSize"]];
-  	self.textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
-  	self.backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
-  	self.linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
-  	self.visitedLinkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"visitedLinkColor"]];
+  	_font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
+                            size: [decoder decodeFloatForKey: @"fontSize"]];
+  	_textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
+  	_backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
+  	_linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
   }
   
   [self registerForNotifications];

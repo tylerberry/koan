@@ -1,27 +1,29 @@
 //
-// MUProfilesController.h
+// MUProfilesWindowController.h
 //
 // Copyright (c) 2012 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
+@class MUProfileContentView;
 
-@class MUProfile;
-@class MUWorldRegistry;
-
-@interface MUProfilesController : NSWindowController <NSOutlineViewDelegate>
+@interface MUProfilesWindowController : NSWindowController <NSOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
 {
   IBOutlet NSTreeController *profilesTreeController;
+  
+  IBOutlet NSSplitView *profilesSplitView;
+  
   IBOutlet NSOutlineView *profilesOutlineView;
   IBOutlet NSButton *addButton;
   IBOutlet NSButton *actionButton;
+  
+  IBOutlet NSScrollView *profileContentScrollView;
+  IBOutlet MUProfileContentView *profileContentView;
   
   IBOutlet NSMenu *addMenu;
 }
 
 @property  NSMutableArray *profilesTreeArray;
 
-- (IBAction) chooseNewFont: (id) sender;
 - (IBAction) goToWorldURL: (id) sender;
 - (IBAction) showAddContextMenu: (id) sender;
 

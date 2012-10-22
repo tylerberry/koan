@@ -14,6 +14,7 @@
 //@property (readonly) NSUInteger count;
 @property (weak, nonatomic) MUTreeNode *parent;
 @property (readonly) BOOL isLeaf;
+@property (readonly) NSString *uniqueIdentifier;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren;
 - (id) init;

@@ -13,4 +13,7 @@
 
 @property (strong) MUPlayer *player;
 
+@property (weak) IBOutlet NSView *firstView;
+@property (weak) IBOutlet NSView *lastView;
+
 @end

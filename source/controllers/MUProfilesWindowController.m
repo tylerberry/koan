@@ -17,8 +17,7 @@
 
 @interface MUProfilesWindowController ()
 {
-  NSMutableArray *profilesTreeArray;
-  NSMutableArray *profilesExpandedItems;
+  NSMutableArray *_profilesExpandedItems;
   
   MUPlayerViewController *_playerViewController;
   MUProfileViewController *_profileViewController;
@@ -28,16 +27,12 @@
 - (void) _applicationWillTerminate: (NSNotification *) notification;
 - (void) _registerForNotifications;
 
-@end
+#pragma mark - Tree controller handling
 
-#pragma mark -
-
-@interface MUProfilesWindowController (TreeController)
-
-- (void) expandProfilesOutlineView;
-- (void) populateProfilesFromWorldRegistry;
-- (void) populateProfilesTree;
-- (void) saveProfilesOutlineViewState;
+- (void) _expandProfilesOutlineView;
+- (void) _populateProfilesFromWorldRegistry;
+- (void) _populateProfilesTree;
+- (void) _saveProfilesOutlineViewState;
 
 @end
 
@@ -45,21 +40,19 @@
 
 @implementation MUProfilesWindowController
 
-@synthesize profilesTreeArray;
-
 - (id) init
 {
   if (!(self = [super initWithWindowNibName: @"MUProfilesWindow"]))
     return nil;
   
-  profilesTreeArray = [[NSMutableArray alloc] init];
-  profilesExpandedItems = [[NSMutableArray alloc] init];
+  _profilesTreeArray = [[NSMutableArray alloc] init];
+  _profilesExpandedItems = [[NSMutableArray alloc] init];
   
   _playerViewController = nil;
   _profileViewController = nil;
   _worldViewController = nil;
   
-  [self populateProfilesTree];
+  [self _populateProfilesTree];
   
   return self;
 }
@@ -223,7 +216,7 @@
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
-    [profilesExpandedItems removeObject: persistentObject];
+    [_profilesExpandedItems removeObject: persistentObject];
 }
 
 - (void) outlineViewItemWillExpand: (NSNotification *) notification
@@ -232,7 +225,7 @@
   id persistentObject = [self outlineView: profilesOutlineView persistentObjectForItem: item];
   
   if (persistentObject)
-    [profilesExpandedItems addObject: persistentObject];
+    [_profilesExpandedItems addObject: persistentObject];
 }
 
 - (void) outlineViewSelectionDidChange: (NSNotification *) notification
@@ -240,6 +233,7 @@
   if (profilesOutlineView.selectedRow == -1)
   {
     [profileContentView removeAllSubviews];
+    lastView.nextKeyView = firstView;
     return;
   }
   
@@ -265,6 +259,10 @@
     _profileViewController.profile = [[MUProfileRegistry defaultRegistry] profileForWorld: world];
     
     [profileContentView addSubview: _profileViewController.view];
+    
+    lastView.nextKeyView = _worldViewController.firstView;
+    _worldViewController.lastView.nextKeyView = _profileViewController.firstView;
+    _profileViewController.lastView.nextKeyView = firstView;
   }
   else if ([representedObject isKindOfClass: [MUPlayer class]])
   {
@@ -292,6 +290,11 @@
                                                                                    player: player];
     
     [profileContentView addSubview: _profileViewController.view];
+    
+    lastView.nextKeyView = _worldViewController.firstView;
+    _worldViewController.lastView.nextKeyView = _playerViewController.firstView;
+    _playerViewController.lastView.nextKeyView = _profileViewController.firstView;
+    _profileViewController.lastView.nextKeyView = firstView;
   }
 }
 
@@ -299,19 +302,19 @@
 
 - (void) windowDidLoad
 {
-  [self expandProfilesOutlineView];
+  [self _expandProfilesOutlineView];
 }
 
 - (void) windowWillClose: (NSNotification *) notification
 {
-  [self saveProfilesOutlineViewState];
+  [self _saveProfilesOutlineViewState];
 }
 
 #pragma mark - Private methods
 
 - (void) _applicationWillTerminate: (NSNotification *) notification
 {
-  [self saveProfilesOutlineViewState];
+  [self _saveProfilesOutlineViewState];
 }
 
 - (void) _registerForNotifications
@@ -322,13 +325,9 @@
                                              object: NSApp];
 }
 
-@end
+#pragma mark - Tree controller handling
 
-#pragma mark -
-
-@implementation MUProfilesWindowController (TreeController)
-
-- (void) expandProfilesOutlineView
+- (void) _expandProfilesOutlineView
 {
   [profilesOutlineView collapseItem: nil collapseChildren: YES];
   
@@ -349,26 +348,26 @@
     [profilesOutlineView expandItem: [self outlineView: profilesOutlineView itemForPersistentObject: stateObject]];
 }
 
-- (void) populateProfilesFromWorldRegistry
+- (void) _populateProfilesFromWorldRegistry
 {
   MUProfilesSection *profilesSection = [[MUProfilesSection alloc] initWithName: @"PROFILES"];
   
   [self willChangeValueForKey: @"profilesTreeArray"];
-  [profilesTreeArray addObject: profilesSection];
+  [_profilesTreeArray addObject: profilesSection];
   [self didChangeValueForKey: @"profilesTreeArray"];
 }
 
-- (void) populateProfilesTree
+- (void) _populateProfilesTree
 {
   @autoreleasepool
   {
-		[self populateProfilesFromWorldRegistry];
+		[self _populateProfilesFromWorldRegistry];
 	}
 }
 
-- (void) saveProfilesOutlineViewState
+- (void) _saveProfilesOutlineViewState
 {
-  [[NSUserDefaults standardUserDefaults] setObject: profilesExpandedItems
+  [[NSUserDefaults standardUserDefaults] setObject: _profilesExpandedItems
                                             forKey: MUPProfilesOutlineViewState];
 }
 

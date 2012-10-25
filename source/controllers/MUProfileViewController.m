@@ -59,10 +59,10 @@
                     options: NSKeyValueObservingOptionNew
                     context: nil];
     
-    self.toggleUseDefaultFontButton.state = newProfile.font ? NSOffState : NSOnState;
-    self.toggleUseDefaultBackgroundColorButton.state = newProfile.backgroundColor ? NSOffState : NSOnState;
-    self.toggleUseDefaultLinkColorButton.state = newProfile.linkColor ? NSOffState : NSOnState;
-    self.toggleUseDefaultTextColorButton.state = newProfile.textColor ? NSOffState : NSOnState;
+    toggleUseDefaultFontButton.state = newProfile.font ? NSOffState : NSOnState;
+    toggleUseDefaultBackgroundColorButton.state = newProfile.backgroundColor ? NSOffState : NSOnState;
+    toggleUseDefaultLinkColorButton.state = newProfile.linkColor ? NSOffState : NSOnState;
+    toggleUseDefaultTextColorButton.state = newProfile.textColor ? NSOffState : NSOnState;
     
     [self willChangeValueForKey: @"editableEffectiveBackgroundColor"];
     [self didChangeValueForKey: @"editableEffectiveBackgroundColor"];

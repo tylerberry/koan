@@ -149,6 +149,7 @@
 							<int key="NSCellFlags2">272634944</int>
 							<string key="NSContents"/>
 							<reference key="NSSupport" ref="383087635"/>
+							<string key="NSPlaceholderString">Selected Font</string>
 							<string key="NSCellIdentifier">_NS:9</string>
 							<reference key="NSControlView" ref="673884775"/>
 							<bool key="NSDrawsBackground">YES</bool>
@@ -168,6 +169,7 @@
 						<string key="NSFrame">{{69, 17}, {136, 18}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="27032558">
@@ -547,11 +549,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">nextKeyView</string>
-						<reference key="source" ref="1005"/>
+						<string key="label">firstView</string>
+						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="185177582"/>
 					</object>
-					<int key="connectionID">353</int>
+					<int key="connectionID">367</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">lastView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="462070293"/>
+					</object>
+					<int key="connectionID">368</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1447,6 +1457,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Connect Automatically</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
@@ -1501,6 +1512,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Color Well - Text Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">15</int>
@@ -1529,6 +1541,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Color Well - Background Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
@@ -1583,6 +1596,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Color Well - Link Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">51</int>
@@ -1609,6 +1623,7 @@
 							<reference ref="799425011"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Use Default Text Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">70</int>
@@ -1622,6 +1637,7 @@
 							<reference ref="133607423"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Use Default Background Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">81</int>
@@ -1635,6 +1651,7 @@
 							<reference ref="27032558"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Use Default Link Color</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">88</int>
@@ -1723,6 +1740,7 @@
 							<reference ref="443613240"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Text Field - Font Display</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">184</int>
@@ -1762,6 +1780,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Push Button - Select Font</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">193</int>
@@ -1785,6 +1804,7 @@
 							<reference ref="532213737"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Use Default Font</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">209</int>
@@ -2075,7 +2095,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">363</int>
+			<int key="maxID">368</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2083,22 +2103,12 @@
 					<string key="className">MUProfileViewController</string>
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="changeFont:">id</string>
-						<string key="chooseNewFont:">id</string>
 						<string key="toggleUseDefaultBackgroundColor:">id</string>
 						<string key="toggleUseDefaultFont:">id</string>
 						<string key="toggleUseDefaultLinkColor:">id</string>
 						<string key="toggleUseDefaultTextColor:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="changeFont:">
-							<string key="name">changeFont:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="chooseNewFont:">
-							<string key="name">chooseNewFont:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="toggleUseDefaultBackgroundColor:">
 							<string key="name">toggleUseDefaultBackgroundColor:</string>
 							<string key="candidateClassName">id</string>
@@ -2117,12 +2127,22 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="firstView">NSView</string>
+						<string key="lastView">NSView</string>
 						<string key="toggleUseDefaultBackgroundColorButton">NSButton</string>
 						<string key="toggleUseDefaultFontButton">NSButton</string>
 						<string key="toggleUseDefaultLinkColorButton">NSButton</string>
 						<string key="toggleUseDefaultTextColorButton">NSButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="firstView">
+							<string key="name">firstView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="lastView">
+							<string key="name">lastView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="toggleUseDefaultBackgroundColorButton">
 							<string key="name">toggleUseDefaultBackgroundColorButton</string>
 							<string key="candidateClassName">NSButton</string>

@@ -62,7 +62,7 @@
   [NSObject jr_swizzleMethod: @selector (hash) withMethod: @selector (betterHash) error: &swizzleError];
   
   if (swizzleError)
-    NSLog (@"Error occurred trying to swizzle NSObject -hash to -betterHash: %@", [swizzleError description]);
+    NSLog (@"Error occurred trying to swizzle NSObject -hash to -betterHash: %@", swizzleError.description);
   
   NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
@@ -205,7 +205,7 @@
   [preferencesController showPreferencesWindow: sender];
 }
 
-- (IBAction) showProfilesPanel: (id) sender
+- (IBAction) showProfilesWindow: (id) sender
 {
   if (!profilesController)
     profilesController = [[MUProfilesWindowController alloc] init];
@@ -437,7 +437,7 @@
   }
   
   if (!didAutoconnect)
-    [self showProfilesPanel: self];
+    [self showProfilesWindow: self];
 }
 
 - (void) recursivelyConfirmClose: (BOOL) cont

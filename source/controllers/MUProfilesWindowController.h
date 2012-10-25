@@ -16,13 +16,15 @@
   IBOutlet NSButton *addButton;
   IBOutlet NSButton *actionButton;
   
-  IBOutlet NSScrollView *profileContentScrollView;
+  IBOutlet NSView *firstView;
+  IBOutlet NSView *lastView;
+  
   IBOutlet MUProfileContentView *profileContentView;
   
   IBOutlet NSMenu *addMenu;
 }
 
-@property  NSMutableArray *profilesTreeArray;
+@property (strong) NSMutableArray *profilesTreeArray;
 
 - (IBAction) goToWorldURL: (id) sender;
 - (IBAction) showAddContextMenu: (id) sender;

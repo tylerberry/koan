@@ -10,6 +10,7 @@
 
 @property (strong) MUWorld *world;
 
-@property (weak) IBOutlet NSTextField *portField;
+@property (weak) IBOutlet NSView *firstView;
+@property (weak) IBOutlet NSView *lastView;
 
 @end

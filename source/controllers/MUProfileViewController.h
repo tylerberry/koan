@@ -7,20 +7,25 @@
 @class MUProfile;
 
 @interface MUProfileViewController : NSViewController
+{
+  IBOutlet NSButton *toggleUseDefaultFontButton;
+  
+  IBOutlet NSButton *toggleUseDefaultBackgroundColorButton;
+  IBOutlet NSButton *toggleUseDefaultLinkColorButton;
+  IBOutlet NSButton *toggleUseDefaultTextColorButton;
+}
 
 @property (strong) MUProfile *profile;
 
+@property (weak) IBOutlet NSView *firstView;
+@property (weak) IBOutlet NSView *lastView;
+
 // These properties proxy for the MUProfile's color values, allowing the underlying writable property to be edited while
 // using the readonly "effective-" properties for display.
+
 @property (unsafe_unretained) NSColor *editableEffectiveBackgroundColor;
 @property (unsafe_unretained) NSColor *editableEffectiveLinkColor;
 @property (unsafe_unretained) NSColor *editableEffectiveTextColor;
-
-@property (weak) IBOutlet NSButton *toggleUseDefaultFontButton;
-
-@property (weak) IBOutlet NSButton *toggleUseDefaultBackgroundColorButton;
-@property (weak) IBOutlet NSButton *toggleUseDefaultLinkColorButton;
-@property (weak) IBOutlet NSButton *toggleUseDefaultTextColorButton;
 
 - (IBAction) toggleUseDefaultFont: (id) sender;
 

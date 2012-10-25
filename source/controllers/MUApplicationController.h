@@ -34,7 +34,7 @@
 - (IBAction) showAboutPanel: (id) sender;
 - (IBAction) showAcknowledgementsWindow: (id) sender;
 - (IBAction) showPreferencesWindow: (id) sender;
-- (IBAction) showProfilesPanel: (id) sender;
+- (IBAction) showProfilesWindow: (id) sender;
 - (IBAction) showProxySettings: (id) sender;
 - (IBAction) toggleUseProxy: (id) sender;
 

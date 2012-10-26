@@ -31,12 +31,12 @@ static MUProfileRegistry *_defaultRegistry = nil;
 {
   static dispatch_once_t predicate;
   
-  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUProfileRegistry alloc] init]; });
+  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUProfileRegistry alloc] initWithProfilesFromUserDefaults]; });
   
   return _defaultRegistry;
 }
 
-- (id) init
+- (id) initWithProfilesFromUserDefaults
 {
   if (!(self = [super init]))
     return nil;
@@ -55,6 +55,16 @@ static MUProfileRegistry *_defaultRegistry = nil;
     [self _startObservingWritableValuesForProfile: profile];
   }
 
+  return self;
+}
+
+- (id) init
+{
+  if (!(self = [super init]))
+    return nil;
+  
+  _mutableProfiles = [[NSMutableDictionary alloc] init];
+  
   return self;
 }
 

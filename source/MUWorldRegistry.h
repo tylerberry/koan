@@ -17,6 +17,8 @@
 
 + (MUWorldRegistry *) defaultRegistry;
 
+- (id) initWithWorldsFromUserDefaults;
+
 - (void) insertObject: (MUWorld *) world inWorldsAtIndex: (NSUInteger) worldIndex;
 - (void) removeObjectFromWorldsAtIndex: (NSUInteger) worldIndex;
 

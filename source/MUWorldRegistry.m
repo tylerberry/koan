@@ -30,12 +30,12 @@ static MUWorldRegistry *_defaultRegistry = nil;
 {
   static dispatch_once_t predicate;
   
-  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUWorldRegistry alloc] init]; });
+  dispatch_once (&predicate, ^{ _defaultRegistry = [[MUWorldRegistry alloc] initWithWorldsFromUserDefaults]; });
 
   return _defaultRegistry;
 }
 
-- (id) init
+- (id) initWithWorldsFromUserDefaults
 {
   if (!(self = [super init]))
     return nil;
@@ -62,6 +62,16 @@ static MUWorldRegistry *_defaultRegistry = nil;
                                            selector: @selector (_cleanUpDefaultRegistry:)
                                                name: NSApplicationWillTerminateNotification
                                              object: NSApp];
+  
+  return self;
+}
+
+- (id) init
+{
+  if (!(self = [super init]))
+    return nil;
+  
+  _mutableWorlds = [[NSMutableArray alloc] init];
   
   return self;
 }

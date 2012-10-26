@@ -16,6 +16,8 @@
 
 + (MUProfileRegistry *) defaultRegistry;
 
+- (id) initWithProfilesFromUserDefaults;
+
 - (MUProfile *) profileForProfile: (MUProfile *) profile;
 - (MUProfile *) profileForWorld: (MUWorld *) world;
 - (MUProfile *) profileForWorld: (MUWorld *) world player: (MUPlayer *) player;

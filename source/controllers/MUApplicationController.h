@@ -14,7 +14,7 @@
 @class MUProfilesWindowController;
 @class MUProxySettingsController;
 
-@interface MUApplicationController : NSObject <MUConnectionWindowControllerDelegate>
+@interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectionWindowControllerDelegate>
 {
   IBOutlet NSMenu *openConnectionMenu;
   

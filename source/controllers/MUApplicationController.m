@@ -85,22 +85,15 @@
   initialValues[MUPSoundChoice] = @"Pop";
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
-  
-  [MUGrowlService defaultGrowlService];
 }
 
 - (void) awakeFromNib
 {
-  [MUProfileRegistry defaultRegistry];
-  [MUWorldRegistry defaultRegistry];
-  
   connectionWindowControllers = [[NSMutableArray alloc] init];
-  
-  [self rebuildConnectionsMenuWithAutoconnect: YES];
   
   MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   [newConnectionPortField setFormatter: newConnectionPortFormatter];
-  
+
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (colorPanelColorDidChange:)
                                                name: NSColorPanelColorDidChangeNotification
@@ -111,10 +104,7 @@
                                                name: MUWorldsDidChangeNotification
                                              object: nil];
   
-  unreadCount = 0;
   dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
-  
-  [self updateApplicationBadge];
 }
 
 - (void) dealloc
@@ -226,7 +216,7 @@
   [[MUSocketFactory defaultFactory] toggleUseProxy];
 }
 
-#pragma mark - NSApplication delegate
+#pragma mark - NSApplicationDelegate protocol
 
 - (BOOL) application: (NSApplication *) application openFile: (NSString *) string
 {
@@ -235,8 +225,23 @@
 
 - (void) applicationDidBecomeActive: (NSNotification *) notification
 {
+#if DEBUG
+  if (getenv ("XCODE_RUNNING_TESTS"))
+    return;
+#endif
+  
   unreadCount = 0;
   [self updateApplicationBadge];
+}
+
+- (void) applicationDidFinishLaunching: (NSNotification *) notification
+{
+#if DEBUG
+  if (getenv ("XCODE_RUNNING_TESTS"))
+    return;
+#endif
+  
+  [self rebuildConnectionsMenuWithAutoconnect: YES];
 }
 
 - (BOOL) applicationShouldOpenUntitledFile: (NSApplication *) sender
@@ -436,7 +441,7 @@
     [openConnectionMenu addItem: worldItem];
   }
   
-  if (!didAutoconnect)
+  if (autoconnect && !didAutoconnect)
     [self showProfilesWindow: self];
 }
 

@@ -12,7 +12,6 @@
 #define TESTING_TEXT_COLOR [NSColor cyanColor]
 #define TESTING_BACKGROUND_COLOR [NSColor magentaColor]
 #define TESTING_LINK_COLOR [NSColor yellowColor]
-#define TESTING_VISITED_LINK_COLOR [NSColor redColor]
 
 @interface MUProfile (Testing)
 
@@ -38,8 +37,7 @@
                         font: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]
                    textColor: TESTING_TEXT_COLOR
              backgroundColor: TESTING_BACKGROUND_COLOR
-                   linkColor: TESTING_LINK_COLOR
-            visitedLinkColor: TESTING_VISITED_LINK_COLOR];
+                   linkColor: TESTING_LINK_COLOR];
 }
 
 @end

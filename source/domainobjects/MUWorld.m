@@ -160,6 +160,71 @@ static const int32_t currentWorldVersion = 7;
   return @[@"name", @"hostname", @"port", @"url", @"children", @"childProperties"];
 }
 
+#pragma mark - Method overrides
+
+- (void) addChild: (MUTreeNode *) child
+{
+  [super addChild: child];
+  
+  if ([child isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) child;
+    [self _startObservingWritableValuesForPlayer: player];
+  }
+}
+
+- (void) insertObject: (MUTreeNode *) child inChildrenAtIndex: (NSUInteger) childIndex
+{
+  [super insertObject: child inChildrenAtIndex: childIndex];
+  
+  if ([child isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) child;
+    [self _startObservingWritableValuesForPlayer: player];
+  }
+}
+
+- (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
+{
+  NSTreeNode *child = self.children[childIndex];
+  
+  if ([child isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) child;
+    [self _stopObservingWritableValuesForPlayer: player];
+  }
+  
+  [super removeObjectFromChildrenAtIndex: childIndex];
+}
+
+- (void) removeChild: (MUTreeNode *) child
+{
+  if ([child isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) child;
+    [self _stopObservingWritableValuesForPlayer: player];
+  }
+  
+  [super removeChild: child];
+}
+
+- (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
+{
+  if ([oldChild isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *oldPlayer = (MUPlayer *) oldChild;
+    [self _stopObservingWritableValuesForPlayer: oldPlayer];
+  }
+  
+  [super replaceChild: oldChild withChild: newChild];
+  
+  if ([newChild isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *newPlayer = (MUPlayer *) newChild;
+    [self _stopObservingWritableValuesForPlayer: newPlayer];
+  }
+}
+
 #pragma mark - NSCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder

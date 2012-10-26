@@ -16,9 +16,12 @@
   IBOutlet NSColorWell *globalVisitedLinkColorWell;
 }
 
-- (IBAction) changeFont: (id) sender;
 - (void) colorPanelColorDidChange;
 - (void) playSelectedSound: (id) sender;
 - (void) showPreferencesWindow: (id) sender;
+
+// Responder chain methods
+
+- (IBAction) changeFont: (id) sender;
 
 @end

@@ -8,12 +8,12 @@
 
 @interface MUPreferencesController ()
 
-- (void) postGlobalBackgroundColorDidChangeNotification;
-- (void) postGlobalFontDidChangeNotification;
-- (void) postGlobalLinkColorDidChangeNotification;
-- (void) postGlobalTextColorDidChangeNotification;
-- (void) postGlobalVisitedLinkColorDidChangeNotification;
-- (NSArray *) systemSoundsArray;
+- (void) _postGlobalBackgroundColorDidChangeNotification;
+- (void) _postGlobalFontDidChangeNotification;
+- (void) _postGlobalLinkColorDidChangeNotification;
+- (void) _postGlobalTextColorDidChangeNotification;
+- (void) _postGlobalVisitedLinkColorDidChangeNotification;
+- (NSArray *) _systemSoundsArray;
 
 @end
 
@@ -23,7 +23,7 @@
 
 - (void) awakeFromNib
 {
-  [self systemSoundsArray];
+  [self _systemSoundsArray];
 }
 
 - (IBAction) changeFont: (id) sender
@@ -40,19 +40,19 @@
   [currentPrefsValues setValue: panelFont.fontName forKey: MUPFontName];
   [currentPrefsValues setValue: @(panelFont.pointSize) forKey: MUPFontSize];
   
-  [self postGlobalFontDidChangeNotification];
+  [self _postGlobalFontDidChangeNotification];
 }
 
 - (void) colorPanelColorDidChange
 {
   if (globalTextColorWell.isActive)
-  	[self postGlobalTextColorDidChangeNotification];
+  	[self _postGlobalTextColorDidChangeNotification];
   else if (globalBackgroundColorWell.isActive)
-  	[self postGlobalBackgroundColorDidChangeNotification];
+  	[self _postGlobalBackgroundColorDidChangeNotification];
   else if (globalLinkColorWell.isActive)
-  	[self postGlobalLinkColorDidChangeNotification];
+  	[self _postGlobalLinkColorDidChangeNotification];
   else if (globalVisitedLinkColorWell.isActive)
-  	[self postGlobalVisitedLinkColorDidChangeNotification];
+  	[self _postGlobalVisitedLinkColorDidChangeNotification];
 }
 
 - (void) playSelectedSound: (id) sender
@@ -69,37 +69,37 @@
 
 #pragma mark - Private methods
 
-- (void) postGlobalBackgroundColorDidChangeNotification
+- (void) _postGlobalBackgroundColorDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUGlobalBackgroundColorDidChangeNotification
   																										object: self];
 }
 
-- (void) postGlobalFontDidChangeNotification
+- (void) _postGlobalFontDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUGlobalFontDidChangeNotification
   																										object: self];
 }
 
-- (void) postGlobalLinkColorDidChangeNotification
+- (void) _postGlobalLinkColorDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUGlobalLinkColorDidChangeNotification
   																										object: self];
 }
 
-- (void) postGlobalTextColorDidChangeNotification
+- (void) _postGlobalTextColorDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUGlobalTextColorDidChangeNotification
   																										object: self];
 }
 
-- (void) postGlobalVisitedLinkColorDidChangeNotification
+- (void) _postGlobalVisitedLinkColorDidChangeNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUGlobalVisitedLinkColorDidChangeNotification
   																										object: self];
 }
 
-- (NSArray *) systemSoundsArray
+- (NSArray *) _systemSoundsArray
 {
   NSMutableArray *foundPaths = [NSMutableArray array];
   

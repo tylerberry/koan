@@ -68,7 +68,7 @@
   [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
   
   defaults[MUPWorlds] = @[];
-  defaults[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
+  //defaults[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
   

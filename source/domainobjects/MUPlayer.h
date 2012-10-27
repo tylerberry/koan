@@ -7,7 +7,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MUWorld.h"
 
-@interface MUPlayer : MUTreeNode <NSCoding, NSCopying>
+@interface MUPlayer : MUTreeNode
 
 @property (copy) NSString *password;
 @property (readonly) NSString *loginString;

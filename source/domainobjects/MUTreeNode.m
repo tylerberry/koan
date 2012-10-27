@@ -6,8 +6,16 @@
 
 #import "MUTreeNode.h"
 
-@interface MUTreeNode ()
+static const int32_t _currentTreeNodeVersion = 1;
 
+static NSMutableDictionary *_uniqueIdentifiers;
+
+@interface MUTreeNode ()
+{
+  NSString *_uniqueIdentifier;
+}
+
+- (NSString *) _createUniqueIdentifier;
 - (void) _postWorldsDidChangeNotification;
 
 @end
@@ -19,6 +27,11 @@
 @synthesize children = _children;
 @dynamic icon, isLeaf, uniqueIdentifier;
 
++ (void) initialize
+{
+  _uniqueIdentifiers = [[NSMutableDictionary alloc] init];
+}
+
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
 {
   if (!(self = [super init]))
@@ -26,6 +39,7 @@
   
   _name = [newName copy];
   _parent = nil;
+  _uniqueIdentifier = [self _createUniqueIdentifier];
   
   if (newChildren)
     _children = [newChildren mutableCopy];
@@ -54,17 +68,7 @@
 
 - (NSString *) uniqueIdentifier
 {
-  NSMutableString *result = [NSMutableString stringWithString: @"treenode:"];
-  NSArray *tokens = [self.name componentsSeparatedByString: @" "];
-  
-  if (tokens.count > 0)
-  {
-    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
-    
-    for (NSUInteger i = 1; i < tokens.count; i++)
-      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
-  }
-  return result;
+  return _uniqueIdentifier;
 }
 
 #pragma mark - Properties for children
@@ -207,7 +211,58 @@
   }
 }
 
+#pragma mark - NSCoding protocol
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  [encoder encodeInt32: _currentTreeNodeVersion forKey: @"treeNodeVersion"];
+  [encoder encodeObject: self.uniqueIdentifier forKey: @"uniqueIdentifier"];
+  [encoder encodeObject: self.name forKey: @"name"];
+  [encoder encodeObject: self.children forKey: @"children"];
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  if (!(self = [super init]))
+    return nil;
+  
+  //uint32_t version = [coder decodeInt32ForKey: @"treeNodeVersion"];
+  
+  _uniqueIdentifier = [decoder decodeObjectForKey: @"uniqueIdentifier"];
+  _uniqueIdentifiers[_uniqueIdentifier] = @YES;
+  
+  _name = [decoder decodeObjectForKey: @"name"];
+  
+  _children = [decoder decodeObjectForKey: @"children"];
+  
+  return self;
+}
+
+#pragma mark - NSCopying protocol
+
+- (id) copyWithZone: (NSZone *) zone
+{
+  return [[[self class] alloc] initWithName: self.name children: self.children];
+}
+
 #pragma mark - Private methods
+
+- (NSString *) _createUniqueIdentifier
+{
+  NSString *uuidString;
+  do
+  {
+    CFUUIDRef uuid = CFUUIDCreate (kCFAllocatorDefault);
+    
+    uuidString = (__bridge_transfer NSString *) CFUUIDCreateString (kCFAllocatorDefault, uuid);
+    
+    CFRelease (uuid);
+  }
+  while (_uniqueIdentifiers[uuidString] != nil);
+  
+  _uniqueIdentifiers[uuidString] = @YES;
+  return uuidString;
+}
 
 - (void) _postWorldsDidChangeNotification
 {

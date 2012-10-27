@@ -6,11 +6,11 @@
 
 #import "MUPlayer.h"
 
-static const int32_t currentPlayerVersion = 1;
+static const int32_t currentPlayerVersion = 2;
 
 @implementation MUPlayer
 
-@dynamic loginString, uniqueIdentifier, windowTitle;
+@dynamic loginString, windowTitle;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword
@@ -64,21 +64,6 @@ static const int32_t currentPlayerVersion = 1;
   }
 }
 
-- (NSString *) uniqueIdentifier
-{
-  NSMutableString *result = [NSMutableString stringWithString: @"player:"];
-  NSArray *tokens = [self.name componentsSeparatedByString: @" "];
-  
-  if (tokens.count > 0)
-  {
-    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
-    
-    for (NSUInteger i = 1; i < tokens.count; i++)
-      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
-  }
-  return result;
-}
-
 - (NSString *) windowTitle
 {
   // FIXME: This is not the right way to get the window title.
@@ -89,20 +74,33 @@ static const int32_t currentPlayerVersion = 1;
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  [encoder encodeInt32: currentPlayerVersion forKey: @"version"];
+  [super encodeWithCoder: encoder];
   
-  [encoder encodeObject: self.name forKey: @"name"];
+  [encoder encodeInt32: currentPlayerVersion forKey: @"playerVersion"];
+  
   [encoder encodeObject: self.password forKey: @"password"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-  if (!(self = [super initWithName: nil children: nil]))
-    return nil;
+  int32_t version = [decoder decodeInt32ForKey: @"playerVersion"];
   
-  // int32_t version = [decoder decodeInt32ForKey: @"version"];
+  if (version != 0)
+  {
+    if (!(self = [super initWithCoder: decoder]))
+      return nil;
+  }
+  else
+  {
+    version = [decoder decodeInt32ForKey: @"version"];
+    
+    if (!(self = [super initWithName: nil children: nil]))
+      return nil;
+  }
   
-  self.name = [decoder decodeObjectForKey: @"name"];
+  if (version == 1)
+    self.name = [decoder decodeObjectForKey: @"name"];
+  
   _password = [decoder decodeObjectForKey: @"password"];
   
   return self;

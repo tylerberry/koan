@@ -6,7 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MUTreeNode : NSObject
+@interface MUTreeNode : NSObject <NSCoding, NSCopying>
 
 @property (copy) NSString *name;
 @property (readonly) NSImage *icon;

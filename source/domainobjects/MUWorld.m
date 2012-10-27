@@ -8,11 +8,11 @@
 #import "MUPlayer.h"
 #import "MUSocketFactory.h"
 
-static const int32_t currentWorldVersion = 7;
+static const int32_t currentWorldVersion = 8;
 
 @implementation MUWorld
 
-@dynamic uniqueIdentifier, windowTitle;
+@dynamic windowTitle;
 
 + (MUWorld *) worldWithName: (NSString *) name
                    hostname: (NSString *) hostname
@@ -86,21 +86,6 @@ static const int32_t currentWorldVersion = 7;
   return [NSImage imageNamed: @"NSNetwork"];
 }
 
-- (NSString *) uniqueIdentifier
-{
-  NSMutableString *result = [NSMutableString stringWithString: @"world:"];
-  NSArray *tokens = [self.name componentsSeparatedByString: @" "];
-  
-  if (tokens.count > 0)
-  {
-    [result appendFormat: @"%@", [tokens[0] lowercaseString]];
-    
-    for (NSUInteger i = 1; i < tokens.count; i++)
-      [result appendFormat: @".%@", [tokens[i] lowercaseString]];
-  }
-  return result;
-}
-
 - (NSString *) windowTitle
 {
   return [NSString stringWithFormat: @"%@", self.name];
@@ -110,32 +95,51 @@ static const int32_t currentWorldVersion = 7;
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
-  [encoder encodeInt32: currentWorldVersion forKey: @"version"];
+  [super encodeWithCoder: encoder];
   
-  [encoder encodeObject: self.name forKey: @"name"];
+  [encoder encodeInt32: currentWorldVersion forKey: @"worldVersion"];
+  
   [encoder encodeObject: self.hostname forKey: @"hostname"];
   [encoder encodeInt: self.port.intValue forKey: @"port"];
-  [encoder encodeObject: self.children forKey: @"children"];
   [encoder encodeObject: self.url forKey: @"URL"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-  if (!(self = [super initWithName: nil children: nil]))
-    return nil;
+  int32_t version = [decoder decodeInt32ForKey: @"worldVersion"];
   
-  int32_t version = [decoder decodeInt32ForKey: @"version"];
+  if (version != 0)
+  {
+    if (!(self = [super initWithCoder: decoder]))
+      return nil;
+  }
+  else
+  {
+    version = [decoder decodeInt32ForKey: @"version"];
+    
+    if (!(self = [super initWithName: nil children: nil]))
+      return nil;
+  }
   
-  if (version >= 5)
+  if (version < 5)
+  {
+    self.name = [decoder decodeObjectForKey: @"worldName"];
+    _hostname = [decoder decodeObjectForKey: @"worldHostname"];
+  }
+  else if (version < 8)
   {
     self.name = [decoder decodeObjectForKey: @"name"];
     _hostname = [decoder decodeObjectForKey: @"hostname"];
   }
   else
   {
-    self.name = [decoder decodeObjectForKey: @"worldName"];
-    _hostname = [decoder decodeObjectForKey: @"worldHostname"];
+    _hostname = [decoder decodeObjectForKey: @"hostname"];
   }
+  
+  if (version == 7)
+    self.children = [decoder decodeObjectForKey: @"children"];
+  else if (version < 7)
+    self.children = [decoder decodeObjectForKey: @"players"];
   
   if (version >= 6)
     _port = @([decoder decodeIntForKey: @"port"]);
@@ -143,11 +147,6 @@ static const int32_t currentWorldVersion = 7;
     _port = [decoder decodeObjectForKey: @"port"];
   else
     _port = [decoder decodeObjectForKey: @"worldPort"];
-  
-  if (version >= 7)
-    self.children = [decoder decodeObjectForKey: @"children"];
-  else
-    self.children = [decoder decodeObjectForKey: @"players"];
   
   if (version >= 5)
     _url = [decoder decodeObjectForKey: @"URL"];

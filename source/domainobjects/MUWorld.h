@@ -12,7 +12,7 @@
 @class MUPlayer;
 @protocol MUMUDConnectionDelegate;
 
-@interface MUWorld : MUTreeNode <NSCoding, NSCopying>
+@interface MUWorld : MUTreeNode
 
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;

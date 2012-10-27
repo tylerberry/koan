@@ -11,7 +11,6 @@
 
 @interface MUWorldRegistry : NSObject
 
-@property (readonly) NSUInteger count;
 @property (readonly) NSArray *worlds;
 @property (strong, nonatomic) NSMutableArray *mutableWorlds;
 

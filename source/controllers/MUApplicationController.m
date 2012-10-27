@@ -93,7 +93,7 @@
   
   MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   [newConnectionPortField setFormatter: newConnectionPortFormatter];
-
+  
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (colorPanelColorDidChange:)
                                                name: NSColorPanelColorDidChangeNotification
@@ -153,7 +153,8 @@
                                          port: @(newConnectionPortField.intValue)];;
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
-  	[[MUWorldRegistry defaultRegistry] insertObject: world inWorldsAtIndex: [MUWorldRegistry defaultRegistry].count];
+  	[[MUWorldRegistry defaultRegistry] insertObject: world
+                                    inWorldsAtIndex: [MUWorldRegistry defaultRegistry].worlds.count];
   
   MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
   

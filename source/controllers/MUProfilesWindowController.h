@@ -26,6 +26,7 @@
 
 @property (strong) NSMutableArray *profilesTreeArray;
 
+- (IBAction) addNewWorld: (id) sender;
 - (IBAction) goToWorldURL: (id) sender;
 - (IBAction) showAddContextMenu: (id) sender;
 

@@ -11,7 +11,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 @interface MUWorldRegistry ()
 
-- (void) _cleanUpDefaultRegistry: (NSNotification *) notification;
+- (void) _applicationWillTerminate: (NSNotification *) notification;
 - (void) _postWorldsDidChangeNotification;
 - (void) _worldsDidChange: (NSNotification *) notification;
 - (void) _writeWorldsToUserDefaults;
@@ -22,7 +22,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 @implementation MUWorldRegistry
 
-@dynamic count, worlds;
+@dynamic worlds;
 
 + (MUWorldRegistry *) defaultRegistry
 {
@@ -31,6 +31,18 @@ static MUWorldRegistry *_defaultRegistry = nil;
   dispatch_once (&predicate, ^{ _defaultRegistry = [[MUWorldRegistry alloc] initWithWorldsFromUserDefaults]; });
 
   return _defaultRegistry;
+}
+
++ (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
+{
+  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey: key];
+  
+  if ([key isEqualToString: @"worlds"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"mutableWorlds"];
+  }
+  
+  return keyPaths;
 }
 
 - (id) initWithWorldsFromUserDefaults
@@ -54,7 +66,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
                                              object: nil];
   
   [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector (_cleanUpDefaultRegistry:)
+                                           selector: @selector (_applicationWillTerminate:)
                                                name: NSApplicationWillTerminateNotification
                                              object: NSApp];
   
@@ -73,30 +85,59 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 #pragma mark - Key-value coding accessors
 
-- (void) insertObject: (MUWorld *) world inWorldsAtIndex: (NSUInteger) worldIndex
+- (NSUInteger) countOfWorlds
 {
-  @synchronized (self)
-  {
-    [self willChangeValueForKey: @"worlds"];
-    
-    [self.mutableWorlds insertObject: world atIndex: worldIndex];
-    
-    [self didChangeValueForKey: @"worlds"];
-    [self _postWorldsDidChangeNotification];
-  }
+  return _mutableWorlds.count;
 }
 
-- (void) removeObjectFromWorldsAtIndex: (NSUInteger) worldIndex
+- (MUTreeNode *) objectInWorldsAtIndex: (NSUInteger) index
 {
-  @synchronized (self)
-  {
-    [self willChangeValueForKey: @"worlds"];
-    
-    [self.mutableWorlds removeObjectAtIndex: worldIndex];
-    
-    [self didChangeValueForKey: @"worlds"];
-    [self _postWorldsDidChangeNotification];
-  }
+  return _mutableWorlds[index];
+}
+
+- (NSArray *) worldsAtIndexes: (NSIndexSet *) indexSet
+{
+  return [_mutableWorlds objectsAtIndexes: indexSet];
+}
+
+- (void) getWorlds: (__unsafe_unretained id *) objects range: (NSRange) range
+{
+  [_mutableWorlds getObjects: objects range: range];
+}
+
+- (void) insertObject: (MUTreeNode *) object inWorldsAtIndex: (NSUInteger) index
+{
+  object.parent = nil;
+  [_mutableWorlds insertObject: object atIndex: index];
+}
+
+- (void) insertWorlds: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
+{
+  for (MUTreeNode *node in objects)
+    node.parent = nil;
+  
+  [_mutableWorlds insertObjects: objects atIndexes: indexes];
+}
+
+- (void) removeObjectFromWorldsAtIndex: (NSUInteger) index
+{
+  [_mutableWorlds removeObjectAtIndex: index];
+}
+
+- (void) removeWorldsAtIndexes: (NSIndexSet *) indexes
+{
+  [_mutableWorlds removeObjectsAtIndexes: indexes];
+}
+
+- (void) replaceObjectInWorldsAtIndex: (NSUInteger) index withObject: (MUTreeNode *) object
+{
+  object.parent = nil;
+  _mutableWorlds[index] = object;
+}
+
+- (void) replaceWorldsAtIndexes: (NSIndexSet *) indexes withWorlds: (NSArray *) objects
+{
+  [_mutableWorlds replaceObjectsAtIndexes: indexes withObjects: objects];
 }
 
 #pragma mark - Actions
@@ -203,11 +244,9 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 #pragma mark - Private methods
 
-- (void) _cleanUpDefaultRegistry: (NSNotification *) notification
+- (void) _applicationWillTerminate: (NSNotification *) notification
 {
-  [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
   [self _writeWorldsToUserDefaults];
-  _defaultRegistry = nil;
 }
 
 - (void) _postWorldsDidChangeNotification

@@ -96,7 +96,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
 - (void) insertObject: (MUTreeNode *) object inChildrenAtIndex: (NSUInteger) index
 {
   object.parent = self;
-  _children[index] = object;
+  [_children insertObject: object atIndex: index];
 }
 
 - (void) insertChildren: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
@@ -147,67 +147,6 @@ static NSMutableDictionary *_uniqueIdentifiers;
       node.parent = self;
     else
       [node recursivelyUpdateParentsWithParentNode: self];
-  }
-}
-
-#pragma mark - Array-like accessors for children
-
-- (void) addChild: (MUTreeNode *) child
-{
-  if ([self containsChild: child])
-    return;
-  
-  [self willChangeValueForKey: @"children"];
-  child.parent = self;
-  [self.children addObject: child];
-  [self didChangeValueForKey: @"children"];
-  
-  [self _postWorldsDidChangeNotification];
-}
-
-- (BOOL) containsChild: (MUTreeNode *) child
-{
-  return [self.children containsObject: child];
-}
-
-- (NSUInteger) indexOfChild: (MUTreeNode *) child
-{
-  for (NSUInteger i = 0; i < self.children.count; i++)
-  {
-    if (child == self.children[i])
-      return i;
-  }
-  
-  return NSNotFound;
-}
-
-- (void) removeChild: (MUTreeNode *) child
-{
-  [self willChangeValueForKey: @"children"];
-  child.parent = nil;
-  [self.children removeObject: child];
-  [self didChangeValueForKey: @"children"];
-  
-  [self _postWorldsDidChangeNotification];
-}
-
-- (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
-{
-  for (NSUInteger i = 0; i < self.children.count; i++)
-  {
-    MUTreeNode *node = self.children[i];
-    
-    if (node != oldChild)
-      continue;
-    
-    [self willChangeValueForKey: @"children"];
-    newChild.parent = self;
-    oldChild.parent = nil;
-    self.children[i] = newChild;
-    [self didChangeValueForKey: @"children"];
-    
-    [self _postWorldsDidChangeNotification];
-    break;
   }
 }
 

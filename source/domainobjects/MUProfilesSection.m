@@ -14,7 +14,28 @@
   if (!(self = [super initWithName: newName children: nil]))
     return nil;
   
+  [[MUWorldRegistry defaultRegistry] addObserver: self forKeyPath: @"worlds" options: 0 context: nil];
+  
   return self;
+}
+
+- (void) dealloc
+{
+  [[MUWorldRegistry defaultRegistry] removeObserver: self forKeyPath: @"worlds"];
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if (object == [MUWorldRegistry defaultRegistry] && [keyPath isEqualToString: @"worlds"])
+  {
+    [self willChangeValueForKey: @"children"];
+    [self didChangeValueForKey: @"children"];
+    return;
+  }
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 - (NSMutableArray *) children
@@ -29,7 +50,7 @@
 
 - (BOOL) isLeaf
 {
-  return [MUWorldRegistry defaultRegistry].count == 0;
+  return [MUWorldRegistry defaultRegistry].worlds.count == 0;
 }
 
 - (NSString *) uniqueIdentifier

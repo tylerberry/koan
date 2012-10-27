@@ -13,6 +13,7 @@
 #import "MUProfileViewController.h"
 #import "MUProfilesSection.h"
 #import "MUSection.h"
+#import "MUWorldRegistry.h"
 #import "MUWorldViewController.h"
 
 @interface MUProfilesWindowController ()
@@ -65,9 +66,50 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
+  _profilesTreeArray = nil;
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if ([object isKindOfClass: [MUProfilesSection class]] && [keyPath isEqualToString: @"children"])
+  {
+    [self willChangeValueForKey: @"profilesTreeArray"];
+    [self didChangeValueForKey: @"profilesTreeArray"];
+    return;
+  }
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 #pragma mark - Actions
+
+- (IBAction) addNewWorld: (id) sender
+{
+  NSInteger selectedRow = [profilesOutlineView selectedRow];
+  NSUInteger index;
+  
+  if (selectedRow == -1)
+    index = [MUWorldRegistry defaultRegistry].worlds.count;
+  else
+  {
+    NSTreeNode *node = (NSTreeNode *) [profilesOutlineView itemAtRow: selectedRow];
+    MUTreeNode *representedObject = [node representedObject];
+    MUWorld *world;
+    
+    if ([representedObject isKindOfClass: [MUWorld class]])
+      world = (MUWorld *) representedObject;
+    else if ([representedObject isKindOfClass: [MUPlayer class]])
+      world = (MUWorld *) ((MUPlayer *) representedObject).parent;
+    
+    index = [[MUWorldRegistry defaultRegistry].worlds indexOfObject: world] + 1;
+  }
+  
+  [[MUWorldRegistry defaultRegistry] insertValue: [[MUWorld alloc] init]
+                                         atIndex: index
+                               inPropertyWithKey: @"worlds"];
+}
 
 - (IBAction) goToWorldURL: (id) sender
 {
@@ -354,6 +396,7 @@
   
   [self willChangeValueForKey: @"profilesTreeArray"];
   [_profilesTreeArray addObject: profilesSection];
+  [profilesSection addObserver: self forKeyPath: @"children" options: 0 context: nil];
   [self didChangeValueForKey: @"profilesTreeArray"];
 }
 

@@ -6,12 +6,11 @@
 
 #import "MUGrowlService.h"
 
-static BOOL growlIsReady = NO;
-static MUGrowlService *defaultGrowlService;
+static BOOL _growlIsReady = NO;
+static MUGrowlService *_defaultGrowlService;
 
 @interface MUGrowlService ()
 
-- (void) cleanUpDefaultGrowlService: (NSNotification *) notification;
 - (void) notifyWithName: (NSString *) name
   								title: (NSString *) title
   					description: (NSString *) description;
@@ -24,16 +23,11 @@ static MUGrowlService *defaultGrowlService;
 
 + (MUGrowlService *) defaultGrowlService
 {
-  if (!defaultGrowlService)
-  {
-    defaultGrowlService = [[MUGrowlService alloc] init];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: defaultGrowlService
-                                             selector: @selector (cleanUpDefaultGrowlService:)
-                                                 name: NSApplicationWillTerminateNotification
-                                               object: NSApp];
-  }
-  return defaultGrowlService;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _defaultGrowlService = [[MUGrowlService alloc] init]; });
+  
+  return _defaultGrowlService;
 }
 
 - (id) init
@@ -86,22 +80,16 @@ static MUGrowlService *defaultGrowlService;
 
 - (void) growlIsReady
 {
-  growlIsReady = YES;
+  _growlIsReady = YES;
 }
 
 #pragma mark - Private methods
-
-- (void) cleanUpDefaultGrowlService: (NSNotification *) notification
-{
-  [[NSNotificationCenter defaultCenter] removeObserver: defaultGrowlService];
-  defaultGrowlService = nil;
-}
 
 - (void) notifyWithName: (NSString *) name
   								title: (NSString *) title
   					description: (NSString *) description
 {
-  if (growlIsReady)
+  if (_growlIsReady)
   {
   	[GrowlApplicationBridge notifyWithTitle: title
   															description: description

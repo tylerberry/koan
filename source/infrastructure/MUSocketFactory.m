@@ -13,7 +13,6 @@ static MUSocketFactory *defaultFactory = nil;
 
 @interface MUSocketFactory ()
 
-- (void) cleanUpDefaultFactory: (NSNotification *) notification;
 - (void) loadProxySettingsFromDefaults;
 - (void) writeProxySettingsToDefaults;
 
@@ -32,10 +31,6 @@ static MUSocketFactory *defaultFactory = nil;
     defaultFactory = [[self alloc] init];
     [defaultFactory loadProxySettingsFromDefaults];
     
-    [[NSNotificationCenter defaultCenter] addObserver: defaultFactory
-                                             selector: @selector (cleanUpDefaultFactory:)
-                                                 name: NSApplicationWillTerminateNotification
-                                               object: NSApp];
   }
   return defaultFactory;
 }
@@ -71,12 +66,6 @@ static MUSocketFactory *defaultFactory = nil;
 }
 
 #pragma mark - Private methods
-
-- (void) cleanUpDefaultFactory: (NSNotification *) notification
-{
-  [[NSNotificationCenter defaultCenter] removeObserver: defaultFactory];
-  defaultFactory = nil;
-}
 
 - (void) loadProxySettingsFromDefaults
 {

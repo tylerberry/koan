@@ -35,7 +35,7 @@
 - (void) testAddChild
 {
   MUTreeNode *child = [self testingNode];
-  [_node addChild: child];
+  [_node insertValue: child inPropertyWithKey: @"children"];
   
   [self assert: _node.children[0] equals: child];
 }
@@ -43,16 +43,16 @@
 - (void) testContainsChild
 {
   MUTreeNode *child = [self testingNode];
-  [_node addChild: child];
+  [_node insertValue: child inPropertyWithKey: @"children"];
   
-  [self assertTrue: [_node containsChild: child]];
+  [self assertTrue: [_node.children containsObject: child]];
 }
 
 - (void) testNoDuplicateChildren
 {
   MUTreeNode *child = [self testingNode];
-  [_node addChild: child];
-  [_node addChild: child];
+  [_node insertValue: child inPropertyWithKey: @"children"];
+  [_node insertValue: child inPropertyWithKey: @"children"];
   
   [self assertUInteger: _node.children.count equals: 1];
 }
@@ -60,10 +60,10 @@
 - (void) testRemoveChild
 {
   MUTreeNode *child = [self testingNode];
-  [_node addChild: child];
-  [_node removeChild: child];
+  [_node insertValue: child inPropertyWithKey: @"children"];
+  [_node removeValueAtIndex: [_node.children indexOfObject: child] fromPropertyWithKey: @"children"];
   
-  [self assertFalse: [_node containsChild: child]];
+  [self assertFalse: [_node.children containsObject: child]];
   [self assertNil: child.parent];
 }
 
@@ -71,17 +71,19 @@
 {
   MUTreeNode *child = [self testingNode];
   MUTreeNode *otherChild = [self testingNode];
-
-  [_node addChild: child];
   
-  [self assertTrue: [_node containsChild: child]];
+  [_node insertValue: child inPropertyWithKey: @"children"];
+  
+  [self assertTrue: [_node.children containsObject: child]];
   [self assert: child.parent equals: _node];
+  
+  [_node replaceValueAtIndex: [_node.children indexOfObject: child]
+           inPropertyWithKey: @"children"
+                   withValue: otherChild];
     
-  [_node replaceChild: child withChild: otherChild];
-    
-  [self assertFalse: [_node containsChild: child]];
+  [self assertFalse: [_node.children containsObject: child]];
   [self assertNil: child.parent];
-  [self assertTrue: [_node containsChild: otherChild]];
+  [self assertTrue: [_node.children containsObject: otherChild]];
   [self assert: otherChild.parent equals: _node];
 }
 
@@ -91,7 +93,7 @@
   MUTreeNode *child = [self testingNode];
   @try
   {
-    [thisNode addChild: child];
+    [thisNode insertValue: child inPropertyWithKey: @"children"];
     [self assertUInteger: thisNode.children.count equals: 1];
   }
   @finally

@@ -412,6 +412,8 @@
       NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name ? player.name : @""
                                                           action: action
                                                    keyEquivalent: @""];
+      
+      [playerItem bind: @"title" toObject: player withKeyPath: @"name" options: nil];
       playerItem.target = self;
       playerItem.representedObject = profile;
       
@@ -437,6 +439,7 @@
     
     [worldMenu addItem: connectItem];
     [worldItem setTitle: world.name ? world.name : @""];
+    [worldItem bind: @"title" toObject: world withKeyPath: @"name" options: nil];
     [worldItem setSubmenu: worldMenu];
     [openConnectionMenu addItem: worldItem];
   }

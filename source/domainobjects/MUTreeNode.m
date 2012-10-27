@@ -16,6 +16,7 @@
 
 @implementation MUTreeNode
 
+@synthesize children = _children;
 @dynamic icon, isLeaf, uniqueIdentifier;
 
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
@@ -41,13 +42,6 @@
 
 #pragma mark - Properties
 
-/*
- - (NSUInteger) count
- {
- return children.count;
- }
- */
-
 - (NSImage *) icon
 {
   return nil;
@@ -71,6 +65,70 @@
       [result appendFormat: @".%@", [tokens[i] lowercaseString]];
   }
   return result;
+}
+
+#pragma mark - Properties for children
+
+- (NSUInteger) countOfChildren
+{
+  return _children.count;
+}
+
+- (NSTreeNode *) objectInChildrenAtIndex: (NSUInteger) index
+{
+  return _children[index];
+}
+
+- (NSArray *) childrenAtIndexes: (NSIndexSet *) indexSet
+{
+  return [_children objectsAtIndexes: indexSet];
+}
+
+- (void) getChildren: (__unsafe_unretained id *) objects range: (NSRange) range
+{
+  [_children getObjects: objects range: range];
+}
+
+- (void) insertObject: (MUTreeNode *) object inChildrenAtIndex: (NSUInteger) index
+{
+  object.parent = self;
+  _children[index] = object;
+}
+
+- (void) insertChildren: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
+{
+  for (MUTreeNode *child in objects)
+    child.parent = self;
+  
+  [_children insertObjects: objects atIndexes: indexes];
+}
+
+- (void) removeObjectFromChildrenAtIndex: (NSUInteger) index
+{
+  ((MUTreeNode *) _children[index]).parent = nil;
+  [_children removeObjectAtIndex: index];
+}
+
+- (void) removeChildrenAtIndexes: (NSIndexSet *) indexes
+{
+  NSArray *childrenAtIndexes = [_children objectsAtIndexes: indexes];
+  
+  for (MUTreeNode *child in childrenAtIndexes)
+    child.parent = nil;
+  
+  [_children removeObjectsAtIndexes: indexes];
+}
+
+- (void) replaceObjectInChildrenAtIndex: (NSUInteger) index withObject: (MUTreeNode *) object
+{
+  ((MUTreeNode *) _children[index]).parent = nil;
+  object.parent = self;
+  _children[index] = object;
+}
+
+- (void) replaceChildrenAtIndexes: (NSIndexSet *) indexes withChildren: (NSArray *) objects
+{
+  [_children replaceObjectsAtIndexes: indexes withObjects: objects];
 }
 
 #pragma mark - Actions
@@ -117,26 +175,6 @@
   }
   
   return NSNotFound;
-}
-
-- (void) insertObject: (MUTreeNode *) child inChildrenAtIndex: (NSUInteger) childIndex
-{
-  [self willChangeValueForKey: @"children"];
-  child.parent = self;
-  [self.children insertObject: child atIndex: childIndex];
-  [self didChangeValueForKey: @"children"];
-  
-  [self _postWorldsDidChangeNotification];
-}
-
-- (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
-{
-  [self willChangeValueForKey: @"children"];
-  ((MUTreeNode *) self.children[childIndex]).parent = nil;
-  [self.children removeObjectAtIndex: childIndex];
-  [self didChangeValueForKey: @"children"];
-  
-  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeChild: (MUTreeNode *) child

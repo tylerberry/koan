@@ -13,8 +13,6 @@
 @property (readonly) NSString *loginString;
 @property (readonly) NSString *windowTitle;
 
-@property (readonly) NSArray *writableProperties;
-
 + (MUPlayer *) playerWithName: (NSString *) newName
   									 password: (NSString *) newPassword;
 

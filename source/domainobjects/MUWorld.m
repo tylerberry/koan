@@ -10,18 +10,9 @@
 
 static const int32_t currentWorldVersion = 7;
 
-@interface MUWorld ()
-
-- (void) _startObservingWritableValuesForPlayer: (MUPlayer *) player;
-- (void) _stopObservingWritableValuesForPlayer: (MUPlayer *) player;
-
-@end
-
-#pragma mark -
-
 @implementation MUWorld
 
-@dynamic childProperties, uniqueIdentifier, windowTitle, writableProperties;
+@dynamic uniqueIdentifier, windowTitle;
 
 + (MUWorld *) worldWithName: (NSString *) name
                    hostname: (NSString *) hostname
@@ -55,12 +46,6 @@ static const int32_t currentWorldVersion = 7;
   if (!(self = [super initWithName: name children: children]))
     return nil;
   
-  for (MUTreeNode *node in self.children)
-  {
-    if ([node isKindOfClass: [MUPlayer class]])
-      [self _startObservingWritableValuesForPlayer: (MUPlayer *) node];
-  }
-  
   _hostname = [hostname copy];
   _port = [port copy];
   _url = [url copy];
@@ -87,35 +72,6 @@ static const int32_t currentWorldVersion = 7;
                    children: nil];
 }
 
-- (void) dealloc
-{
-  for (MUTreeNode *node in self.children)
-  {
-    if ([node isKindOfClass: [MUPlayer class]])
-      [self _stopObservingWritableValuesForPlayer: (MUPlayer *) node];
-  }
-}
-
-- (void) observeValueForKeyPath: (NSString *) keyPath
-                       ofObject: (id) object
-                         change: (NSDictionary *) changeDictionary
-                        context: (void *) context
-{
-  if ([object isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *player = (MUPlayer *) object;
-    
-    if ([player.writableProperties containsObject: keyPath])
-    {
-      [self willChangeValueForKey: @"childProperties"];
-      [self didChangeValueForKey: @"childProperties"];
-      return;
-    }
-  }
-  
-  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
-}
-
 #pragma mark - Actions
 
 - (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
@@ -124,11 +80,6 @@ static const int32_t currentWorldVersion = 7;
 }
 
 #pragma mark - Property method implementations
-
-- (void) childProperties
-{
-  return;
-}
 
 - (NSImage *) icon
 {
@@ -153,76 +104,6 @@ static const int32_t currentWorldVersion = 7;
 - (NSString *) windowTitle
 {
   return [NSString stringWithFormat: @"%@", self.name];
-}
-
-- (NSArray *) writableProperties
-{
-  return @[@"name", @"hostname", @"port", @"url", @"children", @"childProperties"];
-}
-
-#pragma mark - Method overrides
-
-- (void) addChild: (MUTreeNode *) child
-{
-  [super addChild: child];
-  
-  if ([child isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *player = (MUPlayer *) child;
-    [self _startObservingWritableValuesForPlayer: player];
-  }
-}
-
-- (void) insertObject: (MUTreeNode *) child inChildrenAtIndex: (NSUInteger) childIndex
-{
-  [super insertObject: child inChildrenAtIndex: childIndex];
-  
-  if ([child isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *player = (MUPlayer *) child;
-    [self _startObservingWritableValuesForPlayer: player];
-  }
-}
-
-- (void) removeObjectFromChildrenAtIndex: (NSUInteger) childIndex
-{
-  NSTreeNode *child = self.children[childIndex];
-  
-  if ([child isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *player = (MUPlayer *) child;
-    [self _stopObservingWritableValuesForPlayer: player];
-  }
-  
-  [super removeObjectFromChildrenAtIndex: childIndex];
-}
-
-- (void) removeChild: (MUTreeNode *) child
-{
-  if ([child isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *player = (MUPlayer *) child;
-    [self _stopObservingWritableValuesForPlayer: player];
-  }
-  
-  [super removeChild: child];
-}
-
-- (void) replaceChild: (MUTreeNode *) oldChild withChild: (MUTreeNode *) newChild
-{
-  if ([oldChild isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *oldPlayer = (MUPlayer *) oldChild;
-    [self _stopObservingWritableValuesForPlayer: oldPlayer];
-  }
-  
-  [super replaceChild: oldChild withChild: newChild];
-  
-  if ([newChild isKindOfClass: [MUPlayer class]])
-  {
-    MUPlayer *newPlayer = (MUPlayer *) newChild;
-    [self _stopObservingWritableValuesForPlayer: newPlayer];
-  }
 }
 
 #pragma mark - NSCoding protocol
@@ -268,12 +149,6 @@ static const int32_t currentWorldVersion = 7;
   else
     self.children = [decoder decodeObjectForKey: @"players"];
   
-  for (MUTreeNode *node in self.children)
-  {
-    if ([node isKindOfClass: [MUPlayer class]])
-      [self _startObservingWritableValuesForPlayer: (MUPlayer *) node];
-  }
-  
   if (version >= 5)
     _url = [decoder decodeObjectForKey: @"URL"];
   else if (version >= 1)
@@ -293,20 +168,6 @@ static const int32_t currentWorldVersion = 7;
                                                 port: self.port
                                                  URL: self.url
                                             children: self.children];
-}
-
-#pragma mark - Private methods
-
-- (void) _startObservingWritableValuesForPlayer: (MUPlayer *) player
-{
-  for (NSString *keyPath in player.writableProperties)
-    [player addObserver: self forKeyPath: keyPath options: 0 context: nil];
-}
-
-- (void) _stopObservingWritableValuesForPlayer: (MUPlayer *) player
-{
-  for (NSString *keyPath in player.writableProperties)
-    [player removeObserver: self forKeyPath: keyPath];
 }
 
 @end

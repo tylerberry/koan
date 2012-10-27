@@ -111,7 +111,7 @@
 {
   MUWorld *world = [self testWorld];
   MUPlayer *player = [self testPlayerWithParentWorld: world];
-  [world addChild: player];
+  [world.children addObject: player];
   
   [registry profileForWorld: world];
   [registry profileForWorld: world player: player];

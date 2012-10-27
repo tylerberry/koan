@@ -13,8 +13,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 - (void) _cleanUpDefaultRegistry: (NSNotification *) notification;
 - (void) _postWorldsDidChangeNotification;
-- (void) _startObservingWritableValuesForWorld: (MUWorld *) world;
-- (void) _stopObservingWritableValuesForWorld: (MUWorld *) world;
 - (void) _worldsDidChange: (NSNotification *) notification;
 - (void) _writeWorldsToUserDefaults;
 
@@ -47,9 +45,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
   
   _mutableWorlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
   
-  for (MUWorld *world in _mutableWorlds)
-    [self _startObservingWritableValuesForWorld: world];
-  
   for (MUTreeNode *topLevelNode in self.worlds)
     [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
   
@@ -76,31 +71,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
   return self;
 }
 
-- (void) dealloc
-{
-  for (MUWorld *world in _mutableWorlds)
-    [self _stopObservingWritableValuesForWorld: world];
-}
-
-- (void) observeValueForKeyPath: (NSString *) keyPath
-                       ofObject: (id) object
-                         change: (NSDictionary *) changeDictionary
-                        context: (void *) context
-{
-  if ([object isKindOfClass: [MUWorld class]])
-  {
-    MUWorld *world = (MUWorld *) object;
-    
-    if ([world.writableProperties containsObject: keyPath])
-    {
-      [self _postWorldsDidChangeNotification];
-      return;
-    }
-  }
-  
-  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
-}
-
 #pragma mark - Key-value coding accessors
 
 - (void) insertObject: (MUWorld *) world inWorldsAtIndex: (NSUInteger) worldIndex
@@ -110,7 +80,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
     [self willChangeValueForKey: @"worlds"];
     
     [self.mutableWorlds insertObject: world atIndex: worldIndex];
-    [self _startObservingWritableValuesForWorld: world];
     
     [self didChangeValueForKey: @"worlds"];
     [self _postWorldsDidChangeNotification];
@@ -123,7 +92,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
   {
     [self willChangeValueForKey: @"worlds"];
     
-    [self _stopObservingWritableValuesForWorld: _mutableWorlds[worldIndex]];
     [self.mutableWorlds removeObjectAtIndex: worldIndex];
     
     [self didChangeValueForKey: @"worlds"];
@@ -161,7 +129,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
     
     [self willChangeValueForKey: @"worlds"];
     
-    [self _stopObservingWritableValuesForWorld: world];
     [self.mutableWorlds removeObject: world];
     
     [self didChangeValueForKey: @"worlds"];
@@ -181,9 +148,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
     
     [self willChangeValueForKey: @"worlds"];
     
-    [self _stopObservingWritableValuesForWorld: oldWorld];
     [_mutableWorlds replaceObjectAtIndex: [_mutableWorlds indexOfObject: oldWorld] withObject: newWorld];
-    [self _startObservingWritableValuesForWorld: newWorld];
     
     [self didChangeValueForKey: @"worlds"];
     [self _postWorldsDidChangeNotification];
@@ -199,13 +164,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
     
     [self willChangeValueForKey: @"worlds"];
     
-    for (MUWorld *world in _mutableWorlds)
-      [self _stopObservingWritableValuesForWorld: world];
-    
     _mutableWorlds = [newWorlds mutableCopy];
-    
-    for (MUWorld *world in _mutableWorlds)
-      [self _startObservingWritableValuesForWorld: world];
     
     [self didChangeValueForKey: @"worlds"];
     [self _postWorldsDidChangeNotification];
@@ -254,22 +213,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUWorldsDidChangeNotification
                                                       object: self];
-}
-
-- (void) _startObservingWritableValuesForWorld: (MUWorld *) world
-{
-  for (NSString *keyPath in world.writableProperties)
-  {
-    [world addObserver: self forKeyPath: keyPath options: 0 context: nil];
-  }
-}
-
-- (void) _stopObservingWritableValuesForWorld: (MUWorld *) world
-{
-  for (NSString *keyPath in world.writableProperties)
-  {
-    [world removeObserver: self forKeyPath: keyPath];
-  }
 }
 
 - (void) _worldsDidChange: (NSNotification *) notification;

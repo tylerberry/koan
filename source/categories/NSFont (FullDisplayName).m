@@ -32,14 +32,7 @@
 
 - (NSString *) fullDisplayName
 {
-  NSNumber *fontSizeNumber;
-  
-  if (CGFLOAT_IS_DOUBLE)
-    fontSizeNumber = @([self pointSize]);
-  else
-    fontSizeNumber = [NSNumber numberWithFloat: [self pointSize]];
-  
-  return [NSString stringWithFormat: _(MULFontFullDisplayName), [self displayName], fontSizeNumber];
+  return [NSString stringWithFormat: _(MULFontFullDisplayName), self.displayName, @(self.pointSize)];
 }
 
 @end

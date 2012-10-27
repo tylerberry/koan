@@ -4,7 +4,6 @@
 // Copyright (c) 2012 3James Software.
 //
 
-#import "categories/NSFileManager (Recursive).h"
 #import "MUTextLogger.h"
 #import "MUPlayer.h"
 #import "MUWorld.h"
@@ -68,9 +67,21 @@
   [headers setValue: (player ? player.name : @"") forKey: @"Player"];
   [headers setValue: todayString forKey: @"Date"];
   
-  [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent]
-                                             attributes: nil
-                                              recursive: YES];
+  BOOL isDirectory;
+  if (![[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory])
+  {
+    NSError *directoryCreationError;
+    [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent]
+                              withIntermediateDirectories: YES
+                                               attributes: nil
+                                                    error: &directoryCreationError];
+  }
+  else
+  {
+    if (isDirectory)
+      NSLog (@"Warning: file already exists at log directory path.");
+  }
+  
   [self initializeFileAtPath: path withHeaders: headers];
   
   return [self initWithOutputStream: [NSOutputStream outputStreamToFileAtPath: path append: YES]];

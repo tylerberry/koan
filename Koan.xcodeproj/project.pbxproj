@@ -158,7 +158,6 @@
 		E6E7A62807496940007005AC /* MUHistoryRing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A62707496940007005AC /* MUHistoryRing.m */; };
 		E6E7A6350749697C007005AC /* MUTextLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A6340749697C007005AC /* MUTextLogger.m */; };
 		E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F3A71E077A1B270011A461 /* MUWorldRegistry.m */; };
-		E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */ = {isa = PBXBuildFile; fileRef = E6F60DAC0778A3C600E0EBB4 /* NSFileManager (Recursive).m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -519,8 +518,6 @@
 		E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHistoryRingTests.m; sourceTree = "<group>"; };
 		E6F3A71D077A1B270011A461 /* MUWorldRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorldRegistry.h; sourceTree = "<group>"; };
 		E6F3A71E077A1B270011A461 /* MUWorldRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUWorldRegistry.m; sourceTree = "<group>"; };
-		E6F60DAB0778A3C600E0EBB4 /* NSFileManager (Recursive).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager (Recursive).h"; sourceTree = "<group>"; };
-		E6F60DAC0778A3C600E0EBB4 /* NSFileManager (Recursive).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager (Recursive).m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -858,8 +855,6 @@
 			children = (
 				E6055F7C07492729007A13BD /* NSAttributedString (Allocating).h */,
 				E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */,
-				E6F60DAB0778A3C600E0EBB4 /* NSFileManager (Recursive).h */,
-				E6F60DAC0778A3C600E0EBB4 /* NSFileManager (Recursive).m */,
 				E63F31BD0815B5C1006C4704 /* NSFont (FullDisplayName).h */,
 				E63F31BE0815B5C1006C4704 /* NSFont (FullDisplayName).m */,
 				7E51030F0AD1D5AA00142EF3 /* NSFont (Traits).h */,
@@ -1449,7 +1444,6 @@
 				E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */,
 				7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */,
 				E6055F7F07492729007A13BD /* NSAttributedString (Allocating).m in Sources */,
-				E6F60DAE0778A3C600E0EBB4 /* NSFileManager (Recursive).m in Sources */,
 				E63F31C00815B5C1006C4704 /* NSFont (FullDisplayName).m in Sources */,
 				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
 				2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */,
@@ -1681,7 +1675,6 @@
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
-				OTHER_CFLAGS = "-DMAC_OS_X_VERSION_MIN_REQUIRED=MAC_OS_X_VERSION_10_4";
 				PRODUCT_NAME = Koan;
 				WRAPPER_EXTENSION = app;
 			};

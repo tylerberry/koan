@@ -204,6 +204,7 @@ static MUProfileRegistry *_defaultRegistry = nil;
 - (void) _cleanUpDefaultRegistry: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
+  [self _writeProfilesToUserDefaults];
   _defaultRegistry = nil;
 }
 

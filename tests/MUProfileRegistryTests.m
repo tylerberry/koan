@@ -54,7 +54,7 @@
   profileOne = [registry profileForWorld: world];
   [self assertProfile: profileOne world: world player: nil];
   
-  profileTwo = [registry profileForUniqueIdentifier: @"world:test.world"];
+  profileTwo = [registry profileForUniqueIdentifier: world.uniqueIdentifier];
   [self assert: profileTwo equals: profileOne message: @"First"];
   
   profileOne = [registry profileForWorld: world];
@@ -71,7 +71,7 @@
   profileOne = [registry profileForWorld: world player: player];
   [self assertProfile: profileOne world: world player: player];
   
-  profileTwo = [registry profileForUniqueIdentifier: @"world:test.world;player:user"];
+  profileTwo = [registry profileForUniqueIdentifier: player.uniqueIdentifier];
   [self assert: profileTwo equals: profileOne message: @"First"];
   
   profileOne = [registry profileForWorld: world player: player];

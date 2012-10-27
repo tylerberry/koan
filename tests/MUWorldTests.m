@@ -26,10 +26,14 @@
   _player = nil;
 }
 
-- (void) testUniqueIdentifier
+- (void) testUniqueIdentifierPersistsThroughArchiving
 {
   _world.name = @"Test World";
-  [self assert: _world.uniqueIdentifier equals: @"world:test.world"];
+  
+  NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject: _world];
+  MUWorld *unarchivedWorld = [NSKeyedUnarchiver unarchiveObjectWithData: archivedData];
+  
+  [self assert: _world.uniqueIdentifier equals: unarchivedWorld.uniqueIdentifier];
 }
 
 @end

@@ -206,6 +206,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
 - (void) _cleanUpDefaultRegistry: (NSNotification *) notification
 {
   [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
+  [self _writeWorldsToUserDefaults];
   _defaultRegistry = nil;
 }
 

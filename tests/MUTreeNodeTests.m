@@ -48,13 +48,12 @@
   [self assertTrue: [_node.children containsObject: child]];
 }
 
-- (void) testNoDuplicateChildren
+- (void) testCopyHasDifferentUniqueIdentifier
 {
   MUTreeNode *child = [self testingNode];
-  [_node insertValue: child inPropertyWithKey: @"children"];
-  [_node insertValue: child inPropertyWithKey: @"children"];
+  MUTreeNode *copy = [child copy];
   
-  [self assertUInteger: _node.children.count equals: 1];
+  [self assertFalse: ([child.uniqueIdentifier isEqualToString: copy.uniqueIdentifier])];
 }
 
 - (void) testRemoveChild

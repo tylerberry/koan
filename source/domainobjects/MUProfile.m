@@ -48,10 +48,6 @@ static const int32_t currentProfileVersion = 3;
   {
     keyPaths = [keyPaths setByAddingObject: @"textColor"];
   }
-  else if ([key isEqualToString: @"effectiveVisitedLinkColor"])
-  {
-    keyPaths = [keyPaths setByAddingObject: @"visitedLinkColor"];
-  }
   
   return keyPaths;
 }
@@ -233,16 +229,10 @@ static const int32_t currentProfileVersion = 3;
 
 - (NSString *) uniqueIdentifier
 {
-  NSString *identifier = nil;
   if (self.player)
-  {
-    identifier = [NSString stringWithFormat: @"%@;%@", self.world.uniqueIdentifier, self.player.uniqueIdentifier];
-  }
+    return self.player.uniqueIdentifier;
   else
-  {
-    identifier = self.world.uniqueIdentifier;
-  }
-  return identifier;
+    return self.world.uniqueIdentifier;
 }
 
 - (NSString *) windowTitle

@@ -32,18 +32,17 @@
   MUProxySettingsController *_proxySettingsController;
 }
 
-@property (readonly) BOOL shouldPlayNotificationSound;
+@property (readonly) BOOL _shouldPlayNotificationSound;
 
-- (IBAction) changeFont: (id) sender;
-- (void) colorPanelColorDidChange: (NSNotification *) notification;
-- (id) infoValueForKey: (NSString *) key;
-- (IBAction) openConnection: (id) sender;
+- (void) _colorPanelColorDidChange: (NSNotification *) notification;
+- (void) _openConnectionFromMenuItem: (id) sender;
 - (void) _openConnectionWithController: (MUConnectionWindowController *) controller;
-- (void) playNotificationSound;
-- (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
-- (void) recursivelyConfirmClose: (BOOL) cont;
-- (void) updateApplicationBadge;
-- (void) worldsDidChange: (NSNotification *) notification;
+- (void) _playNotificationSound;
+- (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
+- (void) _recursivelyConfirmClose: (BOOL) cont;
+- (void) _registerForNotifications;
+- (void) _updateApplicationBadge;
+- (void) _worldsDidChange: (NSNotification *) notification;
 
 @end
 
@@ -91,15 +90,7 @@
 {
   _connectionWindowControllers = [[NSMutableArray alloc] init];
   
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector (colorPanelColorDidChange:)
-                                               name: NSColorPanelColorDidChangeNotification
-                                             object: nil];
-  
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector (worldsDidChange:)
-                                               name: MUWorldsDidChangeNotification
-                                             object: nil];
+  [self _registerForNotifications];
   
   _dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
 }
@@ -218,7 +209,7 @@
 #endif
   
   _unreadCount = 0;
-  [self updateApplicationBadge];
+  [self _updateApplicationBadge];
 }
 
 - (void) applicationDidFinishLaunching: (NSNotification *) notification
@@ -228,7 +219,7 @@
     return;
 #endif
   
-  [self rebuildConnectionsMenuWithAutoconnect: YES];
+  [self _rebuildConnectionsMenuWithAutoconnect: YES];
 }
 
 - (BOOL) applicationShouldOpenUntitledFile: (NSApplication *) sender
@@ -273,7 +264,7 @@
     
     if (choice == NSAlertDefaultReturn)
     {
-      [self recursivelyConfirmClose: YES];
+      [self _recursivelyConfirmClose: YES];
       return NSTerminateLater;
     }
   }
@@ -308,43 +299,37 @@
 
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification
 {
-  if (self.shouldPlayNotificationSound)
-    [self playNotificationSound];
+  if (self._shouldPlayNotificationSound)
+    [self _playNotificationSound];
   
   if (![NSApp isActive])
   {
     [NSApp requestUserAttention: NSInformationalRequest];
     _unreadCount++;
-    [self updateApplicationBadge];
+    [self _updateApplicationBadge];
   }
 }
 
-#pragma mark - Private methods
-
-@dynamic shouldPlayNotificationSound;
+#pragma mark - Responder chain methods
 
 - (IBAction) changeFont: (id) sender
 {
   [preferencesController changeFont: sender];
 }
 
-- (void) colorPanelColorDidChange: (NSNotification *) notification
+#pragma mark - Private methods
+
+@dynamic _shouldPlayNotificationSound;
+
+- (void) _colorPanelColorDidChange: (NSNotification *) notification
 {
   [preferencesController colorPanelColorDidChange];
 }
 
-- (id) infoValueForKey: (NSString *) key
-{
-  if ([NSBundle mainBundle].localizedInfoDictionary[key])
-    return [NSBundle mainBundle].localizedInfoDictionary[key];
-  
-  return [NSBundle mainBundle].infoDictionary[key];
-}
-
-- (IBAction) openConnection: (id) sender
+- (void) _openConnectionFromMenuItem: (id) sender
 {
   MUConnectionWindowController *controller;
-  MUProfile *profile = [sender representedObject];
+  MUProfile *profile = ((NSMenuItem *) sender).representedObject;
   controller = [[MUConnectionWindowController alloc] initWithProfile: profile];
   
   [self _openConnectionWithController: controller];
@@ -359,14 +344,14 @@
   [controller connect: nil];
 }
 
-- (void) playNotificationSound
+- (void) _playNotificationSound
 {
   NSString *soundName = [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice];
   if (soundName && soundName.length != 0)
     [[NSSound soundNamed: soundName] play];
 }
 
-- (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect
+- (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect
 {
   MUWorldRegistry *worldRegistry = [MUWorldRegistry defaultRegistry];
   MUProfileRegistry *profileRegistry = [MUProfileRegistry defaultRegistry];
@@ -384,7 +369,7 @@
     NSMenuItem *worldItem = [[NSMenuItem alloc] init];
     NSMenu *worldMenu = [[NSMenu alloc] initWithTitle: world.name ? world.name : @""];
     NSMenuItem *connectItem = [[NSMenuItem alloc] initWithTitle: _(MULConnectWithoutLogin)
-                                                         action: @selector (openConnection:)
+                                                         action: @selector (_openConnectionFromMenuItem:)
                                                   keyEquivalent: @""];
     
     connectItem.target = self;
@@ -396,7 +381,7 @@
       if (profile.autoconnect)
       {
         didAutoconnect = YES;
-        [self openConnection: connectItem];
+        [self _openConnectionFromMenuItem: connectItem];
       }
     }
     
@@ -404,7 +389,7 @@
     {
       profile = [profileRegistry profileForWorld: world player: player];
       
-      SEL action = @selector (openConnection:);
+      SEL action = @selector (_openConnectionFromMenuItem:);
       NSMenuItem *playerItem = [[NSMenuItem alloc] initWithTitle: player.name ? player.name : @""
                                                           action: action
                                                    keyEquivalent: @""];
@@ -421,7 +406,7 @@
         if (profile.autoconnect)
         {
           didAutoconnect = YES;
-          [self openConnection: playerItem];
+          [self _openConnectionFromMenuItem: playerItem];
         }
       }
       
@@ -444,7 +429,7 @@
     [self showProfilesWindow: self];
 }
 
-- (void) recursivelyConfirmClose: (BOOL) cont
+- (void) _recursivelyConfirmClose: (BOOL) cont
 {
   if (cont)
   {
@@ -452,7 +437,7 @@
     {
       if (controller.isConnectedOrConnecting)
       {
-        [controller confirmClose: @selector (recursivelyConfirmClose:)];
+        [controller confirmClose: @selector (_recursivelyConfirmClose:)];
         return;
       }
     }
@@ -461,13 +446,26 @@
   [NSApp replyToApplicationShouldTerminate: cont];
 }
 
-- (BOOL) shouldPlayNotificationSound
+- (void) _registerForNotifications
+{
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_colorPanelColorDidChange:)
+                                               name: NSColorPanelColorDidChangeNotification
+                                             object: nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_worldsDidChange:)
+                                               name: MUWorldsDidChangeNotification
+                                             object: nil];
+}
+
+- (BOOL) _shouldPlayNotificationSound
 {
   return ([[NSUserDefaults standardUserDefaults] boolForKey: MUPPlaySounds]
           && (![NSApp isActive] || [[NSUserDefaults standardUserDefaults] boolForKey: MUPPlayWhenActive]));
 }
 
-- (void) updateApplicationBadge
+- (void) _updateApplicationBadge
 {
   if (_unreadCount == 0)
     [NSApp setApplicationIconImage: nil];
@@ -475,9 +473,9 @@
     [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: (float) 0.0 y: (float) 0.0];
 }
 
-- (void) worldsDidChange: (NSNotification *) notification
+- (void) _worldsDidChange: (NSNotification *) notification
 {
-  [self rebuildConnectionsMenuWithAutoconnect: NO];
+  [self _rebuildConnectionsMenuWithAutoconnect: NO];
 }
 
 @end

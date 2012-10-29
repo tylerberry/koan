@@ -1,9 +1,7 @@
 //
-//  MUConnectPanelController.m
-//  Koan
+// MUConnectPanelController.m
 //
-//  Created by Tyler Berry on 10/28/12.
-//  Copyright (c) 2012 3James Software. All rights reserved.
+// Copyright (c) 2012 3James Software.
 //
 
 #import "MUConnectPanelController.h"

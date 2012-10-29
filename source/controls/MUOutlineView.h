@@ -1,9 +1,7 @@
 //
-//  MUOutlineView.h
-//  Koan
+// MUOutlineView.h
 //
-//  Created by Tyler Berry on 10/27/12.
-//  Copyright (c) 2012 3James Software. All rights reserved.
+// Copyright (c) 2012 3James Software.
 //
 
 @protocol MUOutlineViewDelegate <NSOutlineViewDelegate>

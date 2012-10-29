@@ -49,6 +49,9 @@
   [self.delegate openConnectionForWorld: world];
   [self.window close];
   
+  newConnectionHostnameField.objectValue = nil;
+  newConnectionPortField.objectValue = nil;
+  newConnectionSaveWorldButton.state = NSOffState;
 }
 
 @end

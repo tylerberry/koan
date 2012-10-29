@@ -23,6 +23,8 @@
 		2F51E45F11781EF800F6DF65 /* MUProfilesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45711781EF800F6DF65 /* MUProfilesWindow.xib */; };
 		2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45911781EF800F6DF65 /* MUProxySettings.xib */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
+		2F57F906163E219A00732868 /* MUConnectPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F57F905163E219A00732868 /* MUConnectPanel.xib */; };
+		2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F57F908163E473800732868 /* MUConnectPanelController.m */; };
 		2F6C71F40BB460CA00709320 /* MUURLHandlerCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */; };
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
 		2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */; };
@@ -62,6 +64,7 @@
 		2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */; };
 		2FB40DE10BF10797004E13F8 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */; };
 		2FB40E7B0BF10AA2004E13F8 /* MUFilterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */; };
+		2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */; };
 		2FC93E2B0BB103C500149459 /* MUTelnetProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */; };
 		2FCFEF3E0BCADEB40061FB6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */; };
@@ -276,6 +279,9 @@
 		2F51E45A11781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProxySettings.xib; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
+		2F57F905163E219A00732868 /* MUConnectPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MUConnectPanel.xib; sourceTree = "<group>"; };
+		2F57F907163E473800732868 /* MUConnectPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConnectPanelController.h; sourceTree = "<group>"; };
+		2F57F908163E473800732868 /* MUConnectPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectPanelController.m; sourceTree = "<group>"; };
 		2F6C71F10BB460CA00709320 /* MUURLHandlerCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUURLHandlerCommand.h; sourceTree = "<group>"; };
 		2F6C71F20BB460CA00709320 /* MUURLHandlerCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUURLHandlerCommand.m; sourceTree = "<group>"; };
 		2F6C72A90BB46BD000709320 /* Koan.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; path = Koan.sdef; sourceTree = "<group>"; };
@@ -337,6 +343,8 @@
 		2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFugueEditFilterTests.m; sourceTree = "<group>"; };
 		2FB40E250BF10910004E13F8 /* MUFilterTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterTestCase.h; sourceTree = "<group>"; };
 		2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterTestCase.m; sourceTree = "<group>"; };
+		2FC6BCCA163CA8A30027CCFD /* MUOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUOutlineView.h; sourceTree = "<group>"; };
+		2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUOutlineView.m; sourceTree = "<group>"; };
 		2FC93E280BB103C500149459 /* MUTelnetProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetProtocolHandler.h; sourceTree = "<group>"; };
 		2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetProtocolHandler.m; sourceTree = "<group>"; };
 		2FCFEFDB0BCAE36D0061FB6B /* MUTextLogDocumentTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTextLogDocumentTests.h; sourceTree = "<group>"; };
@@ -873,6 +881,8 @@
 				2FDFA1550D67F630007F0036 /* MUAcknowledgementsController.m */,
 				E62C905A07422595005662BC /* MUApplicationController.h */,
 				E62C905B07422595005662BC /* MUApplicationController.m */,
+				2F57F907163E473800732868 /* MUConnectPanelController.h */,
+				2F57F908163E473800732868 /* MUConnectPanelController.m */,
 				E62C8FBB07421D83005662BC /* MUConnectionToolbarController.h */,
 				E62C8FBC07421D83005662BC /* MUConnectionToolbarController.m */,
 				E670A83F07420FDF00E2DAEB /* MUConnectionWindowController.h */,
@@ -904,6 +914,7 @@
 			isa = PBXGroup;
 			children = (
 				2F51E44F11781EF800F6DF65 /* MUAcknowledgements.xib */,
+				2F57F905163E219A00732868 /* MUConnectPanel.xib */,
 				2F51E45111781EF800F6DF65 /* MUConnectionWindow.xib */,
 				2F51E45311781EF800F6DF65 /* MULogBrowser.xib */,
 				2F51E45511781EF800F6DF65 /* MUMainMenu.xib */,
@@ -1078,6 +1089,8 @@
 				E62E831E07A1D10400BF15E9 /* MUTextView.m */,
 				2F97B0BF1633905700B33F4A /* MUProfileContentView.h */,
 				2F97B0C01633905700B33F4A /* MUProfileContentView.m */,
+				2FC6BCCA163CA8A30027CCFD /* MUOutlineView.h */,
+				2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */,
 			);
 			name = Controls;
 			path = controls;
@@ -1280,6 +1293,7 @@
 				2F97B0AA16337B9F00B33F4A /* MUWorldView.xib in Resources */,
 				2F97B0AC16337BB700B33F4A /* MUPlayerView.xib in Resources */,
 				2F6F9F1C1633F8090071AE70 /* MUProfileView.xib in Resources */,
+				2F57F906163E219A00732868 /* MUConnectPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1467,8 @@
 				2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */,
 				2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */,
 				2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */,
+				2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */,
+				2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

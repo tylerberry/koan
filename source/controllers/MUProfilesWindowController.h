@@ -4,15 +4,17 @@
 // Copyright (c) 2012 3James Software.
 //
 
+#import "MUOutlineView.h"
+
 @class MUProfileContentView;
 
-@interface MUProfilesWindowController : NSWindowController <NSOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
+@interface MUProfilesWindowController : NSWindowController <MUOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
 {
   IBOutlet NSTreeController *profilesTreeController;
   
   IBOutlet NSSplitView *profilesSplitView;
   
-  IBOutlet NSOutlineView *profilesOutlineView;
+  IBOutlet MUOutlineView *profilesOutlineView;
   IBOutlet NSButton *addButton;
   IBOutlet NSButton *actionButton;
   

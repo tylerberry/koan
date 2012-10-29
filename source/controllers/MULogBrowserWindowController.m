@@ -7,16 +7,17 @@
 #import "MULogBrowserWindowController.h"
 #import "MUTextLogDocument.h"
 
-static MULogBrowserWindowController *sharedLogBrowserWindowController = nil;
+static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
 
 @implementation MULogBrowserWindowController
 
 + (id) sharedLogBrowserWindowController
 {
-  if (!sharedLogBrowserWindowController)
-    sharedLogBrowserWindowController = [[MULogBrowserWindowController alloc] init];
+  static dispatch_once_t predicate;
   
-  return sharedLogBrowserWindowController;
+  dispatch_once (&predicate, ^{ _sharedLogBrowserWindowController = [[MULogBrowserWindowController alloc] init]; });
+  
+  return _sharedLogBrowserWindowController;
 }
 
 - (id) init

@@ -18,7 +18,7 @@
 
 @implementation MUConnectionToolbarController
 
-@synthesize toolbar, window, windowController;
+@synthesize toolbar;
 
 - (void) awakeFromNib
 {
@@ -28,7 +28,7 @@
   self.toolbar.allowsUserCustomization = YES;
   self.toolbar.autosavesConfiguration = YES;
   
-  [self.window setToolbar: self.toolbar];
+  [window setToolbar: self.toolbar];
   
 }
 
@@ -45,7 +45,7 @@
     item.label = _(MULGoToURL);
     item.paletteLabel = _(MULGoToURL);
     item.image = nil;
-    item.target = self.windowController;
+    item.target = windowController;
     item.action = @selector (goToWorldURL:);
   }
   

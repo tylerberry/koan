@@ -40,47 +40,7 @@
 {
   NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
   
-  if ([itemIdentifier isEqualToString: MUAddWorldToolbarItem])
-  {
-  	item.label = _(MULAddWorld);
-  	item.paletteLabel = _(MULAddWorld);
-  	item.image = nil;
-  	item.target = windowController;
-    //item.action = @selector (addWorld:);
-  }
-  else if ([itemIdentifier isEqualToString: MUAddPlayerToolbarItem])
-  {
-  	item.label = _(MULAddPlayer);
-  	item.paletteLabel = _(MULAddPlayer);
-  	item.image = nil;
-  	item.target = windowController;
-  	//item.action = @selector (addPlayer:);
-  }
-  else if ([itemIdentifier isEqualToString: MUEditSelectedRowToolbarItem])
-  {
-  	item.label = _(MULEditItem);
-  	item.paletteLabel = _(MULEditItem);
-  	item.image = nil;
-  	item.target = windowController;
-  	//item.action = @selector (editSelectedRow:);
-  }
-  else if ([itemIdentifier isEqualToString: MURemoveSelectedRowToolbarItem])
-  {
-  	item.label = _(MULRemoveItem);
-  	item.paletteLabel = _(MULRemoveItem);
-  	item.image = nil;
-  	item.target = windowController;
-  	//item.action = @selector (removeSelectedRow:);
-  }
-  else if ([itemIdentifier isEqualToString: MUEditProfileForSelectedRowToolbarItem])
-  {
-  	item.label = _(MULEditProfile);
-  	item.paletteLabel = _(MULEditProfile);
-  	item.image = nil;
-  	item.target = windowController;
-  	//item.action = @selector (editProfileForSelectedRow:);
-  }
-  else if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
+  if ([itemIdentifier isEqualToString: MUGoToURLToolbarItem])
   {
     item.label = _(MULGoToURL);
     item.paletteLabel = _(MULGoToURL);

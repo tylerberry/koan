@@ -7,24 +7,12 @@
 "ConnectionClosedByError" = "Connection closed with error \"%@\"";
 
 // Toolbar item titles.
+"GoToURL" = "Go To URL";
+
+// Undoable actions.
 
 "AddWorld" = "Add World";
-"AddPlayer" = "Add Player";
-"EditItem" = "Edit Item";
-"EditWorld" = "Edit World";
-"EditPlayer" = "Edit Player";
-"GoToURL" = "Go To URL";
-"RemoveItem" = "Remove Item";
-"RemoveWorld" = "Remove World";
-"RemovePlayer" = "Remove Player";
-"EditProfile" = "Edit Profile";
-
-// Growl messages.
-
-"GrowlConnectionOpened" = "The connection was opened successfully.";
-"GrowlConnectionClosed" = "The connection was closed.";
-"GrowlConnectionClosedByServer" = "The connection was closed by the server.";
-"GrowlConnectionClosedByError" = "An error caused the connection to close: %@";
+"DeleteWorld" = "Delete World";
 
 // Alert panel messages.
 
@@ -60,6 +48,13 @@
 
 "ShouldCheckAutomaticallyForUpdatesTitle" = "Should %@ automatically check for updated versions?";
 "ShouldCheckAutomaticallyForUpdatesMessage" = "By default, a check will be performed once each time %@ is launched; this behavior can be customized in the Updates tab of the Preferences panel.";
+
+// Growl messages.
+
+"GrowlConnectionOpened" = "The connection was opened successfully.";
+"GrowlConnectionClosed" = "The connection was closed.";
+"GrowlConnectionClosedByServer" = "The connection was closed by the server.";
+"GrowlConnectionClosedByError" = "An error caused the connection to close: %@";
 
 // Miscellaneous messages.
 

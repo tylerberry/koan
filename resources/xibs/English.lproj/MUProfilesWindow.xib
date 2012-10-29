@@ -89,7 +89,7 @@
 															<string key="NSFrameSize">{200, 486}</string>
 															<reference key="NSSuperview" ref="276075311"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="431300614"/>
+															<reference key="NSNextKeyView" ref="551122579"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
 															<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -200,6 +200,7 @@
 															<int key="NSTableViewRowSizeStyle">-1</int>
 															<bool key="NSOutlineViewAutoresizesOutlineColumnKey">NO</bool>
 															<float key="NSOutlineViewIndentationPerLevelKey">14</float>
+															<bool key="NSOutlineViewAutosaveExpandedItemsKey">YES</bool>
 														</object>
 													</array>
 													<string key="NSFrameSize">{200, 486}</string>
@@ -242,7 +243,7 @@
 											<string key="NSFrame">{{0, 23}, {200, 486}}</string>
 											<reference key="NSSuperview" ref="865949446"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="276075311"/>
+											<reference key="NSNextKeyView" ref="431300614"/>
 											<string key="NSReuseIdentifierKey">_NS:9</string>
 											<int key="NSsFlags">133648</int>
 											<reference key="NSVScroller" ref="1039916593"/>
@@ -366,7 +367,7 @@
 													<string key="NSFrameSize">{477, 509}</string>
 													<reference key="NSSuperview" ref="323591889"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="606328272"/>
+													<reference key="NSNextKeyView" ref="369788587"/>
 													<string key="NSReuseIdentifierKey">_NS:13</string>
 												</object>
 											</array>
@@ -415,7 +416,7 @@
 									<string key="NSFrame">{{201, 0}, {477, 509}}</string>
 									<reference key="NSSuperview" ref="96870285"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="323591889"/>
+									<reference key="NSNextKeyView" ref="606328272"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
 									<int key="NSsFlags">133648</int>
 									<reference key="NSVScroller" ref="369788587"/>
@@ -448,6 +449,7 @@
 				<string key="NSObjectClassName">MUTreeNode</string>
 				<bool key="NSEditable">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
+				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<string key="NSTreeContentChildrenKey">children</string>
@@ -659,7 +661,7 @@
 						<string key="label">selectionIndexPaths: selectionIndexPaths</string>
 						<reference key="source" ref="54801655"/>
 						<reference key="destination" ref="214323854"/>
-						<object class="NSNibBindingConnector" key="connector">
+						<object class="NSNibBindingConnector" key="connector" id="31370035">
 							<reference key="NSSource" ref="54801655"/>
 							<reference key="NSDestination" ref="214323854"/>
 							<string key="NSLabel">selectionIndexPaths: selectionIndexPaths</string>
@@ -686,6 +688,23 @@
 						<reference key="destination" ref="935907011"/>
 					</object>
 					<int key="connectionID">1139</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">sortDescriptors: sortDescriptors</string>
+						<reference key="source" ref="54801655"/>
+						<reference key="destination" ref="214323854"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="54801655"/>
+							<reference key="NSDestination" ref="214323854"/>
+							<string key="NSLabel">sortDescriptors: sortDescriptors</string>
+							<string key="NSBinding">sortDescriptors</string>
+							<string key="NSKeyPath">sortDescriptors</string>
+							<reference key="NSPreviousConnector" ref="31370035"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1151</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -858,6 +877,14 @@
 						</object>
 					</object>
 					<int key="connectionID">681</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="96870285"/>
+						<reference key="destination" ref="935907011"/>
+					</object>
+					<int key="connectionID">1152</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1908,6 +1935,7 @@
 				<string key="614.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="624.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="624.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="625.CustomClassName">MUOutlineView</string>
 				<string key="625.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="625.ibExternalAutomaticallyCalculatesRowSizeFromViewHeight"/>
 				<string key="626.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1981,10 +2009,18 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1149</int>
+			<int key="maxID">1152</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">MUOutlineView</string>
+					<string key="superclassName">NSOutlineView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/MUOutlineView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">MUProfileContentView</string>
 					<string key="superclassName">NSView</string>
@@ -2020,17 +2056,12 @@
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addNewWorld:">id</string>
-						<string key="changeFont:">id</string>
 						<string key="goToWorldURL:">id</string>
 						<string key="showAddContextMenu:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addNewWorld:">
 							<string key="name">addNewWorld:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="changeFont:">
-							<string key="name">changeFont:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="goToWorldURL:">
@@ -2049,7 +2080,7 @@
 						<string key="firstView">NSView</string>
 						<string key="lastView">NSView</string>
 						<string key="profileContentView">MUProfileContentView</string>
-						<string key="profilesOutlineView">NSOutlineView</string>
+						<string key="profilesOutlineView">MUOutlineView</string>
 						<string key="profilesSplitView">NSSplitView</string>
 						<string key="profilesTreeController">NSTreeController</string>
 					</dictionary>
@@ -2080,7 +2111,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="profilesOutlineView">
 							<string key="name">profilesOutlineView</string>
-							<string key="candidateClassName">NSOutlineView</string>
+							<string key="candidateClassName">MUOutlineView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="profilesSplitView">
 							<string key="name">profilesSplitView</string>

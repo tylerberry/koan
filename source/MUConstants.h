@@ -66,16 +66,12 @@ extern NSString *MUGoToURLToolbarItem;
 
 #pragma mark Toolbar item localization constants.
 
-extern NSString *MULAddWorld;
-extern NSString *MULAddPlayer;
-extern NSString *MULEditItem;
-extern NSString *MULEditWorld;
-extern NSString *MULEditPlayer;
 extern NSString *MULGoToURL;
-extern NSString *MULRemoveItem;
-extern NSString *MULRemoveWorld;
-extern NSString *MULRemovePlayer;
-extern NSString *MULEditProfile;
+
+#pragma mark Undoable actions.
+
+extern NSString *MUUndoAddWorld;
+extern NSString *MUUndoDeleteWorld;
 
 #pragma mark Growl constants.
 

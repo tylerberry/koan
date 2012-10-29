@@ -6,9 +6,9 @@
 
 #import "FontNameToDisplayNameTransformer.h"
 #import "JRSwizzle.h"
-#import "MUPortFormatter.h"
 #import "MUAcknowledgementsController.h"
 #import "MUApplicationController.h"
+#import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
 #import "MUGrowlService.h"
 #import "MUPlayer.h"
@@ -17,19 +17,19 @@
 #import "MUProfilesWindowController.h"
 #import "MUProxySettingsController.h"
 #import "MUSocketFactory.h"
-#import "MUWorld.h"
 #import "MUWorldRegistry.h"
 #import "NSObject (BetterHashing).h"
 
 @interface MUApplicationController ()
-{  
-  NSUInteger unreadCount;
-  CTBadge *dockBadge;
+{
+  NSUInteger _unreadCount;
+  CTBadge *_dockBadge;
   
-  NSMutableArray *connectionWindowControllers;
-  MUAcknowledgementsController *acknowledgementsController;
-  MUProfilesWindowController *profilesController;
-  MUProxySettingsController *proxySettingsController;
+  NSMutableArray *_connectionWindowControllers;
+  MUAcknowledgementsController *_acknowledgementsController;
+  MUConnectPanelController *_connectPanelController;
+  MUProfilesWindowController *_profilesController;
+  MUProxySettingsController *_proxySettingsController;
 }
 
 @property (readonly) BOOL shouldPlayNotificationSound;
@@ -38,7 +38,7 @@
 - (void) colorPanelColorDidChange: (NSNotification *) notification;
 - (id) infoValueForKey: (NSString *) key;
 - (IBAction) openConnection: (id) sender;
-- (void) openConnectionWithController: (MUConnectionWindowController *) controller;
+- (void) _openConnectionWithController: (MUConnectionWindowController *) controller;
 - (void) playNotificationSound;
 - (void) rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
 - (void) recursivelyConfirmClose: (BOOL) cont;
@@ -89,10 +89,7 @@
 
 - (void) awakeFromNib
 {
-  connectionWindowControllers = [[NSMutableArray alloc] init];
-  
-  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
-  [newConnectionPortField setFormatter: newConnectionPortFormatter];
+  _connectionWindowControllers = [[NSMutableArray alloc] init];
   
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (colorPanelColorDidChange:)
@@ -104,7 +101,7 @@
                                                name: MUWorldsDidChangeNotification
                                              object: nil];
   
-  dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
+  _dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
 }
 
 - (void) dealloc
@@ -143,39 +140,13 @@
   
   MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
   
-  [self openConnectionWithController: controller];
-  
-}
-
-- (IBAction) connectUsingPanelInformation: (id) sender
-{
-  MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
-                                         port: @(newConnectionPortField.intValue)];;
-  
-  if ([newConnectionSaveWorldButton state] == NSOnState)
-  	[[MUWorldRegistry defaultRegistry] insertObject: world
-                                    inWorldsAtIndex: [MUWorldRegistry defaultRegistry].worlds.count];
-  
-  MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
-  
-  [self openConnectionWithController: controller];
-  [newConnectionPanel close];
+  [self _openConnectionWithController: controller];
   
 }
 
 - (IBAction) openBugsWebPage: (id) sender
 {
   [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUKoanBugsURLString]];
-}
-
-- (IBAction) openNewConnectionPanel: (id) sender
-{
-  newConnectionHostnameField.objectValue = nil;
-  newConnectionPortField.objectValue = nil;
-  newConnectionSaveWorldButton.state = NSOffState;
-
-  [newConnectionPanel makeFirstResponder: newConnectionHostnameField];
-  [newConnectionPanel makeKeyAndOrderFront: self];
 }
 
 - (IBAction) showAboutPanel: (id) sender;
@@ -185,10 +156,23 @@
 
 - (IBAction) showAcknowledgementsWindow: (id) sender
 {
-  if (!acknowledgementsController)
-    acknowledgementsController = [[MUAcknowledgementsController alloc] init];
-  if (acknowledgementsController)
-    [acknowledgementsController showWindow: self];
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _acknowledgementsController = [[MUAcknowledgementsController alloc] init]; });
+  
+  [_acknowledgementsController showWindow: self];
+}
+
+- (IBAction) showConnectPanel: (id) sender
+{
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{
+    _connectPanelController = [[MUConnectPanelController alloc] init];
+    _connectPanelController.delegate = self;
+  });
+  
+  [_connectPanelController showWindow: self];
 }
 
 - (IBAction) showPreferencesWindow: (id) sender
@@ -198,18 +182,20 @@
 
 - (IBAction) showProfilesWindow: (id) sender
 {
-  if (!profilesController)
-    profilesController = [[MUProfilesWindowController alloc] init];
-  if (profilesController)
-    [profilesController showWindow: self];
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _profilesController = [[MUProfilesWindowController alloc] init]; });
+  
+  [_profilesController showWindow: self];
 }
 
 - (IBAction) showProxySettings: (id) sender
 {
-  if (!proxySettingsController)
-    proxySettingsController = [[MUProxySettingsController alloc] init];
-  if (proxySettingsController)
-    [proxySettingsController showWindow: self];
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ _proxySettingsController = [[MUProxySettingsController alloc] init]; });
+  
+  [_proxySettingsController showWindow: self];
 }
 
 - (IBAction) toggleUseProxy: (id) sender
@@ -231,7 +217,7 @@
     return;
 #endif
   
-  unreadCount = 0;
+  _unreadCount = 0;
   [self updateApplicationBadge];
 }
 
@@ -252,12 +238,12 @@
 
 - (NSApplicationTerminateReply) applicationShouldTerminate: (NSApplication *) application
 {
-  NSUInteger count = connectionWindowControllers.count;
+  NSUInteger count = _connectionWindowControllers.count;
   NSUInteger openConnections = 0;
   
   while (count--)
   {
-    MUConnectionWindowController *controller = connectionWindowControllers[count];
+    MUConnectionWindowController *controller = _connectionWindowControllers[count];
     if (controller && controller.isConnectedOrConnecting)
       openConnections++;
   }
@@ -302,13 +288,22 @@
   [[MUSocketFactory defaultFactory] saveProxySettings];
 }
 
-#pragma mark - MUConnectionWindowController delegate
+#pragma mark - MUConnectPanelControllerDelegate protocol
+
+- (void) openConnectionForWorld: (MUWorld *) world
+{
+  MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
+  
+  [self _openConnectionWithController: controller];
+}
+
+#pragma mark - MUConnectionWindowControllerDelegate protocol
 
 - (void) connectionWindowControllerWillClose: (NSNotification *) notification
 {
   MUConnectionWindowController *controller = notification.object;
   
-  [connectionWindowControllers removeObject: controller];
+  [_connectionWindowControllers removeObject: controller];
 }
 
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification
@@ -319,7 +314,7 @@
   if (![NSApp isActive])
   {
     [NSApp requestUserAttention: NSInformationalRequest];
-    unreadCount++;
+    _unreadCount++;
     [self updateApplicationBadge];
   }
 }
@@ -352,14 +347,14 @@
   MUProfile *profile = [sender representedObject];
   controller = [[MUConnectionWindowController alloc] initWithProfile: profile];
   
-  [self openConnectionWithController: controller];
+  [self _openConnectionWithController: controller];
 }
 
-- (void) openConnectionWithController: (MUConnectionWindowController *) controller
+- (void) _openConnectionWithController: (MUConnectionWindowController *) controller
 {
   [controller setDelegate: self];
   
-  [connectionWindowControllers addObject: controller];
+  [_connectionWindowControllers addObject: controller];
   [controller showWindow: self];
   [controller connect: nil];
 }
@@ -453,7 +448,7 @@
 {
   if (cont)
   {
-    for (MUConnectionWindowController *controller in connectionWindowControllers)
+    for (MUConnectionWindowController *controller in _connectionWindowControllers)
     {
       if (controller.isConnectedOrConnecting)
       {
@@ -474,10 +469,10 @@
 
 - (void) updateApplicationBadge
 {
-  if (unreadCount == 0)
+  if (_unreadCount == 0)
     [NSApp setApplicationIconImage: nil];
   else
-    [dockBadge badgeApplicationDockIconWithValue: unreadCount insetX: (float) 0.0 y: (float) 0.0];
+    [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: (float) 0.0 y: (float) 0.0];
 }
 
 - (void) worldsDidChange: (NSNotification *) notification

@@ -19,6 +19,7 @@
 @interface MUProfilesWindowController ()
 {
   NSMutableArray *_profilesExpandedItems;
+  NSUndoManager *_undoManager;
   
   MUPlayerViewController *_playerViewController;
   MUProfileViewController *_profileViewController;
@@ -30,6 +31,8 @@
 
 #pragma mark - Tree controller handling
 
+- (void) _addNode: (MUTreeNode *) node atIndexPath: (NSIndexPath *) indexPath;
+- (void) _deleteNodeAtIndexPath: (NSIndexPath *) indexPath;
 - (void) _expandProfilesOutlineView;
 - (void) _populateProfilesFromWorldRegistry;
 - (void) _populateProfilesTree;
@@ -49,6 +52,8 @@
   _profilesTreeArray = [[NSMutableArray alloc] init];
   _profilesExpandedItems = [[NSMutableArray alloc] init];
   
+  _undoManager = [[NSUndoManager alloc] init];
+  
   _playerViewController = nil;
   _profileViewController = nil;
   _worldViewController = nil;
@@ -66,7 +71,6 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
-  _profilesTreeArray = nil;
 }
 
 - (void) observeValueForKeyPath: (NSString *) keyPath
@@ -87,28 +91,28 @@
 
 - (IBAction) addNewWorld: (id) sender
 {
-  NSInteger selectedRow = [profilesOutlineView selectedRow];
-  NSUInteger index;
+  NSIndexPath *selectionIndexPath = profilesTreeController.selectionIndexPath;
+  NSIndexPath *newIndexPath;
   
-  if (selectedRow == -1)
-    index = [MUWorldRegistry defaultRegistry].worlds.count;
+  if (selectionIndexPath)
+  {
+    NSUInteger numberOfIndexes = selectionIndexPath.length;
+    NSUInteger indexes[numberOfIndexes];
+    
+    [selectionIndexPath getIndexes: indexes];
+    
+    indexes[numberOfIndexes - 1]++;
+    
+    newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
+  }
   else
   {
-    NSTreeNode *node = (NSTreeNode *) [profilesOutlineView itemAtRow: selectedRow];
-    MUTreeNode *representedObject = [node representedObject];
-    MUWorld *world;
-    
-    if ([representedObject isKindOfClass: [MUWorld class]])
-      world = (MUWorld *) representedObject;
-    else if ([representedObject isKindOfClass: [MUPlayer class]])
-      world = (MUWorld *) ((MUPlayer *) representedObject).parent;
-    
-    index = [[MUWorldRegistry defaultRegistry].worlds indexOfObject: world] + 1;
+    NSUInteger indexes[2] = {0, [MUWorldRegistry defaultRegistry].worlds.count};
+    newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: 2];
   }
   
-  [[MUWorldRegistry defaultRegistry] insertValue: [[MUWorld alloc] init]
-                                         atIndex: index
-                               inPropertyWithKey: @"worlds"];
+  [self _addNode: [[MUWorld alloc] init] atIndexPath: newIndexPath];
+  _undoManager.actionName = _(MUUndoAddWorld);
 }
 
 - (IBAction) goToWorldURL: (id) sender
@@ -120,14 +124,12 @@
 {
   NSPoint point = [NSEvent mouseLocation];
   NSPoint windowPoint = [self.window convertScreenToBase: point];
-  NSLog (@"Location? x= %f, y = %f", (float) point.x, (float) point.y);
-  NSLog (@"Location? x= %f, y = %f", (float) windowPoint.x, (float) windowPoint.y);
   
   NSEvent *event = [NSEvent mouseEventWithType: NSLeftMouseUp
                                       location: windowPoint
                                  modifierFlags: 0
                                      timestamp: NSTimeIntervalSince1970
-                                  windowNumber: [self.window windowNumber]
+                                  windowNumber: self.window.windowNumber
                                        context: nil
                                    eventNumber: 0
                                     clickCount: 0
@@ -188,7 +190,7 @@
       [items addObject: [outlineView itemAtRow: i]];
     }
     
-    for (NSUInteger i = 0; i < items.count; i++)
+    for (NSUInteger i = 0; i < items.count; i++) // Don't change this to fast enumeration.
     {
       NSTreeNode *shadowObject = items[i];
       MUTreeNode *node = shadowObject.representedObject;
@@ -205,12 +207,7 @@
 
 - (id) outlineView: (NSOutlineView *) outlineView persistentObjectForItem: (id) item
 {
-  NSTreeNode *node = (NSTreeNode *) item;
-  
-  if ([node.representedObject isKindOfClass: [MUWorld class]])
-  	return ((MUWorld *) node.representedObject).uniqueIdentifier;
-  else
-  	return nil;
+  return ((MUTreeNode *) ((NSTreeNode *) item).representedObject).uniqueIdentifier;
 }
 
 #pragma mark - NSOutlineView delegate
@@ -340,6 +337,27 @@
   }
 }
 
+#pragma mark - MUOutlineViewDelegate protocol
+
+- (BOOL) outlineView: (NSOutlineView *) outlineView keyDown: (NSEvent *) event
+{
+  NSString *characters = event.characters;
+  if ([characters characterAtIndex: 0] == NSDeleteCharacter || [characters characterAtIndex: 0] == NSBackspaceCharacter)
+  {
+    if (profilesTreeController.selectionIndexPath)
+    {
+      [self _deleteNodeAtIndexPath: profilesTreeController.selectionIndexPath];
+      _undoManager.actionName = _(MUUndoDeleteWorld);
+      return YES;
+    }
+  }
+  return NO;
+}
+
+#pragma mark - NSSplitViewDelegate protocol
+
+
+
 #pragma mark - NSWindowDelegate protocol
 
 - (void) windowDidLoad
@@ -350,6 +368,11 @@
 - (void) windowWillClose: (NSNotification *) notification
 {
   [self _saveProfilesOutlineViewState];
+}
+
+- (NSUndoManager *) windowWillReturnUndoManager: (NSWindow *) window
+{
+  return _undoManager;
 }
 
 #pragma mark - Private methods
@@ -368,6 +391,38 @@
 }
 
 #pragma mark - Tree controller handling
+
+- (void) _addNode: (MUTreeNode *) node atIndexPath: (NSIndexPath *) indexPath
+{
+  [profilesTreeController insertObject: node atArrangedObjectIndexPath: indexPath];
+  
+  [[_undoManager prepareWithInvocationTarget: self] _deleteNodeAtIndexPath: indexPath];
+}
+
+- (void) _deleteNodeAtIndexPath: (NSIndexPath *) indexPath
+{
+  NSArray *selectedObjects = profilesTreeController.selectedObjects;
+  
+  if (selectedObjects.count == 0)
+    return;
+  else if (selectedObjects.count > 1)
+  {
+    NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+    return;
+  }
+  
+  MUTreeNode *node = selectedObjects[0];
+  
+  BOOL savedAvoidsEmptySelection = profilesTreeController.avoidsEmptySelection;
+  profilesTreeController.avoidsEmptySelection = YES;
+  
+  if ([node isKindOfClass: [MUWorld class]])
+    [profilesTreeController removeObjectAtArrangedObjectIndexPath: indexPath];
+  
+  profilesTreeController.avoidsEmptySelection = savedAvoidsEmptySelection;
+  
+  [[_undoManager prepareWithInvocationTarget: self] _addNode: node atIndexPath: indexPath];
+}
 
 - (void) _expandProfilesOutlineView
 {

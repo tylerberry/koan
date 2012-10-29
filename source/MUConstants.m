@@ -64,16 +64,12 @@ NSString *MUGoToURLToolbarItem = @"MUGoToURLToolbarItem";
 
 #pragma mark Toolbar item localization constants.
 
-NSString *MULAddWorld = @"AddWorld";
-NSString *MULAddPlayer = @"AddPlayer";
-NSString *MULEditItem = @"EditItem";
-NSString *MULEditWorld = @"EditWorld";
-NSString *MULEditPlayer = @"EditPlayer";
 NSString *MULGoToURL = @"GoToURL";
-NSString *MULRemoveItem = @"RemoveItem";
-NSString *MULRemoveWorld = @"RemoveWorld";
-NSString *MULRemovePlayer = @"RemovePlayer";
-NSString *MULEditProfile = @"EditProfile";
+
+#pragma mark Undoable actions.
+
+NSString *MUUndoAddWorld = @"AddWorld";
+NSString *MUUndoDeleteWorld = @"DeleteWorld";
 
 #pragma mark Growl localization constants.
 

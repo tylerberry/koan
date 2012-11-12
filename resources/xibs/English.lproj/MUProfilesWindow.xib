@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -89,7 +89,7 @@
 															<string key="NSFrameSize">{200, 486}</string>
 															<reference key="NSSuperview" ref="276075311"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="431300614"/>
+															<reference key="NSNextKeyView" ref="551122579"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
 															<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -243,7 +243,7 @@
 											<string key="NSFrame">{{0, 23}, {200, 486}}</string>
 											<reference key="NSSuperview" ref="865949446"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="276075311"/>
+											<reference key="NSNextKeyView" ref="431300614"/>
 											<string key="NSReuseIdentifierKey">_NS:9</string>
 											<int key="NSsFlags">133648</int>
 											<reference key="NSVScroller" ref="1039916593"/>
@@ -367,7 +367,7 @@
 													<string key="NSFrameSize">{477, 509}</string>
 													<reference key="NSSuperview" ref="323591889"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="606328272"/>
+													<reference key="NSNextKeyView" ref="369788587"/>
 													<string key="NSReuseIdentifierKey">_NS:13</string>
 												</object>
 											</array>
@@ -391,6 +391,7 @@
 											<string key="NSFrame">{{461, 0}, {16, 509}}</string>
 											<reference key="NSSuperview" ref="654217231"/>
 											<reference key="NSWindow"/>
+											<reference key="NSNextKeyView"/>
 											<string key="NSReuseIdentifierKey">_NS:15</string>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											<reference key="NSTarget" ref="654217231"/>
@@ -416,7 +417,7 @@
 									<string key="NSFrame">{{201, 0}, {477, 509}}</string>
 									<reference key="NSSuperview" ref="96870285"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="323591889"/>
+									<reference key="NSNextKeyView" ref="606328272"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
 									<int key="NSsFlags">133648</int>
 									<reference key="NSVScroller" ref="369788587"/>
@@ -572,9 +573,25 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">addNewWorld:</string>
 						<reference key="source" ref="935907011"/>
+						<reference key="destination" ref="821883882"/>
+					</object>
+					<int key="connectionID">1153</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">addNewPlayer:</string>
+						<reference key="source" ref="935907011"/>
+						<reference key="destination" ref="580049536"/>
+					</object>
+					<int key="connectionID">1154</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showAddContextMenu:</string>
+						<reference key="source" ref="935907011"/>
 						<reference key="destination" ref="326780336"/>
 					</object>
-					<int key="connectionID">1149</int>
+					<int key="connectionID">1155</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2009,7 +2026,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1152</int>
+			<int key="maxID">1155</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2055,11 +2072,16 @@
 					<string key="className">MUProfilesWindowController</string>
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addNewPlayer:">id</string>
 						<string key="addNewWorld:">id</string>
 						<string key="goToWorldURL:">id</string>
 						<string key="showAddContextMenu:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addNewPlayer:">
+							<string key="name">addNewPlayer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="addNewWorld:">
 							<string key="name">addNewWorld:</string>
 							<string key="candidateClassName">id</string>

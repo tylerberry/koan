@@ -11,6 +11,9 @@
 
 // Undoable actions.
 
+"AddPlayer" = "Add Player";
+"DeletePlayer" = "Delete Player";
+
 "AddWorld" = "Add World";
 "DeleteWorld" = "Delete World";
 

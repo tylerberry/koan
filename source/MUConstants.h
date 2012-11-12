@@ -70,6 +70,9 @@ extern NSString *MULGoToURL;
 
 #pragma mark Undoable actions.
 
+extern NSString *MUUndoAddPlayer;
+extern NSString *MUUndoDeletePlayer;
+
 extern NSString *MUUndoAddWorld;
 extern NSString *MUUndoDeleteWorld;
 

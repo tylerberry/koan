@@ -90,6 +90,67 @@
 
 #pragma mark - Actions
 
+- (IBAction) addNewPlayer: (id) sender
+{
+  NSIndexPath *selectionIndexPath = profilesTreeController.selectionIndexPath;
+  NSIndexPath *newIndexPath;
+  
+  if (selectionIndexPath)
+  {
+    NSArray *selectedObjects = profilesTreeController.selectedObjects;
+    
+    if (selectedObjects.count == 0)
+      return;
+    else if (selectedObjects.count > 1)
+    {
+      NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+      return;
+    }
+    
+    MUTreeNode *node = selectedObjects[0];
+    
+    if ([node isKindOfClass: [MUWorld class]])
+    {
+      // Construct the index path at the end of the selected world's children.
+      
+      NSUInteger numberOfIndexes = selectionIndexPath.length + 1;
+      NSUInteger indexes[numberOfIndexes];
+      
+      [selectionIndexPath getIndexes: indexes];
+      
+      indexes[numberOfIndexes - 1] = ((MUWorld *) node).children.count;
+      
+      newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
+    }
+    else if ([node isKindOfClass: [MUPlayer class]])
+    {
+      // Construct the index path after the selected player.
+      
+      NSUInteger numberOfIndexes = selectionIndexPath.length;
+      NSUInteger indexes[numberOfIndexes];
+      
+      [selectionIndexPath getIndexes: indexes];
+      
+      indexes[numberOfIndexes - 1]++;
+      
+      newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
+    }
+    else
+    {
+      NSLog (@"Warning: Logic error: MUProfilesWindowController -addNewPlayer: called with unknown selection class.");
+      return;
+    }
+  }
+  else
+  {
+    NSLog (@"Warning: Logic error: MUProfilesWindowController -addNewPlayer: called with no selection.");
+    return;
+  }
+  
+  [self _addNode: [[MUPlayer alloc] init] atIndexPath: newIndexPath];
+  _undoManager.actionName = _(MUUndoAddPlayer);
+}
+
 - (IBAction) addNewWorld: (id) sender
 {
   NSIndexPath *selectionIndexPath = profilesTreeController.selectionIndexPath;
@@ -97,17 +158,54 @@
   
   if (selectionIndexPath)
   {
-    NSUInteger numberOfIndexes = selectionIndexPath.length;
-    NSUInteger indexes[numberOfIndexes];
+    NSArray *selectedObjects = profilesTreeController.selectedObjects;
     
-    [selectionIndexPath getIndexes: indexes];
+    if (selectedObjects.count == 0)
+      return;
+    else if (selectedObjects.count > 1)
+    {
+      NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+      return;
+    }
     
-    indexes[numberOfIndexes - 1]++;
+    MUTreeNode *node = selectedObjects[0];
     
-    newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
+    if ([node isKindOfClass: [MUWorld class]])
+    {
+      // Construct the index path after the selected world.
+      
+      NSUInteger numberOfIndexes = selectionIndexPath.length;
+      NSUInteger indexes[numberOfIndexes];
+    
+      [selectionIndexPath getIndexes: indexes];
+    
+      indexes[numberOfIndexes - 1]++;
+    
+      newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
+    }
+    else if ([node isKindOfClass: [MUPlayer class]])
+    {
+      // Construct the index path pointing after the selected player's parent.
+      
+      NSUInteger numberOfIndexes = selectionIndexPath.length;
+      NSUInteger indexes[numberOfIndexes];
+      
+      [selectionIndexPath getIndexes: indexes];
+      
+      indexes[numberOfIndexes - 2]++;
+      
+      newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes - 1];
+    }
+    else
+    {
+      NSLog (@"Warning: Logic error: MUProfilesWindowController -addNewWorld: called with unknown selection class.");
+      return;
+    }
   }
   else
   {
+    // Construct the index path pointing to the top level of the world registry at the end.
+    
     NSUInteger indexes[2] = {0, [MUWorldRegistry defaultRegistry].worlds.count};
     newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: 2];
   }
@@ -347,10 +445,28 @@
   {
     if (profilesTreeController.selectionIndexPath)
     {
-      [self _deleteNodeAtIndexPath: profilesTreeController.selectionIndexPath];
-      _undoManager.actionName = _(MUUndoDeleteWorld);
-      return YES;
+      NSArray *selectedObjects = profilesTreeController.selectedObjects;
+      
+      if (selectedObjects.count > 1)
+      {
+        NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+        return YES;
+      }
+      
+      MUTreeNode *node = selectedObjects[0];
+      
+      if ([node isKindOfClass: [MUWorld class]])
+      {
+        [self _deleteNodeAtIndexPath: profilesTreeController.selectionIndexPath];
+        _undoManager.actionName = _(MUUndoDeleteWorld);
+      }
+      else if ([node isKindOfClass: [MUPlayer class]])
+      {
+        [self _deleteNodeAtIndexPath: profilesTreeController.selectionIndexPath];
+        _undoManager.actionName = _(MUUndoDeletePlayer);
+      }
     }
+    return YES;
   }
   return NO;
 }
@@ -417,8 +533,7 @@
   BOOL savedAvoidsEmptySelection = profilesTreeController.avoidsEmptySelection;
   profilesTreeController.avoidsEmptySelection = YES;
   
-  if ([node isKindOfClass: [MUWorld class]])
-    [profilesTreeController removeObjectAtArrangedObjectIndexPath: indexPath];
+  [profilesTreeController removeObjectAtArrangedObjectIndexPath: indexPath];
   
   profilesTreeController.avoidsEmptySelection = savedAvoidsEmptySelection;
   

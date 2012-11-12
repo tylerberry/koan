@@ -68,6 +68,9 @@ NSString *MULGoToURL = @"GoToURL";
 
 #pragma mark Undoable actions.
 
+NSString *MUUndoAddPlayer = @"AddPlayer";
+NSString *MUUndoDeletePlayer = @"DeletePlayer";
+
 NSString *MUUndoAddWorld = @"AddWorld";
 NSString *MUUndoDeleteWorld = @"DeleteWorld";
 

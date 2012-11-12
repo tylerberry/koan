@@ -172,7 +172,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
   
   _name = [decoder decodeObjectForKey: @"name"];
   
-  _children = [decoder decodeObjectForKey: @"children"];
+  _children = [[decoder decodeObjectForKey: @"children"] mutableCopy];
   
   return self;
 }

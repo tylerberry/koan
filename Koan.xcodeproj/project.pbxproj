@@ -60,7 +60,7 @@
 		2FB1F7FC161BDC6E00AFD977 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F07054B1613F2E400A71314 /* Sparkle.framework */; };
 		2FB1F803161BFAEE00AFD977 /* spacer.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2FB1F802161BFAEE00AFD977 /* spacer.tiff */; };
 		2FB1F806161C045500AFD977 /* ActionTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2FB1F804161C045500AFD977 /* ActionTemplate.pdf */; };
-		2FB1F807161C045500AFD977 /* AddMailboxTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2FB1F805161C045500AFD977 /* AddMailboxTemplate.pdf */; };
+		2FB1F807161C045500AFD977 /* AddTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2FB1F805161C045500AFD977 /* AddTemplate.pdf */; };
 		2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */; };
 		2FB40DE10BF10797004E13F8 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */; };
 		2FB40E7B0BF10AA2004E13F8 /* MUFilterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */; };
@@ -75,7 +75,6 @@
 		2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */; };
 		2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14E0D67E86A007F0036 /* growl-icon.png */; };
 		2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA1500D67E870007F0036 /* openssl-icon.gif */; };
-		2FDFA1530D67E890007F0036 /* rbsplitview-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA1520D67E890007F0036 /* rbsplitview-icon.png */; };
 		2FDFA1560D67F630007F0036 /* MUAcknowledgementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FDFA1550D67F630007F0036 /* MUAcknowledgementsController.m */; };
 		2FE366750BCAC9820068A6AA /* UKPrefsPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FE366730BCAC9820068A6AA /* UKPrefsPanel.m */; };
 		2FE368160BCAD4F00068A6AA /* GetMetadataForFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FE367EB0BCAD35E0068A6AA /* GetMetadataForFile.m */; };
@@ -149,13 +148,6 @@
 		E67CBF3207D03FEE004BB3DB /* MUProfilesToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67CBF3007D03FEE004BB3DB /* MUProfilesToolbarController.m */; };
 		E6914C52092FDAD1005DA235 /* MUPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6914C50092FDAD1005DA235 /* MUPreferencesController.m */; };
 		E6B5E3B906A6EEA600F53EBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6B5E3B706A6EEA600F53EBB /* InfoPlist.strings */; };
-		E6B5E61206A73B0A00F53EBB /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6B5E61106A73B0A00F53EBB /* version.plist */; };
-		E6C9D44E077BF6B5007BB2C1 /* add-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D448077BF6B5007BB2C1 /* add-pressed.png */; };
-		E6C9D44F077BF6B5007BB2C1 /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D449077BF6B5007BB2C1 /* add.png */; };
-		E6C9D450077BF6B5007BB2C1 /* edit-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D44A077BF6B5007BB2C1 /* edit-pressed.png */; };
-		E6C9D451077BF6B5007BB2C1 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D44B077BF6B5007BB2C1 /* edit.png */; };
-		E6C9D452077BF6B5007BB2C1 /* remove-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D44C077BF6B5007BB2C1 /* remove-pressed.png */; };
-		E6C9D453077BF6B5007BB2C1 /* remove.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C9D44D077BF6B5007BB2C1 /* remove.png */; };
 		E6C9D607077C2DC6007BB2C1 /* MUNaiveURLFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C9D605077C2DC6007BB2C1 /* MUNaiveURLFilter.m */; };
 		E6DA667307776D9900C46267 /* MUWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DA667107776D9900C46267 /* MUWorld.m */; };
 		E6E7A62807496940007005AC /* MUHistoryRing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A62707496940007005AC /* MUHistoryRing.m */; };
@@ -336,7 +328,7 @@
 		2FAF2C25161CC1EC00EADBA3 /* Koan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Koan.entitlements; sourceTree = "<group>"; };
 		2FB1F802161BFAEE00AFD977 /* spacer.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = spacer.tiff; sourceTree = "<group>"; };
 		2FB1F804161C045500AFD977 /* ActionTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ActionTemplate.pdf; sourceTree = "<group>"; };
-		2FB1F805161C045500AFD977 /* AddMailboxTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddMailboxTemplate.pdf; sourceTree = "<group>"; };
+		2FB1F805161C045500AFD977 /* AddTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddTemplate.pdf; sourceTree = "<group>"; };
 		2FB40CD80BF0FA3D004E13F8 /* MUFugueEditFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFugueEditFilter.h; sourceTree = "<group>"; };
 		2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFugueEditFilter.m; sourceTree = "<group>"; };
 		2FB40D930BF10694004E13F8 /* MUFugueEditFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFugueEditFilterTests.h; sourceTree = "<group>"; };
@@ -357,7 +349,6 @@
 		2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sparkle-icon.png"; sourceTree = "<group>"; };
 		2FDFA14E0D67E86A007F0036 /* growl-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "growl-icon.png"; sourceTree = "<group>"; };
 		2FDFA1500D67E870007F0036 /* openssl-icon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "openssl-icon.gif"; sourceTree = "<group>"; };
-		2FDFA1520D67E890007F0036 /* rbsplitview-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rbsplitview-icon.png"; sourceTree = "<group>"; };
 		2FDFA1540D67F630007F0036 /* MUAcknowledgementsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAcknowledgementsController.h; sourceTree = "<group>"; };
 		2FDFA1550D67F630007F0036 /* MUAcknowledgementsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAcknowledgementsController.m; sourceTree = "<group>"; };
 		2FE366720BCAC9820068A6AA /* UKPrefsPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UKPrefsPanel.h; sourceTree = "<group>"; };
@@ -505,13 +496,6 @@
 		E696783C078F55590033A4C8 /* MUProfileRegistryTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileRegistryTests.h; sourceTree = "<group>"; };
 		E696783D078F55590033A4C8 /* MUProfileRegistryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileRegistryTests.m; sourceTree = "<group>"; };
 		E6B5E3B806A6EEA600F53EBB /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E6B5E61106A73B0A00F53EBB /* version.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
-		E6C9D448077BF6B5007BB2C1 /* add-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-pressed.png"; sourceTree = "<group>"; };
-		E6C9D449077BF6B5007BB2C1 /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
-		E6C9D44A077BF6B5007BB2C1 /* edit-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-pressed.png"; sourceTree = "<group>"; };
-		E6C9D44B077BF6B5007BB2C1 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
-		E6C9D44C077BF6B5007BB2C1 /* remove-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remove-pressed.png"; sourceTree = "<group>"; };
-		E6C9D44D077BF6B5007BB2C1 /* remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remove.png; sourceTree = "<group>"; };
 		E6C9D604077C2DC6007BB2C1 /* MUNaiveURLFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUNaiveURLFilter.h; sourceTree = "<group>"; };
 		E6C9D605077C2DC6007BB2C1 /* MUNaiveURLFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNaiveURLFilter.m; sourceTree = "<group>"; };
 		E6DA667007776D9900C46267 /* MUWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorld.h; sourceTree = "<group>"; };
@@ -645,20 +629,12 @@
 				2F6C72A90BB46BD000709320 /* Koan.sdef */,
 				E62C909E07422669005662BC /* Localizable.strings */,
 				2FB1F804161C045500AFD977 /* ActionTemplate.pdf */,
-				2FB1F805161C045500AFD977 /* AddMailboxTemplate.pdf */,
-				E6C9D448077BF6B5007BB2C1 /* add-pressed.png */,
-				E6C9D449077BF6B5007BB2C1 /* add.png */,
-				E6C9D44A077BF6B5007BB2C1 /* edit-pressed.png */,
-				E6C9D44B077BF6B5007BB2C1 /* edit.png */,
+				2FB1F805161C045500AFD977 /* AddTemplate.pdf */,
 				2FDFA14E0D67E86A007F0036 /* growl-icon.png */,
 				2FDFA1500D67E870007F0036 /* openssl-icon.gif */,
-				2FDFA1520D67E890007F0036 /* rbsplitview-icon.png */,
-				E6C9D44C077BF6B5007BB2C1 /* remove-pressed.png */,
-				E6C9D44D077BF6B5007BB2C1 /* remove.png */,
 				2FB1F802161BFAEE00AFD977 /* spacer.tiff */,
 				2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */,
 				2FD06555117D704500B8BFDB /* ukprefspanel-icon.gif */,
-				E6B5E61106A73B0A00F53EBB /* version.plist */,
 			);
 			name = Resources;
 			path = resources;
@@ -1270,16 +1246,8 @@
 				2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */,
 				E6B5E3B906A6EEA600F53EBB /* InfoPlist.strings in Resources */,
 				E62C909F07422669005662BC /* Localizable.strings in Resources */,
-				E6B5E61206A73B0A00F53EBB /* version.plist in Resources */,
-				E6C9D44E077BF6B5007BB2C1 /* add-pressed.png in Resources */,
-				E6C9D44F077BF6B5007BB2C1 /* add.png in Resources */,
-				E6C9D450077BF6B5007BB2C1 /* edit-pressed.png in Resources */,
-				E6C9D451077BF6B5007BB2C1 /* edit.png in Resources */,
 				2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */,
 				2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */,
-				2FDFA1530D67E890007F0036 /* rbsplitview-icon.png in Resources */,
-				E6C9D452077BF6B5007BB2C1 /* remove-pressed.png in Resources */,
-				E6C9D453077BF6B5007BB2C1 /* remove.png in Resources */,
 				2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */,
 				2FD06556117D704500B8BFDB /* ukprefspanel-icon.gif in Resources */,
 				2F7092C112239AF900E0D178 /* CTBadge_1.pdf in Resources */,
@@ -1289,7 +1257,7 @@
 				2F7093D61223B3F000E0D178 /* Growl Registration Ticket.growlRegDict in Resources */,
 				2FB1F803161BFAEE00AFD977 /* spacer.tiff in Resources */,
 				2FB1F806161C045500AFD977 /* ActionTemplate.pdf in Resources */,
-				2FB1F807161C045500AFD977 /* AddMailboxTemplate.pdf in Resources */,
+				2FB1F807161C045500AFD977 /* AddTemplate.pdf in Resources */,
 				2F97B0AA16337B9F00B33F4A /* MUWorldView.xib in Resources */,
 				2F97B0AC16337BB700B33F4A /* MUPlayerView.xib in Resources */,
 				2F6F9F1C1633F8090071AE70 /* MUProfileView.xib in Resources */,

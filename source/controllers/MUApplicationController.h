@@ -6,14 +6,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "CTBadge.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
 
-@class MUAcknowledgementsController;
 @class MUPreferencesController;
-@class MUProfilesWindowController;
-@class MUProxySettingsController;
 
 @interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectPanelControllerDelegate, MUConnectionWindowControllerDelegate>
 {
@@ -24,13 +20,15 @@
 
 - (IBAction) chooseNewFont: (id) sender;
 - (IBAction) connectToURL: (NSURL *) url;
+- (IBAction) showProxySettings: (id) sender;
+- (IBAction) toggleUseProxy: (id) sender;
+
 - (IBAction) openBugsWebPage: (id) sender;
 - (IBAction) showAboutPanel: (id) sender;
 - (IBAction) showAcknowledgementsWindow: (id) sender;
 - (IBAction) showConnectPanel: (id) sender;
 - (IBAction) showPreferencesWindow: (id) sender;
 - (IBAction) showProfilesWindow: (id) sender;
-- (IBAction) showProxySettings: (id) sender;
-- (IBAction) toggleUseProxy: (id) sender;
+
 
 @end

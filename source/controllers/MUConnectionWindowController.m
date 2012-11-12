@@ -78,7 +78,7 @@ enum MUTextDisplayModes
 
 - (id) initWithProfile: (MUProfile *) newProfile
 {
-  if (!(self = [super initWithWindowNibName: @"MUConnectionWindow"]))
+  if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
     return nil;
   
   profile = newProfile;

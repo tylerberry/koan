@@ -18,6 +18,8 @@
 
 - (void) removeAllSubviews
 {
+  CGFloat frameWidth = self.frame.size.width;
+  
   NSView *lastSubview = self.subviews.lastObject;
   
   if (lastSubview)
@@ -25,7 +27,7 @@
   
   self.subviews = @[];
   
-  self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
+  self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, frameWidth, 1);
 }
 
 #pragma mark - NSView method overrides

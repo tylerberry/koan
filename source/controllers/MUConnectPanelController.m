@@ -27,12 +27,12 @@
 {
   [super windowDidLoad];
   
+  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
+  newConnectionPortField.formatter = newConnectionPortFormatter;
+  
   newConnectionHostnameField.objectValue = nil;
   newConnectionPortField.objectValue = nil;
   newConnectionSaveWorldButton.state = NSOffState;
-  
-  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
-  newConnectionPortField.formatter = newConnectionPortFormatter;
 }
 
 #pragma mark - Actions

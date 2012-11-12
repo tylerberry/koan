@@ -4,21 +4,24 @@
 // Copyright (c) 2012 3James Software.
 //
 
+#import "MUApplicationController.h"
+
+#import "CTBadge.h"
 #import "FontNameToDisplayNameTransformer.h"
 #import "JRSwizzle.h"
+#import "NSObject (BetterHashing).h"
+
 #import "MUAcknowledgementsController.h"
-#import "MUApplicationController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
-#import "MUGrowlService.h"
 #import "MUPlayer.h"
 #import "MUPreferencesController.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
 #import "MUProxySettingsController.h"
 #import "MUSocketFactory.h"
+#import "MUWorld.h"
 #import "MUWorldRegistry.h"
-#import "NSObject (BetterHashing).h"
 
 @interface MUApplicationController ()
 {

@@ -7,12 +7,11 @@
 #import "MULogBrowserWindowController.h"
 #import "MUTextLogDocument.h"
 
-static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
-
 @implementation MULogBrowserWindowController
 
 + (id) sharedLogBrowserWindowController
 {
+  static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{ _sharedLogBrowserWindowController = [[MULogBrowserWindowController alloc] init]; });
@@ -22,7 +21,7 @@ static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
 
 - (id) init
 {
-  if (!(self = [super initWithWindowNibName: @"MULogBrowser"]))
+  if (!(self = [super initWithWindowNibName: @"MULogBrowser" owner: self]))
     return nil;
   
   return self;
@@ -34,7 +33,7 @@ static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
 {
   [super setDocument: newDocument];
   
-  textView.string = [(MUTextLogDocument *) newDocument content];
+  textView.string = ((MUTextLogDocument *) newDocument).content;
   
   [self showWindow: self];
 }

@@ -7,8 +7,6 @@
 #import "MUProfileRegistry.h"
 #import "MUProfile.h"
 
-static MUProfileRegistry *_defaultRegistry = nil;
-
 @interface MUProfileRegistry ()
 {
   NSMutableDictionary *_mutableProfiles;
@@ -29,6 +27,7 @@ static MUProfileRegistry *_defaultRegistry = nil;
 
 + (MUProfileRegistry *) defaultRegistry
 {
+  static MUProfileRegistry *_defaultRegistry = nil;
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{ _defaultRegistry = [[MUProfileRegistry alloc] initWithProfilesFromUserDefaults]; });
@@ -203,9 +202,7 @@ static MUProfileRegistry *_defaultRegistry = nil;
 
 - (void) _cleanUpDefaultRegistry: (NSNotification *) notification
 {
-  [[NSNotificationCenter defaultCenter] removeObserver: _defaultRegistry];
   [self _writeProfilesToUserDefaults];
-  _defaultRegistry = nil;
 }
 
 - (void) _startObservingWritableValuesForProfile: (MUProfile *) profile

@@ -10,7 +10,7 @@
 
 - (id) init
 {
-  if (!(self = [super initWithWindowNibName: @"MUAcknowledgements"]))
+  if (!(self = [super initWithWindowNibName: @"MUAcknowledgements" owner: self]))
     return nil;
 
   return self;

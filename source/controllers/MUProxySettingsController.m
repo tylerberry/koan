@@ -13,7 +13,7 @@
 
 - (id) init
 {
-  self = [super initWithWindowNibName: @"MUProxySettings"];
+  self = [super initWithWindowNibName: @"MUProxySettings" owner: self];
   
   return self;
 }

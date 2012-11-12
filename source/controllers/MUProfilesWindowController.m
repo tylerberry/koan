@@ -38,6 +38,7 @@
 - (void) _populateProfilesTree;
 - (void) _saveProfilesOutlineViewState;
 
+
 @end
 
 #pragma mark -
@@ -46,7 +47,7 @@
 
 - (id) init
 {
-  if (!(self = [super initWithWindowNibName: @"MUProfilesWindow"]))
+  if (!(self = [super initWithWindowNibName: @"MUProfilesWindow" owner: self]))
     return nil;
   
   _profilesTreeArray = [[NSMutableArray alloc] init];

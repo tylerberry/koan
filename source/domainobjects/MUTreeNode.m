@@ -24,7 +24,6 @@ static NSMutableDictionary *_uniqueIdentifiers;
 
 @implementation MUTreeNode
 
-@synthesize children = _children;
 @dynamic icon, isLeaf, uniqueIdentifier;
 
 + (void) initialize
@@ -97,6 +96,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
 {
   object.parent = self;
   [_children insertObject: object atIndex: index];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) insertChildren: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
@@ -105,12 +105,14 @@ static NSMutableDictionary *_uniqueIdentifiers;
     child.parent = self;
   
   [_children insertObjects: objects atIndexes: indexes];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeObjectFromChildrenAtIndex: (NSUInteger) index
 {
   ((MUTreeNode *) _children[index]).parent = nil;
   [_children removeObjectAtIndex: index];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeChildrenAtIndexes: (NSIndexSet *) indexes
@@ -121,6 +123,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
     child.parent = nil;
   
   [_children removeObjectsAtIndexes: indexes];
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) replaceObjectInChildrenAtIndex: (NSUInteger) index withObject: (MUTreeNode *) object
@@ -128,11 +131,13 @@ static NSMutableDictionary *_uniqueIdentifiers;
   ((MUTreeNode *) _children[index]).parent = nil;
   object.parent = self;
   _children[index] = object;
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) replaceChildrenAtIndexes: (NSIndexSet *) indexes withChildren: (NSArray *) objects
 {
   [_children replaceObjectsAtIndexes: indexes withObjects: objects];
+  [self _postWorldsDidChangeNotification];
 }
 
 #pragma mark - Actions

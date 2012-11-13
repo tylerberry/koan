@@ -7,8 +7,6 @@
 #import "MUWorldRegistry.h"
 #import "MUProfile.h"
 
-static MUWorldRegistry *_defaultRegistry = nil;
-
 @interface MUWorldRegistry ()
 
 - (void) _applicationWillTerminate: (NSNotification *) notification;
@@ -22,10 +20,11 @@ static MUWorldRegistry *_defaultRegistry = nil;
 
 @implementation MUWorldRegistry
 
-@dynamic worlds;
+@synthesize worlds = _worlds;
 
 + (MUWorldRegistry *) defaultRegistry
 {
+  static MUWorldRegistry *_defaultRegistry = nil;
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{ _defaultRegistry = [[MUWorldRegistry alloc] initWithWorldsFromUserDefaults]; });
@@ -55,7 +54,7 @@ static MUWorldRegistry *_defaultRegistry = nil;
   if (!worldsData)
     return nil;
   
-  _mutableWorlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
+  _worlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
   
   for (MUTreeNode *topLevelNode in self.worlds)
     [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
@@ -78,37 +77,79 @@ static MUWorldRegistry *_defaultRegistry = nil;
   if (!(self = [super init]))
     return nil;
   
-  _mutableWorlds = [[NSMutableArray alloc] init];
+  _worlds = [[NSMutableArray alloc] init];
   
   return self;
 }
 
-#pragma mark - Key-value coding accessors
+#pragma mark - Property method implementations for worlds
+
+- (NSMutableArray *) worlds
+{
+  @synchronized (self)
+  {
+    return _worlds;
+  }
+}
+
+- (void) setWorlds: (NSArray *) newWorlds
+{
+  @synchronized (self)
+  {
+    if ([_worlds isEqualToArray: newWorlds])
+      return;
+    
+    [self willChangeValueForKey: @"worlds"];
+    
+    _worlds = [newWorlds mutableCopy];
+    
+    [self didChangeValueForKey: @"worlds"];
+    [self _postWorldsDidChangeNotification];
+  }
+}
 
 - (NSUInteger) countOfWorlds
 {
-  return _mutableWorlds.count;
+  @synchronized (self)
+  {
+    return _worlds.count;
+  }
 }
 
 - (MUTreeNode *) objectInWorldsAtIndex: (NSUInteger) index
 {
-  return _mutableWorlds[index];
+  @synchronized (self)
+  {
+    return _worlds[index];
+  }
 }
 
 - (NSArray *) worldsAtIndexes: (NSIndexSet *) indexSet
 {
-  return [_mutableWorlds objectsAtIndexes: indexSet];
+  @synchronized (self)
+  {
+    return [_worlds objectsAtIndexes: indexSet];
+  }
 }
 
 - (void) getWorlds: (__unsafe_unretained id *) objects range: (NSRange) range
 {
-  [_mutableWorlds getObjects: objects range: range];
+  @synchronized (self)
+  {
+    [_worlds getObjects: objects range: range];
+  }
 }
 
 - (void) insertObject: (MUTreeNode *) object inWorldsAtIndex: (NSUInteger) index
 {
   object.parent = nil;
-  [_mutableWorlds insertObject: object atIndex: index];
+  
+  @synchronized (self)
+  {
+    [_worlds insertObject: object atIndex: index];
+  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) insertWorlds: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
@@ -116,108 +157,54 @@ static MUWorldRegistry *_defaultRegistry = nil;
   for (MUTreeNode *node in objects)
     node.parent = nil;
   
-  [_mutableWorlds insertObjects: objects atIndexes: indexes];
+  @synchronized (self)
+  {
+    [_worlds insertObjects: objects atIndexes: indexes];
+  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeObjectFromWorldsAtIndex: (NSUInteger) index
 {
-  [_mutableWorlds removeObjectAtIndex: index];
+  @synchronized (self)
+  {
+    [_worlds removeObjectAtIndex: index];
+  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) removeWorldsAtIndexes: (NSIndexSet *) indexes
 {
-  [_mutableWorlds removeObjectsAtIndexes: indexes];
+  @synchronized (self)
+  {
+    [_worlds removeObjectsAtIndexes: indexes];
+  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) replaceObjectInWorldsAtIndex: (NSUInteger) index withObject: (MUTreeNode *) object
 {
   object.parent = nil;
-  _mutableWorlds[index] = object;
+  
+  @synchronized (self)
+  {
+    _worlds[index] = object;
+  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (void) replaceWorldsAtIndexes: (NSIndexSet *) indexes withWorlds: (NSArray *) objects
 {
-  [_mutableWorlds replaceObjectsAtIndexes: indexes withObjects: objects];
-}
-
-#pragma mark - Actions
-
-- (NSUInteger) count
-{
   @synchronized (self)
   {
-    return _mutableWorlds.count;
+    [_worlds replaceObjectsAtIndexes: indexes withObjects: objects];
   }
-}
-
-- (NSUInteger) indexOfWorld: (MUWorld *) world
-{
-  @synchronized (self)
-  {
-    return [_mutableWorlds indexOfObject: world];
-  }
-}
-
-- (void) removeWorld: (MUWorld *) world
-{
-  @synchronized (self)
-  {
-    if (![_mutableWorlds containsObject: world])
-    {
-      NSLog (@"Called MUWorldRegistry-removeWorld: with argument not in worlds array.");
-      return;
-    }
-    
-    [self willChangeValueForKey: @"worlds"];
-    
-    [self.mutableWorlds removeObject: world];
-    
-    [self didChangeValueForKey: @"worlds"];
-    [self _postWorldsDidChangeNotification];
-  }
-}
-
-- (void) replaceWorld: (MUWorld *) oldWorld withWorld: (MUWorld *) newWorld
-{
-  @synchronized (self)
-  {
-    if (![_mutableWorlds containsObject: oldWorld])
-    {
-      NSLog (@"Called MUWorldRegistry-replaceWorld:withWorld: with oldWorld argument not in worlds array.");
-      return;
-    }
-    
-    [self willChangeValueForKey: @"worlds"];
-    
-    [_mutableWorlds replaceObjectAtIndex: [_mutableWorlds indexOfObject: oldWorld] withObject: newWorld];
-    
-    [self didChangeValueForKey: @"worlds"];
-    [self _postWorldsDidChangeNotification];
-  }
-}
-
-- (void) setMutableWorlds: (NSArray *) newWorlds
-{
-  @synchronized (self)
-  {
-    if ([_mutableWorlds isEqualToArray: newWorlds])
-      return;
-    
-    [self willChangeValueForKey: @"worlds"];
-    
-    _mutableWorlds = [newWorlds mutableCopy];
-    
-    [self didChangeValueForKey: @"worlds"];
-    [self _postWorldsDidChangeNotification];
-  }
-}
-
-- (MUWorld *) worldAtIndex: (NSUInteger) worldIndex
-{
-  @synchronized (self)
-  {
-    return _mutableWorlds[worldIndex];
-  }
+  
+  [self _postWorldsDidChangeNotification];
 }
 
 - (MUWorld *) worldForUniqueIdentifier: (NSString *) identifier
@@ -232,14 +219,6 @@ static MUWorldRegistry *_defaultRegistry = nil;
   }
   
   return nil;
-}
-
-- (NSArray *) worlds
-{
-  @synchronized (self)
-  {
-    return (NSArray *) self.mutableWorlds;
-  }
 }
 
 #pragma mark - Private methods

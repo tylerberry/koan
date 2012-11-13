@@ -54,38 +54,38 @@
 
 - (NSMutableArray *) children
 {
-  return [MUWorldRegistry defaultRegistry].mutableWorlds;
+  return [MUWorldRegistry defaultRegistry].worlds;
 }
 
 - (void) setChildren: (NSMutableArray *) newChildren
 {
-  [MUWorldRegistry defaultRegistry].mutableWorlds = newChildren;
+  [MUWorldRegistry defaultRegistry].worlds = newChildren;
 }
 
 - (NSUInteger) countOfChildren
 {
-  return [MUWorldRegistry defaultRegistry].mutableWorlds.count;
+  return [[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"].count;
 }
 
 - (NSTreeNode *) objectInChildrenAtIndex: (NSUInteger) index
 {
-  return [MUWorldRegistry defaultRegistry].mutableWorlds[index];
+  return [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] objectAtIndex: index];
 }
 
 - (NSArray *) childrenAtIndexes: (NSIndexSet *) indexSet
 {
-  return [[MUWorldRegistry defaultRegistry].mutableWorlds objectsAtIndexes: indexSet];
+  return [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] objectsAtIndexes: indexSet];
 }
 
 - (void) getChildren: (__unsafe_unretained id *) objects range: (NSRange) range
 {
-  [[MUWorldRegistry defaultRegistry].mutableWorlds getObjects: objects range: range];
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] getObjects: objects range: range];
 }
 
 - (void) insertObject: (MUTreeNode *) object inChildrenAtIndex: (NSUInteger) index
 {
   object.parent = self;
-  [[MUWorldRegistry defaultRegistry].mutableWorlds insertObject: object atIndex: index];
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] insertObject: object atIndex: index];
 }
 
 - (void) insertChildren: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
@@ -93,35 +93,36 @@
   for (MUTreeNode *child in objects)
     child.parent = self;
   
-  [[MUWorldRegistry defaultRegistry].mutableWorlds insertObjects: objects atIndexes: indexes];
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] insertObjects: objects atIndexes: indexes];
 }
 
 - (void) removeObjectFromChildrenAtIndex: (NSUInteger) index
 {
-  ((MUTreeNode *) [MUWorldRegistry defaultRegistry].mutableWorlds[index]).parent = nil;
-  [[MUWorldRegistry defaultRegistry].mutableWorlds removeObjectAtIndex: index];
+  ((MUTreeNode *) [MUWorldRegistry defaultRegistry].worlds[index]).parent = nil;
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] removeObjectAtIndex: index];
 }
 
 - (void) removeChildrenAtIndexes: (NSIndexSet *) indexes
 {
-  NSArray *childrenAtIndexes = [[MUWorldRegistry defaultRegistry].mutableWorlds objectsAtIndexes: indexes];
+  NSArray *childrenAtIndexes = [[MUWorldRegistry defaultRegistry].worlds objectsAtIndexes: indexes];
   
   for (MUTreeNode *child in childrenAtIndexes)
     child.parent = nil;
   
-  [[MUWorldRegistry defaultRegistry].mutableWorlds removeObjectsAtIndexes: indexes];
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] removeObjectsAtIndexes: indexes];
 }
 
 - (void) replaceObjectInChildrenAtIndex: (NSUInteger) index withObject: (MUTreeNode *) object
 {
-  ((MUTreeNode *) [MUWorldRegistry defaultRegistry].mutableWorlds[index]).parent = nil;
+  ((MUTreeNode *) [MUWorldRegistry defaultRegistry].worlds[index]).parent = nil;
   object.parent = self;
-  [MUWorldRegistry defaultRegistry].mutableWorlds[index] = object;
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] replaceObjectAtIndex: index withObject: object];
 }
 
 - (void) replaceChildrenAtIndexes: (NSIndexSet *) indexes withChildren: (NSArray *) objects
 {
-  [[MUWorldRegistry defaultRegistry].mutableWorlds replaceObjectsAtIndexes: indexes withObjects: objects];
+  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] replaceObjectsAtIndexes: indexes
+                                                                                      withObjects: objects];
 }
 
 @end

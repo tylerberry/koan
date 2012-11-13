@@ -43,8 +43,11 @@
                                          port: @(newConnectionPortField.intValue)];;
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
-  	[[MUWorldRegistry defaultRegistry] insertObject: world
-                                    inWorldsAtIndex: [MUWorldRegistry defaultRegistry].worlds.count];
+  {
+    MUWorldRegistry *registry = [MUWorldRegistry defaultRegistry];
+    [[registry mutableArrayValueForKey: @"worlds"] insertObject: world
+                                                        atIndex: registry.worlds.count];
+  }
   
   [self.delegate openConnectionForWorld: world];
   [self.window close];

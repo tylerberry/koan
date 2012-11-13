@@ -15,6 +15,7 @@
 
 @protocol MUConnectionWindowControllerDelegate
 
+@optional
 - (void) connectionWindowControllerWillClose: (NSNotification *) notification;
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification;
 
@@ -37,9 +38,6 @@
 
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 - (id) initWithWorld: (MUWorld *) newWorld;
-
-- (NSObject <MUConnectionWindowControllerDelegate> *) delegate;
-- (void) setDelegate: (NSObject <MUConnectionWindowControllerDelegate> *) delegate;
 
 - (void) confirmClose: (SEL) callback;
 

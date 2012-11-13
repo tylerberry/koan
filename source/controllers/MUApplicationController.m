@@ -473,7 +473,7 @@
   if (_unreadCount == 0)
     [NSApp setApplicationIconImage: nil];
   else
-    [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: (float) 0.0 y: (float) 0.0];
+    [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: 0.0 y: 0.0];
 }
 
 - (void) _worldsDidChange: (NSNotification *) notification

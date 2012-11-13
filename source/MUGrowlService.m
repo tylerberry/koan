@@ -7,7 +7,6 @@
 #import "MUGrowlService.h"
 
 static BOOL _growlIsReady = NO;
-static MUGrowlService *_defaultGrowlService;
 
 @interface MUGrowlService ()
 
@@ -23,6 +22,7 @@ static MUGrowlService *_defaultGrowlService;
 
 + (MUGrowlService *) defaultGrowlService
 {
+  static MUGrowlService *_defaultGrowlService;
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{ _defaultGrowlService = [[MUGrowlService alloc] init]; });
@@ -95,7 +95,7 @@ static MUGrowlService *_defaultGrowlService;
   															description: description
   												 notificationName: name
   																 iconData: nil
-  																 priority: (float) 0.0
+  																 priority: 0
   																 isSticky: NO
   														 clickContext: nil];
   }

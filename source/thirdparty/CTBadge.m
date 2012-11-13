@@ -14,10 +14,10 @@
 
 #import "CTBadge.h"
 
-const float CTLargeBadgeSize = (float) 56.; // 46. was Weider's value. -- TB
-const float CTSmallBadgeSize = (float) 23.;
-const float CTLargeLabelSize = (float) 30.; // 24. was Weider's value. -- TB
-const float CTSmallLabelSize = (float) 11.;
+const CGFloat CTLargeBadgeSize = 56.; // 46. was Weider's value. -- TB
+const CGFloat CTSmallBadgeSize = 23.;
+const CGFloat CTLargeLabelSize = 30.; // 24. was Weider's value. -- TB
+const CGFloat CTSmallLabelSize = 11.;
 
 @interface CTBadge ()
 
@@ -25,7 +25,7 @@ const float CTSmallLabelSize = (float) 11.;
 - (NSGradient *) badgeGradient;
 
 // Return a badge with height of <size> to fit <length> characters
-- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length;
+- (NSImage *) badgeMaskOfSize: (CGFloat) size length: (NSUInteger) length;
 
 // Returns appropriately attributed label string (not autoreleased)
 - (NSAttributedString *) labelForString: (NSString *) string size: (NSUInteger) size;
@@ -89,14 +89,14 @@ const float CTSmallLabelSize = (float) 11.;
   return [self badgeOfSize: CTLargeBadgeSize forString: string];
 }
 
-- (NSImage *) badgeOfSize: (float) size forValue: (NSUInteger) value
+- (NSImage *) badgeOfSize: (CGFloat) size forValue: (NSUInteger) value
 {
   return [self badgeOfSize: size forString: [self stringForValue: value]];
 }
 
-- (NSImage *) badgeOfSize: (float) size forString: (NSString *) string
+- (NSImage *) badgeOfSize: (CGFloat) size forString: (NSString *) string
 {
-  float scaleFactor = 1;
+  CGFloat scaleFactor = 1.;
   
   if (size <= 0)
     [NSException raise: NSInvalidArgumentException
@@ -120,25 +120,25 @@ const float CTSmallLabelSize = (float) 11.;
   
   // Badge stuff
   
-  NSImage *badgeImage;	//this the image with the gradient fill
-  NSImage *badgeMask ;	//we nock out this mask from the gradient
+  NSImage *badgeImage;	// this the image with the gradient fill
+  NSImage *badgeMask; 	// we nock out this mask from the gradient
   
   NSGradient *badgeGradient = [self badgeGradient];
   
-  float shadowOpacity, shadowOffset, shadowBlurRadius;
+  CGFloat shadowOpacity, shadowOffset, shadowBlurRadius;
   int angle;
   
   if (size <= CTSmallBadgeSize)
 	{
-    shadowOpacity = (float) .6;
-    shadowOffset = floorf (1 * scaleFactor);
-    shadowBlurRadius = ceilf (1 * scaleFactor);
+    shadowOpacity = .6;
+    shadowOffset = floor (1. * scaleFactor);
+    shadowBlurRadius = ceil (1. * scaleFactor);
 	}
   else
 	{
-    shadowOpacity = (float) .8;
-    shadowOffset = ceilf (1 * scaleFactor);
-    shadowBlurRadius = ceilf (2 * scaleFactor);
+    shadowOpacity = .8;
+    shadowOffset = ceil (1. * scaleFactor);
+    shadowBlurRadius = ceil (2. * scaleFactor);
 	}
   
   if (label.length <= 3) // Badges have different gradient angles
@@ -188,7 +188,7 @@ const float CTSmallLabelSize = (float) 11.;
 }
 
 
-- (NSImage *) badgeOverlayImageForString: (NSString *) string insetX: (float) dx y: (float) dy;
+- (NSImage *) badgeOverlayImageForString: (NSString *) string insetX: (CGFloat) dx y: (CGFloat) dy;
 {
   NSImage *badgeImage = [self largeBadgeForString: string];
   NSImage *overlayImage = [[NSImage alloc] initWithSize: NSMakeSize (128, 128)];
@@ -206,7 +206,7 @@ const float CTSmallLabelSize = (float) 11.;
   return overlayImage;
 }
 
-- (void)badgeApplicationDockIconWithString:(NSString *)string insetX:(float)dx y:(float)dy;
+- (void) badgeApplicationDockIconWithString: (NSString *) string insetX: (CGFloat) dx y: (CGFloat) dy;
 {
   NSImage *appIcon = [NSImage imageNamed: @"NSApplicationIcon"];
   NSImage *badgeOverlay = [self badgeOverlayImageForString: string insetX: dx y: dy];
@@ -220,12 +220,12 @@ const float CTSmallLabelSize = (float) 11.;
   [NSApp setApplicationIconImage: badgeOverlay];
 }
 
-- (NSImage *) badgeOverlayImageForValue: (NSUInteger) value insetX: (float) dx y: (float) dy
+- (NSImage *) badgeOverlayImageForValue: (NSUInteger) value insetX: (CGFloat) dx y: (CGFloat) dy
 {
   return [self badgeOverlayImageForString: [self stringForValue: value] insetX: dx y: dy];
 }
 
-- (void) badgeApplicationDockIconWithValue: (NSUInteger) value insetX: (float) dx y: (float) dy
+- (void) badgeApplicationDockIconWithValue: (NSUInteger) value insetX: (CGFloat) dx y: (CGFloat) dy
 {
   [self badgeApplicationDockIconWithString: [self stringForValue: value] insetX: dx y: dy];
 }
@@ -241,7 +241,7 @@ const float CTSmallLabelSize = (float) 11.;
   return gradient;
 }
 
-- (NSImage *) badgeMaskOfSize: (float) size length: (NSUInteger) length
+- (NSImage *) badgeMaskOfSize: (CGFloat) size length: (NSUInteger) length
 {
   NSImage *badgeMask;
   

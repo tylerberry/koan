@@ -14,10 +14,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern const float CTLargeBadgeSize;
-extern const float CTSmallBadgeSize;
-extern const float CTLargeLabelSize;
-extern const float CTSmallLabelSize;
+extern const CGFloat CTLargeBadgeSize;
+extern const CGFloat CTSmallBadgeSize;
+extern const CGFloat CTLargeLabelSize;
+extern const CGFloat CTSmallLabelSize;
 
 @interface CTBadge : NSObject
 
@@ -40,16 +40,16 @@ extern const float CTSmallLabelSize;
 
 // A badge of arbitrary size. <size> is the size in pixels of the badge not counting the shadow effect (image returned
 // will be larger than <size>).
-- (NSImage *) badgeOfSize: (float) size forValue: (NSUInteger) value;
-- (NSImage *) badgeOfSize: (float) size forString: (NSString *) string;
+- (NSImage *) badgeOfSize: (CGFloat) size forValue: (NSUInteger) value;
+- (NSImage *) badgeOfSize: (CGFloat) size forString: (NSString *) string;
 
 // Returns a transparent 128x128 image with Large badge inset dx/dy from the upper right.
-- (NSImage *) badgeOverlayImageForValue: (NSUInteger) value insetX: (float) dx y: (float) dy;
-- (NSImage *) badgeOverlayImageForString: (NSString *) string insetX: (float) dx y: (float) dy;
+- (NSImage *) badgeOverlayImageForValue: (NSUInteger) value insetX: (CGFloat) dx y: (CGFloat) dy;
+- (NSImage *) badgeOverlayImageForString: (NSString *) string insetX: (CGFloat) dx y: (CGFloat) dy;
 
 // Badges the Application's icon with <value> and puts it on the dock.
-- (void) badgeApplicationDockIconWithValue: (NSUInteger) value insetX: (float) dx y: (float) dy;
-- (void) badgeApplicationDockIconWithString: (NSString *) string insetX: (float) dx y: (float) dy;
+- (void) badgeApplicationDockIconWithValue: (NSUInteger) value insetX: (CGFloat) dx y: (CGFloat) dy;
+- (void) badgeApplicationDockIconWithString: (NSString *) string insetX: (CGFloat) dx y: (CGFloat) dy;
 
 - (void) setBadgeColor: (NSColor *) theColor;
 - (void) setLabelColor: (NSColor *) theColor;

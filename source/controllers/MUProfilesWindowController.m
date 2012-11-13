@@ -221,20 +221,24 @@
 
 - (IBAction) showAddContextMenu: (id) sender
 {
-  NSPoint point = [NSEvent mouseLocation];
-  NSPoint windowPoint = [self.window convertScreenToBase: point];
-  
-  NSEvent *event = [NSEvent mouseEventWithType: NSLeftMouseUp
-                                      location: windowPoint
-                                 modifierFlags: 0
-                                     timestamp: NSTimeIntervalSince1970
-                                  windowNumber: self.window.windowNumber
-                                       context: nil
-                                   eventNumber: 0
-                                    clickCount: 0
-                                      pressure: 0.1];
-  
-  [NSMenu popUpContextMenu: addMenu withEvent: event forView: nil];
+  if (!profilesTreeController.selectionIndexPath)
+  {
+    [self addNewWorld: sender];
+  }
+  else
+  {
+    [NSMenu popUpContextMenu: addMenu
+                   withEvent: [NSEvent mouseEventWithType: NSLeftMouseUp
+                                                 location: addButton.frame.origin
+                                            modifierFlags: 0
+                                                timestamp: NSTimeIntervalSince1970
+                                             windowNumber: self.window.windowNumber
+                                                  context: nil
+                                              eventNumber: 0
+                                               clickCount: 1
+                                                 pressure: 1.0]
+                     forView: addButton];
+  }
 }
 
 #pragma mark - Responder chain methods

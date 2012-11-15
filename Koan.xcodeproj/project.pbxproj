@@ -1292,12 +1292,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */,
 				2F51E45B11781EF800F6DF65 /* MUAcknowledgements.xib in Resources */,
+				2F57F906163E219A00732868 /* MUConnectPanel.xib in Resources */,
 				2F51E45C11781EF800F6DF65 /* MUConnectionWindow.xib in Resources */,
+				2F97B0AA16337B9F00B33F4A /* MUEditWorldView.xib in Resources */,
+				2F97B0AC16337BB700B33F4A /* MUEditPlayerView.xib in Resources */,
+				2F6F9F1C1633F8090071AE70 /* MUEditProfileView.xib in Resources */,
+				2F3DBAC8165309DE0056D738 /* MUFontsAndColorsPreferencesView.xib in Resources */,
 				2F51E45D11781EF800F6DF65 /* MULogBrowser.xib in Resources */,
 				2F51E45E11781EF800F6DF65 /* MUMainMenu.xib in Resources */,
 				2F51E45F11781EF800F6DF65 /* MUProfilesWindow.xib in Resources */,
+				2F3DBADA16542A860056D738 /* MUProxyPreferencesView.xib in Resources */,
 				2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */,
+				2F3DBAD5165376180056D738 /* MUSoundsPreferencesView.xib in Resources */,
 				E65CE072075438F9003A796A /* Koan.icns in Resources */,
 				2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */,
 				E6B5E3B906A6EEA600F53EBB /* InfoPlist.strings in Resources */,
@@ -1314,18 +1322,10 @@
 				2FB1F803161BFAEE00AFD977 /* spacer.tiff in Resources */,
 				2FB1F806161C045500AFD977 /* ActionTemplate.pdf in Resources */,
 				2FB1F807161C045500AFD977 /* AddTemplate.pdf in Resources */,
-				2F97B0AA16337B9F00B33F4A /* MUEditWorldView.xib in Resources */,
-				2F97B0AC16337BB700B33F4A /* MUEditPlayerView.xib in Resources */,
-				2F6F9F1C1633F8090071AE70 /* MUEditProfileView.xib in Resources */,
-				2F57F906163E219A00732868 /* MUConnectPanel.xib in Resources */,
-				2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */,
-				2F3DBAC8165309DE0056D738 /* MUFontsAndColorsPreferencesView.xib in Resources */,
 				2F3DBACB165310380056D738 /* FontsAndColors.png in Resources */,
 				2F3DBACC165310380056D738 /* FontsAndColors@2x.png in Resources */,
 				2F3DBACF165372FD0056D738 /* Sounds.png in Resources */,
 				2F3DBAD0165372FD0056D738 /* Sounds@2x.png in Resources */,
-				2F3DBAD5165376180056D738 /* MUSoundsPreferencesView.xib in Resources */,
-				2F3DBADA16542A860056D738 /* MUProxyPreferencesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

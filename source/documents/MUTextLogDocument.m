@@ -24,7 +24,6 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 @implementation MUTextLogDocument
 
-@synthesize content, headers;
 @dynamic spotlightDisplayName;
 
 - (id) init
@@ -32,8 +31,8 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
   if (!(self = [super init]))
     return nil;
   
-  content = nil;
-  headers = nil;
+  _content = nil;
+  _headers = nil;
   
   return self;
 }
@@ -50,11 +49,6 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 }
 
 #pragma mark - Accessors
-
-- (NSString *) content
-{
-  return content;
-}
 
 - (void) fillDictionaryWithMetadata: (NSMutableDictionary *) dictionary
 {
@@ -73,7 +67,7 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
 
 - (NSString *) headerForKey: (id) key
 {
-  return headers[key];
+  return _headers[key];
 }
 
 #pragma mark - NSDocument overrides
@@ -180,9 +174,9 @@ static NSString *MUKoanLogPlayer = @"com_3james_koan_log_player";
       return NO;
   }
   
-  headers = workingHeaders;
+  self.headers = workingHeaders;
   
-  content = [[string substringFromIndex: endOfHeaders + (2 * lineEnding.length)] copy];
+  self.content = [string substringFromIndex: endOfHeaders + (2 * lineEnding.length)];
   
   return YES;
 }

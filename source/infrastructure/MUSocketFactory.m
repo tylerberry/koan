@@ -9,12 +9,10 @@
 #import "MUProxySocket.h"
 #import "MUSocket.h"
 
-static MUSocketFactory *defaultFactory = nil;
-
 @interface MUSocketFactory ()
 
-- (void) loadProxySettingsFromDefaults;
-- (void) writeProxySettingsToDefaults;
+- (void) _loadProxySettingsFromDefaults;
+- (void) _writeProxySettingsToDefaults;
 
 @end
 
@@ -26,12 +24,14 @@ static MUSocketFactory *defaultFactory = nil;
 
 + (MUSocketFactory *) defaultFactory
 {
-  if (!defaultFactory)
-  {
+  static MUSocketFactory *defaultFactory = nil;  
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{
     defaultFactory = [[self alloc] init];
-    [defaultFactory loadProxySettingsFromDefaults];
-    
-  }
+    [defaultFactory _loadProxySettingsFromDefaults];
+  });
+
   return defaultFactory;
 }
 
@@ -46,7 +46,6 @@ static MUSocketFactory *defaultFactory = nil;
   return self;
 }
 
-
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port
 {
   if (self.useProxy)
@@ -57,7 +56,7 @@ static MUSocketFactory *defaultFactory = nil;
 
 - (void) saveProxySettings
 {
-  [self writeProxySettingsToDefaults];
+  [self _writeProxySettingsToDefaults];
 }
 
 - (void) toggleUseProxy
@@ -67,7 +66,7 @@ static MUSocketFactory *defaultFactory = nil;
 
 #pragma mark - Private methods
 
-- (void) loadProxySettingsFromDefaults
+- (void) _loadProxySettingsFromDefaults
 {
   NSData *proxySettingsData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProxySettings];
   NSData *useProxyData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPUseProxy];
@@ -78,7 +77,7 @@ static MUSocketFactory *defaultFactory = nil;
     self.useProxy = [[NSKeyedUnarchiver unarchiveObjectWithData: useProxyData] boolValue];
 }
 
-- (void) writeProxySettingsToDefaults
+- (void) _writeProxySettingsToDefaults
 {
   NSData *proxySettingsData = [NSKeyedArchiver archivedDataWithRootObject: self.proxySettings];
   NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: @(self.useProxy)];

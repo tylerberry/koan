@@ -31,9 +31,4 @@
   [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUSparkleURLString]];
 }
 
-- (IBAction) openUKPrefsPanelWebPage: (id) sender
-{
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUUKPrefsPaneURLString]];
-}
-
 @end

@@ -24,13 +24,16 @@
   IBOutlet MUProfileContentView *profileContentView;
   
   IBOutlet NSMenu *addMenu;
+  IBOutlet NSMenu *actionMenu;
 }
 
 @property (strong) NSMutableArray *profilesTreeArray;
 
 - (IBAction) addNewPlayer: (id) sender;
 - (IBAction) addNewWorld: (id) sender;
-- (IBAction) goToWorldURL: (id) sender;
+- (IBAction) openWebsiteForSelectedProfile: (id) sender;
+- (IBAction) openConnectionForSelectedProfile: (id) sender;
 - (IBAction) showAddContextMenu: (id) sender;
+- (IBAction) showActionContextMenu: (id) sender;
 
 @end

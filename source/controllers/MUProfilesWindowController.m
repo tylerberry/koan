@@ -214,7 +214,12 @@
   _undoManager.actionName = _(MUUndoAddWorld);
 }
 
-- (IBAction) goToWorldURL: (id) sender
+- (IBAction) openConnectionForSelectedProfile: (id) sender
+{
+  return;
+}
+
+- (IBAction) openWebsiteForSelectedProfile: (id) sender
 {
   return;
 }
@@ -239,6 +244,21 @@
                                                  pressure: 1.0]
                      forView: addButton];
   }
+}
+
+- (IBAction) showActionContextMenu: (id) sender
+{
+  [NSMenu popUpContextMenu: actionMenu
+                 withEvent: [NSEvent mouseEventWithType: NSLeftMouseUp
+                                               location: actionButton.frame.origin
+                                          modifierFlags: 0
+                                              timestamp: NSTimeIntervalSince1970
+                                           windowNumber: self.window.windowNumber
+                                                context: nil
+                                            eventNumber: 0
+                                             clickCount: 1
+                                               pressure: 1.0]
+                   forView: actionButton];
 }
 
 #pragma mark - Responder chain methods

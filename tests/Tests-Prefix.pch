@@ -10,5 +10,4 @@
 
 #import "J3TestCase.h"
 #import "categories/NSAttributedString (Allocating).h"
-#import "categories/NSFont (FullDisplayName).h"
 #import "MUConstants.h"

@@ -21,14 +21,13 @@ extern NSString *MUUKPrefsPaneURLString;
 #pragma mark User defaults constants.
 
 extern NSString *MUPBackgroundColor;
-extern NSString *MUPFontName;
-extern NSString *MUPFontSize;
+extern NSString *MUPFont;
 extern NSString *MUPLinkColor;
 extern NSString *MUPTextColor;
 extern NSString *MUPWorlds;
 extern NSString *MUPProfiles;
 extern NSString *MUPProfilesOutlineViewState;
-extern NSString *MUPVisitedLinkColor;
+extern NSString *MUPSystemTextColor;
 extern NSString *MUPProxySettings;
 extern NSString *MUPUseProxy;
 
@@ -46,11 +45,6 @@ extern NSString *MUItalicFontAttributeName;
 
 extern NSString *MUConnectionWindowControllerWillCloseNotification;
 extern NSString *MUConnectionWindowControllerDidReceiveTextNotification;
-extern NSString *MUGlobalBackgroundColorDidChangeNotification;
-extern NSString *MUGlobalFontDidChangeNotification;
-extern NSString *MUGlobalLinkColorDidChangeNotification;
-extern NSString *MUGlobalTextColorDidChangeNotification;
-extern NSString *MUGlobalVisitedLinkColorDidChangeNotification;
 extern NSString *MUWorldsDidChangeNotification;
 
 extern NSString *MUReadBufferDidProvideStringNotification;
@@ -91,6 +85,13 @@ extern NSString *MULConnectionClosed;
 extern NSString *MULConnectionClosedByServer;
 extern NSString *MULConnectionClosedByError;
 
+#pragma mark Preferences localization constants.
+
+extern NSString *MULPreferencesWindowName;
+extern NSString *MULPreferencesFontsAndColors;
+extern NSString *MULPreferencesProxy;
+extern NSString *MULPreferencesSounds;
+
 #pragma mark Alert panel localization constants.
 
 extern NSString *MULOK;
@@ -106,8 +107,6 @@ extern NSString *MULConfirmQuitTitlePlural;
 extern NSString *MULConfirmQuitMessage;
 
 #pragma mark Miscellaneous localization constants.
-
-extern NSString *MULFontFullDisplayName;
 
 extern NSString *MULConnect;
 extern NSString *MULDisconnect;

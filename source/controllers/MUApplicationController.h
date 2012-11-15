@@ -14,8 +14,6 @@
 @interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectPanelControllerDelegate, MUConnectionWindowControllerDelegate>
 {
   IBOutlet NSMenu *openConnectionMenu;
-  
-  IBOutlet MUPreferencesController *preferencesController;
 }
 
 - (IBAction) chooseNewFont: (id) sender;

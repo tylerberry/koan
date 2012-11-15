@@ -44,6 +44,11 @@
 				<bool key="NSEditable">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 			</object>
+			<object class="NSObjectController" id="154486830">
+				<string key="NSObjectClassName">NSFont</string>
+				<bool key="NSEditable">YES</bool>
+				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
+			</object>
 			<object class="NSCustomView" id="1005">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
@@ -753,22 +758,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.effectiveFontDisplayName</string>
-						<reference key="source" ref="673884775"/>
-						<reference key="destination" ref="163641250"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="673884775"/>
-							<reference key="NSDestination" ref="163641250"/>
-							<string key="NSLabel">value: selection.effectiveFontDisplayName</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.effectiveFontDisplayName</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">225</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">enabled: selection.font</string>
 						<reference key="source" ref="673884775"/>
 						<reference key="destination" ref="163641250"/>
@@ -786,6 +775,47 @@
 						</object>
 					</object>
 					<int key="connectionID">370</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">displayPatternValue1: selection.displayName</string>
+						<reference key="source" ref="673884775"/>
+						<reference key="destination" ref="154486830"/>
+						<object class="NSNibBindingConnector" key="connector" id="651485591">
+							<reference key="NSSource" ref="673884775"/>
+							<reference key="NSDestination" ref="154486830"/>
+							<string key="NSLabel">displayPatternValue1: selection.displayName</string>
+							<string key="NSBinding">displayPatternValue1</string>
+							<string key="NSKeyPath">selection.displayName</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSDisplayPattern</string>
+								<string key="NS.object.0">%{value1}@ - %{value2}@pt</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">384</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">displayPatternValue2: selection.pointSize</string>
+						<reference key="source" ref="673884775"/>
+						<reference key="destination" ref="154486830"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="673884775"/>
+							<reference key="NSDestination" ref="154486830"/>
+							<string key="NSLabel">displayPatternValue2: selection.pointSize</string>
+							<string key="NSBinding">displayPatternValue2</string>
+							<string key="NSKeyPath">selection.pointSize</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSDisplayPattern</string>
+								<string key="NS.object.0">%{value1}@ - %{value2}@pt</string>
+							</object>
+							<reference key="NSPreviousConnector" ref="651485591"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">387</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -822,6 +852,22 @@
 						<reference key="destination" ref="115659585"/>
 					</object>
 					<int key="connectionID">356</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentObject: selection.effectiveFont</string>
+						<reference key="source" ref="154486830"/>
+						<reference key="destination" ref="163641250"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="154486830"/>
+							<reference key="NSDestination" ref="163641250"/>
+							<string key="NSLabel">contentObject: selection.effectiveFont</string>
+							<string key="NSBinding">contentObject</string>
+							<string key="NSKeyPath">selection.effectiveFont</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">381</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1432,7 +1478,6 @@
 							</object>
 							<reference ref="185177582"/>
 							<reference ref="219451700"/>
-							<reference ref="673884775"/>
 							<reference ref="65194302"/>
 							<reference ref="862428690"/>
 							<reference ref="115659585"/>
@@ -1445,6 +1490,7 @@
 							<reference ref="381946053"/>
 							<reference ref="240320568"/>
 							<reference ref="421891346"/>
+							<reference ref="673884775"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1961,6 +2007,12 @@
 						<reference key="object" ref="756851622"/>
 						<reference key="parent" ref="65194302"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">379</int>
+						<reference key="object" ref="154486830"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Profile Font (Object Controller)</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -2085,6 +2137,7 @@
 				<string key="348.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="349.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="363.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="379.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<array class="NSMutableArray" key="50.IBNSViewMetadataConstraints">
 					<reference ref="124837674"/>
 				</array>
@@ -2115,7 +2168,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">370</int>
+			<int key="maxID">387</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

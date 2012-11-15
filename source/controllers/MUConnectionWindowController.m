@@ -57,7 +57,6 @@ enum MUTextDisplayModes
 - (void) postConnectionWindowControllerDidReceiveTextNotification;
 - (void) postConnectionWindowControllerWillCloseNotification;
 - (void) prepareDelayedReportWindowSizeToServer;
-- (void) registerForNotifications;
 - (void) sendPeriodicPing: (NSTimer *) timer;
 - (void) setTextViewsNeedDisplay: (NSNotification *) notification;
 - (NSString *) splitViewAutosaveName;
@@ -65,7 +64,7 @@ enum MUTextDisplayModes
 - (void) triggerDelayedReportWindowSizeToServer;
 - (void) updateFonts;
 - (void) updateLinkTextColor;
-- (void) updateTextColors;
+- (void) updateTextColor;
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 
 @end
@@ -133,6 +132,7 @@ enum MUTextDisplayModes
   
   [profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
   [profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
+  [profile addObserver: self forKeyPath: @"effectiveSystemTextColor" options: NSKeyValueObservingOptionNew context: nil];
   [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
   
   [receivedTextView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
@@ -140,8 +140,6 @@ enum MUTextDisplayModes
   [inputView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
   [inputView bind: @"insertionPointColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
   [inputView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
-  
-  [self registerForNotifications];
 }
 
 - (void) dealloc
@@ -150,6 +148,7 @@ enum MUTextDisplayModes
   
   [profile removeObserver: self forKeyPath: @"effectiveFont"];
   [profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+  [profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
   [profile removeObserver: self forKeyPath: @"effectiveTextColor"];
   
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
@@ -173,9 +172,14 @@ enum MUTextDisplayModes
       [self updateLinkTextColor];
       return;
     }
+    else if ([keyPath isEqualToString: @"effectiveSystemTextColor"])
+    {
+      //[self updateSystemTextColor];
+      return;
+    }
     else if ([keyPath isEqualToString: @"effectiveTextColor"])
     {
-      [self updateTextColors];
+      [self updateTextColor];
       return;
     }
   }
@@ -730,24 +734,6 @@ enum MUTextDisplayModes
                                                       object: self];
 }
 
-- (void) registerForNotifications
-{
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (setTextViewsNeedDisplay:)
-  																						 name: MUGlobalBackgroundColorDidChangeNotification
-  																					 object: nil];
-  
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (setTextViewsNeedDisplay:)
-  																						 name: MUGlobalFontDidChangeNotification
-  																					 object: nil];
-  
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (setTextViewsNeedDisplay:)
-  																						 name: MUGlobalTextColorDidChangeNotification
-  																					 object: nil];
-}
-
 - (void) prepareDelayedReportWindowSizeToServer
 {
   if (windowSizeNotificationTimer)
@@ -861,7 +847,7 @@ enum MUTextDisplayModes
   [receivedTextView setLinkTextAttributes: linkTextAttributes];
 }
 
-- (void) updateTextColors
+- (void) updateTextColor
 {
   NSUInteger index = 0;
   

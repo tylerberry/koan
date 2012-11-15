@@ -9,9 +9,10 @@
 #import "MUProfile.h"
 #import "NSFont (Traits).h"
 
-#define TESTING_TEXT_COLOR [NSColor cyanColor]
 #define TESTING_BACKGROUND_COLOR [NSColor magentaColor]
 #define TESTING_LINK_COLOR [NSColor yellowColor]
+#define TESTING_SYSTEM_TEXT_COLOR [NSColor blueColor]
+#define TESTING_TEXT_COLOR [NSColor cyanColor]
 
 @interface MUProfile (Testing)
 
@@ -35,9 +36,10 @@
                       player: nil
                  autoconnect: NO
                         font: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]
-                   textColor: TESTING_TEXT_COLOR
              backgroundColor: TESTING_BACKGROUND_COLOR
-                   linkColor: TESTING_LINK_COLOR];
+                   linkColor: TESTING_LINK_COLOR
+             systemTextColor: TESTING_SYSTEM_TEXT_COLOR
+                   textColor: TESTING_TEXT_COLOR];
 }
 
 @end

@@ -9,15 +9,17 @@
 
 #import "MUWorldRegistry.h"
 
-static const int32_t currentProfileVersion = 3;
+static const int32_t currentProfileVersion = 4;
 
 @interface MUProfile ()
 
-- (void) globalBackgroundColorDidChange: (NSNotification *) notification;
-- (void) globalFontDidChange: (NSNotification *) notification;
-- (void) globalLinkColorDidChange: (NSNotification *) notification;
-- (void) globalTextColorDidChange: (NSNotification *) notification;
-- (void) registerForNotifications;
+- (NSString *) _keyPathForBackgroundColor;
+- (NSString *) _keyPathForFont;
+- (NSString *) _keyPathForLinkColor;
+- (NSString *) _keyPathForTextColor;
+
+- (void) _startObservingUserDefaultsController;
+- (void) _stopObservingUserDefaultsController;
 
 @end
 
@@ -25,14 +27,14 @@ static const int32_t currentProfileVersion = 3;
 
 @implementation MUProfile
 
-@dynamic effectiveBackgroundColor, effectiveFont, effectiveFontDisplayName, effectiveLinkColor, effectiveTextColor;
+@dynamic effectiveBackgroundColor, effectiveFont, effectiveLinkColor, effectiveSystemTextColor, effectiveTextColor;
 @dynamic hasLoginInformation, hostname, loginString, uniqueIdentifier, windowTitle;
 
 + (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
 {
   NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey: key];
   
-  if ([key isEqualToString: @"effectiveFont"] || [key isEqualToString: @"effectiveFontDisplayName"])
+  if ([key isEqualToString: @"effectiveFont"])
   {
     keyPaths = [keyPaths setByAddingObject: @"font"];
   }
@@ -44,22 +46,17 @@ static const int32_t currentProfileVersion = 3;
   {
     keyPaths = [keyPaths setByAddingObject: @"linkColor"];
   }
+  else if ([key isEqualToString: @"effectiveSystemTextColor"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"systemTextColor"];
+  }
   else if ([key isEqualToString: @"effectiveTextColor"])
   {
     keyPaths = [keyPaths setByAddingObject: @"textColor"];
   }
   
   return keyPaths;
-}
-
-+ (MUProfile *) profileWithWorld: (MUWorld *) newWorld
-                          player: (MUPlayer *) newPlayer
-                     autoconnect: (BOOL) newAutoconnect
-{
-  return [[self alloc] initWithWorld: newWorld
-                              player: newPlayer
-                         autoconnect: newAutoconnect];
-}
+}\
 
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
@@ -76,9 +73,10 @@ static const int32_t currentProfileVersion = 3;
               player: (MUPlayer *) newPlayer
          autoconnect: (BOOL) newAutoconnect
   							font: (NSFont *) newFont
-  				 textColor: (NSColor *) newTextColor
   	 backgroundColor: (NSColor *) newBackgroundColor
   				 linkColor: (NSColor *) newLinkColor
+     systemTextColor: (NSColor *) newSystemTextColor
+  				 textColor: (NSColor *) newTextColor
 {
   if (!(self = [super init]))
     return nil;
@@ -86,34 +84,27 @@ static const int32_t currentProfileVersion = 3;
   _world = newWorld;
   _player = newPlayer;
   _autoconnect = newAutoconnect;
-  _font = newFont;
-  _textColor = [newTextColor copy];
+  _font = [newFont copy];
   _backgroundColor = [newBackgroundColor copy];
   _linkColor = [newLinkColor copy];
+  _systemTextColor = [newSystemTextColor copy];
+  _textColor = [newTextColor copy];
   
-  [self registerForNotifications];
+  [self _startObservingUserDefaultsController];
   
   return self;
-}
-
-- (id) initWithWorld: (MUWorld *) newWorld
-              player: (MUPlayer *) newPlayer
-         autoconnect: (BOOL) newAutoconnect
-{
-  return [self initWithWorld: newWorld
-  										player: newPlayer
-  							 autoconnect: newAutoconnect
-  											font: nil
-  								 textColor: nil
-  					 backgroundColor: nil
-  								 linkColor: nil];
 }
 
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [self initWithWorld: newWorld
-                      player: newPlayer
-                 autoconnect: NO];
+  										player: newPlayer
+  							 autoconnect: NO
+  											font: nil
+  					 backgroundColor: nil
+  								 linkColor: nil
+             systemTextColor: nil
+  								 textColor: nil];
 }
 
 - (id) initWithWorld: (MUWorld *) newWorld
@@ -123,7 +114,64 @@ static const int32_t currentProfileVersion = 3;
 
 - (void) dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
+  [self _stopObservingUserDefaultsController];
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if (object == [NSUserDefaultsController sharedUserDefaultsController])
+  {
+    if ([keyPath isEqualToString: [self _keyPathForBackgroundColor]])
+    {
+      if (!self.backgroundColor)
+      {
+        [self willChangeValueForKey: @"effectiveBackgroundColor"];
+        [self didChangeValueForKey: @"effectiveBackgroundColor"];
+      }
+      return;
+    }
+    else if ([keyPath isEqualToString: [self _keyPathForFont]])
+    {
+      if (!self.font)
+      {
+        [self willChangeValueForKey: @"effectiveFont"];
+        [self didChangeValueForKey: @"effectiveFont"];
+      }
+      return;
+    }
+    else if ([keyPath isEqualToString: [self _keyPathForLinkColor]])
+    {
+      if (!self.linkColor)
+      {
+        [self willChangeValueForKey: @"effectiveLinkColor"];
+        [self didChangeValueForKey: @"effectiveLinkColor"];
+      }
+      return;
+    }
+    else if ([keyPath isEqualToString: [self _keyPathForSystemTextColor]])
+    {
+      if (!self.systemTextColor)
+      {
+        [self willChangeValueForKey: @"effectiveSystemTextColor"];
+        [self didChangeValueForKey: @"effectiveSystemTextColor"];
+      }
+      return;
+    }
+    else if ([keyPath isEqualToString: [self _keyPathForTextColor]])
+    {
+      if (!self.textColor)
+      {
+        [self willChangeValueForKey: @"effectiveTextColor"];
+        [self didChangeValueForKey: @"effectiveTextColor"];
+      }
+      return;
+    }
+  }
+  
+  [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 #pragma mark - Actions
@@ -161,25 +209,8 @@ static const int32_t currentProfileVersion = 3;
   	return self.font;
   else
   {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	NSString *fontName = [defaults.values valueForKey: MUPFontName];
-  	CGFloat fontSize = ((NSNumber *) [defaults.values valueForKey: MUPFontSize]).floatValue;
-  	
-  	return [NSFont fontWithName: fontName size: fontSize];
-  }
-}
-
-- (NSString *) effectiveFontDisplayName
-{
-  if (self.font)
-  	return self.font.fullDisplayName;
-  else
-  {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	NSString *fontName = [defaults.values valueForKey: MUPFontName];
-  	NSNumber *fontSize = [defaults.values valueForKey: MUPFontSize];
-  	
-  	return [NSFont fontWithName: fontName size: fontSize.floatValue].fullDisplayName;
+    NSData *defaultFontData = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey: MUPFont];
+  	return [NSUnarchiver unarchiveObjectWithData: defaultFontData];
   }
 }
 
@@ -192,6 +223,18 @@ static const int32_t currentProfileVersion = 3;
   	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
   	
   	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPLinkColor]];
+  }
+}
+
+- (NSColor *) effectiveSystemTextColor
+{
+  if (self.systemTextColor)
+  	return self.systemTextColor;
+  else
+  {
+  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
+  	
+  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPSystemTextColor]];
   }
 }
 
@@ -253,18 +296,18 @@ static const int32_t currentProfileVersion = 3;
   [encoder encodeObject: self.world.uniqueIdentifier forKey: @"worldIdentifier"];
   [encoder encodeObject: self.player.uniqueIdentifier forKey: @"playerIdentifier"];
   [encoder encodeBool: self.autoconnect forKey: @"autoconnect"];
-  [encoder encodeObject: self.font.fontName forKey: @"fontName"];
-  [encoder encodeFloat: (float) self.font.pointSize forKey: @"fontSize"];
-  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.textColor] forKey: @"textColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.font] forKey: @"font"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.backgroundColor] forKey: @"backgroundColor"];
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.linkColor] forKey: @"linkColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.systemTextColor] forKey: @"systemTextColor"];
+  [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.textColor] forKey: @"textColor"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
   int32_t version = [decoder decodeInt32ForKey: @"version"];
   
-  if (version < 3)
+  if (version < 3) // Versions prior to 3 did not track world or player identifiers and are useless.
     return nil;
   
   NSString *worldIdentifier = [decoder decodeObjectForKey: @"worldIdentifier"];
@@ -287,81 +330,118 @@ static const int32_t currentProfileVersion = 3;
   
   _autoconnect = [decoder decodeBoolForKey: @"autoconnect"];
   
-  if (version >= 2)
+  _textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
+  _backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
+  _linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
+  
+  if (version >= 4)
+  {
+    _font = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"font"]];
+    _systemTextColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"systemTextColor"]];
+  }
+  else
   {
   	_font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
                             size: [decoder decodeFloatForKey: @"fontSize"]];
-  	_textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
-  	_backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
-  	_linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
+    _systemTextColor = nil;
   }
   
-  [self registerForNotifications];
+  [self _startObservingUserDefaultsController];
   
   return self;
 }
 
 #pragma mark - Private methods
 
-- (void) globalBackgroundColorDidChange: (NSNotification *) notification
+- (NSString *) _keyPathForBackgroundColor
 {
-  if (!self.backgroundColor)
-  {
-  	[self willChangeValueForKey: @"effectiveBackgroundColor"];
-  	[self didChangeValueForKey: @"effectiveBackgroundColor"];
-  }
-}
-
-- (void) globalFontDidChange: (NSNotification *) notification
-{
-  if (!self.font)
-  {
-  	[self willChangeValueForKey: @"effectiveFont"];
-  	[self willChangeValueForKey: @"effectiveFontDisplayName"];
-  	[self didChangeValueForKey: @"effectiveFont"];
-  	[self didChangeValueForKey: @"effectiveFontDisplayName"];
-  }
-}
-
-- (void) globalLinkColorDidChange: (NSNotification *) notification
-{
-  if (!self.linkColor)
-  {
-  	[self willChangeValueForKey: @"effectiveLinkColor"];
-  	[self didChangeValueForKey: @"effectiveLinkColor"];
-  }
-}
-
-- (void) globalTextColorDidChange: (NSNotification *) notification
-{
-  if (!self.textColor)
-  {
-  	[self willChangeValueForKey: @"effectiveTextColor"];
-  	[self didChangeValueForKey: @"effectiveTextColor"];
-  }
-}
-
-- (void) registerForNotifications
-{
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (globalBackgroundColorDidChange:)
-  																						 name: MUGlobalBackgroundColorDidChangeNotification
-  																					 object: nil];
-  	
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (globalFontDidChange:)
-  																						 name: MUGlobalFontDidChangeNotification
-  																					 object: nil];
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
   
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (globalLinkColorDidChange:)
-  																						 name: MUGlobalLinkColorDidChangeNotification
-  																					 object: nil];
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPBackgroundColor]; });
   
-  [[NSNotificationCenter defaultCenter] addObserver: self
-  																				 selector: @selector (globalTextColorDidChange:)
-  																						 name: MUGlobalTextColorDidChangeNotification
-  																					 object: nil];
+  return keyPath;
+}
+
+- (NSString *) _keyPathForFont
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPFont]; });
+  
+  return keyPath;
+}
+
+- (NSString *) _keyPathForLinkColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPLinkColor]; });
+  
+  return keyPath;
+}
+
+- (NSString *) _keyPathForSystemTextColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPSystemTextColor]; });
+  
+  return keyPath;
+}
+
+- (NSString *) _keyPathForTextColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPTextColor]; });
+  
+  return keyPath;
+}
+
+- (void) _startObservingUserDefaultsController
+{
+  NSUserDefaultsController *defaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  
+  [defaultsController addObserver: self
+                       forKeyPath: [self _keyPathForBackgroundColor]
+                          options: NSKeyValueObservingOptionNew
+                          context: NULL];
+  
+  [defaultsController addObserver: self
+                       forKeyPath: [self _keyPathForFont]
+                          options: NSKeyValueObservingOptionNew
+                          context: NULL];
+  
+  [defaultsController addObserver: self
+                       forKeyPath: [self _keyPathForLinkColor]
+                          options: NSKeyValueObservingOptionNew
+                          context: NULL];
+  
+  [defaultsController addObserver: self
+                       forKeyPath: [self _keyPathForSystemTextColor]
+                          options: NSKeyValueObservingOptionNew
+                          context: NULL];
+  
+  [defaultsController addObserver: self
+                       forKeyPath: [self _keyPathForTextColor]
+                          options: NSKeyValueObservingOptionNew
+                          context: NULL];
+}
+
+- (void) _stopObservingUserDefaultsController
+{
+  NSUserDefaultsController *defaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  
+  [defaultsController removeObserver: self forKeyPath: [self _keyPathForBackgroundColor]];
+  [defaultsController removeObserver: self forKeyPath: [self _keyPathForFont]];
+  [defaultsController removeObserver: self forKeyPath: [self _keyPathForLinkColor]];
+  [defaultsController removeObserver: self forKeyPath: [self _keyPathForSystemTextColor]];
+  [defaultsController removeObserver: self forKeyPath: [self _keyPathForTextColor]];
 }
 
 @end

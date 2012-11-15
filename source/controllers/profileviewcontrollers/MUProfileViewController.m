@@ -8,6 +8,14 @@
 
 #import "MUProfile.h"
 
+@interface MUProfileViewController ()
+
+- (void) _updateButtonStates;
+
+@end
+
+#pragma mark -
+
 @implementation MUProfileViewController
 
 @dynamic editableEffectiveBackgroundColor, editableEffectiveLinkColor, editableEffectiveTextColor;
@@ -17,7 +25,10 @@
   if (!(self = [super initWithNibName: @"MUEditProfileView" bundle: nil]))
     return nil;
   
-  [self addObserver: self forKeyPath: @"profile" options: NSKeyValueObservingOptionNew context: nil];
+  [self addObserver: self
+         forKeyPath: @"profile"
+            options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+            context: nil];
   
   return self;
 }
@@ -25,6 +36,7 @@
 - (void) awakeFromNib
 {
   self.view.autoresizingMask = NSViewWidthSizable;
+  [self _updateButtonStates];
 }
 
 - (void) dealloc
@@ -39,30 +51,50 @@
 {
   if (object == self && [keyPath isEqualToString: @"profile"])
   {
-    MUProfile *oldProfile = changeDictionary[NSKeyValueChangeOldKey];
-    MUProfile *newProfile = changeDictionary[NSKeyValueChangeNewKey];
+    id oldValue = changeDictionary[NSKeyValueChangeOldKey];
+    MUProfile *oldProfile;
     
-    [oldProfile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
-    [oldProfile removeObserver: self forKeyPath: @"effectiveLinkColor"];
-    [oldProfile removeObserver: self forKeyPath: @"effectiveTextColor"];
+    if ([oldValue isKindOfClass: [MUProfile class]])
+      oldProfile = (MUProfile *) oldValue;
+    else
+      oldProfile = nil;
     
-    [newProfile addObserver: self
-                 forKeyPath: @"effectiveBackgroundColor"
-                    options: NSKeyValueObservingOptionNew
-                    context: nil];
-    [newProfile addObserver: self
-                 forKeyPath: @"effectiveLinkColor"
-                    options: NSKeyValueObservingOptionNew
-                    context: nil];
-    [newProfile addObserver: self
-                 forKeyPath: @"effectiveTextColor"
-                    options: NSKeyValueObservingOptionNew
-                    context: nil];
+    id newValue = changeDictionary[NSKeyValueChangeNewKey];
+    MUProfile *newProfile;
     
-    toggleUseDefaultFontButton.state = newProfile.font ? NSOffState : NSOnState;
-    toggleUseDefaultBackgroundColorButton.state = newProfile.backgroundColor ? NSOffState : NSOnState;
-    toggleUseDefaultLinkColorButton.state = newProfile.linkColor ? NSOffState : NSOnState;
-    toggleUseDefaultTextColorButton.state = newProfile.textColor ? NSOffState : NSOnState;
+    if ([newValue isKindOfClass: [MUProfile class]])
+      newProfile = (MUProfile *) newValue;
+    else
+      newProfile = nil;
+    
+    if (oldProfile)
+    {
+      [oldProfile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
+      [oldProfile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+      [oldProfile removeObserver: self forKeyPath: @"effectiveTextColor"];
+    }
+    
+    if (newProfile)
+    {
+      [newProfile addObserver: self
+                   forKeyPath: @"effectiveBackgroundColor"
+                      options: NSKeyValueObservingOptionNew
+                      context: nil];
+      [newProfile addObserver: self
+                   forKeyPath: @"effectiveLinkColor"
+                      options: NSKeyValueObservingOptionNew
+                      context: nil];
+      [newProfile addObserver: self
+                   forKeyPath: @"effectiveTextColor"
+                      options: NSKeyValueObservingOptionNew
+                      context: nil];
+    
+      [self _updateButtonStates];
+    }
+    else
+    {
+      NSLog (@"Error: MUProfileViewController.representedObject got set to something that isn't an MUProfile.");
+    }
     
     [self willChangeValueForKey: @"editableEffectiveBackgroundColor"];
     [self didChangeValueForKey: @"editableEffectiveBackgroundColor"];
@@ -191,6 +223,19 @@
     self.profile.textColor = nil;
   else
     self.profile.textColor = self.profile.effectiveTextColor;
+}
+
+#pragma mark - Private methods
+
+- (void) _updateButtonStates
+{
+  if (self.profile)
+  {
+    toggleUseDefaultFontButton.state = self.profile.font ? NSOffState : NSOnState;
+    toggleUseDefaultBackgroundColorButton.state = self.profile.backgroundColor ? NSOffState : NSOnState;
+    toggleUseDefaultLinkColorButton.state = self.profile.linkColor ? NSOffState : NSOnState;
+    toggleUseDefaultTextColorButton.state = self.profile.textColor ? NSOffState : NSOnState;
+  }
 }
 
 @end

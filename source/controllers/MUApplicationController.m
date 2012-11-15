@@ -6,22 +6,25 @@
 
 #import "MUApplicationController.h"
 
-#import "CTBadge.h"
-#import "FontNameToDisplayNameTransformer.h"
-#import "JRSwizzle.h"
 #import "NSObject (BetterHashing).h"
 
 #import "MUAcknowledgementsController.h"
+#import "MUFontsAndColorsPreferencesViewController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
 #import "MUPlayer.h"
-#import "MUPreferencesController.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
+#import "MUProxyPreferencesViewController.h"
 #import "MUProxySettingsController.h"
 #import "MUSocketFactory.h"
+#import "MUSoundsPreferencesViewController.h"
 #import "MUWorld.h"
 #import "MUWorldRegistry.h"
+
+#import "CTBadge.h"
+#import "JRSwizzle.h"
+#import "MASPreferencesWindowController.h"
 
 @interface MUApplicationController ()
 {
@@ -31,13 +34,15 @@
   NSMutableArray *_connectionWindowControllers;
   MUAcknowledgementsController *_acknowledgementsController;
   MUConnectPanelController *_connectPanelController;
+  MASPreferencesWindowController *_preferencesController;
   MUProfilesWindowController *_profilesController;
   MUProxySettingsController *_proxySettingsController;
 }
 
 @property (readonly) BOOL _shouldPlayNotificationSound;
 
-- (void) _colorPanelColorDidChange: (NSNotification *) notification;
++ (void) _initializeUserDefaults;
+
 - (void) _openConnectionFromMenuItem: (id) sender;
 - (void) _openConnectionWithController: (MUConnectionWindowController *) controller;
 - (void) _playNotificationSound;
@@ -55,9 +60,6 @@
 
 + (void) initialize
 {
-  NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-  NSMutableDictionary *initialValues = [NSMutableDictionary dictionary];
-  
   // Replace NSObject's -hash method with a better version via method swizzling.
   
   NSError *swizzleError = nil;
@@ -66,27 +68,7 @@
   if (swizzleError)
     NSLog (@"Error occurred trying to swizzle NSObject -hash to -betterHash: %@", swizzleError.description);
   
-  NSValueTransformer *transformer = [[FontNameToDisplayNameTransformer alloc] init];
-  [NSValueTransformer setValueTransformer: transformer forName: @"FontNameToDisplayNameTransformer"];
-  
-  defaults[MUPWorlds] = @[];
-  //defaults[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
-  
-  [[NSUserDefaults standardUserDefaults] registerDefaults: defaults];
-  
-  NSFont *fixedPitchFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
-  initialValues[MUPFontName] = fixedPitchFont.fontName;
-  initialValues[MUPFontSize] = @(fixedPitchFont.pointSize);
-
-  initialValues[MUPBackgroundColor] = [NSArchiver archivedDataWithRootObject: [NSColor blackColor]];
-  initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
-  initialValues[MUPTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]];
-  initialValues[MUPVisitedLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor purpleColor]];
-  initialValues[MUPPlaySounds] = @YES;
-  initialValues[MUPPlayWhenActive] = @NO;
-  initialValues[MUPSoundChoice] = @"Pop";
-  
-  [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
+  [MUApplicationController _initializeUserDefaults];
 }
 
 - (void) awakeFromNib
@@ -115,8 +97,7 @@
 - (IBAction) chooseNewFont: (id) sender
 {
   NSDictionary *values = [[NSUserDefaultsController sharedUserDefaultsController] values];
-  NSFont *font = [NSFont fontWithName: [values valueForKey: MUPFontName]
-                                 size: [[values valueForKey: MUPFontSize] floatValue]];
+  NSFont *font = [NSUnarchiver unarchiveObjectWithData: [values valueForKey: MUPFont]];
   
   if (!font)
     font = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
@@ -154,7 +135,7 @@
   
   dispatch_once (&predicate, ^{ _acknowledgementsController = [[MUAcknowledgementsController alloc] init]; });
   
-  [_acknowledgementsController showWindow: self];
+  [_acknowledgementsController showWindow: sender];
 }
 
 - (IBAction) showConnectPanel: (id) sender
@@ -166,12 +147,23 @@
     _connectPanelController.delegate = self;
   });
   
-  [_connectPanelController showWindow: self];
+  [_connectPanelController showWindow: sender];
 }
 
 - (IBAction) showPreferencesWindow: (id) sender
 {
-  [preferencesController showPreferencesWindow: sender];
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{
+    NSArray *preferenceViewControllers = [NSArray arrayWithObjects:
+                                          [[MUFontsAndColorsPreferencesViewController alloc] init],
+                                          [[MUSoundsPreferencesViewController alloc] init],
+                                          [[MUProxyPreferencesViewController alloc] init], nil];
+    _preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers: preferenceViewControllers
+                                                                                       title: _(MULPreferencesWindowName)];
+  });
+  
+  [_preferencesController showWindow: sender];
 }
 
 - (IBAction) showProfilesWindow: (id) sender
@@ -180,7 +172,7 @@
   
   dispatch_once (&predicate, ^{ _profilesController = [[MUProfilesWindowController alloc] init]; });
   
-  [_profilesController showWindow: self];
+  [_profilesController showWindow: sender];
 }
 
 - (IBAction) showProxySettings: (id) sender
@@ -189,7 +181,7 @@
   
   dispatch_once (&predicate, ^{ _proxySettingsController = [[MUProxySettingsController alloc] init]; });
   
-  [_proxySettingsController showWindow: self];
+  [_proxySettingsController showWindow: sender];
 }
 
 - (IBAction) toggleUseProxy: (id) sender
@@ -317,16 +309,35 @@
 
 - (IBAction) changeFont: (id) sender
 {
-  [preferencesController changeFont: sender];
+  [_preferencesController changeFont: sender];
 }
 
 #pragma mark - Private methods
 
 @dynamic _shouldPlayNotificationSound;
 
-- (void) _colorPanelColorDidChange: (NSNotification *) notification
++ (void) _initializeUserDefaults
 {
-  [preferencesController colorPanelColorDidChange];
+  NSMutableDictionary *initialValues = [NSMutableDictionary dictionary];
+  
+  //initialValues[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
+  
+  initialValues[MUPFont] = [NSArchiver archivedDataWithRootObject:
+                            [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]]];
+  
+  initialValues[MUPBackgroundColor] = [NSArchiver archivedDataWithRootObject: [NSColor blackColor]];
+  initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
+  initialValues[MUPTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]];
+  initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
+  initialValues[MUPPlaySounds] = @YES;
+  initialValues[MUPPlayWhenActive] = @NO;
+  initialValues[MUPSoundChoice] = @"Pop";
+  
+  [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
+  
+  initialValues[MUPWorlds] = @[];
+  
+  [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
 }
 
 - (void) _openConnectionFromMenuItem: (id) sender
@@ -451,11 +462,6 @@
 
 - (void) _registerForNotifications
 {
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector (_colorPanelColorDidChange:)
-                                               name: NSColorPanelColorDidChangeNotification
-                                             object: nil];
-  
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (_worldsDidChange:)
                                                name: MUWorldsDidChangeNotification

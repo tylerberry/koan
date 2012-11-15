@@ -7,6 +7,7 @@
 "ConnectionClosedByError" = "Connection closed with error \"%@\"";
 
 // Toolbar item titles.
+
 "GoToURL" = "Go To URL";
 
 // Undoable actions.
@@ -59,9 +60,15 @@
 "GrowlConnectionClosedByServer" = "The connection was closed by the server.";
 "GrowlConnectionClosedByError" = "An error caused the connection to close: %@";
 
+// Preferences strings.
+
+"PreferencesWindowName" = "Preferences";
+"PreferencesFontsAndColors" = "Fonts and Colors";
+"PreferencesProxy" = "Proxy";
+"PreferencesSounds" = "Sounds";
+
 // Miscellaneous messages.
 
-"FontFullDisplayName" = "%@ - %@pt";
 "Connect" = "Connect";
 "Disconnect" = "Disconnect";
 

@@ -21,14 +21,13 @@ NSString *MUUKPrefsPaneURLString = @"http://zathras.de/angelweb/sourcecode.htm";
 #pragma mark User defaults constants.
 
 NSString *MUPBackgroundColor = @"MUPBackgroundColor";
-NSString *MUPFontName = @"MUPFontName";
-NSString *MUPFontSize = @"MUPFontSize";
+NSString *MUPFont = @"MUPFont";
 NSString *MUPLinkColor = @"MUPLinkColor";
 NSString *MUPTextColor = @"MUPTextColor";
+NSString *MUPSystemTextColor = @"MUPSystemTextColor";
 NSString *MUPWorlds = @"MUPWorlds";
 NSString *MUPProfiles = @"MUPProfiles";
 NSString *MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
-NSString *MUPVisitedLinkColor = @"MUPVisitedLinkColor";
 NSString *MUPProxySettings = @"MUPProxySettings";
 NSString *MUPUseProxy = @"MUPUseProxy";
 
@@ -46,11 +45,6 @@ NSString *MUItalicFontAttributeName = @"MUItalicFont";
 
 NSString *MUConnectionWindowControllerWillCloseNotification = @"MUConnectionWindowControllerWillCloseNotification";
 NSString *MUConnectionWindowControllerDidReceiveTextNotification = @"MUConnectionWindowControllerDidReceiveTextNotification";
-NSString *MUGlobalBackgroundColorDidChangeNotification = @"MUGlobalBackgroundColorDidChangeNotification";
-NSString *MUGlobalFontDidChangeNotification = @"MUGlobalFontDidChangeNotification";
-NSString *MUGlobalLinkColorDidChangeNotification = @"MUGlobalLinkColorDidChangeNotification";
-NSString *MUGlobalTextColorDidChangeNotification = @"MUGlobalTextColorDidChangeNotification";
-NSString *MUGlobalVisitedLinkColorDidChangeNotification = @"MUGlobalVisitedLinkColorDidChangeNotification";
 NSString *MUWorldsDidChangeNotification = @"MUWorldsDidChangeNotification";
 
 #pragma mark Toolbar item constants.
@@ -103,9 +97,14 @@ NSString *MULConfirmQuitTitleSingular = @"ConfirmQuitTitleSingular";
 NSString *MULConfirmQuitTitlePlural = @"ConfirmQuitTitlePlural";
 NSString *MULConfirmQuitMessage = @"ConfirmQuitMessage";
 
-#pragma mark Miscellaneous localization constants.
+#pragma mark Preferences localization constants.
 
-NSString *MULFontFullDisplayName = @"FontFullDisplayName";
+NSString *MULPreferencesWindowName = @"PreferencesWindowName";
+NSString *MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
+NSString *MULPreferencesProxy = @"PreferencesProxy";
+NSString *MULPreferencesSounds = @"PreferencesSounds";
+
+#pragma mark Miscellaneous localization constants.
 
 NSString *MULConnect = @"Connect";
 NSString *MULDisconnect = @"Disconnect";

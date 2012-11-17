@@ -38,7 +38,6 @@
 - (void) _populateProfilesTree;
 - (void) _saveProfilesOutlineViewState;
 
-
 @end
 
 #pragma mark -

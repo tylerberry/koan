@@ -6,6 +6,20 @@
 
 #import "MUSoundsPreferencesViewController.h"
 
+@interface MUSoundsPreferencesViewController ()
+{
+  BOOL _isUsingUserSelectedSound;
+  NSMenuItem *_selectedMenuItem;
+}
+
+- (void) _playSoundAtURL: (NSURL *) soundURL;
+- (void) _populateSoundsPopUpMenu;
+- (void) _selectSoundFromMenu: (id) sender;
+
+@end
+
+#pragma mark -
+
 @implementation MUSoundsPreferencesViewController
 
 @synthesize identifier = _identifier;
@@ -21,24 +35,163 @@
   _toolbarItemImage = [NSImage imageNamed: @"Sounds"];
   _toolbarItemLabel = _(MULPreferencesSounds);
   
-  NSMutableArray *foundPaths = [NSMutableArray array];
-  
-  for (NSString *libraryPath in NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSAllDomainsMask, YES))
-  {
-    NSString *searchPath = [libraryPath stringByAppendingPathComponent: @"Sounds"];
-  	
-  	for (NSString *filePath in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: searchPath error: NULL])
-      [foundPaths addObject: filePath.stringByDeletingPathExtension];
-  }
-  
-  _sounds = [foundPaths copy];
+  _isUsingUserSelectedSound = NO;
+  _selectedMenuItem = nil;
   
   return self;
 }
 
+- (void) awakeFromNib
+{
+  [self _populateSoundsPopUpMenu];
+}
+
 - (IBAction) chooseSound: (id) sender
 {
-  ;
+  NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+  
+  openPanel.allowedFileTypes = [NSSound soundUnfilteredTypes];
+  openPanel.allowsMultipleSelection = NO;
+  openPanel.canChooseDirectories = NO;
+  openPanel.canChooseFiles = YES;
+  openPanel.directoryURL = [[NSURL alloc] initFileURLWithPath: NSHomeDirectory ()];
+  
+  if ([openPanel runModal] == NSOKButton)
+  {
+    NSArray *selectedURLs = [openPanel URLs];
+    NSURL *selectedURL = [selectedURLs objectAtIndex: 0]; // Guaranteed to be only one since we disallowed multiples.
+    
+    NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+    
+    [sharedUserDefaultsController.values setValue: selectedURL.absoluteString forKey: MUPSoundChoice];
+    
+    if (_isUsingUserSelectedSound)
+    {
+      _selectedMenuItem.title = [selectedURL.path.lastPathComponent stringByDeletingPathExtension];
+      _selectedMenuItem.representedObject = selectedURL;
+      
+      [soundsPopUpButton selectItem: _selectedMenuItem];
+    }
+    else
+    {
+      NSMenuItem *currentSelectionMenuItem = [[NSMenuItem alloc] init];
+      
+      currentSelectionMenuItem.title = [selectedURL.path.lastPathComponent stringByDeletingPathExtension];
+      currentSelectionMenuItem.representedObject = selectedURL;
+      currentSelectionMenuItem.image = [NSImage imageNamed: @"MusicNote"];
+      
+      [soundsPopUpButton.menu insertItem: currentSelectionMenuItem atIndex: 0];
+      [soundsPopUpButton.menu insertItem: [NSMenuItem separatorItem] atIndex: 1];
+      
+      [soundsPopUpButton selectItem: currentSelectionMenuItem];
+      _selectedMenuItem = currentSelectionMenuItem;
+      
+      _isUsingUserSelectedSound = YES;
+    }
+  }
+  else
+  {
+    [soundsPopUpButton selectItem: _selectedMenuItem];
+  }
+}
+
+#pragma mark - Private methods
+
+- (void) _playSoundAtURL: (NSURL *) soundURL
+{
+  NSSound *sound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
+  [sound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
+}
+
+- (void) _populateSoundsPopUpMenu
+{
+  NSMutableArray *systemSoundURLs = [NSMutableArray array];
+  
+  for (NSString *libraryPath in NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSAllDomainsMask, YES))
+  {
+    NSString *soundsDirectoryPath = [libraryPath stringByAppendingPathComponent: @"Sounds"];
+  	
+  	for (NSString *fileName in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: soundsDirectoryPath
+                                                                                   error: NULL])
+    {
+      NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: [soundsDirectoryPath stringByAppendingPathComponent: fileName]];
+      [systemSoundURLs addObject: fileURL];
+    }
+  }
+  
+  NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  NSURL *currentSoundURL = [NSURL URLWithString: [sharedUserDefaultsController.values valueForKey: MUPSoundChoice]];
+  NSMenu *newMenu = [[NSMenu alloc] init];
+  NSMenuItem *itemToSelect = nil;
+  
+  if ([systemSoundURLs containsObject: currentSoundURL])
+    _isUsingUserSelectedSound = NO;
+  else
+  {
+    _isUsingUserSelectedSound = YES;
+    
+    NSMenuItem *currentSelectionMenuItem = [[NSMenuItem alloc] init];
+    
+    currentSelectionMenuItem.title = [currentSoundURL.path.lastPathComponent stringByDeletingPathExtension];
+    currentSelectionMenuItem.representedObject = currentSoundURL;
+    currentSelectionMenuItem.image = [NSImage imageNamed: @"MusicNote"];
+    
+    [newMenu addItem: currentSelectionMenuItem];
+    [newMenu addItem: [NSMenuItem separatorItem]];
+    itemToSelect = currentSelectionMenuItem;
+  }
+  
+  for (NSURL *systemSoundURL in systemSoundURLs)
+  {
+    NSMenuItem *systemSoundMenuItem = [[NSMenuItem alloc] init];
+    
+    systemSoundMenuItem.title = [systemSoundURL.path.lastPathComponent stringByDeletingPathExtension];
+    systemSoundMenuItem.representedObject = systemSoundURL;
+    systemSoundMenuItem.target = self;
+    systemSoundMenuItem.action = @selector (_selectSoundFromMenu:);
+    systemSoundMenuItem.image = [NSImage imageNamed: @"MusicNote"];
+    
+    [newMenu addItem: systemSoundMenuItem];
+    if ([currentSoundURL isEqual: systemSoundURL])
+      itemToSelect = systemSoundMenuItem;
+  }
+  
+  [newMenu addItem: [NSMenuItem separatorItem]];
+  
+  NSMenuItem *chooseAnotherSoundMenuItem = [[NSMenuItem alloc] init];
+  
+  chooseAnotherSoundMenuItem.title = @"Choose Another Sound…";
+  chooseAnotherSoundMenuItem.representedObject = nil;
+  
+  [newMenu addItem: chooseAnotherSoundMenuItem];
+  
+  [soundsPopUpButton setMenu: newMenu];
+  if (itemToSelect)
+  {
+    [soundsPopUpButton selectItem: itemToSelect];
+    _selectedMenuItem = itemToSelect;
+  }
+}
+
+- (void) _selectSoundFromMenu: (id) sender
+{
+  NSMenuItem *menuItem = (NSMenuItem *) sender;
+  NSURL *representedURL = menuItem.representedObject;
+  
+  [self _playSoundAtURL: representedURL];
+  
+  NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  
+  [sharedUserDefaultsController.values setValue: representedURL.absoluteString forKey: MUPSoundChoice];
+  _selectedMenuItem = soundsPopUpButton.selectedItem;
+  
+  if (_isUsingUserSelectedSound) // Remove the top user-selected sound menu item if it exists.
+  {
+    [soundsPopUpButton.menu removeItemAtIndex: 1];
+    [soundsPopUpButton.menu removeItemAtIndex: 0];
+    
+    _isUsingUserSelectedSound = NO;
+  }
 }
 
 @end

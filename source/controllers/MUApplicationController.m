@@ -331,7 +331,7 @@
   initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
   initialValues[MUPPlaySounds] = @YES;
   initialValues[MUPPlayWhenActive] = @NO;
-  initialValues[MUPSoundChoice] = @"Pop";
+  initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   
@@ -360,9 +360,15 @@
 
 - (void) _playNotificationSound
 {
-  NSString *soundName = [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice];
-  if (soundName && soundName.length != 0)
-    [[NSSound soundNamed: soundName] play];
+  NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  NSURL *soundURL = [NSURL URLWithString: [userDefaultsController.values valueForKey: MUPSoundChoice]];
+
+  if (soundURL)
+  {
+    NSSound *sound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
+    
+    [sound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
+  }
 }
 
 - (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect

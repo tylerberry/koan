@@ -68,6 +68,8 @@
 		2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0B116337C2900B33F4A /* MUPlayerViewController.m */; };
 		2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0C01633905700B33F4A /* MUProfileContentView.m */; };
 		2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA24AD11623639A00A9D92B /* libz.dylib */; };
+		2FA3DCDE16577A9900AE8282 /* MusicNote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */; };
+		2FA3DCDF16577A9900AE8282 /* MusicNote.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FA3DCDD16577A9900AE8282 /* MusicNote.png */; };
 		2FA60E5412E13939008BD147 /* MUSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA60E3A12E1379F008BD147 /* MUSection.m */; };
 		2FA60E5512E13939008BD147 /* MUProfilesSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA60E4A12E1384F008BD147 /* MUProfilesSection.m */; };
 		2FB1F7FC161BDC6E00AFD977 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F07054B1613F2E400A71314 /* Sparkle.framework */; };
@@ -347,6 +349,8 @@
 		2F97B0BF1633905700B33F4A /* MUProfileContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileContentView.h; sourceTree = "<group>"; };
 		2F97B0C01633905700B33F4A /* MUProfileContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileContentView.m; sourceTree = "<group>"; };
 		2FA24AD11623639A00A9D92B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MusicNote@2x.png"; sourceTree = "<group>"; };
+		2FA3DCDD16577A9900AE8282 /* MusicNote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MusicNote.png; sourceTree = "<group>"; };
 		2FA60E3912E1379F008BD147 /* MUSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSection.h; sourceTree = "<group>"; };
 		2FA60E3A12E1379F008BD147 /* MUSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSection.m; sourceTree = "<group>"; };
 		2FA60E4912E1384F008BD147 /* MUProfilesSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfilesSection.h; sourceTree = "<group>"; };
@@ -651,6 +655,8 @@
 				2F3DBAC9165310380056D738 /* FontsAndColors.png */,
 				2F3DBACA165310380056D738 /* FontsAndColors@2x.png */,
 				2FDFA14E0D67E86A007F0036 /* growl-icon.png */,
+				2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */,
+				2FA3DCDD16577A9900AE8282 /* MusicNote.png */,
 				2FDFA1500D67E870007F0036 /* openssl-icon.gif */,
 				2F3DBACD165372FC0056D738 /* Sounds.png */,
 				2F3DBACE165372FD0056D738 /* Sounds@2x.png */,
@@ -1321,6 +1327,8 @@
 				2F3DBACC165310380056D738 /* FontsAndColors@2x.png in Resources */,
 				2F3DBACF165372FD0056D738 /* Sounds.png in Resources */,
 				2F3DBAD0165372FD0056D738 /* Sounds@2x.png in Resources */,
+				2FA3DCDE16577A9900AE8282 /* MusicNote@2x.png in Resources */,
+				2FA3DCDF16577A9900AE8282 /* MusicNote.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

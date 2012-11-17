@@ -11,8 +11,6 @@
   IBOutlet NSPopUpButton *soundsPopUpButton;
 }
 
-@property (readonly) NSArray *sounds;
-
 - (IBAction) chooseSound: (id) sender;
 
 @end

@@ -6,6 +6,8 @@
 
 #import "MASPreferencesViewController.h"
 
+@class MUProxySettings;
+
 @interface MUProxyPreferencesViewController : NSViewController <MASPreferencesViewController>
 
 @end

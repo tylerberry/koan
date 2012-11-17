@@ -12,7 +12,6 @@
 @interface MUSocketFactory ()
 
 - (void) _loadProxySettingsFromDefaults;
-- (void) _writeProxySettingsToDefaults;
 
 @end
 
@@ -54,16 +53,6 @@
     return [MUSocket socketWithHostname: hostname port: port];
 }
 
-- (void) saveProxySettings
-{
-  [self _writeProxySettingsToDefaults];
-}
-
-- (void) toggleUseProxy
-{
-  self.useProxy = !self.useProxy;
-}
-
 #pragma mark - Private methods
 
 - (void) _loadProxySettingsFromDefaults
@@ -75,15 +64,6 @@
     self.proxySettings = [NSKeyedUnarchiver unarchiveObjectWithData: proxySettingsData];
   if (useProxyData)
     self.useProxy = [[NSKeyedUnarchiver unarchiveObjectWithData: useProxyData] boolValue];
-}
-
-- (void) _writeProxySettingsToDefaults
-{
-  NSData *proxySettingsData = [NSKeyedArchiver archivedDataWithRootObject: self.proxySettings];
-  NSData *useProxyData = [NSKeyedArchiver archivedDataWithRootObject: @(self.useProxy)];
-  
-  [[NSUserDefaults standardUserDefaults] setObject: proxySettingsData forKey: MUPProxySettings];  
-  [[NSUserDefaults standardUserDefaults] setObject: useProxyData forKey: MUPUseProxy];
 }
 
 @end

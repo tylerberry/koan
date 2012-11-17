@@ -6,6 +6,8 @@
 
 #import "MUProxyPreferencesViewController.h"
 
+#import "MUSocketFactory.h"
+
 @implementation MUProxyPreferencesViewController
 
 @synthesize identifier = _identifier;
@@ -23,4 +25,5 @@
   
   return self;
 }
+
 @end

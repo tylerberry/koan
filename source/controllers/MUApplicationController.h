@@ -18,8 +18,6 @@
 
 - (IBAction) chooseNewFont: (id) sender;
 - (IBAction) connectToURL: (NSURL *) url;
-- (IBAction) showProxySettings: (id) sender;
-- (IBAction) toggleUseProxy: (id) sender;
 
 - (IBAction) openBugsWebPage: (id) sender;
 - (IBAction) showAboutPanel: (id) sender;

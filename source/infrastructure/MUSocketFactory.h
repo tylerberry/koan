@@ -17,8 +17,5 @@
 + (MUSocketFactory *) defaultFactory;
 
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port;
-- (void) saveProxySettings;
-- (void) toggleUseProxy;
-- (BOOL) useProxy;
 
 @end

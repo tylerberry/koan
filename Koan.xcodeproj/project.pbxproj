@@ -34,7 +34,6 @@
 		2F51E45D11781EF800F6DF65 /* MULogBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45311781EF800F6DF65 /* MULogBrowser.xib */; };
 		2F51E45E11781EF800F6DF65 /* MUMainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45511781EF800F6DF65 /* MUMainMenu.xib */; };
 		2F51E45F11781EF800F6DF65 /* MUProfilesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45711781EF800F6DF65 /* MUProfilesWindow.xib */; };
-		2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F51E45911781EF800F6DF65 /* MUProxySettings.xib */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F57F906163E219A00732868 /* MUConnectPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F57F905163E219A00732868 /* MUConnectPanel.xib */; };
 		2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F57F908163E473800732868 /* MUConnectPanelController.m */; };
@@ -99,7 +98,6 @@
 		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		7E070B000933D01E000A36CF /* MUSOCKS5MethodSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
-		7E13B9B709AE8B7600508460 /* MUProxySettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13B9B509AE8B7600508460 /* MUProxySettingsController.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
 		7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */; };
 		7E26CB1E0BD808A500FC3843 /* MUByteSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */; };
@@ -296,7 +294,6 @@
 		2F51E45411781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MULogBrowser.xib; sourceTree = "<group>"; };
 		2F51E45611781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUMainMenu.xib; sourceTree = "<group>"; };
 		2F51E45811781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProfilesWindow.xib; sourceTree = "<group>"; };
-		2F51E45A11781EF800F6DF65 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MUProxySettings.xib; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F57F905163E219A00732868 /* MUConnectPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MUConnectPanel.xib; sourceTree = "<group>"; };
@@ -397,8 +394,6 @@
 		7E070B260933D32B000A36CF /* MUSOCKS5Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Constants.h; sourceTree = "<group>"; };
 		7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnection.h; sourceTree = "<group>"; };
 		7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAbstractConnection.m; sourceTree = "<group>"; };
-		7E13B9B409AE8B7600508460 /* MUProxySettingsController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUProxySettingsController.h; sourceTree = "<group>"; };
-		7E13B9B509AE8B7600508460 /* MUProxySettingsController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUProxySettingsController.m; sourceTree = "<group>"; };
 		7E13BA1A09AE950600508460 /* MUProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySettings.h; sourceTree = "<group>"; };
 		7E13BA1B09AE950600508460 /* MUProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySettings.m; sourceTree = "<group>"; };
 		7E13FA590788C75F0071D30C /* MUWorldTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorldTests.h; sourceTree = "<group>"; };
@@ -933,8 +928,6 @@
 				2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */,
 				E63CC4E2077A06CD003A54AA /* MUProfilesWindowController.h */,
 				E63CC4E3077A06CD003A54AA /* MUProfilesWindowController.m */,
-				7E13B9B409AE8B7600508460 /* MUProxySettingsController.h */,
-				7E13B9B509AE8B7600508460 /* MUProxySettingsController.m */,
 			);
 			name = Controllers;
 			path = controllers;
@@ -954,7 +947,6 @@
 				2F51E45511781EF800F6DF65 /* MUMainMenu.xib */,
 				2F51E45711781EF800F6DF65 /* MUProfilesWindow.xib */,
 				2F3DBAD916542A860056D738 /* MUProxyPreferencesView.xib */,
-				2F51E45911781EF800F6DF65 /* MUProxySettings.xib */,
 				2F3DBAD4165376180056D738 /* MUSoundsPreferencesView.xib */,
 			);
 			name = Xibs;
@@ -1305,7 +1297,6 @@
 				2F51E45E11781EF800F6DF65 /* MUMainMenu.xib in Resources */,
 				2F51E45F11781EF800F6DF65 /* MUProfilesWindow.xib in Resources */,
 				2F3DBADA16542A860056D738 /* MUProxyPreferencesView.xib in Resources */,
-				2F51E46011781EF800F6DF65 /* MUProxySettings.xib in Resources */,
 				2F3DBAD5165376180056D738 /* MUSoundsPreferencesView.xib in Resources */,
 				E65CE072075438F9003A796A /* Koan.icns in Resources */,
 				2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */,
@@ -1466,7 +1457,6 @@
 				2F861FB811FD53F2007136D5 /* MUProtocolStack.m in Sources */,
 				2F3DBAD8165387120056D738 /* MUProxyPreferencesViewController.m in Sources */,
 				7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */,
-				7E13B9B709AE8B7600508460 /* MUProxySettingsController.m in Sources */,
 				7E50AC2309AEB90B00E0BFE7 /* MUProxySocket.m in Sources */,
 				2FA60E5412E13939008BD147 /* MUSection.m in Sources */,
 				7E68DC5D092AC2FB004554BD /* MUSocket.m in Sources */,
@@ -1569,15 +1559,6 @@
 				2F51E45811781EF800F6DF65 /* English */,
 			);
 			name = MUProfilesWindow.xib;
-			path = English.lproj;
-			sourceTree = "<group>";
-		};
-		2F51E45911781EF800F6DF65 /* MUProxySettings.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2F51E45A11781EF800F6DF65 /* English */,
-			);
-			name = MUProxySettings.xib;
 			path = English.lproj;
 			sourceTree = "<group>";
 		};

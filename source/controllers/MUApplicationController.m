@@ -16,7 +16,7 @@
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
 #import "MUProxyPreferencesViewController.h"
-#import "MUProxySettingsController.h"
+#import "MUProxySettings.h"
 #import "MUSocketFactory.h"
 #import "MUSoundsPreferencesViewController.h"
 #import "MUWorld.h"
@@ -36,7 +36,6 @@
   MUConnectPanelController *_connectPanelController;
   MASPreferencesWindowController *_preferencesController;
   MUProfilesWindowController *_profilesController;
-  MUProxySettingsController *_proxySettingsController;
 }
 
 @property (readonly) BOOL _shouldPlayNotificationSound;
@@ -83,13 +82,6 @@
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
-}
-
-- (BOOL) validateMenuItem: (NSMenuItem *) item
-{
-  if (item.action == @selector (toggleUseProxy:))
-    [item setState: ([[MUSocketFactory defaultFactory] useProxy] ? NSOnState : NSOffState)];
-  return YES;
 }
 
 #pragma mark - Actions
@@ -175,20 +167,6 @@
   [_profilesController showWindow: sender];
 }
 
-- (IBAction) showProxySettings: (id) sender
-{
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ _proxySettingsController = [[MUProxySettingsController alloc] init]; });
-  
-  [_proxySettingsController showWindow: sender];
-}
-
-- (IBAction) toggleUseProxy: (id) sender
-{
-  [[MUSocketFactory defaultFactory] toggleUseProxy];
-}
-
 #pragma mark - NSApplicationDelegate protocol
 
 - (BOOL) application: (NSApplication *) application openFile: (NSString *) string
@@ -270,8 +248,6 @@
 - (void) applicationWillTerminate: (NSNotification *) notification
 {
   [NSApp setApplicationIconImage: nil];
-  
-  [[MUSocketFactory defaultFactory] saveProxySettings];
 }
 
 #pragma mark - MUConnectPanelControllerDelegate protocol
@@ -331,6 +307,7 @@
   initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
   initialValues[MUPPlaySounds] = @YES;
   initialValues[MUPPlayWhenActive] = @NO;
+  initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];

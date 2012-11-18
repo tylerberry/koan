@@ -12,7 +12,6 @@
 
 #import "MUMCPProtocolHandler.h"
 #import "MUMCCPProtocolHandler.h"
-#import "MUSSLProtocolHandler.h"
 #import "MUTelnetProtocolHandler.h"
 
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
@@ -91,9 +90,6 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: state];
   [mccpProtocolHandler setDelegate: self];
   [protocolStack addProtocolHandler: mccpProtocolHandler];
-  
-  MUSSLProtocolHandler *sslProtocolHandler = [MUSSLProtocolHandler protocolHandlerWithConnectionState: state];
-  [protocolStack addProtocolHandler: sslProtocolHandler];
   
   _delegate = newDelegate;
   if (_delegate)

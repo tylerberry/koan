@@ -147,10 +147,9 @@
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{
-    NSArray *preferenceViewControllers = [NSArray arrayWithObjects:
-                                          [[MUFontsAndColorsPreferencesViewController alloc] init],
+    NSArray *preferenceViewControllers = @[[[MUFontsAndColorsPreferencesViewController alloc] init],
                                           [[MUSoundsPreferencesViewController alloc] init],
-                                          [[MUProxyPreferencesViewController alloc] init], nil];
+                                          [[MUProxyPreferencesViewController alloc] init]];
     _preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers: preferenceViewControllers
                                                                                        title: _(MULPreferencesWindowName)];
   });
@@ -307,6 +306,7 @@
   initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
   initialValues[MUPPlaySounds] = @YES;
   initialValues[MUPPlayWhenActive] = @NO;
+  initialValues[MUPUseProxy] = @NO;
   initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
   

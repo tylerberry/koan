@@ -8,117 +8,112 @@
 
 #pragma mark Application constants.
 
-extern NSString *MUApplicationName;
+extern NSString * const MUApplicationName;
 
 #pragma mark URLs.
 
-extern NSString *MUKoanBugsURLString;
-extern NSString *MUGrowlURLString;
-extern NSString *MUOpenSSLURLString;
-extern NSString *MUSparkleURLString;
-extern NSString *MUUKPrefsPaneURLString;
+extern NSString * const MUKoanBugsURLString;
+extern NSString * const MUGrowlURLString;
+extern NSString * const MUOpenSSLURLString;
+extern NSString * const MUSparkleURLString;
+extern NSString * const MUUKPrefsPaneURLString;
 
 #pragma mark User defaults constants.
 
-extern NSString *MUPBackgroundColor;
-extern NSString *MUPFont;
-extern NSString *MUPLinkColor;
-extern NSString *MUPTextColor;
-extern NSString *MUPWorlds;
-extern NSString *MUPProfiles;
-extern NSString *MUPProfilesOutlineViewState;
-extern NSString *MUPSystemTextColor;
-extern NSString *MUPProxySettings;
-extern NSString *MUPUseProxy;
+extern NSString * const MUPBackgroundColor;
+extern NSString * const MUPFont;
+extern NSString * const MUPLinkColor;
+extern NSString * const MUPTextColor;
+extern NSString * const MUPWorlds;
+extern NSString * const MUPProfiles;
+extern NSString * const MUPProfilesOutlineViewState;
+extern NSString * const MUPSystemTextColor;
+extern NSString * const MUPProxySettings;
+extern NSString * const MUPUseProxy;
 
-extern NSString *MUPPlaySounds;
-extern NSString *MUPPlayWhenActive;
-extern NSString *MUPSoundChoice;
+extern NSString * const MUPPlaySounds;
+extern NSString * const MUPPlayWhenActive;
+extern NSString * const MUPSoundChoice;
 
 #pragma mark Custom string attributes.
 
-extern NSString *MUBoldFontAttributeName;
-extern NSString *MUCustomColorAttributeName;
-extern NSString *MUItalicFontAttributeName;
+extern NSString * const MUBoldFontAttributeName;
+extern NSString * const MUCustomColorAttributeName;
+extern NSString * const MUItalicFontAttributeName;
 
 #pragma mark Notification constants.
 
-extern NSString *MUConnectionWindowControllerWillCloseNotification;
-extern NSString *MUConnectionWindowControllerDidReceiveTextNotification;
-extern NSString *MUWorldsDidChangeNotification;
+extern NSString * const MUConnectionWindowControllerWillCloseNotification;
+extern NSString * const MUConnectionWindowControllerDidReceiveTextNotification;
+extern NSString * const MUWorldsDidChangeNotification;
 
-extern NSString *MUReadBufferDidProvideStringNotification;
+extern NSString * const MUReadBufferDidProvideStringNotification;
 
 #pragma mark Toolbar item constants.
 
-extern NSString *MUAddWorldToolbarItem;
-extern NSString *MUAddPlayerToolbarItem;
-extern NSString *MUEditSelectedRowToolbarItem;
-extern NSString *MURemoveSelectedRowToolbarItem;
-extern NSString *MUEditProfileForSelectedRowToolbarItem;
-extern NSString *MUGoToURLToolbarItem;
+extern NSString * const MUAddWorldToolbarItem;
+extern NSString * const MUAddPlayerToolbarItem;
+extern NSString * const MUEditSelectedRowToolbarItem;
+extern NSString * const MURemoveSelectedRowToolbarItem;
+extern NSString * const MUEditProfileForSelectedRowToolbarItem;
+extern NSString * const MUGoToURLToolbarItem;
 
 #pragma mark Toolbar item localization constants.
 
-extern NSString *MULGoToURL;
+extern NSString * const MULGoToURL;
 
 #pragma mark Undoable actions.
 
-extern NSString *MUUndoAddPlayer;
-extern NSString *MUUndoDeletePlayer;
+extern NSString * const MUUndoAddPlayer;
+extern NSString * const MUUndoDeletePlayer;
 
-extern NSString *MUUndoAddWorld;
-extern NSString *MUUndoDeleteWorld;
+extern NSString * const MUUndoAddWorld;
+extern NSString * const MUUndoDeleteWorld;
 
 #pragma mark Growl constants.
 
-extern NSString *MUGConnectionOpened;
-extern NSString *MUGConnectionClosed;
-extern NSString *MUGConnectionClosedByServer;
-extern NSString *MUGConnectionClosedByError;
+extern NSString * const MUGConnectionOpened;
+extern NSString * const MUGConnectionClosed;
+extern NSString * const MUGConnectionClosedByServer;
+extern NSString * const MUGConnectionClosedByError;
 
 #pragma mark Status message localization constants.
 
-extern NSString *MULConnectionOpening;
-extern NSString *MULConnectionOpen;
-extern NSString *MULConnectionClosed;
-extern NSString *MULConnectionClosedByServer;
-extern NSString *MULConnectionClosedByError;
+extern NSString * const MULConnectionOpening;
+extern NSString * const MULConnectionOpen;
+extern NSString * const MULConnectionClosed;
+extern NSString * const MULConnectionClosedByServer;
+extern NSString * const MULConnectionClosedByError;
 
 #pragma mark Preferences localization constants.
 
-extern NSString *MULPreferencesWindowName;
-extern NSString *MULPreferencesFontsAndColors;
-extern NSString *MULPreferencesProxy;
-extern NSString *MULPreferencesSounds;
+extern NSString * const MULPreferencesWindowName;
+extern NSString * const MULPreferencesFontsAndColors;
+extern NSString * const MULPreferencesProxy;
+extern NSString * const MULPreferencesSounds;
 
 #pragma mark Alert panel localization constants.
 
-extern NSString *MULOK;
-extern NSString *MULConfirm;
-extern NSString *MULQuitImmediately;
-extern NSString *MULCancel;
+extern NSString * const MULOK;
+extern NSString * const MULConfirm;
+extern NSString * const MULQuitImmediately;
+extern NSString * const MULCancel;
 
-extern NSString *MULConfirmCloseTitle;
-extern NSString *MULConfirmCloseMessage;
+extern NSString * const MULConfirmCloseTitle;
+extern NSString * const MULConfirmCloseMessage;
 
-extern NSString *MULConfirmQuitTitleSingular;
-extern NSString *MULConfirmQuitTitlePlural;
-extern NSString *MULConfirmQuitMessage;
+extern NSString * const MULConfirmQuitTitleSingular;
+extern NSString * const MULConfirmQuitTitlePlural;
+extern NSString * const MULConfirmQuitMessage;
 
 #pragma mark Miscellaneous localization constants.
 
-extern NSString *MULConnect;
-extern NSString *MULDisconnect;
+extern NSString * const MULConnect;
+extern NSString * const MULDisconnect;
 
-extern NSString *MULConnectWithoutLogin;
-
-#pragma mark Miscellaneous other constants.
-
-extern NSString *MUInsertionIndex;
-extern NSString *MUInsertionWorld;
+extern NSString * const MULConnectWithoutLogin;
 
 #pragma mark ANSI parsing constants
 
-extern NSString *MUANSIForegroundColorAttributeName;
-extern NSString *MUANSIBackgroundColorAttributeName;
+extern NSString * const MUANSIForegroundColorAttributeName;
+extern NSString * const MUANSIBackgroundColorAttributeName;

@@ -69,7 +69,7 @@
 
 - (NSTreeNode *) objectInChildrenAtIndex: (NSUInteger) index
 {
-  return [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] objectAtIndex: index];
+  return [[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"][index];
 }
 
 - (NSArray *) childrenAtIndexes: (NSIndexSet *) indexSet
@@ -116,7 +116,7 @@
 {
   ((MUTreeNode *) [MUWorldRegistry defaultRegistry].worlds[index]).parent = nil;
   object.parent = self;
-  [[[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"] replaceObjectAtIndex: index withObject: object];
+  [[MUWorldRegistry defaultRegistry] mutableArrayValueForKey: @"worlds"][index] = object;
 }
 
 - (void) replaceChildrenAtIndexes: (NSIndexSet *) indexes withChildren: (NSArray *) objects

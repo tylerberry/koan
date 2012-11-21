@@ -10,43 +10,47 @@
 #import "MUSOCKS5Constants.h"
 
 @implementation MUSOCKS5Authentication
-
-+ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue
 {
-  return [[MUSOCKS5Authentication alloc] initWithUsername: usernameValue password: passwordValue];
+  NSString *_username;
+  NSString *_password;
 }
 
-- (id) initWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue
++ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) username
+                                                    password: (NSString *) password
+{
+  return [[MUSOCKS5Authentication alloc] initWithUsername: username password: password];
+}
+
+- (id) initWithUsername: (NSString *) username
+               password: (NSString *) password
 {
   if (!(self = [super init]))
     return nil;
   
-  username = [usernameValue copy];
-  password = [passwordValue copy];
+  _username = [username copy];
+  _password = [password copy];
+  _authenticated = NO;
+  
   return self;
 }
-
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {
   [buffer appendByte: MUSOCKS5UsernamePasswordVersion];
-  [buffer appendByte: [username length]];
-  [buffer appendString: username];
-  [buffer appendByte: [password length]];
-  [buffer appendString: password];
-}
-
-- (BOOL) authenticated
-{
-  return authenticated;
+  [buffer appendByte: _username.length];
+  [buffer appendString: _username];
+  [buffer appendByte: _password.length];
+  [buffer appendString: _password];
 }
 
 - (void) parseReplyFromSource: (NSObject <MUByteSource> *) source
 {
   NSData *reply = [source readExactlyLength: 2];
-  if ([reply length] != 2)
+  
+  if (reply.length != 2)
     return;
-  authenticated = ((uint8_t *) [reply bytes])[1] == 0 ? YES : NO;
+  
+  _authenticated = ((uint8_t *) reply.bytes)[1] == 0 ? YES : NO;
 }
 
 @end

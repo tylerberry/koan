@@ -9,6 +9,9 @@
 #import "MUByteSource.h"
 
 @implementation MUSOCKS5MethodSelection
+{
+  NSMutableData *_methods;
+}
 
 + (id) socksMethodSelection
 {
@@ -20,42 +23,42 @@
   if (!(self = [super init]))
     return nil;
   
-  methods = [[NSMutableData alloc] init];
+  _methods = [[NSMutableData alloc] init];
   [self addMethod: MUSOCKS5NoAuthentication];
   
   return self;
 }
 
-
 - (void) addMethod: (MUSOCKS5Method) method
 {
   char bytes[1] = {method};
-  [methods appendBytes: bytes length: 1];
+  [_methods appendBytes: bytes length: 1];
 }
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {
-  const uint8_t *bytes;
-  
   [buffer appendByte: MUSOCKS5Version];
-  [buffer appendByte: [methods length]];
-  bytes = [methods bytes];
+  [buffer appendByte: _methods.length];
   
-  for (unsigned i = 0; i < [methods length]; i++)
+  const uint8_t *bytes = _methods.bytes;
+  
+  for (unsigned i = 0; i < _methods.length; i++)
     [buffer appendByte: bytes[i]];
 }
 
 - (MUSOCKS5Method) method
 {
-  return selectedMethod;
+  return _selectedMethod;
 }
 
 - (void) parseResponseFromByteSource: (NSObject <MUByteSource> *) byteSource
 {
   NSData *reply = [byteSource readExactlyLength: 2];
-  if ([reply length] != 2)
+  
+  if (reply.length != 2)
     return;
-  selectedMethod = ((uint8_t *) [reply bytes])[1];    
+  
+  _selectedMethod = ((uint8_t *) reply.bytes)[1];
 }
 
 @end

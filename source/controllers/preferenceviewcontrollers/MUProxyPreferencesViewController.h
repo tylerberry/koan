@@ -6,8 +6,13 @@
 
 #import "MASPreferencesViewController.h"
 
-@class MUProxySettings;
-
 @interface MUProxyPreferencesViewController : NSViewController <MASPreferencesViewController>
+{
+  IBOutlet NSMatrix *proxyRadioButtonMatrix;
+}
+
+@property (readonly) BOOL shouldEnableCustomProxyControls;
+
+- (IBAction) proxyRadioButtonClicked: (id) sender;
 
 @end

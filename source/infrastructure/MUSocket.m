@@ -468,23 +468,23 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   
   [notificationCenter addObserver: object
-                         selector: @selector(socketDidConnect:)
+                         selector: @selector (socketDidConnect:)
                              name: MUSocketDidConnectNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(socketIsConnecting:)
+                         selector: @selector (socketIsConnecting:)
                              name: MUSocketIsConnectingNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(socketWasClosedByClient:)
+                         selector: @selector (socketWasClosedByClient:)
                              name: MUSocketWasClosedByClientNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(socketWasClosedByServer:)
+                         selector: @selector (socketWasClosedByServer:)
                              name: MUSocketWasClosedByServerNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(socketWasClosedWithError:)
+                         selector: @selector (socketWasClosedWithError:)
                              name: MUSocketWasClosedWithErrorNotification
                            object: self];
 }

@@ -362,7 +362,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                              name: MUMUDConnectionWasClosedByServerNotification
                            object: self];
   [notificationCenter addObserver: object
-                         selector: @selector(telnetConnectionWasClosedWithError:)
+                         selector: @selector (telnetConnectionWasClosedWithError:)
                              name: MUMUDConnectionWasClosedWithErrorNotification
                            object: self];
 }

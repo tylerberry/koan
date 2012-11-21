@@ -11,9 +11,6 @@
 
 @interface MUSocketFactory : NSObject
 
-@property (assign, nonatomic) BOOL useProxy;
-@property (strong) MUProxySettings *proxySettings;
-
 + (MUSocketFactory *) defaultFactory;
 
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port;

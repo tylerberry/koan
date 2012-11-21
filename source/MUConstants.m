@@ -8,115 +8,110 @@
 
 #pragma mark Application constants.
 
-NSString *MUApplicationName = @"Koan";
+NSString * const MUApplicationName = @"Koan";
 
 #pragma mark URLs.
 
-NSString *MUKoanBugsURLString = @"https://github.com/tylerberry/koan/issues";
-NSString *MUGrowlURLString = @"http://growl.info/";
-NSString *MUOpenSSLURLString = @"http://www.openssl.org/";
-NSString *MUSparkleURLString = @"http://sparkle.andymatuschak.org/";
-NSString *MUUKPrefsPaneURLString = @"http://zathras.de/angelweb/sourcecode.htm";
+NSString * const MUKoanBugsURLString = @"https://github.com/tylerberry/koan/issues";
+NSString * const MUGrowlURLString = @"http://growl.info/";
+NSString * const MUOpenSSLURLString = @"http://www.openssl.org/";
+NSString * const MUSparkleURLString = @"http://sparkle.andymatuschak.org/";
+NSString * const MUUKPrefsPaneURLString = @"http://zathras.de/angelweb/sourcecode.htm";
 
 #pragma mark User defaults constants.
 
-NSString *MUPBackgroundColor = @"MUPBackgroundColor";
-NSString *MUPFont = @"MUPFont";
-NSString *MUPLinkColor = @"MUPLinkColor";
-NSString *MUPTextColor = @"MUPTextColor";
-NSString *MUPSystemTextColor = @"MUPSystemTextColor";
-NSString *MUPWorlds = @"MUPWorlds";
-NSString *MUPProfiles = @"MUPProfiles";
-NSString *MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
-NSString *MUPProxySettings = @"MUPProxySettings";
-NSString *MUPUseProxy = @"MUPUseProxy";
+NSString * const MUPBackgroundColor = @"MUPBackgroundColor";
+NSString * const MUPFont = @"MUPFont";
+NSString * const MUPLinkColor = @"MUPLinkColor";
+NSString * const MUPTextColor = @"MUPTextColor";
+NSString * const MUPSystemTextColor = @"MUPSystemTextColor";
+NSString * const MUPWorlds = @"MUPWorlds";
+NSString * const MUPProfiles = @"MUPProfiles";
+NSString * const MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
+NSString * const MUPProxySettings = @"MUPProxySettings";
+NSString * const  const MUPUseProxy = @"MUPUseProxy";
 
-NSString *MUPPlaySounds = @"MUPPlaySounds";
-NSString *MUPPlayWhenActive = @"MUPPlayWhenActive";
-NSString *MUPSoundChoice = @"MUPSoundChoice";
+NSString * const MUPPlaySounds = @"MUPPlaySounds";
+NSString * const MUPPlayWhenActive = @"MUPPlayWhenActive";
+NSString * const MUPSoundChoice = @"MUPSoundChoice";
 
 #pragma mark Custom string attributes.
 
-NSString *MUBoldFontAttributeName = @"MUBoldFont";
-NSString *MUCustomColorAttributeName = @"MUCustomColor";
-NSString *MUItalicFontAttributeName = @"MUItalicFont";
+NSString * const MUBoldFontAttributeName = @"MUBoldFont";
+NSString * const MUCustomColorAttributeName = @"MUCustomColor";
+NSString * const MUItalicFontAttributeName = @"MUItalicFont";
 
 #pragma mark Notification constants.
 
-NSString *MUConnectionWindowControllerWillCloseNotification = @"MUConnectionWindowControllerWillCloseNotification";
-NSString *MUConnectionWindowControllerDidReceiveTextNotification = @"MUConnectionWindowControllerDidReceiveTextNotification";
-NSString *MUWorldsDidChangeNotification = @"MUWorldsDidChangeNotification";
+NSString * const MUConnectionWindowControllerWillCloseNotification = @"MUConnectionWindowControllerWillCloseNotification";
+NSString * const MUConnectionWindowControllerDidReceiveTextNotification = @"MUConnectionWindowControllerDidReceiveTextNotification";
+NSString * const MUWorldsDidChangeNotification = @"MUWorldsDidChangeNotification";
 
 #pragma mark Toolbar item constants.
 
-NSString *MUAddWorldToolbarItem = @"MUAddWorldToolbarItem";
-NSString *MUAddPlayerToolbarItem = @"MUAddPlayerToolbarItem";
-NSString *MUEditSelectedRowToolbarItem = @"MUEditSelectedRowToolbarItem";
-NSString *MURemoveSelectedRowToolbarItem = @"MURemoveSelectedRowToolbarItem";
-NSString *MUEditProfileForSelectedRowToolbarItem = @"MUEditProfileForSelectedRowToolbarItem";
-NSString *MUGoToURLToolbarItem = @"MUGoToURLToolbarItem";
+NSString * const MUAddWorldToolbarItem = @"MUAddWorldToolbarItem";
+NSString * const MUAddPlayerToolbarItem = @"MUAddPlayerToolbarItem";
+NSString * const MUEditSelectedRowToolbarItem = @"MUEditSelectedRowToolbarItem";
+NSString * const MURemoveSelectedRowToolbarItem = @"MURemoveSelectedRowToolbarItem";
+NSString * const MUEditProfileForSelectedRowToolbarItem = @"MUEditProfileForSelectedRowToolbarItem";
+NSString * const MUGoToURLToolbarItem = @"MUGoToURLToolbarItem";
 
 #pragma mark Toolbar item localization constants.
 
-NSString *MULGoToURL = @"GoToURL";
+NSString * const MULGoToURL = @"GoToURL";
 
 #pragma mark Undoable actions.
 
-NSString *MUUndoAddPlayer = @"AddPlayer";
-NSString *MUUndoDeletePlayer = @"DeletePlayer";
+NSString * const MUUndoAddPlayer = @"AddPlayer";
+NSString * const MUUndoDeletePlayer = @"DeletePlayer";
 
-NSString *MUUndoAddWorld = @"AddWorld";
-NSString *MUUndoDeleteWorld = @"DeleteWorld";
+NSString * const MUUndoAddWorld = @"AddWorld";
+NSString * const MUUndoDeleteWorld = @"DeleteWorld";
 
 #pragma mark Growl localization constants.
 
-NSString *MUGConnectionOpened = @"GrowlConnectionOpened";
-NSString *MUGConnectionClosed = @"GrowlConnectionClosed";
-NSString *MUGConnectionClosedByServer = @"GrowlConnectionClosedByServer";
-NSString *MUGConnectionClosedByError = @"GrowlConnectionClosedByError";
+NSString * const MUGConnectionOpened = @"GrowlConnectionOpened";
+NSString * const MUGConnectionClosed = @"GrowlConnectionClosed";
+NSString * const MUGConnectionClosedByServer = @"GrowlConnectionClosedByServer";
+NSString * const MUGConnectionClosedByError = @"GrowlConnectionClosedByError";
 
 #pragma mark Status message localization constants.
 
-NSString *MULConnectionOpening = @"ConnectionOpening";
-NSString *MULConnectionOpen = @"ConnectionOpen";
-NSString *MULConnectionClosed = @"ConnectionClosed";
-NSString *MULConnectionClosedByServer = @"ConnectionClosedByServer";
-NSString *MULConnectionClosedByError = @"ConnectionClosedByError";
+NSString * const MULConnectionOpening = @"ConnectionOpening";
+NSString * const MULConnectionOpen = @"ConnectionOpen";
+NSString * const MULConnectionClosed = @"ConnectionClosed";
+NSString * const MULConnectionClosedByServer = @"ConnectionClosedByServer";
+NSString * const MULConnectionClosedByError = @"ConnectionClosedByError";
 
 #pragma mark Alert panel localization constants.
 
-NSString *MULOK = @"OK";
-NSString *MULConfirm = @"Confirm";
-NSString *MULQuitImmediately = @"QuitImmediately";
-NSString *MULCancel = @"Cancel";
+NSString * const MULOK = @"OK";
+NSString * const MULConfirm = @"Confirm";
+NSString * const MULQuitImmediately = @"QuitImmediately";
+NSString * const MULCancel = @"Cancel";
 
-NSString *MULConfirmCloseTitle = @"ConfirmCloseTitle";
-NSString *MULConfirmCloseMessage = @"ConfirmCloseMessage";
+NSString * const MULConfirmCloseTitle = @"ConfirmCloseTitle";
+NSString * const MULConfirmCloseMessage = @"ConfirmCloseMessage";
 
-NSString *MULConfirmQuitTitleSingular = @"ConfirmQuitTitleSingular";
-NSString *MULConfirmQuitTitlePlural = @"ConfirmQuitTitlePlural";
-NSString *MULConfirmQuitMessage = @"ConfirmQuitMessage";
+NSString * const MULConfirmQuitTitleSingular = @"ConfirmQuitTitleSingular";
+NSString * const MULConfirmQuitTitlePlural = @"ConfirmQuitTitlePlural";
+NSString * const MULConfirmQuitMessage = @"ConfirmQuitMessage";
 
 #pragma mark Preferences localization constants.
 
-NSString *MULPreferencesWindowName = @"PreferencesWindowName";
-NSString *MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
-NSString *MULPreferencesProxy = @"PreferencesProxy";
-NSString *MULPreferencesSounds = @"PreferencesSounds";
+NSString * const MULPreferencesWindowName = @"PreferencesWindowName";
+NSString * const MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
+NSString * const MULPreferencesProxy = @"PreferencesProxy";
+NSString * const MULPreferencesSounds = @"PreferencesSounds";
 
 #pragma mark Miscellaneous localization constants.
 
-NSString *MULConnect = @"Connect";
-NSString *MULDisconnect = @"Disconnect";
+NSString * const MULConnect = @"Connect";
+NSString * const MULDisconnect = @"Disconnect";
 
-NSString *MULConnectWithoutLogin = @"ConnectWithoutLogin";
-
-#pragma mark Miscellaneous other constants.
-
-NSString *MUInsertionIndex = @"MUInsertionIndex";
-NSString *MUInsertionWorld = @"MUInsertionWorld";
+NSString * const MULConnectWithoutLogin = @"ConnectWithoutLogin";
 
 #pragma mark ANSI parsing constants.
 
-NSString *MUANSIForegroundColorAttributeName = @"MUANSIForegroundColorAttributeName";
-NSString *MUANSIBackgroundColorAttributeName = @"MUANSIBackgroundColorAttributeName";
+NSString * const MUANSIForegroundColorAttributeName = @"MUANSIForegroundColorAttributeName";
+NSString * const MUANSIBackgroundColorAttributeName = @"MUANSIBackgroundColorAttributeName";

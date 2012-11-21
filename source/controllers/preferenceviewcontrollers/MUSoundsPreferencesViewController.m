@@ -59,7 +59,7 @@
   if ([openPanel runModal] == NSOKButton)
   {
     NSArray *selectedURLs = [openPanel URLs];
-    NSURL *selectedURL = [selectedURLs objectAtIndex: 0]; // Guaranteed to be only one since we disallowed multiples.
+    NSURL *selectedURL = selectedURLs[0]; // Guaranteed to be only one since we disallowed multiples.
     
     NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
     

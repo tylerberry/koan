@@ -6,7 +6,7 @@
 
 #import "MUProxySettings.h"
 
-static const int32_t currentProxyVersion = 2;
+static const int32_t currentProxyVersion = 3;
 
 @implementation MUProxySettings
 
@@ -24,6 +24,7 @@ static const int32_t currentProxyVersion = 2;
   
   _hostname = @"";
   _port = @1080;
+  _requiresAuthentication = NO;
   _username = @"";
   _password = @"";
   
@@ -61,6 +62,16 @@ static const int32_t currentProxyVersion = 2;
   {
     _username = @"";
     _password = @"";
+  }
+  
+  if (version >= 3)
+    _requiresAuthentication = [coder decodeBoolForKey: @"requiresAuthentication"];
+  else
+  {
+    if (_username && _username.length > 0)
+      _requiresAuthentication = YES;
+    else
+      _requiresAuthentication = NO;
   }
   
   return self;

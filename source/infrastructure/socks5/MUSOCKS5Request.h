@@ -12,8 +12,6 @@
 
 @interface MUSOCKS5Request : NSObject
 {
-  NSString *hostname;
-  int port;
   MUSOCKS5Reply reply;
 }
 

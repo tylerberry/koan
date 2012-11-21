@@ -92,7 +92,7 @@
   [methodSelection appendToBuffer: outputBuffer];
   [outputBuffer flush];
   [methodSelection parseResponseFromByteSource: self];
-  return methodSelection.method;
+  return methodSelection.selectedMethod;
 }
 
 @end

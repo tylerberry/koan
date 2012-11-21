@@ -154,6 +154,7 @@
 								<string key="NSContents">Use the system SOCKS proxy server</string>
 								<reference key="NSSupport" ref="12676480"/>
 								<reference key="NSControlView" ref="84693469"/>
+								<int key="NSTag">1</int>
 								<int key="NSButtonFlags">1211912448</int>
 								<int key="NSButtonFlags2">0</int>
 								<object class="NSImage" key="NSNormalImage">
@@ -208,6 +209,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<string key="NSContents">Use a custom SOCKS proxy server</string>
 								<reference key="NSSupport" ref="12676480"/>
 								<reference key="NSControlView" ref="84693469"/>
+								<int key="NSTag">2</int>
 								<int key="NSButtonFlags">1211912448</int>
 								<int key="NSButtonFlags2">0</int>
 								<reference key="NSAlternateImage" ref="45033691"/>
@@ -460,6 +462,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">2</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">proxyRadioButtonClicked:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="84693469"/>
+					</object>
+					<int key="connectionID">194</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">proxyRadioButtonMatrix</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="84693469"/>
+					</object>
+					<int key="connectionID">195</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentObject: values.MUPProxySettings</string>
 						<reference key="source" ref="351286155"/>
@@ -481,6 +499,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="763466724"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="763466724"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">203</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.hostname</string>
 						<reference key="source" ref="763466724"/>
 						<reference key="destination" ref="351286155"/>
@@ -492,13 +526,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="NSKeyPath">selection.hostname</string>
 							<dictionary key="NSOptions">
 								<boolean value="YES" key="NSContinuouslyUpdatesValue"/>
-								<string key="NSNoSelectionPlaceholder">Proxy Server Hostname</string>
-								<string key="NSNullPlaceholder">Proxy Server Hostname</string>
+								<string key="NSNoSelectionPlaceholder">Hostname or IP</string>
+								<string key="NSNullPlaceholder">Hostname or IP</string>
 							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">67</int>
+					<int key="connectionID">249</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -519,6 +553,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="418912013"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="418912013"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">209</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -543,6 +593,45 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="10599235"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="207543057">
+							<reference key="NSSource" ref="10599235"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">212</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: selection.requiresAuthentication</string>
+						<reference key="source" ref="10599235"/>
+						<reference key="destination" ref="351286155"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="10599235"/>
+							<reference key="NSDestination" ref="351286155"/>
+							<string key="NSLabel">enabled2: selection.requiresAuthentication</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">selection.requiresAuthentication</string>
+							<dictionary key="NSOptions">
+								<integer value="-1" key="NSMultipleValuesPlaceholder"/>
+								<integer value="-1" key="NSNoSelectionPlaceholder"/>
+								<integer value="-1" key="NSNotApplicablePlaceholder"/>
+								<integer value="-1" key="NSNullPlaceholder"/>
+							</dictionary>
+							<reference key="NSPreviousConnector" ref="207543057"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">235</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.password</string>
 						<reference key="source" ref="943560278"/>
 						<reference key="destination" ref="351286155"/>
@@ -561,6 +650,116 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="943560278"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="607776601">
+							<reference key="NSSource" ref="943560278"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">216</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: selection.requiresAuthentication</string>
+						<reference key="source" ref="943560278"/>
+						<reference key="destination" ref="351286155"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="943560278"/>
+							<reference key="NSDestination" ref="351286155"/>
+							<string key="NSLabel">enabled2: selection.requiresAuthentication</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">selection.requiresAuthentication</string>
+							<dictionary key="NSOptions">
+								<integer value="-1" key="NSMultipleValuesPlaceholder"/>
+								<integer value="-1" key="NSNoSelectionPlaceholder"/>
+								<integer value="-1" key="NSNotApplicablePlaceholder"/>
+								<integer value="-1" key="NSNullPlaceholder"/>
+							</dictionary>
+							<reference key="NSPreviousConnector" ref="607776601"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">237</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="812217091"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="812217091"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">207</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.requiresAuthentication</string>
+						<reference key="source" ref="812217091"/>
+						<reference key="destination" ref="351286155"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="812217091"/>
+							<reference key="NSDestination" ref="351286155"/>
+							<string key="NSLabel">value: selection.requiresAuthentication</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.requiresAuthentication</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">233</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: shouldEnableCustomProxyControls</string>
+						<reference key="source" ref="871123938"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="554407848">
+							<reference key="NSSource" ref="871123938"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">enabled: shouldEnableCustomProxyControls</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">shouldEnableCustomProxyControls</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">219</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled2: selection.requiresAuthentication</string>
+						<reference key="source" ref="871123938"/>
+						<reference key="destination" ref="351286155"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="871123938"/>
+							<reference key="NSDestination" ref="351286155"/>
+							<string key="NSLabel">enabled2: selection.requiresAuthentication</string>
+							<string key="NSBinding">enabled2</string>
+							<string key="NSKeyPath">selection.requiresAuthentication</string>
+							<dictionary key="NSOptions">
+								<integer value="-1" key="NSMultipleValuesPlaceholder"/>
+								<integer value="-1" key="NSNoSelectionPlaceholder"/>
+								<integer value="-1" key="NSNotApplicablePlaceholder"/>
+								<integer value="-1" key="NSNullPlaceholder"/>
+							</dictionary>
+							<reference key="NSPreviousConnector" ref="554407848"/>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">239</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1051,6 +1250,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="170733450"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Text Field - Hostname</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
@@ -1083,6 +1283,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Text Field - Port</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
@@ -1115,6 +1316,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="797215132"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Text Field - Username</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
@@ -1131,6 +1333,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="668533298"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Secure Text Field - Password</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
@@ -1207,6 +1410,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="141762160"/>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Matrix - Proxy Options</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">82</int>
@@ -1276,6 +1480,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Proxy Requires Password</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">110</int>
@@ -1360,6 +1565,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</array>
 						<reference key="parent" ref="1005"/>
+						<string key="objectName">Check Box - Show Password</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">171</int>
@@ -1536,13 +1742,35 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">193</int>
+			<int key="maxID">249</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">MUProxyPreferencesViewController</string>
 					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">proxyRadioButtonClicked:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">proxyRadioButtonClicked:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">proxyRadioButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">proxyRadioButtonMatrix</string>
+						<string key="NS.object.0">NSMatrix</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">proxyRadioButtonMatrix</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">proxyRadioButtonMatrix</string>
+							<string key="candidateClassName">NSMatrix</string>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MUProxyPreferencesViewController.h</string>

@@ -10,18 +10,16 @@
 @protocol MUWriteBuffer;
 
 @interface MUSOCKS5Authentication : NSObject
-{
-  NSString *username;
-  NSString *password;
-  BOOL authenticated;
-}
 
-+ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue;
++ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) usernameValue
+                                                    password: (NSString *) passwordValue;
 
-- (id) initWithUsername: (NSString *) usernameValue password: (NSString *) passwordValue;
+@property (readonly) BOOL authenticated;
+
+- (id) initWithUsername: (NSString *) usernameValue
+               password: (NSString *) passwordValue;
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer;
-- (BOOL) authenticated;
 - (void) parseReplyFromSource: (NSObject <MUByteSource> *) source;
 
 @end

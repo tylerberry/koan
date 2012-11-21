@@ -111,10 +111,10 @@
   MUMockByteSource *source = [MUMockByteSource mockByteSource];
   
   [selection addMethod: MUSOCKS5UsernamePassword];
-  [self assertInt: selection.method equals: MUSOCKS5NoAuthentication];
+  [self assertInt: selection.selectedMethod equals: MUSOCKS5NoAuthentication];
   [source appendBytes: (uint8_t *) "\x05\x02" length: 2];
   [selection parseResponseFromByteSource: source];
-  [self assertInt: selection.method equals: MUSOCKS5UsernamePassword];
+  [self assertInt: selection.selectedMethod equals: MUSOCKS5UsernamePassword];
 }
 
 - (void) testRequest

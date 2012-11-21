@@ -10,6 +10,7 @@
 
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;
+@property (assign) BOOL requiresAuthentication;
 @property (copy) NSString *username;
 @property (copy) NSString *password;
 

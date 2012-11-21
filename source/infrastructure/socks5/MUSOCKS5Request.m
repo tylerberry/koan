@@ -10,8 +10,6 @@
 
 @implementation MUSOCKS5Request
 
-@synthesize hostname, port;
-
 + (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue
 {
   return [[MUSOCKS5Request alloc] initWithHostname: hostnameValue port: portValue];
@@ -21,12 +19,14 @@
 {
   if (!(self = [super init]))
     return nil;
-  hostname = [hostnameValue copy];
-  port = portValue;
+  
+  _hostname = [hostnameValue copy];
+  _port = portValue;
+  
   reply = MUSOCKS5NoReply;
+  
   return self;
 }
-
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {
@@ -34,7 +34,7 @@
   [buffer appendByte: MUSOCKS5Connect];
   [buffer appendByte: 0]; //reserved
   [buffer appendByte: MUSOCKS5DomainName];
-  [buffer appendByte: [self.hostname length]];
+  [buffer appendByte: self.hostname.length];
   [buffer appendString: self.hostname];
   [buffer appendByte: (0xFF00 & self.port) >> 8]; // Most significant byte of port.
   [buffer appendByte: (0x00FF & self.port)];      // Least significant byte of port.
@@ -43,10 +43,12 @@
 - (void) parseReplyFromByteSource: (NSObject <MUByteSource> *) source
 {
   NSData *data = [source readExactlyLength: 4];
-  if ([data length] != 4)
+  
+  if (data.length != 4)
     return;
   
-  const uint8_t *buffer = (const uint8_t *) [data bytes];
+  const uint8_t *buffer = (const uint8_t *) data.bytes;
+  
   switch (buffer[3])
   {
     case MUSOCKS5IPv4:
@@ -56,7 +58,7 @@
     case MUSOCKS5DomainName:
     {
       NSData *lengthData = [source readExactlyLength: 1];
-      [source readExactlyLength: ((uint8_t *) [lengthData bytes])[0]];
+      [source readExactlyLength: ((uint8_t *) lengthData.bytes)[0]];
       break;
     }
       

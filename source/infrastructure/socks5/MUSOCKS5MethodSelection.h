@@ -11,16 +11,13 @@
 @protocol MUWriteBuffer;
 
 @interface MUSOCKS5MethodSelection : NSObject
-{
-  NSMutableData *methods;
-  MUSOCKS5Method selectedMethod;
-}
+
+@property (readonly) MUSOCKS5Method selectedMethod;
 
 + (id) socksMethodSelection;
 
 - (void) addMethod: (MUSOCKS5Method) method;
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer;
-- (MUSOCKS5Method) method;
 - (void) parseResponseFromByteSource: (NSObject <MUByteSource> *) byteSource;
 
 @end

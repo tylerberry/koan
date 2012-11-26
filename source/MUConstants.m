@@ -29,7 +29,7 @@ NSString * const MUPWorlds = @"MUPWorlds";
 NSString * const MUPProfiles = @"MUPProfiles";
 NSString * const MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
 NSString * const MUPProxySettings = @"MUPProxySettings";
-NSString * const  const MUPUseProxy = @"MUPUseProxy";
+NSString * const MUPUseProxy = @"MUPUseProxy";
 
 NSString * const MUPPlaySounds = @"MUPPlaySounds";
 NSString * const MUPPlayWhenActive = @"MUPPlayWhenActive";
@@ -101,6 +101,7 @@ NSString * const MULConfirmQuitMessage = @"ConfirmQuitMessage";
 
 NSString * const MULPreferencesWindowName = @"PreferencesWindowName";
 NSString * const MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
+NSString * const MULPreferencesGeneral = @"PreferencesGeneral";
 NSString * const MULPreferencesProxy = @"PreferencesProxy";
 NSString * const MULPreferencesSounds = @"PreferencesSounds";
 

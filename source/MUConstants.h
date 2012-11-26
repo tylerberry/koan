@@ -47,8 +47,6 @@ extern NSString * const MUConnectionWindowControllerWillCloseNotification;
 extern NSString * const MUConnectionWindowControllerDidReceiveTextNotification;
 extern NSString * const MUWorldsDidChangeNotification;
 
-extern NSString * const MUReadBufferDidProvideStringNotification;
-
 #pragma mark Toolbar item constants.
 
 extern NSString * const MUAddWorldToolbarItem;
@@ -89,6 +87,7 @@ extern NSString * const MULConnectionClosedByError;
 
 extern NSString * const MULPreferencesWindowName;
 extern NSString * const MULPreferencesFontsAndColors;
+extern NSString * const MULPreferencesGeneral;
 extern NSString * const MULPreferencesProxy;
 extern NSString * const MULPreferencesSounds;
 

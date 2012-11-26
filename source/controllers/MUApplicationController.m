@@ -12,6 +12,7 @@
 #import "MUFontsAndColorsPreferencesViewController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
+#import "MUGeneralPreferencesViewController.h"
 #import "MUPlayer.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
@@ -147,9 +148,11 @@
   static dispatch_once_t predicate;
   
   dispatch_once (&predicate, ^{
-    NSArray *preferenceViewControllers = @[[[MUFontsAndColorsPreferencesViewController alloc] init],
-                                          [[MUSoundsPreferencesViewController alloc] init],
-                                          [[MUProxyPreferencesViewController alloc] init]];
+    NSArray *preferenceViewControllers = @[[[MUGeneralPreferencesViewController alloc] init],
+    [[MUFontsAndColorsPreferencesViewController alloc] init],
+    [[MUSoundsPreferencesViewController alloc] init],
+    [[MUProxyPreferencesViewController alloc] init]];
+    
     _preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers: preferenceViewControllers
                                                                                        title: _(MULPreferencesWindowName)];
   });

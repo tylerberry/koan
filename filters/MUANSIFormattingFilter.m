@@ -5,7 +5,10 @@
 //
 
 #import "MUANSIFormattingFilter.h"
+#import "NSColor (ANSI).h"
 #import "NSFont (Traits).h"
+
+static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 @interface MUANSIFormattingFilter ()
 {
@@ -16,18 +19,17 @@
 
 @property (strong, nonatomic) MUProfile *profile;
 
-- (void) applyCode: (unichar) code
-          toString: (NSMutableAttributedString *) mutableString
-        atLocation: (NSUInteger) startLocation;
-- (NSArray *) attributeNamesForANSICode;
-- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) startLocation;
-- (BOOL) extractCode: (NSMutableAttributedString *) editString;
-- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location;
-- (NSUInteger) scanUpToCodeInString: (NSString *) string;
-- (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) index inString: (NSString *) string;
-- (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font;
-- (void) updateFromProfileFont;
-- (void) updateFromProfileTextColor;
+// This is the main routine to process codes and apply them to the string. A YES return means there are more codes left,
+// a NO return means we're done.
+- (BOOL) _processOneANSICode: (NSMutableAttributedString *) editString;
+
+- (void) _applyCode: (unichar) code
+           toString: (NSMutableAttributedString *) mutableString
+         atLocation: (NSUInteger) startLocation;
+- (NSUInteger) _scanUpToCodeInString: (NSString *) string;
+- (NSUInteger) _scanThroughEndOfCodeAtLocation: (NSUInteger) location inString: (NSString *) string;
+- (void) _updateFromProfileFont;
+- (void) _updateFromProfileTextColor;
 
 #pragma mark - Font attribute manipulation
 
@@ -48,7 +50,7 @@
 - (void) setAttributes: (NSDictionary *) attributes
               onString: (NSMutableAttributedString *) string
           fromLocation: (NSUInteger) startLocation;
-- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation;
+- (void) _setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation;
 
 @end
 
@@ -74,7 +76,7 @@
   _profile = newProfile;
   _delegate = newDelegate;
   
-  _ansiCode = nil;
+  _ansiCode = @"";
   _inCode = NO;
   
   _currentAttributes = [[NSMutableDictionary alloc] init];
@@ -102,15 +104,16 @@
   {
     if ([keyPath isEqualToString: @"effectiveFont"])
     {
-      [self updateFromProfileFont];
+      [self _updateFromProfileFont];
       return;
     }
     else if ([keyPath isEqualToString: @"effectiveTextColor"])
     {
-      [self updateFromProfileTextColor];
+      [self _updateFromProfileTextColor];
       return;
     }
   }
+  
   [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
@@ -120,7 +123,7 @@
   
   [self setAttributes: _currentAttributes onString: editString fromLocation: 0];
   
-  while ([self extractCode: editString])
+  while ([self _processOneANSICode: editString])
     ;
   
   return editString;
@@ -139,14 +142,14 @@
 
 #pragma mark - Private methods
 
-- (void) applyCode: (unichar) code
-          toString: (NSMutableAttributedString *) mutableString
-        atLocation: (NSUInteger) startLocation
+- (void) _applyCode: (unichar) code
+           toString: (NSMutableAttributedString *) mutableString
+         atLocation: (NSUInteger) startLocation
 {
   switch (code)
   {
     case MUANSISelectGraphicRendition:
-      [self setAttributesInString: mutableString atLocation: startLocation];
+      [self _setAttributesInString: mutableString atLocation: startLocation];
       return;
       
     case MUANSIEraseData:
@@ -162,278 +165,29 @@
       return;
       
     default:
-      NSLog (@"Received unhandled ANSI command 'ESC %@%c'", [_ansiCode substringFromIndex: 1], code);
+      NSLog (@"Received unhandled ANSI command: ESC%@%C", [_ansiCode substringFromIndex: 1], code);
       return;
   }
 }
 
-- (NSArray *) attributeNamesForANSICode
-{
-  NSArray *codeComponents = [[_ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
-  NSMutableArray *names = [NSMutableArray arrayWithCapacity: codeComponents.count];
-  
-  if (codeComponents.count == 3
-      && [codeComponents[1] intValue] == 5)
-  {
-    if ([codeComponents[0] intValue] == MUANSIBackground256)
-    {
-      [names addObject: NSBackgroundColorAttributeName];
-      return names;
-    }
-    else if ([codeComponents[0] intValue] == MUANSIForeground256)
-    {
-      [names addObject: MUCustomColorAttributeName];
-      [names addObject: NSForegroundColorAttributeName];
-      return names;
-    }
-  }
-  
-  for (NSString *code in codeComponents)
-  {
-    switch ([code intValue])
-    {
-      case MUANSIBackgroundBlack:
-      case MUANSIBackgroundBlue:
-      case MUANSIBackgroundCyan:
-      case MUANSIBackgroundDefault:
-      case MUANSIBackgroundGreen:
-      case MUANSIBackgroundMagenta:
-      case MUANSIBackgroundRed:
-      case MUANSIBackgroundWhite:
-      case MUANSIBackgroundYellow:
-        [names addObject: NSBackgroundColorAttributeName];
-        break;
-        
-      case MUANSIForegroundBlack:
-      case MUANSIForegroundBlue:
-      case MUANSIForegroundCyan:
-      case MUANSIForegroundDefault:
-      case MUANSIForegroundGreen:
-      case MUANSIForegroundMagenta:
-      case MUANSIForegroundRed:
-      case MUANSIForegroundWhite:
-      case MUANSIForegroundYellow:
-        [names addObject: MUCustomColorAttributeName];
-        [names addObject: NSForegroundColorAttributeName];
-        break;
-        
-      case MUANSIBoldOn:
-      case MUANSIBoldOff:
-        [names addObject: MUBoldFontAttributeName];
-        [names addObject: NSFontAttributeName];
-        break;
-        
-      case MUANSIUnderlineOn:
-      case MUANSIUnderlineOff:
-        [names addObject: NSUnderlineStyleAttributeName];
-        break;
-        
-      default:
-        [names addObject: [NSNull null]];
-        break;
-    }
-  }
-  
-  return names;
-}
-
-- (NSArray *) attributeValuesForANSICodeInString: (NSAttributedString *) string atLocation: (NSUInteger) location
-{
-  NSArray *codeComponents = [[_ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
-  NSMutableArray *values = [NSMutableArray arrayWithCapacity: codeComponents.count];
-  
-  if (codeComponents.count == 3
-      && [codeComponents[1] intValue] == 5)
-  {
-    if ([codeComponents[0] intValue] == MUANSIBackground256
-        || [codeComponents[0] intValue] == MUANSIForeground256)
-    {
-      int value = [codeComponents[2] intValue];
-      
-      if ([codeComponents[0] intValue] == MUANSIForeground256)
-      {
-        if (value >= 0 && value < 256)
-          [values addObject: @YES];
-        else
-          [values addObject: [NSNull null]];
-      }
-      
-      if (value >= 0 && value < 16)
-      {
-        switch (value)
-        {
-          case MUANSI256Black:
-          case MUANSI256BrightBlack:
-            [values addObject: [NSColor darkGrayColor]];
-            break;
-            
-          case MUANSI256Red:
-          case MUANSI256BrightRed:
-            [values addObject: [NSColor redColor]];
-            break;
-            
-          case MUANSI256Green:
-          case MUANSI256BrightGreen:
-            [values addObject: [NSColor greenColor]];
-            break;
-            
-          case MUANSI256Yellow:
-          case MUANSI256BrightYellow:
-            [values addObject: [NSColor yellowColor]];
-            break;
-            
-          case MUANSI256Blue:
-          case MUANSI256BrightBlue:
-            [values addObject: [NSColor blueColor]];
-            break;
-            
-          case MUANSI256Magenta:
-          case MUANSI256BrightMagenta:
-            [values addObject: [NSColor magentaColor]];
-            break;
-            
-          case MUANSI256Cyan:
-          case MUANSI256BrightCyan:
-            [values addObject: [NSColor cyanColor]];
-            break;
-            
-          case MUANSI256White:
-          case MUANSI256BrightWhite:
-            [values addObject: [NSColor whiteColor]];
-            break;
-        }
-      }
-      else if (value > 15 && value < 232)
-      {
-        int adjustedValue = value - 16;
-        int red = adjustedValue / 36;
-        int green = (adjustedValue % 36) / 6;
-        int blue = (adjustedValue % 36) % 6;
-        
-        NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1. / 6. * red
-                                                       green: 1. / 6. * green
-                                                        blue: 1. / 6. * blue
-                                                       alpha: 1.0];
-        [values addObject: cubeColor];
-      }
-      else if (value > 231 && value < 256)
-      {
-        int adjustedValue = value - 231;
-        
-        NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1. / 25. * adjustedValue
-                                                              alpha: 1.0];
-        [values addObject: grayscaleColor];
-      }
-      
-      return values;
-    }
-  }
-  
-  for (NSString *code in codeComponents)
-  {
-    switch (code.intValue)
-    {
-      case MUANSIForegroundBlack:
-        [values addObject: @YES];
-      case MUANSIBackgroundBlack:
-        [values addObject: [NSColor darkGrayColor]];
-        break;
-        
-      case MUANSIForegroundBlue:
-        [values addObject: @YES];
-      case MUANSIBackgroundBlue:
-        [values addObject: [NSColor blueColor]];
-        break;
-        
-      case MUANSIForegroundCyan:
-        [values addObject: @YES];
-      case MUANSIBackgroundCyan:
-        [values addObject: [NSColor cyanColor]];
-        break;
-        
-      case MUANSIForegroundDefault:
-        [values addObject: [NSNull null]];
-        [values addObject: _profile.effectiveTextColor];
-        break;
-        
-      case MUANSIBackgroundDefault:
-        [values addObject: [NSNull null]];
-        break;
-        
-      case MUANSIForegroundGreen:
-        [values addObject: @YES];
-      case MUANSIBackgroundGreen:
-        [values addObject: [NSColor greenColor]];
-        break;
-        
-      case MUANSIForegroundMagenta:
-        [values addObject: @YES];
-      case MUANSIBackgroundMagenta:
-        [values addObject: [NSColor magentaColor]];
-        break;
-        
-      case MUANSIForegroundRed:
-        [values addObject: @YES];
-      case MUANSIBackgroundRed:
-        [values addObject: [NSColor redColor]];
-        break;
-        
-      case MUANSIForegroundWhite:
-        [values addObject: @YES];
-      case MUANSIBackgroundWhite:
-        [values addObject: [NSColor whiteColor]];
-        break;
-        
-      case MUANSIForegroundYellow:
-        [values addObject: @YES];
-      case MUANSIBackgroundYellow:
-        [values addObject: [NSColor yellowColor]];
-        break;
-        
-      case MUANSIBoldOn:
-        [values addObject: @YES];
-        [values addObject: [_currentAttributes[NSFontAttributeName] boldFontWithRespectTo: _profile.effectiveFont]];
-        break;
-        
-      case MUANSIBoldOff:
-        [values addObject: [NSNull null]];
-        [values addObject: [_currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: _profile.effectiveFont]];
-        break;
-        
-      case MUANSIUnderlineOn:
-        [values addObject: @(NSSingleUnderlineStyle)];
-        break;
-        
-      case MUANSIUnderlineOff:
-        [values addObject: [NSNull null]];
-        break;
-        
-      default:
-        [values addObject: [NSNull null]];
-        break;
-    }
-  }
-  return values;
-}
-
-- (BOOL) extractCode: (NSMutableAttributedString *) editString
+- (BOOL) _processOneANSICode: (NSMutableAttributedString *) editString
 {
   NSRange codeRange;
   
   if (!_inCode)
   {
-    codeRange.location = [self scanUpToCodeInString: editString.string];
+    codeRange.location = [self _scanUpToCodeInString: editString.string];
     
     _ansiCode = @"";
   }
   else
     codeRange.location = 0;
   
-  if (_inCode || codeRange.location != NSNotFound)
+  if (codeRange.location != NSNotFound)
   {
     _inCode = YES;
-    codeRange.length = [self scanThroughEndOfCodeAt: codeRange.location
-                                           inString: editString.string];
+    codeRange.length = [self _scanThroughEndOfCodeAtLocation: codeRange.location
+                                                    inString: editString.string];
     
     if (codeRange.length == NSNotFound)
     {
@@ -445,9 +199,13 @@
     if (codeRange.location < editString.length)
     {
       unichar code = [editString.string characterAtIndex: codeRange.location + codeRange.length - 1];
-      _inCode = NO;
+      
       [editString deleteCharactersInRange: codeRange];
-      [self applyCode: code toString: editString atLocation: codeRange.location];
+      [self _applyCode: code toString: editString atLocation: codeRange.location];
+      
+      _inCode = NO;
+      _ansiCode = @"";
+      
       return YES;
     }
   }
@@ -455,39 +213,52 @@
   return NO;
 }
 
-- (NSFont *) fontInString: (NSAttributedString *) string atLocation: (NSUInteger) location
+- (NSUInteger) _scanUpToCodeInString: (NSString *) string
 {
-  return [string attribute: NSFontAttributeName atIndex: location effectiveRange: NULL];
-}
-
-- (NSUInteger) scanUpToCodeInString: (NSString *) string
-{
+  NSScanner *scanner = [NSScanner scannerWithString: string];
+  
+  scanner.charactersToBeSkipped = [NSCharacterSet characterSetWithCharactersInString: @""];
+  
   NSCharacterSet *stopSet = [NSCharacterSet characterSetWithCharactersInString: @"\x1B"];
   NSRange stopRange = [string rangeOfCharacterFromSet: stopSet];
-  NSScanner *scanner = [NSScanner scannerWithString: string];
-  [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
   if (stopRange.location == NSNotFound)
     return NSNotFound;
   
   while ([scanner scanUpToCharactersFromSet: stopSet intoString: nil])
     ;
+  
   return scanner.scanLocation;
 }
 
-- (NSUInteger) scanThroughEndOfCodeAt: (NSUInteger) codeIndex inString: (NSString *) string
+- (NSUInteger) _scanThroughEndOfCodeAtLocation: (NSUInteger) location inString: (NSString *) string
 {
   NSScanner *scanner = [NSScanner scannerWithString: string];
-  [scanner setScanLocation: codeIndex];
-  [scanner setCharactersToBeSkipped: [NSCharacterSet characterSetWithCharactersInString: @""]];
   
-  NSCharacterSet *resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTfhlmnsu"];
+  scanner.scanLocation = location;
+  scanner.charactersToBeSkipped = [NSCharacterSet characterSetWithCharactersInString: @""];
   
-  NSString *charactersFromThisScan = @"";
+  NSCharacterSet *resumeSet;
+  
+  if (string.length >= location + 3
+      && [string characterAtIndex: location + 1] == '['
+      && [string characterAtIndex: location + 2] == 'M')
+  {
+    // This is the starter code for "ANSI" music, which is defined to terminate with a \u000e. (Octal 016.)
+    // \u000e is translated into \u266b (Unicode BEAMED EIGHTH NOTES) by IBM Code Page 437 translation, so we break on
+    // either one.
+    //
+    // This is not a valid ANSI sequence, since it has non-numeric arguments, but life is just hard sometimes.
+    
+    resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\016\u266b"];
+  }
+  else
+    resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTfhlmnsuz"];
+  
+  NSString *charactersFromThisScan;
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];
   
-  NSString *newAnsiCode = [[NSString alloc] initWithFormat: @"%@%@", _ansiCode, charactersFromThisScan];
-  _ansiCode = newAnsiCode;
+  _ansiCode = [NSString stringWithFormat: @"%@%@", _ansiCode, charactersFromThisScan];
   
   if (scanner.scanLocation == string.length)
     return NSNotFound;
@@ -495,9 +266,22 @@
     return charactersFromThisScan.length + 1;
 }
 
-- (NSFont *) setTrait: (NSFontTraitMask) trait onFont: (NSFont *) font
+- (void) _updateFromProfileFont
 {
-  return [[NSFontManager sharedFontManager] convertFont: font toHaveTrait: trait];
+  NSFont *newEffectiveFont;
+  
+  if (_currentAttributes[MUBoldFontAttributeName])
+    newEffectiveFont = [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont];
+  else
+    newEffectiveFont = _profile.effectiveFont;
+  
+  _currentAttributes[NSFontAttributeName] = newEffectiveFont;
+}
+
+- (void) _updateFromProfileTextColor
+{
+  if (!_currentAttributes[MUCustomColorAttributeName])
+    _currentAttributes[NSForegroundColorAttributeName] = _profile.effectiveTextColor;
 }
 
 #pragma mark - Attribute manipulation
@@ -581,73 +365,493 @@
   }
 }
 
-- (void) setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation
+- (void) _setAttributesInString: (NSMutableAttributedString *) string atLocation: (NSUInteger) startLocation
 {
   if (string.length <= startLocation)
     return;
   
-  if ([[_ansiCode substringFromIndex: 2] intValue] == 0)
-    [self resetAllAttributesInString: string fromLocation: startLocation];
+  NSArray *codeComponents = [[_ansiCode substringFromIndex: 2] componentsSeparatedByString: @";"];
   
-  NSArray *attributeNames = [self attributeNamesForANSICode];
-  if (!attributeNames)
-    return;
-  
-  NSArray *attributeValues = [self attributeValuesForANSICodeInString: string atLocation: startLocation];
-  if (!attributeValues)
-    return;
-  
-  if (attributeNames.count != attributeValues.count)
-    @throw [NSException exceptionWithName: @"MUANSIException"
-                                   reason: @"attributeNames.count != attributeValues.count"
-                                 userInfo: nil];
-  
-  for (NSUInteger i = 0; i < attributeNames.count; i++)
+  if (codeComponents.count == 3 && [codeComponents[1] intValue] == 5)
   {
-    id attributeName = attributeNames[i];
-    id attributeValue = attributeValues[i];
-    
-    if (attributeName == [NSNull null])
-      continue;
-    
-    if (attributeValue != [NSNull null])
-      [self setAttribute: attributeName toValue: attributeValue inString: string fromLocation: startLocation];
-    else
+    if ([codeComponents[0] intValue] == MUANSIForeground256)
     {
-      if ([attributeName isEqualToString: NSForegroundColorAttributeName])
-        [self resetForegroundInString: string fromLocation: startLocation];
-      else if ([attributeName isEqualToString: NSBackgroundColorAttributeName])
-        [self resetBackgroundInString: string fromLocation: startLocation];
-      else if ([attributeName isEqualToString: NSUnderlineStyleAttributeName])
-        [self resetUnderlineInString: string fromLocation: startLocation];
-      else if ([attributeName isEqualToString: MUBoldFontAttributeName])
-        [self resetBoldInString: string fromLocation: startLocation];
-      else if ([attributeName isEqualToString: MUCustomColorAttributeName])
-        [self resetCustomColorInString: string fromLocation: startLocation];
-      else
-        @throw [NSException exceptionWithName: @"MUANSIException"
-                                       reason: @"attributeValue was an invalid [NSNull null]"
-                                     userInfo: nil];
+      int colorCode = [codeComponents[2] intValue];
+      
+      if (colorCode >= 0 && colorCode < 16)
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+
+        NSColor *targetColor;
+        
+        switch (colorCode)
+        {
+          case MUANSI256Black:
+            targetColor = [NSColor ANSIBlackColor];
+            break;
+            
+          case MUANSI256BrightBlack:
+            targetColor = [NSColor ANSIBrightBlackColor];
+            break;
+            
+          case MUANSI256Red:
+            targetColor = [NSColor ANSIRedColor];
+            break;
+            
+          case MUANSI256BrightRed:
+            targetColor = [NSColor ANSIBrightRedColor];
+            break;
+            
+          case MUANSI256Green:
+            targetColor = [NSColor ANSIGreenColor];
+            break;
+            
+          case MUANSI256BrightGreen:
+            targetColor = [NSColor ANSIBrightGreenColor];
+            break;
+            
+          case MUANSI256Yellow:
+            targetColor = [NSColor ANSIYellowColor];
+            break;
+            
+          case MUANSI256BrightYellow:
+            targetColor = [NSColor ANSIBrightYellowColor];
+            break;
+            
+          case MUANSI256Blue:
+            targetColor = [NSColor ANSIBlueColor];
+            break;
+            
+          case MUANSI256BrightBlue:
+            targetColor = [NSColor ANSIBrightBlueColor];
+            break;
+            
+          case MUANSI256Magenta:
+            targetColor = [NSColor ANSIMagentaColor];
+            break;
+            
+          case MUANSI256BrightMagenta:
+            targetColor = [NSColor ANSIBrightMagentaColor];
+            break;
+            
+          case MUANSI256Cyan:
+            targetColor = [NSColor ANSICyanColor];
+            break;
+            
+          case MUANSI256BrightCyan:
+            targetColor = [NSColor ANSIBrightCyanColor];
+            break;
+            
+          case MUANSI256White:
+            targetColor = [NSColor ANSIWhiteColor];
+            break;
+            
+          case MUANSI256BrightWhite:
+            targetColor = [NSColor ANSIBrightWhiteColor];
+            break;
+        }
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+      else if (colorCode >= 16 && colorCode < 232)
+      {
+        int adjustedValue = colorCode - 16;
+        int red = adjustedValue / 36;
+        int green = (adjustedValue % 36) / 6;
+        int blue = (adjustedValue % 36) % 6;
+        
+        NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1.0 / 6.0 * red
+                                                       green: 1.0 / 6.0 * green
+                                                        blue: 1.0 / 6.0 * blue
+                                                       alpha: 1.0];
+        
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: cubeColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+      else if (colorCode >= 232 && colorCode < 256)
+      {
+        int adjustedValue = colorCode - 231;
+        
+        NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1.0 / 25.0 * adjustedValue
+                                                              alpha: 1.0];
+        
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: grayscaleColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+      
+      return;
+    }
+    else if ([codeComponents[0] intValue] == MUANSIBackground256)
+    {
+      int colorCode = [codeComponents[2] intValue];
+      
+      if (colorCode >= 0 && colorCode < 16)
+      {
+        NSColor *targetColor;
+        
+        switch (colorCode)
+        {
+          case MUANSI256Black:
+            targetColor = [NSColor ANSIBlackColor];
+            break;
+            
+          case MUANSI256BrightBlack:
+            targetColor = [NSColor ANSIBrightBlackColor];
+            break;
+            
+          case MUANSI256Red:
+            targetColor = [NSColor ANSIRedColor];
+            break;
+            
+          case MUANSI256BrightRed:
+            targetColor = [NSColor ANSIBrightRedColor];
+            break;
+            
+          case MUANSI256Green:
+            targetColor = [NSColor ANSIGreenColor];
+            break;
+            
+          case MUANSI256BrightGreen:
+            targetColor = [NSColor ANSIBrightGreenColor];
+            break;
+            
+          case MUANSI256Yellow:
+            targetColor = [NSColor ANSIYellowColor];
+            break;
+            
+          case MUANSI256BrightYellow:
+            targetColor = [NSColor ANSIBrightYellowColor];
+            break;
+            
+          case MUANSI256Blue:
+            targetColor = [NSColor ANSIBlueColor];
+            break;
+            
+          case MUANSI256BrightBlue:
+            targetColor = [NSColor ANSIBrightBlueColor];
+            break;
+            
+          case MUANSI256Magenta:
+            targetColor = [NSColor ANSIMagentaColor];
+            break;
+            
+          case MUANSI256BrightMagenta:
+            targetColor = [NSColor ANSIBrightMagentaColor];
+            break;
+            
+          case MUANSI256Cyan:
+            targetColor = [NSColor ANSICyanColor];
+            break;
+            
+          case MUANSI256BrightCyan:
+            targetColor = [NSColor ANSIBrightCyanColor];
+            break;
+            
+          case MUANSI256White:
+            targetColor = [NSColor ANSIWhiteColor];
+            break;
+            
+          case MUANSI256BrightWhite:
+            targetColor = [NSColor ANSIBrightWhiteColor];
+            break;
+        }
+        
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+      else if (colorCode >= 16 && colorCode < 232)
+      {
+        int adjustedValue = colorCode - 16;
+        int red = adjustedValue / 36;
+        int green = (adjustedValue % 36) / 6;
+        int blue = (adjustedValue % 36) % 6;
+        
+        NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1.0 / 6.0 * red
+                                                       green: 1.0 / 6.0 * green
+                                                        blue: 1.0 / 6.0 * blue
+                                                       alpha: 1.0];
+        
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: cubeColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+      else if (colorCode >= 232 && colorCode < 256)
+      {
+        int adjustedValue = colorCode - 231;
+        
+        NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1.0 / 25.0 * adjustedValue
+                                                              alpha: 1.0];
+        
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: grayscaleColor
+                  inString: string
+              fromLocation: startLocation];
+      }
+
+      return;
     }
   }
-}
-
-- (void) updateFromProfileFont
-{
-  NSFont *newEffectiveFont;
   
-  if (_currentAttributes[MUBoldFontAttributeName])
-    newEffectiveFont = [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont];
-  else
-    newEffectiveFont = _profile.effectiveFont;
-  
-  _currentAttributes[NSFontAttributeName] = newEffectiveFont;
-}
-
-- (void) updateFromProfileTextColor
-{
-  if (!_currentAttributes[MUCustomColorAttributeName])
-    _currentAttributes[NSForegroundColorAttributeName] = _profile.effectiveTextColor;
+  for (NSString *code in codeComponents)
+  {
+    switch ([code intValue])
+    {
+      case MUANSIReset:
+        [self resetAllAttributesInString: string fromLocation: startLocation];
+        break;
+        
+      case MUANSIBoldOn:
+        [self setAttribute: MUBoldFontAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        [self setAttribute: NSFontAttributeName
+                   toValue: [_currentAttributes[NSFontAttributeName] boldFontWithRespectTo: _profile.effectiveFont]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIUnderlineOn:
+      {
+        [self setAttribute: NSUnderlineStyleAttributeName
+                   toValue: @(NSUnderlineStyleSingle)
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIBoldOff:
+        [self resetBoldInString: string fromLocation: startLocation];
+        [self resetFontInString: string fromLocation: startLocation];
+        break;
+        
+      case MUANSIUnderlineOff:
+        [self resetUnderlineInString: string fromLocation: startLocation];
+        break;
+        
+      case MUANSIForegroundBlack:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightBlackColor];
+        else
+          targetColor = [NSColor ANSIBlackColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundRed:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightRedColor];
+        else
+          targetColor = [NSColor ANSIRedColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundGreen:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightGreenColor];
+        else
+          targetColor = [NSColor ANSIGreenColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundYellow:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightYellowColor];
+        else
+          targetColor = [NSColor ANSIYellowColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundBlue:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightBlueColor];
+        else
+          targetColor = [NSColor ANSIBlueColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundMagenta:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightMagentaColor];
+        else
+          targetColor = [NSColor ANSIMagentaColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundCyan:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightCyanColor];
+        else
+          targetColor = [NSColor ANSICyanColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundWhite:
+      {
+        [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
+        
+        NSColor *targetColor;
+        
+        if (_currentAttributes[MUBoldFontAttributeName])
+          targetColor = [NSColor ANSIBrightWhiteColor];
+        else
+          targetColor = [NSColor ANSIWhiteColor];
+        
+        [self setAttribute: NSForegroundColorAttributeName
+                   toValue: targetColor
+                  inString: string
+              fromLocation: startLocation];
+        break;
+      }
+        
+      case MUANSIForegroundDefault:
+        [self resetCustomColorInString: string fromLocation: startLocation];
+        [self resetForegroundInString: string fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundBlack:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIBlackColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundRed:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIRedColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundGreen:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIGreenColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundYellow:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIYellowColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundBlue:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIBlueColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundMagenta:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIMagentaColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundCyan:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSICyanColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundWhite:
+        [self setAttribute: NSBackgroundColorAttributeName
+                   toValue: [NSColor ANSIWhiteColor]
+                  inString: string
+              fromLocation: startLocation];
+        break;
+        
+      case MUANSIBackgroundDefault:
+        [self resetBackgroundInString: string fromLocation: startLocation];
+        break;
+        
+      default:
+        NSLog (@"Received unhandled ANSI SGR command: %i", code.intValue);
+        break;
+    }
+  }
 }
 
 @end

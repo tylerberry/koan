@@ -74,7 +74,14 @@ typedef enum MUANSICommands
   MUANSISelectGraphicRendition = 'm'
 } MUANSICommand;
 
-@protocol MUANSIFormattingFilterDelegate;
+@protocol MUANSIFormattingFilterDelegate
+
+@optional
+- (void) clearScreen;
+
+@end
+
+#pragma mark -
 
 @interface MUANSIFormattingFilter : MUFilter
 
@@ -85,14 +92,5 @@ typedef enum MUANSICommands
 
 - (id) initWithProfile: (MUProfile *) newProfile
               delegate: (NSObject <MUANSIFormattingFilterDelegate> *) newDelegate;
-
-@end
-
-#pragma mark -
-
-@protocol MUANSIFormattingFilterDelegate
-
-@optional
-- (void) clearScreen;
 
 @end

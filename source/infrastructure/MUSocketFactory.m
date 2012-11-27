@@ -34,7 +34,7 @@
   NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   NSNumber *useProxyNumber = [userDefaultsController.values valueForKey: MUPUseProxy];
   
-  if (useProxyNumber.boolValue)
+  if (useProxyNumber.integerValue == 2)
   {
     NSData *proxySettingsData = [userDefaultsController.values valueForKey: MUPProxySettings];
     return [MUProxySocket socketWithHostname: hostname

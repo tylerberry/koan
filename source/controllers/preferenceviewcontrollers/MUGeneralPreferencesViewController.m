@@ -60,8 +60,6 @@
   NSMenuItem *menuItemToSelect = nil;
   NSString *identifierForCurrentHandler = (__bridge_transfer NSString *) LSCopyDefaultHandlerForURLScheme (CFSTR ("telnet"));
   
-  NSSize menuItemSize = NSMakeSize ([NSFont menuFontOfSize: 0].pointSize, [NSFont menuFontOfSize: 0].pointSize);
-  
   NSMenuItem *koanMenuItem = [[NSMenuItem alloc] init];
   NSBundle *koanBundle = [NSBundle mainBundle];
   NSString *koanBundleName = [koanBundle objectForInfoDictionaryKey: @"CFBundleDisplayName"];
@@ -69,7 +67,7 @@
   
   koanMenuItem.title = [NSString stringWithFormat: @"%@ (%@)", koanBundleName, koanBundleVersion];
   koanMenuItem.image = [NSImage imageNamed: @"NSApplicationIcon"];
-  koanMenuItem.image.size = menuItemSize;
+  koanMenuItem.image.size = NSMakeSize (16.0, 16.0);
   koanMenuItem.target = self;
   koanMenuItem.action = @selector (chooseTelnetHandler:);
   koanMenuItem.representedObject = koanBundle.bundleIdentifier;
@@ -109,7 +107,7 @@
       NSString *bundleIconPath = [bundle pathForImageResource: [bundle objectForInfoDictionaryKey: @"CFBundleIconFile"]];
       
       item.image = [[NSImage alloc] initWithContentsOfFile: bundleIconPath];
-      item.image.size = menuItemSize;
+      item.image.size = NSMakeSize (16.0, 16.0);
       
       item.target = self;
       item.action = @selector (chooseTelnetHandler:);

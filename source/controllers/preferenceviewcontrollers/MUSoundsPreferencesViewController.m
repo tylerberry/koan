@@ -135,6 +135,7 @@
     currentSelectionMenuItem.title = [currentSoundURL.path.lastPathComponent stringByDeletingPathExtension];
     currentSelectionMenuItem.representedObject = currentSoundURL;
     currentSelectionMenuItem.image = [NSImage imageNamed: @"MusicNote"];
+    currentSelectionMenuItem.image.size = NSMakeSize (16.0, 16.0);
     
     [newMenu addItem: currentSelectionMenuItem];
     [newMenu addItem: [NSMenuItem separatorItem]];
@@ -150,6 +151,7 @@
     systemSoundMenuItem.target = self;
     systemSoundMenuItem.action = @selector (_selectSoundFromMenu:);
     systemSoundMenuItem.image = [NSImage imageNamed: @"MusicNote"];
+    systemSoundMenuItem.image.size = NSMakeSize (16.0, 16.0);
     
     [newMenu addItem: systemSoundMenuItem];
     if ([currentSoundURL isEqual: systemSoundURL])
@@ -165,7 +167,8 @@
   
   [newMenu addItem: chooseAnotherSoundMenuItem];
   
-  [soundsPopUpButton setMenu: newMenu];
+  soundsPopUpButton.menu = newMenu;
+  
   if (itemToSelect)
   {
     [soundsPopUpButton selectItem: itemToSelect];

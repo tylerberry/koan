@@ -9,10 +9,6 @@
 #import "MUPortFormatter.h"
 #import "MUWorldRegistry.h"
 
-@interface MUConnectPanelController ()
-
-@end
-
 @implementation MUConnectPanelController
 
 - (id) init
@@ -25,8 +21,6 @@
 
 - (void) windowDidLoad
 {
-  [super windowDidLoad];
-  
   MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
   newConnectionPortField.formatter = newConnectionPortFormatter;
   

@@ -646,8 +646,7 @@ enum MUTextDisplayModes
   if (receivedTextView.enclosingScrollView.verticalScroller.isHidden)
     forceScrollToBottom = YES;
   
-  NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string
-                                                                             attributes: receivedTextView.typingAttributes];
+  NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string];
   
   if (_currentPrompt)
   {

@@ -8,9 +8,11 @@
 #import "MUGrowlService.h"
 
 #import "MUANSIFormattingFilter.h"
-#import "MUNaiveURLFilter.h"
 #import "MUFugueEditFilter.h"
+#import "MULayoutManager.h"
+#import "MUNaiveURLFilter.h"
 #import "MUTextLogger.h"
+
 #import "NSFont (Traits).h"
 
 #import <objc/objc-runtime.h>
@@ -110,10 +112,9 @@ enum MUTextDisplayModes
 
 - (void) awakeFromNib
 {
-  // Initial window colors and fonts.
+  // Replace the layout manager with our custom one that doesn't ignore whitespace for underlining.
   
-  receivedTextView.font = profile.effectiveFont;
-  receivedTextView.textColor = profile.effectiveTextColor;
+  [receivedTextView.textContainer replaceLayoutManager: [[MULayoutManager alloc] init]];
   
   [self updateLinkTextColor];
   

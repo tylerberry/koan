@@ -47,7 +47,7 @@
     {
       _definitiveCodebaseFound = YES;
       self.codebase = MUCodebasePennMUSH;
-      self.codebaseFamily = MUCodebaseFamilyMUSH;
+      self.codebaseFamily = MUCodebaseFamilyPennMUSH;
     }
   }
 }

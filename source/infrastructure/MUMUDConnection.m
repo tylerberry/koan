@@ -14,6 +14,8 @@
 #import "MUMCCPProtocolHandler.h"
 #import "MUTelnetProtocolHandler.h"
 
+#import "NSString (CodePage437).h"
+
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
 NSString *MUMUDConnectionIsConnectingNotification = @"MUMUDConnectionIsConnectingNotification";
 NSString *MUMUDConnectionWasClosedByClientNotification = @"MUMUDConnectionWasClosedByClientNotification";
@@ -234,6 +236,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                                                     length: parsedData.length
                                                   encoding: self.state.stringEncoding];
   
+  if (self.state.stringEncoding == NSASCIIStringEncoding)
+    parsedString = [parsedString stringWithCodePage437Substitutions];
+  
   [self.delegate displayString: parsedString];
 }
 
@@ -242,6 +247,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   NSString *parsedPromptString = [[NSString alloc] initWithBytes: parsedData.bytes
                                                           length: parsedData.length
                                                         encoding: self.state.stringEncoding];
+  
+  if (self.state.stringEncoding == NSASCIIStringEncoding)
+    parsedPromptString = [parsedPromptString stringWithCodePage437Substitutions];
   
   [self.delegate displayPrompt: parsedPromptString];
 }

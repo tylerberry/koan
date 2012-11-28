@@ -290,6 +290,7 @@ static NSArray *offerableCharsets;
 {
   NSMutableData *footerData = [NSMutableData dataWithData: data];
   
+  /*
   if ([self optionYesForUs: MUTelnetOptionEndOfRecord])
   {
     uint8_t endOfRecordBytes[] = {MUTelnetInterpretAsCommand, MUTelnetEndOfRecord};
@@ -301,6 +302,7 @@ static NSArray *offerableCharsets;
     uint8_t goAheadBytes[] = {MUTelnetInterpretAsCommand, MUTelnetGoAhead};
     [footerData appendBytes: &goAheadBytes length: 2];
   }
+  */
   
   PASS_ON_PREPROCESSED_FOOTER_DATA (footerData);
 }
@@ -414,11 +416,16 @@ static NSArray *offerableCharsets;
   NSUInteger length = [subnegotiationData length];
   
   if (![self optionYesForHim: MUTelnetOptionCharset])
-    [self log: @"  Telnet: Server sent %@ REQUEST without WILL %@.", [MUTelnetOption optionNameForByte: bytes[0]], [MUTelnetOption optionNameForByte: bytes[0]]];
+    [self log: @"  Telnet: Server sent %@ REQUEST without WILL %@.",
+     [MUTelnetOption optionNameForByte: bytes[0]],
+     [MUTelnetOption optionNameForByte: bytes[0]]];
   
   if (length == 1)
   {
-    [self log: @"  Telnet: Invalid length of %u for %@ subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    [self log: @"  Telnet: Invalid length of %u for %@ subnegotiation. [%@]",
+     length,
+     [MUTelnetOption optionNameForByte: bytes[0]],
+     subnegotiationData];
     return;
   }
   
@@ -432,7 +439,10 @@ static NSArray *offerableCharsets;
       
       if (length == 2)
       {
-        [self log: @"  Telnet: Invalid length of %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: Invalid length of %u for %@ REQUEST subnegotiation. [%@]",
+         length,
+         [MUTelnetOption optionNameForByte: bytes[0]],
+         subnegotiationData];
         return;
       }
       
@@ -443,22 +453,32 @@ static NSArray *offerableCharsets;
         byteOffset += strlen ("[TTABLE]");
         translationTableVersion = bytes[byteOffset++];
         if (translationTableVersion != 1)
-          [self log: @"  Telnet: Invalid TTABLE version %u for %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+          [self log: @"  Telnet: Invalid TTABLE version %u for %@ REQUEST subnegotiation. [%@]",
+           [MUTelnetOption optionNameForByte: bytes[0]],
+           subnegotiationData];
       }
       
       uint8_t separatorCharacter = bytes[byteOffset];
       NSString *separatorCharacterString = [[NSString alloc] initWithBytes: &separatorCharacter length: 1 encoding: NSASCIIStringEncoding];
       
       if (separatorCharacter == MUTelnetInterpretAsCommand)
-        [self log: @"  Telnet: IAC used as separator in %@ REQUEST subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+        [self log: @"  Telnet: IAC used as separator in %@ REQUEST subnegotiation. [%@]",
+         [MUTelnetOption optionNameForByte: bytes[0]],
+         subnegotiationData];
       
-      NSString *offeredCharsetsString = [[NSString alloc] initWithBytes: bytes + byteOffset + 1 length: length - byteOffset - 1 encoding: NSASCIIStringEncoding];
+      NSString *offeredCharsetsString = [[NSString alloc] initWithBytes: (bytes + byteOffset + 1)
+                                                                 length: (length - byteOffset - 1)
+                                                               encoding: NSASCIIStringEncoding];
       NSArray *offeredCharsets = [offeredCharsetsString componentsSeparatedByString: separatorCharacterString];
       
       if (serverOfferedTranslationTable)
-        [self log: @"Received: IAC SB %@ REQUEST [TTABLE] %u <%@> IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]], translationTableVersion, [offeredCharsets componentsJoinedByString: @" "]];
+        [self log: @"Received: IAC SB %@ REQUEST [TTABLE] %u <%@> IAC SE.",
+         [MUTelnetOption optionNameForByte: bytes[0]], translationTableVersion,
+         [offeredCharsets componentsJoinedByString: @" "]];
       else
-        [self log: @"Received: IAC SB %@ REQUEST <%@> IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]], [offeredCharsets componentsJoinedByString: @" "]];
+        [self log: @"Received: IAC SB %@ REQUEST <%@> IAC SE.",
+         [MUTelnetOption optionNameForByte: bytes[0]],
+         [offeredCharsets componentsJoinedByString: @" "]];
       
       for (NSString *charset in offeredCharsets)
       {

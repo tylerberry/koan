@@ -71,6 +71,14 @@
 		2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0C01633905700B33F4A /* MUProfileContentView.m */; };
 		2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA24AD11623639A00A9D92B /* libz.dylib */; };
 		2FA2B35B16655D91000C6F9A /* MULayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B35A16655D91000C6F9A /* MULayoutManager.m */; };
+		2FA2B3CE1666D686000C6F9A /* BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3BD1666D686000C6F9A /* BFColorPickerPopover.m */; };
+		2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3BF1666D686000C6F9A /* BFPopoverColorWell.m */; };
+		2FA2B3D01666D686000C6F9A /* NSColor+BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3C21666D686000C6F9A /* NSColor+BFColorPickerPopover.m */; };
+		2FA2B3D11666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3C41666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m */; };
+		2FA2B3D21666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3C61666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m */; };
+		2FA2B3D31666D686000C6F9A /* BFColorPickerPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3C91666D686000C6F9A /* BFColorPickerPopoverView.m */; };
+		2FA2B3D41666D686000C6F9A /* BFColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3CB1666D686000C6F9A /* BFColorPickerViewController.m */; };
+		2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3CD1666D686000C6F9A /* BFIconTabBar.m */; };
 		2FA3DCDE16577A9900AE8282 /* MusicNote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */; };
 		2FA3DCDF16577A9900AE8282 /* MusicNote.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FA3DCDD16577A9900AE8282 /* MusicNote.png */; };
 		2FA60E5412E13939008BD147 /* MUSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA60E3A12E1379F008BD147 /* MUSection.m */; };
@@ -356,6 +364,22 @@
 		2FA24AD11623639A00A9D92B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2FA2B35916655D91000C6F9A /* MULayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULayoutManager.h; sourceTree = "<group>"; };
 		2FA2B35A16655D91000C6F9A /* MULayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULayoutManager.m; sourceTree = "<group>"; };
+		2FA2B3BC1666D686000C6F9A /* BFColorPickerPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFColorPickerPopover.h; sourceTree = "<group>"; };
+		2FA2B3BD1666D686000C6F9A /* BFColorPickerPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFColorPickerPopover.m; sourceTree = "<group>"; };
+		2FA2B3BE1666D686000C6F9A /* BFPopoverColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFPopoverColorWell.h; sourceTree = "<group>"; };
+		2FA2B3BF1666D686000C6F9A /* BFPopoverColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFPopoverColorWell.m; sourceTree = "<group>"; };
+		2FA2B3C11666D686000C6F9A /* NSColor+BFColorPickerPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+BFColorPickerPopover.h"; sourceTree = "<group>"; };
+		2FA2B3C21666D686000C6F9A /* NSColor+BFColorPickerPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+BFColorPickerPopover.m"; sourceTree = "<group>"; };
+		2FA2B3C31666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColorPanel+BFColorPickerPopover.h"; sourceTree = "<group>"; };
+		2FA2B3C41666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColorPanel+BFColorPickerPopover.m"; sourceTree = "<group>"; };
+		2FA2B3C51666D686000C6F9A /* NSColorWell+BFColorPickerPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColorWell+BFColorPickerPopover.h"; sourceTree = "<group>"; };
+		2FA2B3C61666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColorWell+BFColorPickerPopover.m"; sourceTree = "<group>"; };
+		2FA2B3C81666D686000C6F9A /* BFColorPickerPopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFColorPickerPopoverView.h; sourceTree = "<group>"; };
+		2FA2B3C91666D686000C6F9A /* BFColorPickerPopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFColorPickerPopoverView.m; sourceTree = "<group>"; };
+		2FA2B3CA1666D686000C6F9A /* BFColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFColorPickerViewController.h; sourceTree = "<group>"; };
+		2FA2B3CB1666D686000C6F9A /* BFColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFColorPickerViewController.m; sourceTree = "<group>"; };
+		2FA2B3CC1666D686000C6F9A /* BFIconTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFIconTabBar.h; sourceTree = "<group>"; };
+		2FA2B3CD1666D686000C6F9A /* BFIconTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFIconTabBar.m; sourceTree = "<group>"; };
 		2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MusicNote@2x.png"; sourceTree = "<group>"; };
 		2FA3DCDD16577A9900AE8282 /* MusicNote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MusicNote.png; sourceTree = "<group>"; };
 		2FA60E3912E1379F008BD147 /* MUSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSection.h; sourceTree = "<group>"; };
@@ -801,11 +825,52 @@
 			path = mccp;
 			sourceTree = "<group>";
 		};
+		2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */ = {
+			isa = PBXGroup;
+			children = (
+				2FA2B3C01666D686000C6F9A /* Extensions */,
+				2FA2B3C71666D686000C6F9A /* Helper Classes */,
+				2FA2B3BC1666D686000C6F9A /* BFColorPickerPopover.h */,
+				2FA2B3BD1666D686000C6F9A /* BFColorPickerPopover.m */,
+				2FA2B3BE1666D686000C6F9A /* BFPopoverColorWell.h */,
+				2FA2B3BF1666D686000C6F9A /* BFPopoverColorWell.m */,
+			);
+			name = BFColorPickerPopover;
+			path = BFColorPickerPopover/BFColorPickerPopover;
+			sourceTree = "<group>";
+		};
+		2FA2B3C01666D686000C6F9A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2FA2B3C11666D686000C6F9A /* NSColor+BFColorPickerPopover.h */,
+				2FA2B3C21666D686000C6F9A /* NSColor+BFColorPickerPopover.m */,
+				2FA2B3C31666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.h */,
+				2FA2B3C41666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m */,
+				2FA2B3C51666D686000C6F9A /* NSColorWell+BFColorPickerPopover.h */,
+				2FA2B3C61666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2FA2B3C71666D686000C6F9A /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2FA2B3C81666D686000C6F9A /* BFColorPickerPopoverView.h */,
+				2FA2B3C91666D686000C6F9A /* BFColorPickerPopoverView.m */,
+				2FA2B3CA1666D686000C6F9A /* BFColorPickerViewController.h */,
+				2FA2B3CB1666D686000C6F9A /* BFColorPickerViewController.m */,
+				2FA2B3CC1666D686000C6F9A /* BFIconTabBar.h */,
+				2FA2B3CD1666D686000C6F9A /* BFIconTabBar.m */,
+			);
+			path = "Helper Classes";
+			sourceTree = "<group>";
+		};
 		2FE366630BCAC8D40068A6AA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
 				2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */,
 				2F07053C1613F2E300A71314 /* Sparkle.xcodeproj */,
+				2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */,
 				2F07053816139F3300A71314 /* JRSwizzle */,
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
 				2F70929E1223966F00E0D178 /* CTBadge.h */,
@@ -1500,6 +1565,14 @@
 				2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */,
 				2F6264A01663384D008DDBF2 /* NSString (CodePage437).m in Sources */,
 				2FA2B35B16655D91000C6F9A /* MULayoutManager.m in Sources */,
+				2FA2B3CE1666D686000C6F9A /* BFColorPickerPopover.m in Sources */,
+				2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */,
+				2FA2B3D01666D686000C6F9A /* NSColor+BFColorPickerPopover.m in Sources */,
+				2FA2B3D11666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m in Sources */,
+				2FA2B3D21666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m in Sources */,
+				2FA2B3D31666D686000C6F9A /* BFColorPickerPopoverView.m in Sources */,
+				2FA2B3D41666D686000C6F9A /* BFColorPickerViewController.m in Sources */,
+				2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,7 +33,9 @@
 
 - (NSFont *) boldFontWithRespectTo: (NSFont *) referenceFont;
 - (NSFont *) fontWithTrait: (NSFontTraitMask) trait;
+- (NSFont *) italicFontWithRespectTo: (NSFont *) referenceFont;
 - (BOOL) hasTrait: (NSFontTraitMask) trait;
 - (NSFont *) unboldFontWithRespectTo: (NSFont *) referenceFont;
+- (NSFont *) unitalicFontWithRespectTo: (NSFont *) referenceFont;
 
 @end

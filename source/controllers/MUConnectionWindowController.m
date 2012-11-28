@@ -836,15 +836,18 @@ enum MUTextDisplayModes
   
   [self reportWindowSizeToServer];
   
-  [receivedTextView setNeedsDisplay: YES];
-  [inputView setNeedsDisplay: YES];
+  receivedTextView.needsDisplay = YES;
+  inputView.needsDisplay = YES;
 }
 
 - (void) updateLinkTextColor
 {
-  NSMutableDictionary *linkTextAttributes = [[receivedTextView linkTextAttributes] mutableCopy];
+  NSMutableDictionary *linkTextAttributes = [receivedTextView.linkTextAttributes mutableCopy];
+  
   linkTextAttributes[NSForegroundColorAttributeName] = profile.effectiveLinkColor;
-  [receivedTextView setLinkTextAttributes: linkTextAttributes];
+  
+  receivedTextView.linkTextAttributes = linkTextAttributes;
+  receivedTextView.needsDisplay = YES;
 }
 
 - (void) updateTextColor
@@ -866,8 +869,8 @@ enum MUTextDisplayModes
     index += attributeRange.length;
   }
   
-  [receivedTextView setNeedsDisplay: YES];
-  [inputView setNeedsDisplay: YES];
+  receivedTextView.needsDisplay = YES;
+  inputView.needsDisplay = YES;
 }
 
 - (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo

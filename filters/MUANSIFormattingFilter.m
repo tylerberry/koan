@@ -458,32 +458,17 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
       }
       else if (colorCode >= 16 && colorCode < 232)
       {
-        int adjustedValue = colorCode - 16;
-        int red = adjustedValue / 36;
-        int green = (adjustedValue % 36) / 6;
-        int blue = (adjustedValue % 36) % 6;
-        
-        NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1.0 / 6.0 * red
-                                                       green: 1.0 / 6.0 * green
-                                                        blue: 1.0 / 6.0 * blue
-                                                       alpha: 1.0];
-        
         [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
         [self setAttribute: NSForegroundColorAttributeName
-                   toValue: cubeColor
+                   toValue: [NSColor ANSI256ColorCubeColorForCode: colorCode]
                   inString: string
               fromLocation: startLocation];
       }
       else if (colorCode >= 232 && colorCode < 256)
       {
-        int adjustedValue = colorCode - 231;
-        
-        NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1.0 / 25.0 * adjustedValue
-                                                              alpha: 1.0];
-        
         [self setAttribute: MUCustomColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
         [self setAttribute: NSForegroundColorAttributeName
-                   toValue: grayscaleColor
+                   toValue: [NSColor ANSI256GrayscaleColorForCode: colorCode]
                   inString: string
               fromLocation: startLocation];
       }
@@ -572,30 +557,15 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
       }
       else if (colorCode >= 16 && colorCode < 232)
       {
-        int adjustedValue = colorCode - 16;
-        int red = adjustedValue / 36;
-        int green = (adjustedValue % 36) / 6;
-        int blue = (adjustedValue % 36) % 6;
-        
-        NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1.0 / 6.0 * red
-                                                       green: 1.0 / 6.0 * green
-                                                        blue: 1.0 / 6.0 * blue
-                                                       alpha: 1.0];
-        
         [self setAttribute: NSBackgroundColorAttributeName
-                   toValue: cubeColor
+                   toValue: [NSColor ANSI256ColorCubeColorForCode: colorCode]
                   inString: string
               fromLocation: startLocation];
       }
       else if (colorCode >= 232 && colorCode < 256)
       {
-        int adjustedValue = colorCode - 231;
-        
-        NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1.0 / 25.0 * adjustedValue
-                                                              alpha: 1.0];
-        
         [self setAttribute: NSBackgroundColorAttributeName
-                   toValue: grayscaleColor
+                   toValue: [NSColor ANSI256GrayscaleColorForCode: colorCode]
                   inString: string
               fromLocation: startLocation];
       }

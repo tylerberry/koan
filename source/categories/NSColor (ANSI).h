@@ -26,5 +26,7 @@
 + (NSColor *) ANSIBrightCyanColor;
 + (NSColor *) ANSIBrightWhiteColor;
 
++ (NSColor *) ANSI256ColorCubeColorForCode: (uint8_t) code;
++ (NSColor *) ANSI256GrayscaleColorForCode: (uint8_t) code;
 
 @end

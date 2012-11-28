@@ -8,7 +8,8 @@
 
 @implementation NSColor (ANSI)
 
-// These values match Mac OS X 10.8 Terminal.app's default values for ANSI colors.
+// These values match Mac OS X 10.8 Terminal.app's default values for ANSI colors. There is no standard definition for
+// these colors, every terminal and application uses its own. I used these because they're "Mac standard".
 //
 // I DON'T LIKE THEM VERY MUCH EITHER.
 

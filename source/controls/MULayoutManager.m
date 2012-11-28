@@ -16,6 +16,11 @@
       lineFragmentGlyphRange: (NSRange) lineFragmentGlyphRange
              containerOrigin: (NSPoint) containerOrigin
 {
+  // The default implementation does some magic trickery to only draw the underlines under actual characters and not
+  // under leading or trailing whitespace, which is exactly the kind of magic trickery that we want to avoid when
+  // underlines are sometimes used deliberately for FANSI formatting. So we take out all the magic and just call the
+  // drawing method.
+  
   [self drawUnderlineForGlyphRange: glyphRange
                      underlineType: underlineType
                     baselineOffset: 2.0 // This is a magic number? It doesn't look right with 1.0 or 0.0, and it looks

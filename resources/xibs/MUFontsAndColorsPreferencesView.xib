@@ -58,7 +58,6 @@
 						<string key="NSFrame">{{17, 20}, {359, 42}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="NSAntiCompressionPriority">{250, 750}</string>
 						<bool key="NSEnabled">YES</bool>
@@ -1567,6 +1566,7 @@
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="10.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="11.CustomClassName">BFPopoverColorWell</string>
 				<array key="11.IBNSViewMetadataConstraints">
 					<reference ref="555483167"/>
 					<reference ref="140458117"/>
@@ -1579,6 +1579,7 @@
 				<boolean value="NO" key="12.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="127.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="13.CustomClassName">BFPopoverColorWell</string>
 				<array class="NSMutableArray" key="13.IBNSViewMetadataConstraints">
 					<reference ref="422704635"/>
 				</array>
@@ -1587,6 +1588,7 @@
 				<boolean value="NO" key="14.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="149.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="15.CustomClassName">BFPopoverColorWell</string>
 				<boolean value="NO" key="15.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="150.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1595,6 +1597,7 @@
 				</array>
 				<boolean value="NO" key="16.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="17.CustomClassName">BFPopoverColorWell</string>
 				<boolean value="NO" key="17.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="18.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -1661,6 +1664,14 @@
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">BFPopoverColorWell</string>
+					<string key="superclassName">NSColorWell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BFPopoverColorWell.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">MUFontsAndColorsPreferencesViewController</string>
 					<string key="superclassName">NSViewController</string>

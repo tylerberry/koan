@@ -9,7 +9,7 @@
 	url = git://github.com/tylerberry/Sparkle.git
 [submodule "source/thirdparty/MASPreferences"]
 	path = source/thirdparty/MASPreferences
-	url = git@github.com:tylerberry/MASPreferences.git
+	url = git://github.com/tylerberry/MASPreferences.git
 [submodule "source/thirdparty/BFColorPickerPopover"]
 	path = source/thirdparty/BFColorPickerPopover
 	url = git://github.com/tylerberry/BFColorPickerPopover.git

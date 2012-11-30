@@ -40,6 +40,7 @@ NSString * const MUPSoundChoice = @"MUPSoundChoice";
 NSString * const MUBoldFontAttributeName = @"MUBoldFont";
 NSString * const MUCustomColorAttributeName = @"MUCustomColor";
 NSString * const MUItalicFontAttributeName = @"MUItalicFont";
+NSString * const MUInverseColorsAttributeName = @"MUInverseColors";
 
 #pragma mark Notification constants.
 

@@ -38,8 +38,43 @@ extern NSString * const MUPSoundChoice;
 #pragma mark Custom string attributes.
 
 extern NSString * const MUBoldFontAttributeName;
-extern NSString * const MUCustomColorAttributeName;
 extern NSString * const MUItalicFontAttributeName;
+extern NSString * const MUInverseColorsAttributeName;
+
+extern NSString * const MUCustomColorAttributeName;
+
+#pragma mark Custom color tags.
+
+enum MUCustomColorTags
+{
+  MUDefaultForegroundColorTag,
+  MUDefaultBackgroundColorTag,
+  MUANSIBlackColorTag,
+  MUANSIRedColorTag,
+  MUANSIGreenColorTag,
+  MUANSIYellowColorTag,
+  MUANSIBlueColorTag,
+  MUANSICyanColorTag,
+  MUANSIMagentaColorTag,
+  MUANSIWhiteColorTag,
+  MUANSI256BlackColorTag,
+  MUANSI256RedColorTag,
+  MUANSI256GreenColorTag,
+  MUANSI256YellowColorTag,
+  MUANSI256BlueColorTag,
+  MUANSI256CyanColorTag,
+  MUANSI256MagentaColorTag,
+  MUANSI256WhiteColorTag,
+  MUANSI256BrightBlackColorTag,
+  MUANSI256BrightRedColorTag,
+  MUANSI256BrightGreenColorTag,
+  MUANSI256BrightYellowColorTag,
+  MUANSI256BrightBlueColorTag,
+  MUANSI256BrightCyanColorTag,
+  MUANSI256BrightMagentaColorTag,
+  MUANSI256BrightWhiteColorTag,
+  MUANSI256FixedColorTag
+};
 
 #pragma mark Notification constants.
 

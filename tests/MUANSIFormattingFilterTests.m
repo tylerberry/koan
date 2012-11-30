@@ -355,18 +355,10 @@
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    int adjustedValue = i - 16;
-    int red = adjustedValue / 36;
-    int green = (adjustedValue % 36) / 6;
-    int blue = (adjustedValue % 36) % 6;
-    
-    NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1. / 6. * red
-                                                   green: 1. / 6. * green
-                                                    blue: 1. / 6. * blue
-                                                   alpha: 1.0];
+    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: i];
     
     [self assertString: output
-              hasValue: cubeColor
+              hasValue: expectedColor
           forAttribute: NSForegroundColorAttributeName
                atIndex: 0
                message: [NSString stringWithFormat: @"%d", i]];
@@ -377,13 +369,10 @@
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    int adjustedValue = i - 231;
-    
-    NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1. / 25. * adjustedValue
-                                                          alpha: 1.0];
+    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: i];
     
     [self assertString: output
-              hasValue: grayscaleColor
+              hasValue: expectedColor
           forAttribute: NSForegroundColorAttributeName
                atIndex: 0
                message: [NSString stringWithFormat: @"%d", i]];
@@ -557,18 +546,10 @@
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    int adjustedValue = i - 16;
-    int red = adjustedValue / 36;
-    int green = (adjustedValue % 36) / 6;
-    int blue = (adjustedValue % 36) % 6;
-    
-    NSColor *cubeColor = [NSColor colorWithCalibratedRed: 1. / 6. * red
-                                                   green: 1. / 6. * green
-                                                    blue: 1. / 6. * blue
-                                                   alpha: 1.0];
+    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: i];
     
     [self assertString: output
-              hasValue: cubeColor
+              hasValue: expectedColor
           forAttribute: NSBackgroundColorAttributeName
                atIndex: 0
                message: [NSString stringWithFormat: @"%d", i]];
@@ -579,13 +560,10 @@
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    int adjustedValue = i - 231;
-    
-    NSColor *grayscaleColor = [NSColor colorWithCalibratedWhite: 1. / 25. * adjustedValue
-                                                          alpha: 1.0];
+    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: i];
     
     [self assertString: output
-              hasValue: grayscaleColor
+              hasValue: expectedColor
           forAttribute: NSBackgroundColorAttributeName
                atIndex: 0
                message: [NSString stringWithFormat: @"%d", i]];
@@ -770,6 +748,43 @@
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 4 message: @"e"];
   [self assertString: output hasTrait: NSBoldFontMask atIndex: 5 message: @"f"];
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 6 message: @"g"];
+}
+
+- (void) testBoldBrightColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[33mc\x1B[22md\x1B[1me\x1B[0mf"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightYellowColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIYellowColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 3
+             message: @"d foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightYellowColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 4
+             message: @"e foreground"];
+  [self assertString: output
+            hasValue: TESTING_TEXT_COLOR
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 5
+             message: @"f foreground"];
 }
 
 - (void) testBoldWithBoldAlreadyOn

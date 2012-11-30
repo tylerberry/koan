@@ -116,6 +116,8 @@ enum MUTextDisplayModes
   
   [receivedTextView.textContainer replaceLayoutManager: [[MULayoutManager alloc] init]];
   
+  // Set the initial link text color.
+  
   [self updateLinkTextColor];
   
   // Restore window and split view title, size, and position.

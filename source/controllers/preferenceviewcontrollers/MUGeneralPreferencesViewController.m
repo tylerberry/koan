@@ -66,8 +66,12 @@
   NSString *koanBundleVersion = [koanBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
   
   koanMenuItem.title = [NSString stringWithFormat: @"%@ (%@)", koanBundleName, koanBundleVersion];
-  koanMenuItem.image = [NSImage imageNamed: @"NSApplicationIcon"];
+  
+  NSString *koanBundleIconPath = [koanBundle pathForImageResource: [koanBundle objectForInfoDictionaryKey: @"CFBundleIconFile"]];
+  
+  koanMenuItem.image = [[NSImage alloc] initWithContentsOfFile: koanBundleIconPath];
   koanMenuItem.image.size = NSMakeSize (16.0, 16.0);
+  
   koanMenuItem.target = self;
   koanMenuItem.action = @selector (chooseTelnetHandler:);
   koanMenuItem.representedObject = koanBundle.bundleIdentifier;

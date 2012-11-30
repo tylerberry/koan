@@ -750,41 +750,180 @@
   [self assertString: output hasntTrait: NSBoldFontMask atIndex: 6 message: @"g"];
 }
 
-- (void) testBoldBrightColorChanges
+- (void) testBoldBrightBlackColorChanges
 {
-  NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[33mc\x1B[22md\x1B[1me\x1B[0mf"];
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[30ma\x1B[1mb\x1B[22mc"];
   NSAttributedString *output = [self.queue processCompleteLine: input];
   
   [self assertString: output
-            hasValue: TESTING_TEXT_COLOR
+            hasValue: [NSColor ANSIBlackColor]
         forAttribute: NSForegroundColorAttributeName
              atIndex: 0
              message: @"a foreground"];
   [self assertString: output
-            hasValue: TESTING_TEXT_COLOR
+            hasValue: [NSColor ANSIBrightBlackColor]
         forAttribute: NSForegroundColorAttributeName
              atIndex: 1
              message: @"b foreground"];
   [self assertString: output
-            hasValue: [NSColor ANSIBrightYellowColor]
+            hasValue: [NSColor ANSIBlackColor]
         forAttribute: NSForegroundColorAttributeName
              atIndex: 2
              message: @"c foreground"];
+}
+
+- (void) testBoldBrightRedColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[31ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSIRedColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightRedColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIRedColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightGreenColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[32ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSIGreenColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightGreenColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIGreenColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightYellowColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[33ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
   [self assertString: output
             hasValue: [NSColor ANSIYellowColor]
         forAttribute: NSForegroundColorAttributeName
-             atIndex: 3
-             message: @"d foreground"];
+             atIndex: 0
+             message: @"a foreground"];
   [self assertString: output
             hasValue: [NSColor ANSIBrightYellowColor]
         forAttribute: NSForegroundColorAttributeName
-             atIndex: 4
-             message: @"e foreground"];
+             atIndex: 1
+             message: @"b foreground"];
   [self assertString: output
-            hasValue: TESTING_TEXT_COLOR
+            hasValue: [NSColor ANSIYellowColor]
         forAttribute: NSForegroundColorAttributeName
-             atIndex: 5
-             message: @"f foreground"];
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightBlueColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[34ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSIBlueColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightBlueColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBlueColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightMagentaColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[35ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSIMagentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightMagentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIMagentaColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightCyanColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[36ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSICyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightCyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSICyanColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
+}
+
+- (void) testBoldBrightWhiteColorChanges
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"\x1B[37ma\x1B[1mb\x1B[22mc"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+  
+  [self assertString: output
+            hasValue: [NSColor ANSIWhiteColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 0
+             message: @"a foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIBrightWhiteColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 1
+             message: @"b foreground"];
+  [self assertString: output
+            hasValue: [NSColor ANSIWhiteColor]
+        forAttribute: NSForegroundColorAttributeName
+             atIndex: 2
+             message: @"c foreground"];
 }
 
 - (void) testBoldWithBoldAlreadyOn

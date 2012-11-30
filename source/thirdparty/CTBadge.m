@@ -208,7 +208,9 @@ const CGFloat CTSmallLabelSize = 11.;
 
 - (void) badgeApplicationDockIconWithString: (NSString *) string insetX: (CGFloat) dx y: (CGFloat) dy;
 {
-  NSImage *appIcon = [NSImage imageNamed: @"NSApplicationIcon"];
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *mainBundleIconPath = [mainBundle pathForImageResource: [mainBundle objectForInfoDictionaryKey: @"CFBundleIconFile"]];
+  NSImage *appIcon = [[NSImage alloc] initWithContentsOfFile: mainBundleIconPath];
   NSImage *badgeOverlay = [self badgeOverlayImageForString: string insetX: dx y: dy];
   
   // Put the appIcon underneath the badgeOverlay

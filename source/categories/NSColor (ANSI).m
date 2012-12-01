@@ -287,7 +287,7 @@ static uint8_t grayscale[24] = {
     return nil;
   }
   
-  uint8_t adjustedCode = code - 231;
+  uint8_t adjustedCode = code - 232;
   
   return [NSColor colorWithCalibratedWhite: (grayscale[adjustedCode] / 255.0)
                                      alpha: 1.0];

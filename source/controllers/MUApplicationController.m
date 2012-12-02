@@ -6,6 +6,7 @@
 
 #import "MUApplicationController.h"
 
+#import "NSColor (ANSI).h"
 #import "NSObject (BetterHashing).h"
 
 #import "MUAcknowledgementsController.h"
@@ -309,13 +310,35 @@
   initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
   initialValues[MUPPlaySounds] = @YES;
   initialValues[MUPPlayWhenActive] = @NO;
-  initialValues[MUPUseProxy] = @NO;
+  initialValues[MUPUseProxy] = @(0);
   initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
+  
+  initialValues[MUPANSIBlackColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBlackColor]];
+  initialValues[MUPANSIRedColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIRedColor]];
+  initialValues[MUPANSIGreenColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIGreenColor]];
+  initialValues[MUPANSIYellowColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIYellowColor]];
+  initialValues[MUPANSIBlueColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBlueColor]];
+  initialValues[MUPANSIMagentaColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIMagentaColor]];
+  initialValues[MUPANSICyanColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSICyanColor]];
+  initialValues[MUPANSIWhiteColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIWhiteColor]];
+  
+  initialValues[MUPANSIBrightBlackColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightBlackColor]];
+  initialValues[MUPANSIBrightRedColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightRedColor]];
+  initialValues[MUPANSIBrightGreenColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightGreenColor]];
+  initialValues[MUPANSIBrightYellowColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightYellowColor]];
+  initialValues[MUPANSIBrightBlueColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightBlueColor]];
+  initialValues[MUPANSIBrightMagentaColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightMagentaColor]];
+  initialValues[MUPANSIBrightCyanColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightCyanColor]];
+  initialValues[MUPANSIBrightWhiteColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBrightWhiteColor]];
+  
+  initialValues[MUPDisplayBrightAsBold] = @NO;
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   
   initialValues[MUPWorlds] = @[];
+  initialValues[MUPProfiles] = @[];
+  initialValues[MUPProfilesOutlineViewState] = @[];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
 }
@@ -340,12 +363,14 @@
 
 - (void) _playNotificationSound
 {
-  NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-  NSURL *soundURL = [NSURL URLWithString: [userDefaultsController.values valueForKey: MUPSoundChoice]];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSURL *soundURL = [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]];
 
   if (soundURL)
   {
     NSSound *sound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
+    
+    sound.volume = [userDefaults floatForKey: MUPSoundVolume];
     
     [sound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
   }

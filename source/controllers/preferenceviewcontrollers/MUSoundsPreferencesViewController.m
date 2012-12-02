@@ -46,6 +46,8 @@
   [self _populateSoundsPopUpMenu];
 }
 
+#pragma mark - Actions
+
 - (IBAction) chooseSound: (id) sender
 {
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -95,11 +97,21 @@
   }
 }
 
+- (void) playCurrentSound:(id)sender
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  
+  [self _playSoundAtURL: [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]]];
+}
+
 #pragma mark - Private methods
 
 - (void) _playSoundAtURL: (NSURL *) soundURL
 {
   NSSound *sound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
+  
+  sound.volume = [[NSUserDefaults standardUserDefaults] floatForKey: MUPSoundVolume];
+  
   [sound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
 }
 

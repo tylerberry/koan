@@ -34,13 +34,36 @@ NSString * const MUPUseProxy = @"MUPUseProxy";
 NSString * const MUPPlaySounds = @"MUPPlaySounds";
 NSString * const MUPPlayWhenActive = @"MUPPlayWhenActive";
 NSString * const MUPSoundChoice = @"MUPSoundChoice";
+NSString * const MUPSoundVolume = @"MUPSoundVolume";
+
+NSString * const MUPANSIBlackColor = @"MUPANSIBlackColor";
+NSString * const MUPANSIRedColor = @"MUPANSIRedColor";
+NSString * const MUPANSIGreenColor = @"MUPANSIGreenColor";
+NSString * const MUPANSIYellowColor = @"MUPANSIYellowColor";
+NSString * const MUPANSIBlueColor = @"MUPANSIBlueColor";
+NSString * const MUPANSIMagentaColor = @"MUPANSIMagentaColor";
+NSString * const MUPANSICyanColor = @"MUPANSICyanColor";
+NSString * const MUPANSIWhiteColor = @"MUPANSIWhiteColor";
+
+NSString * const MUPANSIBrightBlackColor = @"MUPANSIBrightBlackColor";
+NSString * const MUPANSIBrightRedColor = @"MUPANSIBrightRedColor";
+NSString * const MUPANSIBrightGreenColor = @"MUPANSIBrightGreenColor";
+NSString * const MUPANSIBrightYellowColor = @"MUPANSIBrightYellowColor";
+NSString * const MUPANSIBrightBlueColor = @"MUPANSIBrightBlueColor";
+NSString * const MUPANSIBrightMagentaColor = @"MUPANSIBrightMagentaColor";
+NSString * const MUPANSIBrightCyanColor = @"MUPANSIBrightCyanColor";
+NSString * const MUPANSIBrightWhiteColor = @"MUPANSIBrightWhiteColor";
+
+NSString * const MUPDisplayBrightAsBold = @"MUPDisplayBrightAsBold";
 
 #pragma mark Custom string attributes.
 
 NSString * const MUBoldFontAttributeName = @"MUBoldFont";
-NSString * const MUCustomColorAttributeName = @"MUCustomColor";
 NSString * const MUItalicFontAttributeName = @"MUItalicFont";
 NSString * const MUInverseColorsAttributeName = @"MUInverseColors";
+
+NSString * const MUCustomForegroundColorAttributeName = @"MUCustomForegroundColor";
+NSString * const MUCustomBackgroundColorAttributeName = @"MUCustomBackgroundColor";
 
 #pragma mark Notification constants.
 

@@ -34,6 +34,27 @@ extern NSString * const MUPUseProxy;
 extern NSString * const MUPPlaySounds;
 extern NSString * const MUPPlayWhenActive;
 extern NSString * const MUPSoundChoice;
+extern NSString * const MUPSoundVolume;
+
+extern NSString * const MUPANSIBlackColor;
+extern NSString * const MUPANSIRedColor;
+extern NSString * const MUPANSIGreenColor;
+extern NSString * const MUPANSIYellowColor;
+extern NSString * const MUPANSIBlueColor;
+extern NSString * const MUPANSIMagentaColor;
+extern NSString * const MUPANSICyanColor;
+extern NSString * const MUPANSIWhiteColor;
+
+extern NSString * const MUPANSIBrightBlackColor;
+extern NSString * const MUPANSIBrightRedColor;
+extern NSString * const MUPANSIBrightGreenColor;
+extern NSString * const MUPANSIBrightYellowColor;
+extern NSString * const MUPANSIBrightBlueColor;
+extern NSString * const MUPANSIBrightMagentaColor;
+extern NSString * const MUPANSIBrightCyanColor;
+extern NSString * const MUPANSIBrightWhiteColor;
+
+extern NSString * const MUPDisplayBrightAsBold;
 
 #pragma mark Custom string attributes.
 
@@ -41,7 +62,8 @@ extern NSString * const MUBoldFontAttributeName;
 extern NSString * const MUItalicFontAttributeName;
 extern NSString * const MUInverseColorsAttributeName;
 
-extern NSString * const MUCustomColorAttributeName;
+extern NSString * const MUCustomForegroundColorAttributeName;
+extern NSString * const MUCustomBackgroundColorAttributeName;
 
 #pragma mark Custom color tags.
 

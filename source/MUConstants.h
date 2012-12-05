@@ -16,7 +16,6 @@ extern NSString * const MUKoanBugsURLString;
 extern NSString * const MUGrowlURLString;
 extern NSString * const MUOpenSSLURLString;
 extern NSString * const MUSparkleURLString;
-extern NSString * const MUUKPrefsPaneURLString;
 
 #pragma mark User defaults constants.
 
@@ -106,11 +105,6 @@ extern NSString * const MUWorldsDidChangeNotification;
 
 #pragma mark Toolbar item constants.
 
-extern NSString * const MUAddWorldToolbarItem;
-extern NSString * const MUAddPlayerToolbarItem;
-extern NSString * const MUEditSelectedRowToolbarItem;
-extern NSString * const MURemoveSelectedRowToolbarItem;
-extern NSString * const MUEditProfileForSelectedRowToolbarItem;
 extern NSString * const MUGoToURLToolbarItem;
 
 #pragma mark Toolbar item localization constants.
@@ -168,8 +162,3 @@ extern NSString * const MULConnect;
 extern NSString * const MULDisconnect;
 
 extern NSString * const MULConnectWithoutLogin;
-
-#pragma mark ANSI parsing constants
-
-extern NSString * const MUANSIForegroundColorAttributeName;
-extern NSString * const MUANSIBackgroundColorAttributeName;

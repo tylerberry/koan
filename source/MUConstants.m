@@ -16,7 +16,6 @@ NSString * const MUKoanBugsURLString = @"https://github.com/tylerberry/koan/issu
 NSString * const MUGrowlURLString = @"http://growl.info/";
 NSString * const MUOpenSSLURLString = @"http://www.openssl.org/";
 NSString * const MUSparkleURLString = @"http://sparkle.andymatuschak.org/";
-NSString * const MUUKPrefsPaneURLString = @"http://zathras.de/angelweb/sourcecode.htm";
 
 #pragma mark User defaults constants.
 
@@ -62,6 +61,9 @@ NSString * const MUBoldFontAttributeName = @"MUBoldFont";
 NSString * const MUItalicFontAttributeName = @"MUItalicFont";
 NSString * const MUInverseColorsAttributeName = @"MUInverseColors";
 
+NSString * const MURapidBlinkAttributeName = @"MURapidBlink";
+NSString * const MUSlowBlinkAttributeName = @"MUSlowBlink";
+
 NSString * const MUCustomForegroundColorAttributeName = @"MUCustomForegroundColor";
 NSString * const MUCustomBackgroundColorAttributeName = @"MUCustomBackgroundColor";
 
@@ -73,11 +75,6 @@ NSString * const MUWorldsDidChangeNotification = @"MUWorldsDidChangeNotification
 
 #pragma mark Toolbar item constants.
 
-NSString * const MUAddWorldToolbarItem = @"MUAddWorldToolbarItem";
-NSString * const MUAddPlayerToolbarItem = @"MUAddPlayerToolbarItem";
-NSString * const MUEditSelectedRowToolbarItem = @"MUEditSelectedRowToolbarItem";
-NSString * const MURemoveSelectedRowToolbarItem = @"MURemoveSelectedRowToolbarItem";
-NSString * const MUEditProfileForSelectedRowToolbarItem = @"MUEditProfileForSelectedRowToolbarItem";
 NSString * const MUGoToURLToolbarItem = @"MUGoToURLToolbarItem";
 
 #pragma mark Toolbar item localization constants.
@@ -135,8 +132,3 @@ NSString * const MULConnect = @"Connect";
 NSString * const MULDisconnect = @"Disconnect";
 
 NSString * const MULConnectWithoutLogin = @"ConnectWithoutLogin";
-
-#pragma mark ANSI parsing constants.
-
-NSString * const MUANSIForegroundColorAttributeName = @"MUANSIForegroundColorAttributeName";
-NSString * const MUANSIBackgroundColorAttributeName = @"MUANSIBackgroundColorAttributeName";

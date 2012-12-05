@@ -24,14 +24,14 @@
 
 #pragma mark -
 
-@implementation MUProfile (Testing)
+@implementation MUProfile (TestingANSI)
 
-+ (id) profileForTesting
++ (id) profileForTestingANSI
 {
-  return [[self alloc] initForTesting];
+  return [[self alloc] initForTestingANSI];
 }
 
-- (id) initForTesting
+- (id) initForTestingANSI
 {
   return [self initWithWorld: nil
                       player: nil
@@ -74,7 +74,7 @@
 {
   [super setUp];
   
-  [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTesting]
+  [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: [MUProfile profileForTestingANSI]
                                                           delegate: nil]];
 }
 
@@ -741,13 +741,13 @@
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[1mb\x1B[22mc\x1B[1md\x1B[0me\x1B[1mf\x1B[mg"];
   NSAttributedString *output = [self.queue processCompleteLine: input];
 
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 0 message: @"a"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 1 message: @"b"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 2 message: @"c"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 3 message: @"d"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 4 message: @"e"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 5 message: @"f"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 6 message: @"g"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 0 message: @"a"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 1 message: @"b"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 2 message: @"c"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 3 message: @"d"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 5 message: @"f"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 6 message: @"g"];
 }
 
 - (void) testBoldBrightBlackColorChanges
@@ -933,21 +933,21 @@
   
   [self.queue clearFilters];
   
-  MUProfile *testingProfile = [MUProfile profileForTesting];
+  MUProfile *testingProfile = [MUProfile profileForTestingANSI];
   testingProfile.font = [testingProfile.font fontWithTrait: NSBoldFontMask];
   [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile delegate: nil]];
 
   output = [self.queue processCompleteLine: input];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 1 message: @"b"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 2 message: @"c"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 3 message: @"d"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 4 message: @"e"];
-  [self assertString: output hasntTrait: NSBoldFontMask atIndex: 5 message: @"f"];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 6 message: @"g"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 0 message: @"a"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 1 message: @"b"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 2 message: @"c"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 3 message: @"d"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 4 message: @"e"];
+  [self assertString: output hasValue: @YES forAttribute: MUBoldFontAttributeName atIndex: 5 message: @"f"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 6 message: @"g"];
   
   output = [self.queue processCompleteLine: input];
-  [self assertString: output hasTrait: NSBoldFontMask atIndex: 0 message: @"a2"];
+  [self assertString: output hasValue: nil forAttribute: MUBoldFontAttributeName atIndex: 0 message: @"a2"];
 }
 
 - (void) testUnderline

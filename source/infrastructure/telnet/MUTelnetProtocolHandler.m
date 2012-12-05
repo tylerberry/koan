@@ -55,11 +55,9 @@ static NSArray *offerableCharsets;
 
 @implementation MUTelnetProtocolHandler
 
-@synthesize connectionState;
-
 + (void) initialize
 {
-  offerableTerminalTypes = @[@"KOAN", @"UNKNOWN", @"UNKNOWN"];
+  offerableTerminalTypes = @[@"koan-256color", @"koan", @"unknown", @"unknown"];
   
   acceptableCharsets = @[@"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
                         @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII",
@@ -81,7 +79,7 @@ static NSArray *offerableCharsets;
   
   subnegotiationBuffer = [[NSMutableData alloc] initWithCapacity: 64];
   
-  connectionState = telnetConnectionState;
+  _connectionState = telnetConnectionState;
   stateMachine = [MUTelnetStateMachine stateMachine];
   receivedCR = NO;
   optionRequestSent = NO;
@@ -228,7 +226,7 @@ static NSArray *offerableCharsets;
   
   if (option == MUTelnetOptionNegotiateAboutWindowSize)
   {
-    connectionState.shouldReportWindowSizeChanges = YES;
+    _connectionState.shouldReportWindowSizeChanges = YES;
     [delegate reportWindowSizeToServer];
   }
   else if (option == MUTelnetOptionCharset)
@@ -240,7 +238,7 @@ static NSArray *offerableCharsets;
   [options[option] receivedDont];
   
   if (option == MUTelnetOptionNegotiateAboutWindowSize)
-    connectionState.shouldReportWindowSizeChanges = NO;
+    _connectionState.shouldReportWindowSizeChanges = NO;
 }
 
 - (void) receivedWill: (uint8_t) option
@@ -248,7 +246,7 @@ static NSArray *offerableCharsets;
   [options[option] receivedWill];
   
   if (option == MUTelnetOptionEcho)
-    connectionState.serverWillEcho = YES;
+    _connectionState.serverWillEcho = YES;
   else if (option == MUTelnetOptionMCCP2)
     [self forOption: MUTelnetOptionMCCP1 allowWill: NO allowDo: NO];
 }
@@ -258,7 +256,7 @@ static NSArray *offerableCharsets;
   [options[option] receivedWont];
   
   if (option == MUTelnetOptionEcho)
-    connectionState.serverWillEcho = NO;
+    _connectionState.serverWillEcho = NO;
 }
 
 - (void) useBufferedDataAsPrompt

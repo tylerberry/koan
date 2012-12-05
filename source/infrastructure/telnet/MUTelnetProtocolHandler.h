@@ -37,7 +37,6 @@
 
 @interface MUTelnetProtocolHandler : MUProtocolHandler <MUTelnetProtocolHandler, MUTelnetOptionDelegate>
 {
-  MUMUDConnectionState *connectionState;
   MUTelnetStateMachine *stateMachine;
   
   NSMutableData *subnegotiationBuffer;

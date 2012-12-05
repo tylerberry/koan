@@ -13,3 +13,6 @@
 [submodule "source/thirdparty/BFColorPickerPopover"]
 	path = source/thirdparty/BFColorPickerPopover
 	url = git://github.com/tylerberry/BFColorPickerPopover.git
+[submodule "source/thirdparty/PLWeakCompatibility"]
+	path = source/thirdparty/PLWeakCompatibility
+	url = git://github.com/plausiblelabs/PLWeakCompatibility.git

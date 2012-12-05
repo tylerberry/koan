@@ -218,25 +218,31 @@
   
   const uint8_t terminalTypeRequest[2] = {MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend};
   
-  const uint8_t koanReply[10] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'K', 'O', 'A', 'N', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
+  const uint8_t koan256Reply[19] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'k', 'o', 'a', 'n', '-', '2', '5', '6', 'c', 'o', 'l', 'o', 'r', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  const uint8_t unknownReply[13] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'U', 'N', 'K', 'N', 'O', 'W', 'N', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
+  const uint8_t koanReply[10] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'k', 'o', 'a', 'n', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [mockSocketData setData: [NSData data]];
-  [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: koanReply length: 10]];
+  const uint8_t unknownReply[13] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'u', 'n', 'k', 'n', 'o', 'w', 'n', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   [mockSocketData setData: [NSData data]];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13]];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"koan-256color"];
   
   [mockSocketData setData: [NSData data]];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13]];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: koanReply length: 10] message: @"koan"];
   
   [mockSocketData setData: [NSData data]];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: koanReply length: 10]];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown"];
+  
+  [mockSocketData setData: [NSData data]];
+  [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown 2"];
+  
+  [mockSocketData setData: [NSData data]];
+  [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
+  [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"wraparound"];
 }
 
 - (void) testDoCharset

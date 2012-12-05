@@ -7,6 +7,45 @@
 #import "MUFugueEditFilterTests.h"
 #import "MUFugueEditFilter.h"
 
+#import "MUPlayer.h"
+#import "MUProfile.h"
+
+@interface MUProfile (TestingFugueEdit)
+
++ (id) profileForTestingFugueEdit;
+- (id) initForTestingFugueEdit;
+
+@end
+
+#pragma mark -
+
+@implementation MUProfile (TestingFugueEdit)
+
++ (id) profileForTestingFugueEdit
+{
+  return [[self alloc] initForTestingFugueEdit];
+}
+
+- (id) initForTestingFugueEdit
+{
+  MUPlayer *player = [[MUPlayer alloc] init];
+  
+  player.fugueEditPrefix = @"FugueEdit > ";
+  
+  return [self initWithWorld: nil
+                      player: player
+                 autoconnect: NO
+                        font: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]
+             backgroundColor: nil
+                   linkColor: nil
+             systemTextColor: nil
+                   textColor: nil];
+}
+
+@end
+
+#pragma mark -
+
 @implementation MUFugueEditFilterTests
 {
   NSString *_editString;
@@ -23,7 +62,8 @@
   
   _editString = nil;
   
-  [self.queue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
+  [self.queue addFilter: [MUFugueEditFilter filterWithProfile: [MUProfile profileForTestingFugueEdit]
+                                                     delegate: self]];
 }
 
 - (void) tearDown

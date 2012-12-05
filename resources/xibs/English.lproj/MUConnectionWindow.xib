@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1070</int>
+		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
@@ -183,7 +183,6 @@
 											<reference key="NSTarget" ref="433606926"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
-											<int key="NSKnobStyle">2</int>
 										</object>
 										<object class="NSScroller" id="381857141">
 											<reference key="NSNextResponder" ref="433606926"/>
@@ -198,7 +197,6 @@
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
 											<double key="NSPercent">0.94565218687057495</double>
-											<int key="NSKnobStyle">2</int>
 										</object>
 									</array>
 									<string key="NSFrameSize">{534, 341}</string>
@@ -209,7 +207,6 @@
 									<reference key="NSVScroller" ref="424044393"/>
 									<reference key="NSHScroller" ref="381857141"/>
 									<reference key="NSContentView" ref="362385187"/>
-									<int key="NSScrollerKnobStyle">2</int>
 									<double key="NSMinMagnification">0.25</double>
 									<double key="NSMaxMagnification">4</double>
 									<double key="NSMagnification">1</double>
@@ -267,7 +264,7 @@
 														<int key="NSTCFlags">1</int>
 													</object>
 													<object class="NSTextViewSharedData" key="NSSharedData">
-														<int key="NSFlags">12103</int>
+														<int key="NSFlags">67120967</int>
 														<int key="NSTextCheckingTypes">0</int>
 														<nil key="NSMarkedAttributes"/>
 														<reference key="NSBackgroundColor" ref="152545664"/>
@@ -464,7 +461,6 @@ wGw</bytes>
 											<reference key="NSTarget" ref="34121738"/>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
-											<int key="NSKnobStyle">2</int>
 										</object>
 										<object class="NSScroller" id="1023902253">
 											<reference key="NSNextResponder" ref="34121738"/>
@@ -479,7 +475,6 @@ wGw</bytes>
 											<string key="NSAction">_doScroller:</string>
 											<double key="NSCurValue">1</double>
 											<double key="NSPercent">0.94565218687057495</double>
-											<int key="NSKnobStyle">2</int>
 										</object>
 									</array>
 									<string key="NSFrame">{{0, 351}, {534, 80}}</string>
@@ -490,7 +485,6 @@ wGw</bytes>
 									<reference key="NSVScroller" ref="902248184"/>
 									<reference key="NSHScroller" ref="1023902253"/>
 									<reference key="NSContentView" ref="908576080"/>
-									<int key="NSScrollerKnobStyle">2</int>
 									<double key="NSMinMagnification">0.25</double>
 									<double key="NSMaxMagnification">4</double>
 									<double key="NSMagnification">1</double>
@@ -949,7 +943,11 @@ wGw</bytes>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
+			<real value="1060" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
+			<real value="4500" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>

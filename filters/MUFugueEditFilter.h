@@ -4,8 +4,9 @@
 // Copyright (c) 2012 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <MUFilter.h>
+#import "MUFilter.h"
+
+#import "MUProfile.h"
 
 @protocol MUFugueEditFilterDelegate
 
@@ -20,8 +21,10 @@
 
 @property (weak, nonatomic) NSObject <MUFugueEditFilterDelegate> *delegate;
 
-+ (id) filterWithDelegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
++ (MUFilter *) filterWithProfile: (MUProfile *) newProfile
+                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
-- (id) initWithDelegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
+- (id) initWithProfile: (MUProfile *) newProfile
+              delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
 @end

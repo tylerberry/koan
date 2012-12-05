@@ -9,7 +9,9 @@
 
 @interface MUPlayer : MUTreeNode
 
+@property (copy) NSString *fugueEditPrefix;
 @property (copy) NSString *password;
+
 @property (readonly) NSString *loginString;
 @property (readonly) NSString *windowTitle;
 

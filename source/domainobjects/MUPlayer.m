@@ -6,7 +6,7 @@
 
 #import "MUPlayer.h"
 
-static const int32_t currentPlayerVersion = 2;
+static const int32_t currentPlayerVersion = 3;
 
 @implementation MUPlayer
 
@@ -79,6 +79,7 @@ static const int32_t currentPlayerVersion = 2;
   [encoder encodeInt32: currentPlayerVersion forKey: @"playerVersion"];
   
   [encoder encodeObject: self.password forKey: @"password"];
+  [encoder encodeObject: self.fugueEditPrefix forKey: @"fugueEditPrefix"];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
@@ -98,10 +99,15 @@ static const int32_t currentPlayerVersion = 2;
       return nil;
   }
   
+  _password = [decoder decodeObjectForKey: @"password"];
+  
   if (version == 1)
     self.name = [decoder decodeObjectForKey: @"name"];
   
-  _password = [decoder decodeObjectForKey: @"password"];
+  if (version >= 3)
+    _fugueEditPrefix = [decoder decodeObjectForKey: @"fugueEditPrefix"];
+  else
+    _fugueEditPrefix = nil;
   
   return self;
 }
@@ -110,8 +116,12 @@ static const int32_t currentPlayerVersion = 2;
 
 - (id) copyWithZone: (NSZone *) zone
 {
-  return [[MUPlayer allocWithZone: zone] initWithName: self.name
-                                             password: self.password];
+  MUPlayer *copy = [[MUPlayer allocWithZone: zone] initWithName: self.name
+                                                       password: self.password];
+  
+  copy.fugueEditPrefix = self.fugueEditPrefix;
+  
+  return copy;
 }
 
 @end

@@ -132,7 +132,7 @@ enum MUAbstractANSIColors
   filterQueue = [MUFilterQueue filterQueue];
   
   [filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: profile delegate: self]];
-  [filterQueue addFilter: [MUFugueEditFilter filterWithDelegate: self]];
+  [filterQueue addFilter: [MUFugueEditFilter filterWithProfile: profile delegate: self]];
   [filterQueue addFilter: [MUNaiveURLFilter filter]];
   [filterQueue addFilter: [self createLogger]];
   
@@ -161,7 +161,14 @@ enum MUAbstractANSIColors
   
   [receivedTextView.textContainer replaceLayoutManager: [[MULayoutManager alloc] init]];
   receivedTextView.layoutManager.allowsNonContiguousLayout = YES;
-  receivedTextView.layoutManager.delegate = self;
+  
+  // On 10.7 and up we can set scroller knob colors.
+  
+  if ([receivedTextView.enclosingScrollView respondsToSelector: @selector (setScrollerKnobStyle:)])
+    [receivedTextView.enclosingScrollView setScrollerKnobStyle: NSScrollerKnobStyleLight];
+  
+  if ([inputView.enclosingScrollView respondsToSelector: @selector (setScrollerKnobStyle:)])
+    [inputView.enclosingScrollView setScrollerKnobStyle: NSScrollerKnobStyleLight];
   
   // Set the initial link text color.
   
@@ -460,7 +467,7 @@ enum MUAbstractANSIColors
 
 - (BOOL) validateToolbarItem: (NSToolbarItem *) toolbarItem
 {
-  SEL toolbarItemAction = [toolbarItem action];
+  SEL toolbarItemAction = toolbarItem.action;
   
   if (toolbarItemAction == @selector (goToWorldURL:))
   {
@@ -545,7 +552,7 @@ enum MUAbstractANSIColors
                                              userInfo: nil
                                               repeats: YES];
   
-  [[self window] makeFirstResponder: inputView];
+  [self.window makeFirstResponder: inputView];
 }
 
 - (IBAction) connectOrDisconnect: (id) sender
@@ -600,7 +607,7 @@ enum MUAbstractANSIColors
 - (IBAction) previousCommand: (id) sender
 {
   [historyRing updateString: inputView.string];
-  [inputView setString: [historyRing previousString] ];
+  [inputView setString: [historyRing previousString]];
 }
 
 #pragma mark - Filter delegate methods
@@ -619,11 +626,25 @@ enum MUAbstractANSIColors
 
 - (void) displayPrompt: (NSString *) promptString
 {
+  if (!promptString || promptString.length == 0)
+  {
+    if (_currentPrompt)
+    {
+      NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
+                                         receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
+      
+      [receivedTextView.textStorage deleteCharactersInRange: promptRange];
+      _currentPrompt = nil;
+      return;
+    }
+  }
+  
   [self _displayString: promptString textDisplayMode: MUPromptTextDisplayMode];
 }
 
 - (void) displayString: (NSString *) string
-{  
+{
+  if (string && string.length > 0)
   [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
 }
 
@@ -890,9 +911,6 @@ enum MUAbstractANSIColors
 
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
 {
-  if (!string || string.length == 0)
-    return;
-  
   BOOL needsScrollToBottom = NO;
   
   if (receivedTextView.enclosingScrollView.verticalScroller.isHidden
@@ -913,24 +931,25 @@ enum MUAbstractANSIColors
   {
     case MUSystemTextDisplayMode:
     case MUNormalTextDisplayMode:
-    {
+      [receivedTextView.textStorage beginEditing];
       [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: attributedString]];
       _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
       
       if (_currentPrompt)
         [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: _currentPrompt]];
       
+      [receivedTextView.textStorage endEditing];
+      
       break;
-    }
       
     case MUPromptTextDisplayMode:
-    {
       _currentPrompt = [attributedString copy];
       
+      [receivedTextView.textStorage beginEditing];
       [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: attributedString]];
+      [receivedTextView.textStorage endEditing];
       
       break;
-    }
       
     case MUEchoedTextDisplayMode:
     {

@@ -364,7 +364,15 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
               toValue: @(MUDefaultBackgroundColorTag)
              inString: string
          fromLocation: startLocation];
-  [self _removeAttribute: NSBackgroundColorAttributeName inString: string fromLocation: startLocation];
+  if (_currentAttributes[MUInverseColorsAttributeName])
+  {
+    [self _setAttribute: NSForegroundColorAttributeName
+                toValue: _profile.effectiveBackgroundColor
+               inString: string
+           fromLocation: startLocation];
+  }
+  else
+    [self _removeAttribute: NSBackgroundColorAttributeName inString: string fromLocation: startLocation];
 }
 
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -435,7 +443,9 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
               toValue: @(MUDefaultForegroundColorTag)
              inString: string
          fromLocation: startLocation];
-  [self _setAttribute: NSForegroundColorAttributeName
+  [self _setAttribute: (_currentAttributes[MUInverseColorsAttributeName]
+                        ? NSBackgroundColorAttributeName
+                        : NSForegroundColorAttributeName)
               toValue: _profile.effectiveTextColor
              inString: string
          fromLocation: startLocation];
@@ -453,10 +463,14 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
                 toValue: _currentAttributes[NSBackgroundColorAttributeName]
                inString: string
            fromLocation: startLocation];
-    [self _setAttribute: NSBackgroundColorAttributeName
-                toValue: savedForegroundColor
-               inString: string
-           fromLocation: startLocation];
+    
+    if ([_currentAttributes[MUCustomBackgroundColorAttributeName] intValue] == MUDefaultBackgroundColorTag)
+      [self _removeAttribute: NSBackgroundColorAttributeName inString: string fromLocation: startLocation];
+    else
+      [self _setAttribute: NSBackgroundColorAttributeName
+                  toValue: savedForegroundColor
+                 inString: string
+             fromLocation: startLocation];
   }
 }
 
@@ -732,7 +746,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
   
   for (NSString *code in codeComponents)
   {
-    switch ([code intValue])
+    switch (code.intValue)
     {
       case MUANSIReset:
         [self _resetInverseInString: string fromLocation: startLocation];

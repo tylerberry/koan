@@ -177,9 +177,11 @@
                                                        length: _parsingBuffer.length
                                                      encoding: _connectionState.stringEncoding];
   
+  // This is a heuristic. I've made it as tight as I can to avoid false positives.
+  
   if ([promptCandidate hasSuffix: @" "])
   {
-    promptCandidate = [promptCandidate stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
     
     if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
          [promptCandidate characterAtIndex: promptCandidate.length - 1]])

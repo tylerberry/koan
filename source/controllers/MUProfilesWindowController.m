@@ -16,6 +16,8 @@
 #import "MUWorldRegistry.h"
 #import "MUWorldViewController.h"
 
+#import "ATImageTextCell.h"
+
 @interface MUProfilesWindowController ()
 {
   NSMutableArray *_profilesExpandedItems;
@@ -215,7 +217,7 @@
 
 - (IBAction) openConnectionForSelectedProfile: (id) sender
 {
-  return;
+  
 }
 
 - (IBAction) openWebsiteForSelectedProfile: (id) sender
@@ -363,12 +365,26 @@
   return [node.representedObject isKindOfClass: [MUProfilesSection class]] ? NO : YES;
 }
 
+/*
 - (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
 {
   if ([self outlineView: outlineView isGroupItem: item])
     return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: self];
   else
     return [outlineView makeViewWithIdentifier: @"DataCell" owner: self];
+}
+ */
+
+- (void) outlineView: (NSOutlineView *) outlineView
+     willDisplayCell: (id) cell
+      forTableColumn: (NSTableColumn *) tableColumn
+                item: (id) item
+{
+  ATImageTextCell *imageTextCell = (ATImageTextCell *) cell;
+  NSTreeNode *node = (NSTreeNode *) item;
+  MUTreeNode *representedNode = (MUTreeNode *) node.representedObject;
+  
+  imageTextCell.image = representedNode.icon;
 }
 
 - (void) outlineViewItemWillCollapse: (NSNotification *) notification

@@ -165,7 +165,10 @@
 {
   static dispatch_once_t predicate;
   
-  dispatch_once (&predicate, ^{ _profilesController = [[MUProfilesWindowController alloc] init]; });
+  dispatch_once (&predicate, ^{
+    _profilesController = [[MUProfilesWindowController alloc] init];
+    _profilesController.delegate = self;
+  });
   
   [_profilesController showWindow: sender];
 }
@@ -284,6 +287,13 @@
   }
 }
 
+#pragma mark - MUProfilesWindowControllerDelegate protocol
+
+- (void) openConnectionForProfile: (MUProfile *) profile
+{
+  [self _openConnectionWithController: [[MUConnectionWindowController alloc] initWithProfile: profile]];
+}
+
 #pragma mark - Responder chain methods
 
 - (IBAction) changeFont: (id) sender
@@ -308,11 +318,6 @@
   initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
   initialValues[MUPTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor lightGrayColor]];
   initialValues[MUPSystemTextColor] = [NSArchiver archivedDataWithRootObject: [NSColor yellowColor]];
-  initialValues[MUPPlaySounds] = @YES;
-  initialValues[MUPPlayWhenActive] = @NO;
-  initialValues[MUPUseProxy] = @(0);
-  initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
-  initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
   
   initialValues[MUPANSIBlackColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIBlackColor]];
   initialValues[MUPANSIRedColor] = [NSArchiver archivedDataWithRootObject: [NSColor ANSIRedColor]];
@@ -334,11 +339,19 @@
   
   initialValues[MUPDisplayBrightAsBold] = @NO;
   
+  initialValues[MUPPlaySounds] = @YES;
+  initialValues[MUPPlayWhenActive] = @NO;
+  initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
+  initialValues[MUPSoundVolume] = @(1.0);
+  
+  initialValues[MUPUseProxy] = @(0);
+  initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
+  
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   
-  initialValues[MUPWorlds] = @[];
-  initialValues[MUPProfiles] = @[];
-  initialValues[MUPProfilesOutlineViewState] = @[];
+  initialValues[MUPWorlds] = [NSKeyedArchiver archivedDataWithRootObject: [NSMutableArray array]];
+  initialValues[MUPProfiles] = [NSKeyedArchiver archivedDataWithRootObject: [NSMutableDictionary dictionary]];
+  initialValues[MUPProfilesOutlineViewState] = [NSMutableArray array];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
 }
@@ -354,7 +367,7 @@
 
 - (void) _openConnectionWithController: (MUConnectionWindowController *) controller
 {
-  [controller setDelegate: self];
+  controller.delegate = self;
   
   [_connectionWindowControllers addObject: controller];
   [controller showWindow: self];

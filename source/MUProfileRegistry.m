@@ -42,10 +42,10 @@
   
   NSData *profilesData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];
   
-  if (!profilesData)
-    return nil;
-  
-  _mutableProfiles = [NSKeyedUnarchiver unarchiveObjectWithData: profilesData];
+  if (profilesData)
+    _mutableProfiles = [NSKeyedUnarchiver unarchiveObjectWithData: profilesData];
+  else
+    _mutableProfiles = [NSMutableDictionary dictionary];
   
   for (NSString *key in _mutableProfiles.allKeys)
   {

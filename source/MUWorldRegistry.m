@@ -51,10 +51,10 @@
   
   NSData *worldsData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPWorlds];
   
-  if (!worldsData)
-    return nil;
-  
-  _worlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
+  if (worldsData)
+    _worlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
+  else
+    _worlds = [NSMutableArray array];
   
   for (MUTreeNode *topLevelNode in self.worlds)
     [topLevelNode recursivelyUpdateParentsWithParentNode: nil];

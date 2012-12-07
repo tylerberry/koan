@@ -8,10 +8,11 @@
 
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
+#import "MUProfilesWindowController.h"
 
 @class MUPreferencesController;
 
-@interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectPanelControllerDelegate, MUConnectionWindowControllerDelegate>
+@interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectPanelControllerDelegate, MUConnectionWindowControllerDelegate, MUProfilesWindowControllerDelegate>
 {
   IBOutlet NSMenu *openConnectionMenu;
 }

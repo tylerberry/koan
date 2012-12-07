@@ -36,6 +36,7 @@
 - (void) _addNode: (MUTreeNode *) node atIndexPath: (NSIndexPath *) indexPath;
 - (void) _deleteNodeAtIndexPath: (NSIndexPath *) indexPath;
 - (void) _expandProfilesOutlineView;
+- (void) _openConnectionForTreeNode: (MUTreeNode *) treeNode;
 - (void) _populateProfilesFromWorldRegistry;
 - (void) _populateProfilesTree;
 - (void) _saveProfilesOutlineViewState;
@@ -68,6 +69,9 @@
 - (void) awakeFromNib
 {
   [self _registerForNotifications];
+  
+  profilesOutlineView.target = self;
+  profilesOutlineView.doubleAction = @selector (openConnectionForDoubleClickedProfile:);
 }
 
 - (void) dealloc
@@ -215,14 +219,50 @@
   _undoManager.actionName = _(MUUndoAddWorld);
 }
 
+- (IBAction) openConnectionForDoubleClickedProfile: (id) sender
+{
+  NSTreeNode *node = [profilesOutlineView itemAtRow: profilesOutlineView.clickedRow];
+  
+  [self _openConnectionForTreeNode: (MUTreeNode *) node.representedObject];
+}
+
 - (IBAction) openConnectionForSelectedProfile: (id) sender
 {
+  NSArray *selectedObjects = profilesTreeController.selectedObjects;
   
+  if (selectedObjects.count == 0)
+    return;
+  else if (selectedObjects.count > 1)
+  {
+    NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+    return;
+  }
+  
+  [self _openConnectionForTreeNode: (MUTreeNode *) selectedObjects[0]];
 }
 
 - (IBAction) openWebsiteForSelectedProfile: (id) sender
 {
-  return;
+  NSArray *selectedObjects = profilesTreeController.selectedObjects;
+  
+  if (selectedObjects.count == 0)
+    return;
+  else if (selectedObjects.count > 1)
+  {
+    NSLog (@"Warning: Logic error: more than one row selected in profiles outline view.");
+    return;
+  }
+  
+  MUTreeNode *node = (MUTreeNode *) selectedObjects[0];
+  
+  if ([node isKindOfClass: [MUWorld class]])
+    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: ((MUWorld *) node).url]];
+  else if ([node isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) node;
+    MUWorld *world = (MUWorld *) player.parent;
+    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: world.url]];
+  }
 }
 
 - (IBAction) showAddContextMenu: (id) sender
@@ -598,6 +638,19 @@
   
   for (id stateObject in stateArray)
     [profilesOutlineView expandItem: [self outlineView: profilesOutlineView itemForPersistentObject: stateObject]];
+}
+
+- (void) _openConnectionForTreeNode: (MUTreeNode *) treeNode
+{
+  if ([treeNode isKindOfClass: [MUWorld class]])
+    [self.delegate openConnectionForProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: (MUWorld *) treeNode]];
+  else if ([treeNode isKindOfClass: [MUPlayer class]])
+  {
+    MUPlayer *player = (MUPlayer *) treeNode;
+    MUWorld *world = (MUWorld *) player.parent;
+    [self.delegate openConnectionForProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: world
+                                                                                           player: player]];
+  }
 }
 
 - (void) _populateProfilesFromWorldRegistry

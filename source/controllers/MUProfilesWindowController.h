@@ -6,7 +6,17 @@
 
 #import "MUOutlineView.h"
 
+@class MUProfile;
 @class MUProfileContentView;
+
+@protocol MUProfilesWindowControllerDelegate
+
+@required
+- (void) openConnectionForProfile: (MUProfile *) profile;
+
+@end
+
+#pragma mark -
 
 @interface MUProfilesWindowController : NSWindowController <MUOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
 {
@@ -27,11 +37,13 @@
   IBOutlet NSMenu *actionMenu;
 }
 
+@property (weak) NSObject <MUProfilesWindowControllerDelegate> *delegate;
 @property (strong) NSMutableArray *profilesTreeArray;
 
 - (IBAction) addNewPlayer: (id) sender;
 - (IBAction) addNewWorld: (id) sender;
 - (IBAction) openWebsiteForSelectedProfile: (id) sender;
+- (IBAction) openConnectionForDoubleClickedProfile: (id) sender;
 - (IBAction) openConnectionForSelectedProfile: (id) sender;
 - (IBAction) showAddContextMenu: (id) sender;
 - (IBAction) showActionContextMenu: (id) sender;

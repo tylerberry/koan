@@ -33,6 +33,8 @@
   NSUInteger _unreadCount;
   CTBadge *_dockBadge;
   
+  NSSound *_cachedSound;
+  
   NSMutableArray *_connectionWindowControllers;
   MUAcknowledgementsController *_acknowledgementsController;
   MUConnectPanelController *_connectPanelController;
@@ -49,9 +51,14 @@
 - (void) _playNotificationSound;
 - (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
 - (void) _recursivelyConfirmClose: (BOOL) cont;
-- (void) _registerForNotifications;
 - (void) _updateApplicationBadge;
+- (void) _updateCachedSound;
 - (void) _worldsDidChange: (NSNotification *) notification;
+
+#pragma mark - User defaults key path string methods
+
+- (NSString *) _keyPathForSoundChoice;
+- (NSString *) _keyPathForSoundVolume;
 
 @end
 
@@ -75,23 +82,64 @@
 - (void) awakeFromNib
 {
   _connectionWindowControllers = [[NSMutableArray alloc] init];
-  
-  [self _registerForNotifications];
-  
   _dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_worldsDidChange:)
+                                               name: MUWorldsDidChangeNotification
+                                             object: nil];
+  
+  // Initialize the cached sound and observe user defaults for any changes.
+  
+  [self _updateCachedSound];
+  
+  NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  
+  [userDefaultsController addObserver: self
+                           forKeyPath: [self _keyPathForSoundChoice]
+                              options: NSKeyValueObservingOptionNew
+                              context: NULL];
+  
+  [userDefaultsController addObserver: self
+                           forKeyPath: [self _keyPathForSoundVolume]
+                              options: NSKeyValueObservingOptionNew
+                              context: NULL];
 }
 
 - (void) dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
+  
+  NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+  
+  [userDefaultsController removeObserver: self forKeyPath: [self _keyPathForSoundChoice]];
+  [userDefaultsController removeObserver: self forKeyPath: [self _keyPathForSoundVolume]];
+}
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) changeDictionary
+                        context: (void *) context
+{
+  if (object == [NSUserDefaultsController sharedUserDefaultsController])
+  {
+    if ([keyPath isEqualToString: [self _keyPathForSoundChoice]]
+        || [keyPath isEqualToString: [self _keyPathForSoundVolume]])
+    {
+      [self _updateCachedSound];
+      return;
+    }
+  }
+  
+  return [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
 }
 
 #pragma mark - Actions
 
 - (IBAction) chooseNewFont: (id) sender
 {
-  NSDictionary *values = [[NSUserDefaultsController sharedUserDefaultsController] values];
-  NSFont *font = [NSUnarchiver unarchiveObjectWithData: [values valueForKey: MUPFont]];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSFont *font = [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPFont]];
   
   if (!font)
     font = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
@@ -376,17 +424,7 @@
 
 - (void) _playNotificationSound
 {
-  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  NSURL *soundURL = [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]];
-
-  if (soundURL)
-  {
-    NSSound *sound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
-    
-    sound.volume = [userDefaults floatForKey: MUPSoundVolume];
-    
-    [sound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
-  }
+  [_cachedSound performSelectorOnMainThread: @selector (play) withObject: nil waitUntilDone: NO];
 }
 
 - (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect
@@ -484,14 +522,6 @@
   [NSApp replyToApplicationShouldTerminate: cont];
 }
 
-- (void) _registerForNotifications
-{
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector (_worldsDidChange:)
-                                               name: MUWorldsDidChangeNotification
-                                             object: nil];
-}
-
 - (BOOL) _shouldPlayNotificationSound
 {
   return ([[NSUserDefaults standardUserDefaults] boolForKey: MUPPlaySounds]
@@ -506,9 +536,43 @@
     [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: 0.0 y: 0.0];
 }
 
+- (void) _updateCachedSound
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSURL *soundURL = [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]];
+  
+  if (soundURL)
+  {
+    _cachedSound = [[NSSound alloc] initWithContentsOfURL: soundURL byReference: YES];
+    _cachedSound.volume = [userDefaults floatForKey: MUPSoundVolume];
+  }
+}
+
 - (void) _worldsDidChange: (NSNotification *) notification
 {
   [self _rebuildConnectionsMenuWithAutoconnect: NO];
+}
+
+#pragma mark - User defaults key path string methods
+
+- (NSString *) _keyPathForSoundChoice
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPSoundChoice]; });
+  
+  return keyPath;
+}
+
+- (NSString *) _keyPathForSoundVolume
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+  
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPSoundVolume]; });
+  
+  return keyPath;
 }
 
 @end

@@ -170,6 +170,11 @@ enum MUAbstractANSIColors
   if ([inputView.enclosingScrollView respondsToSelector: @selector (setScrollerKnobStyle:)])
     [inputView.enclosingScrollView setScrollerKnobStyle: NSScrollerKnobStyleLight];
   
+  // And we can also enable fullscreen.
+  
+  if ([self.window respondsToSelector: @selector (setCollectionBehavior:)])
+    [self.window setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+  
   // Set the initial link text color.
   
   [self _updateLinkTextColor];

@@ -28,8 +28,8 @@
 
 - (IBAction) chooseNewFont: (id) sender
 {
-  NSData *defaultFontData = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey: MUPFont];
-  NSFont *defaultFont = [NSUnarchiver unarchiveObjectWithData: defaultFontData];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSFont *defaultFont = [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPFont]];
   
   if (defaultFont == nil)
   {
@@ -56,8 +56,8 @@
   
   NSFont *panelFont = [fontManager convertFont: selectedFont];
   
-  id currentPrefsValues = [[NSUserDefaultsController sharedUserDefaultsController] values];
-  [currentPrefsValues setValue: [NSArchiver archivedDataWithRootObject: panelFont] forKey: MUPFont];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject: [NSArchiver archivedDataWithRootObject: panelFont] forKey: MUPFont];
 }
 
 @end

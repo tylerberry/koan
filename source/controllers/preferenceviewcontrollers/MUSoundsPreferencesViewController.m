@@ -60,12 +60,9 @@
   
   if ([openPanel runModal] == NSOKButton)
   {
-    NSArray *selectedURLs = [openPanel URLs];
-    NSURL *selectedURL = selectedURLs[0]; // Guaranteed to be only one since we disallowed multiples.
+    NSURL *selectedURL = openPanel.URLs[0]; // Guaranteed to be only one since we disallowed multiples.
     
-    NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-    
-    [sharedUserDefaultsController.values setValue: selectedURL.absoluteString forKey: MUPSoundChoice];
+    [[NSUserDefaults standardUserDefaults] setObject: selectedURL.absoluteString forKey: MUPSoundChoice];
     
     if (_isUsingUserSelectedSound)
     {
@@ -131,8 +128,7 @@
     }
   }
   
-  NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-  NSURL *currentSoundURL = [NSURL URLWithString: [sharedUserDefaultsController.values valueForKey: MUPSoundChoice]];
+  NSURL *currentSoundURL = [NSURL URLWithString: [[NSUserDefaults standardUserDefaults] stringForKey: MUPSoundChoice]];
   NSMenu *newMenu = [[NSMenu alloc] init];
   NSMenuItem *itemToSelect = nil;
   
@@ -195,9 +191,7 @@
   
   [self _playSoundAtURL: representedURL];
   
-  NSUserDefaultsController *sharedUserDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-  
-  [sharedUserDefaultsController.values setValue: representedURL.absoluteString forKey: MUPSoundChoice];
+  [[NSUserDefaults standardUserDefaults] setObject: representedURL.absoluteString forKey: MUPSoundChoice];
   _selectedMenuItem = soundsPopUpButton.selectedItem;
   
   if (_isUsingUserSelectedSound) // Remove the top user-selected sound menu item if it exists.

@@ -197,9 +197,8 @@ static const int32_t currentProfileVersion = 4;
   	return self.backgroundColor;
   else
   {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	
-  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPBackgroundColor]];
+  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPBackgroundColor]];
   }
 }
 
@@ -209,8 +208,8 @@ static const int32_t currentProfileVersion = 4;
   	return self.font;
   else
   {
-    NSData *defaultFontData = [[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey: MUPFont];
-  	return [NSUnarchiver unarchiveObjectWithData: defaultFontData];
+  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPFont]];
   }
 }
 
@@ -220,9 +219,8 @@ static const int32_t currentProfileVersion = 4;
   	return self.linkColor;
   else
   {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	
-  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPLinkColor]];
+  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPLinkColor]];
   }
 }
 
@@ -232,9 +230,8 @@ static const int32_t currentProfileVersion = 4;
   	return self.systemTextColor;
   else
   {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	
-  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPSystemTextColor]];
+  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPSystemTextColor]];
   }
 }
 
@@ -244,9 +241,8 @@ static const int32_t currentProfileVersion = 4;
   	return self.textColor;
   else
   {
-  	NSUserDefaultsController *defaults = [NSUserDefaultsController sharedUserDefaultsController];
-  	
-  	return [NSUnarchiver unarchiveObjectWithData: [defaults.values valueForKey: MUPTextColor]];
+  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPTextColor]];
   }
 }
 

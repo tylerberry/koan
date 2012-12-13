@@ -9,9 +9,6 @@
 
 #import "MUProfile.h"
 
-// All of the below codes are supported except for italics and strike. I am merely documenting them here for
-// completeness.  They are not implemented because my survey of mushes indicates that they are not used.
-
 typedef enum MUANSICode
 {
   MUANSIReset = 0,

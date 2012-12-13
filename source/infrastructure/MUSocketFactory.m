@@ -31,12 +31,11 @@
 
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port
 {
-  NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-  NSNumber *useProxyNumber = [userDefaultsController.values valueForKey: MUPUseProxy];
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
   
-  if (useProxyNumber.integerValue == 2)
+  if ([userDefaults integerForKey: MUPUseProxy] == 2)
   {
-    NSData *proxySettingsData = [userDefaultsController.values valueForKey: MUPProxySettings];
+    NSData *proxySettingsData = [userDefaults dataForKey: MUPProxySettings];
     return [MUProxySocket socketWithHostname: hostname
                                         port: port
                                proxySettings: [NSKeyedUnarchiver unarchiveObjectWithData: proxySettingsData]];

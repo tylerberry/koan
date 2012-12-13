@@ -39,9 +39,13 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
              fromLocation: (NSUInteger) startLocation;
 
 - (void) _resetBackgroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) _resetBlinkInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) _resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) _resetHiddenTextInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) _resetInverseInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) _resetItalicInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
+- (void) _resetStrikethroughInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 - (void) _resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation;
 
 - (void) _setAttribute: (NSString *) attribute
@@ -375,6 +379,11 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
     [self _removeAttribute: NSBackgroundColorAttributeName inString: string fromLocation: startLocation];
 }
 
+- (void) _resetBlinkInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+{
+  return;
+}
+
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   [self _removeAttribute: MUBoldFontAttributeName inString: string fromLocation: startLocation];
@@ -451,6 +460,11 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
          fromLocation: startLocation];
 }
 
+- (void) _resetHiddenTextInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+{
+  return;
+}
+
 - (void) _resetInverseInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
   if (_currentAttributes[MUInverseColorsAttributeName])
@@ -472,6 +486,16 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
                  inString: string
              fromLocation: startLocation];
   }
+}
+
+- (void) _resetItalicInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+{
+  return;
+}
+
+- (void) _resetStrikethroughInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
+{
+  [self _removeAttribute: NSStrikethroughStyleAttributeName inString: string fromLocation: startLocation];
 }
 
 - (void) _resetUnderlineInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -750,24 +774,35 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
     {
       case MUANSIReset:
         [self _resetInverseInString: string fromLocation: startLocation];
+        [self _resetHiddenTextInString: string fromLocation: startLocation];
         [self _resetBoldInString: string fromLocation: startLocation];
+        [self _resetItalicInString: string fromLocation: startLocation];
         [self _resetForegroundInString: string fromLocation: startLocation];
         [self _resetBackgroundInString: string fromLocation: startLocation];
         [self _resetUnderlineInString: string fromLocation: startLocation];
+        [self _resetStrikethroughInString: string fromLocation: startLocation];
+        [self _resetBlinkInString: string fromLocation: startLocation];
         break;
         
       case MUANSIBoldOn:
         [self _setBoldInString: string fromLocation: startLocation];
         break;
         
+      case MUANSIItalicsOn:
+        break;
+        
       case MUANSIUnderlineOn:
-      {
         [self _setAttribute: NSUnderlineStyleAttributeName
-                    toValue: @(NSUnderlineStyleSingle)
+                    toValue: @(NSUnderlinePatternSolid | NSUnderlineStyleSingle)
                    inString: string
                fromLocation: startLocation];
         break;
-      }
+        
+      case MUANSISlowBlinkOn:
+        break;
+        
+      case MUANSIRapidBlinkOn:
+        break;
         
       case MUANSIInverseOn:
       {
@@ -789,17 +824,41 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         break;
       }
         
+      case MUANSIHiddenTextOn:
+        break;
+        
+      case MUANSIStrikethroughOn:
+      {
+        [self _setAttribute: NSStrikethroughStyleAttributeName
+                    toValue: @(NSUnderlinePatternSolid | NSUnderlineStyleSingle)
+                   inString: string
+               fromLocation: startLocation];
+        break;
+      }
+        
       case MUANSIBoldOff:
         [self _resetBoldInString: string fromLocation: startLocation];
         break;
+        
+      case MUANSIItalicsOff:
+        [self _resetItalicInString: string fromLocation: startLocation];
         
       case MUANSIUnderlineOff:
         [self _resetUnderlineInString: string fromLocation: startLocation];
         break;
         
+      case MUANSIBlinkOff:
+        [self _resetBlinkInString: string fromLocation: startLocation];
+        
       case MUANSIInverseOff:
         [self _resetInverseInString: string fromLocation: startLocation];
         break;
+        
+      case MUANSIHiddenTextOff:
+        [self _resetHiddenTextInString: string fromLocation: startLocation];
+        
+      case MUANSIStrikethroughOff:
+        [self _resetStrikethroughInString: string fromLocation: startLocation];
         
       case MUANSIForegroundBlack:
       {

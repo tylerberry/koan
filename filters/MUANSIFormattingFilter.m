@@ -67,6 +67,8 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
               customColorTag: (enum MUCustomColorTags) customColorTag
                     inString: (NSMutableAttributedString *) string
                 fromLocation: (NSUInteger) startLocation;
+- (void) _setItalicInString: (NSMutableAttributedString *) string
+               fromLocation: (NSUInteger) startLocation;
 
 @end
 
@@ -386,64 +388,67 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  [self _removeAttribute: MUBoldFontAttributeName inString: string fromLocation: startLocation];
-  
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  
-  if ([defaults boolForKey: MUPDisplayBrightAsBold])
+  if (_currentAttributes[MUBoldFontAttributeName])
   {
-    [self _setAttribute: NSFontAttributeName
-                toValue: [_currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: _profile.effectiveFont]
+    [self _removeAttribute: MUBoldFontAttributeName inString: string fromLocation: startLocation];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey: MUPDisplayBrightAsBold])
+    {
+      [self _setAttribute: NSFontAttributeName
+                  toValue: [_currentAttributes[NSFontAttributeName] unboldFontWithRespectTo: _profile.effectiveFont]
+                 inString: string
+             fromLocation: startLocation];
+    }
+    
+    NSColor *targetColor;
+    
+    switch ([_currentAttributes[MUCustomForegroundColorAttributeName] intValue])
+    {
+      case MUANSIBlackColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlackColor]];
+        break;
+        
+      case MUANSIRedColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIRedColor]];
+        break;
+        
+      case MUANSIGreenColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIGreenColor]];
+        break;
+        
+      case MUANSIYellowColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIYellowColor]];
+        break;
+        
+      case MUANSIBlueColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlueColor]];
+        break;
+        
+      case MUANSIMagentaColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIMagentaColor]];
+        break;
+        
+      case MUANSICyanColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSICyanColor]];
+        break;
+        
+      case MUANSIWhiteColorTag:
+        targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIWhiteColor]];
+        break;
+        
+      default:
+        return;
+    }
+    
+    [self _setAttribute: (_currentAttributes[MUInverseColorsAttributeName]
+                          ? NSBackgroundColorAttributeName
+                          : NSForegroundColorAttributeName)
+                toValue: targetColor
                inString: string
            fromLocation: startLocation];
   }
-  
-  NSColor *targetColor;
-  
-  switch ([_currentAttributes[MUCustomForegroundColorAttributeName] intValue])
-  {
-    case MUANSIBlackColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlackColor]];
-      break;
-      
-    case MUANSIRedColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIRedColor]];
-      break;
-      
-    case MUANSIGreenColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIGreenColor]];
-      break;
-      
-    case MUANSIYellowColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIYellowColor]];
-      break;
-      
-    case MUANSIBlueColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlueColor]];
-      break;
-      
-    case MUANSIMagentaColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIMagentaColor]];
-      break;
-      
-    case MUANSICyanColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSICyanColor]];
-      break;
-      
-    case MUANSIWhiteColorTag:
-      targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIWhiteColor]];
-      break;
-      
-    default:
-      return;
-  }
-  
-  [self _setAttribute: (_currentAttributes[MUInverseColorsAttributeName]
-                        ? NSBackgroundColorAttributeName
-                        : NSForegroundColorAttributeName)
-              toValue: targetColor
-             inString: string
-         fromLocation: startLocation];
 }
 
 - (void) _resetForegroundInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -490,7 +495,15 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 - (void) _resetItalicInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  return;
+  if (_currentAttributes[MUItalicFontAttributeName])
+  {
+    [self _removeAttribute: MUItalicFontAttributeName inString: string fromLocation: startLocation];
+    
+    [self _setAttribute: NSFontAttributeName
+                toValue: [_currentAttributes[NSFontAttributeName] unitalicFontWithRespectTo: _profile.effectiveFont]
+               inString: string
+           fromLocation: startLocation];
+  }
 }
 
 - (void) _resetStrikethroughInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -789,6 +802,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         break;
         
       case MUANSIItalicsOn:
+        [self _setItalicInString: string fromLocation: startLocation];
         break;
         
       case MUANSIUnderlineOn:
@@ -1131,7 +1145,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
          fromLocation: startLocation];
   }
   
-  NSColor *targetColor;
+  NSColor *targetColor = nil;
   
   switch ([_currentAttributes[MUCustomForegroundColorAttributeName] intValue])
   {
@@ -1166,17 +1180,17 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
     case MUANSIWhiteColorTag:
       targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
       break;
-      
-    default:
-      return;
   }
   
-  [self _setAttribute: (_currentAttributes[MUInverseColorsAttributeName]
-                        ? NSBackgroundColorAttributeName
-                        : NSForegroundColorAttributeName)
-              toValue: targetColor
-             inString: string
-         fromLocation: startLocation];
+  if (targetColor)
+  {
+    [self _setAttribute: (_currentAttributes[MUInverseColorsAttributeName]
+                          ? NSBackgroundColorAttributeName
+                          : NSForegroundColorAttributeName)
+                toValue: targetColor
+               inString: string
+           fromLocation: startLocation];
+  }
 }
 
 - (void) _setForegroundColor: (NSColor *) color
@@ -1193,6 +1207,17 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
                         ? NSBackgroundColorAttributeName
                         : NSForegroundColorAttributeName)
               toValue: color
+             inString: string
+         fromLocation: startLocation];
+}
+
+- (void) _setItalicInString: (NSMutableAttributedString *) string
+               fromLocation: (NSUInteger) startLocation
+{
+  [self _setAttribute: MUItalicFontAttributeName toValue: @YES inString: string fromLocation: startLocation];
+  
+  [self _setAttribute: NSFontAttributeName
+              toValue: [_currentAttributes[NSFontAttributeName] italicFontWithRespectTo: _profile.effectiveFont]
              inString: string
          fromLocation: startLocation];
 }

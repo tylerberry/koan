@@ -17,6 +17,11 @@
 @property (readonly) NSString *description;
 @property (readonly) BOOL hasAuthentication;
 
-+ (id) proxySettings;
++ (BOOL) isSystemSOCKSProxyEnabled;
+
++ (MUProxySettings *) systemSOCKSProxySettings;
++ (MUProxySettings *) proxySettings;
+
+- (id) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort;
 
 @end

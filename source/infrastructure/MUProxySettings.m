@@ -6,29 +6,84 @@
 
 #import "MUProxySettings.h"
 
+#import <SystemConfiguration/SystemConfiguration.h>
+
 static const int32_t currentProxyVersion = 3;
 
 @implementation MUProxySettings
 
 @dynamic description, hasAuthentication;
 
-+ (id) proxySettings
++ (BOOL) isSystemSOCKSProxyEnabled
+{
+  CFDictionaryRef proxySettings = SCDynamicStoreCopyProxies (NULL);
+  
+  if (!proxySettings)
+    return NO;
+  
+  NSNumber *systemSOCKSProxyEnabled = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSEnable);
+  
+  if ([systemSOCKSProxyEnabled integerValue] == 1)
+  {
+    CFRelease (proxySettings);
+    return YES;
+  }
+  else
+  {
+    CFRelease (proxySettings);
+    return NO;
+  }
+}
+
++ (MUProxySettings *) systemSOCKSProxySettings
+{
+  CFDictionaryRef proxySettings = SCDynamicStoreCopyProxies (NULL);
+  
+  if (!proxySettings)
+    return nil;
+  
+  NSNumber *systemSOCKSProxyEnabled = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSEnable);
+  
+  if ([systemSOCKSProxyEnabled integerValue] == 1)
+  {
+    NSString *systemSOCKSProxyHostname = (NSString *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSProxy);
+    NSNumber *systemSOCKSProxyPort = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSPort);
+  
+    MUProxySettings *systemSOCKSProxySettings = [[self alloc] initWithHostname: systemSOCKSProxyHostname
+                                                                          port: systemSOCKSProxyPort];
+    
+    CFRelease (proxySettings);
+    return systemSOCKSProxySettings;
+  }
+  else
+  {
+    CFRelease (proxySettings);
+    return nil;
+  }
+}
+
++ (MUProxySettings *) proxySettings
 {
   return [[self alloc] init];
 }
 
-- (id) init
+- (id) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort
 {
   if (!(self = [super init]))
     return nil;
   
-  _hostname = @"";
-  _port = @1080;
+  _hostname = [newHostname copy];
+  _port = [newPort copy];
   _requiresAuthentication = NO;
   _username = @"";
   _password = @"";
   
   return self;
+}
+
+- (id) init
+{
+  return [self initWithHostname: @"" port: @1080];
 }
 
 - (NSString *) description
@@ -45,13 +100,11 @@ static const int32_t currentProxyVersion = 3;
 
 - (id) initWithCoder: (NSCoder *) coder
 {
-  if (!(self = [super init]))
-    return nil;
-  
   int32_t version = [coder decodeInt32ForKey: @"version"];
   
-  _hostname = [coder decodeObjectForKey: @"hostname"];
-  _port = [coder decodeObjectForKey: @"port"];
+  if (!(self = [self initWithHostname: [coder decodeObjectForKey: @"hostname"]
+                                 port: [coder decodeObjectForKey: @"port"]]))
+    return nil;
   
   if (version >= 2)
   {

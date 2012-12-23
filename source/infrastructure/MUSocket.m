@@ -51,7 +51,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   [self socketError: message];
 }
 
-+ (void) socketErrorWithErrnoForFunction: (NSString *) functionName;
++ (void) socketErrorWithErrnoForFunction: (NSString *) functionName
 {
   [MUSocketException socketError: [NSString stringWithFormat: @"%@: %s", functionName, strerror (errno)]];
 }

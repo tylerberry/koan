@@ -38,11 +38,6 @@
 //
 
 @interface ATImageTextCell : NSTextFieldCell
-{
-@private
-  // Our cell delegates some drawing and other operations to subcells
-  NSImageCell *_imageCell;
-}
 
 @property (retain) NSImage *image;
 

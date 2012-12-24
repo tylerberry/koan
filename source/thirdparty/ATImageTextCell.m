@@ -51,6 +51,9 @@
 #pragma mark -
 
 @interface ATImageTextCell ()
+{
+  NSImageCell *_imageCell;
+}
 
 - (NSRect) _imageFrameForInteriorFrame: (NSRect) frame;
 - (NSRect) _titleFrameForInteriorFrame: (NSRect) frame;

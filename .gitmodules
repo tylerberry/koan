@@ -16,3 +16,9 @@
 [submodule "source/thirdparty/PLWeakCompatibility"]
 	path = source/thirdparty/PLWeakCompatibility
 	url = git://github.com/plausiblelabs/PLWeakCompatibility.git
+[submodule "source/thirdparty/AutoHyperlinks"]
+	path = source/thirdparty/AutoHyperlinks
+	url = git://github.com/ByteProject/AutoHyperlinks.framework.git
+[submodule "source/thirdparty/SSKeychain"]
+	path = source/thirdparty/SSKeychain
+	url = https://github.com/soffes/sskeychain

@@ -24,21 +24,19 @@
 
 @property (readonly) unsigned bytesPending;
 
-- (void) cleanUpStream;
-- (void) decompressInbuf;
-- (void) decompressAfterClearingOutbuf;
-- (void) log: (NSString *) message, ...;
-- (void) maybeGrowInbuf: (unsigned) size;
-- (void) maybeGrowOutbuf: (unsigned) size;
-- (BOOL) initializeStream;
+- (void) _cleanUpStream;
+- (void) _decompress;
+- (BOOL) _initializeStream;
+- (void) _log: (NSString *) message, ...;
+- (void) _maybeGrowInbuf: (unsigned) size;
+- (void) _maybeGrowOutbuf: (unsigned) size;
+- (void) _processOutbuf;
 
 @end
 
 #pragma mark -
 
 @implementation MUMCCPProtocolHandler
-
-@synthesize delegate;
 
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
@@ -60,7 +58,7 @@
 
 - (void) dealloc
 {
-  [self cleanUpStream];
+  [self _cleanUpStream];
   if (inbuf) free (inbuf);
   if (outbuf) free (outbuf);
 }
@@ -77,10 +75,10 @@
   
   if (!stream)
   {
-    if ([self initializeStream])
+    if ([self _initializeStream])
     {
-      [self log: @"    MCCP: Decompression of incoming data started."];
-      [self maybeGrowOutbuf: 2048];
+      [self _log: @"    MCCP: Decompression of incoming data started."];
+      [self _maybeGrowOutbuf: 2048];
     }
     else
     {
@@ -89,14 +87,17 @@
     }
   }
   
-  [self maybeGrowInbuf: 1];
+  [self _maybeGrowInbuf: 1];
   memcpy (inbuf + insize, &byte, 1);
   insize += 1;
   
-  [self decompressInbuf];
+  [self _decompress];
   
   while (self.bytesPending)
-    [self decompressAfterClearingOutbuf];
+  {
+    [self _processOutbuf];
+    [self _decompress];
+  }
 }
 
 #pragma mark - Private methods
@@ -108,7 +109,7 @@
   return outsize;
 }
 
-- (void) cleanUpStream
+- (void) _cleanUpStream
 {
   if (stream)
   {
@@ -118,20 +119,7 @@
   }
 }
 
-- (void) decompressAfterClearingOutbuf
-{
-  if (!outsize)
-    return;
-  
-  for (unsigned i = 0; i < outsize; i++)
-    PASS_ON_PARSED_BYTE (outbuf[i]);
-  
-  outsize = 0;
-  
-  [self decompressInbuf];
-}
-
-- (void) decompressInbuf
+- (void) _decompress
 {
   if (!insize)
     return;
@@ -151,15 +139,15 @@
     
     if (status == Z_STREAM_END)
     {
-      [self maybeGrowOutbuf: insize];
+      [self _maybeGrowOutbuf: insize];
       
       // Anything left in inbuf is uncompressed data.
       memcpy (outbuf + outsize, inbuf, insize);
       outsize += insize;
       insize = 0;
       
-      [self cleanUpStream];
-      [self log: @"    MCCP: Decompression of incoming data ended."];
+      [self _cleanUpStream];
+      [self _log: @"    MCCP: Decompression of incoming data ended."];
       connectionState.isIncomingStreamCompressed = NO;
     }
     
@@ -170,8 +158,8 @@
   {
     if (outsize * 2 > outalloc)
     {
-      [self maybeGrowOutbuf: outalloc];
-      [self decompressInbuf];
+      [self _maybeGrowOutbuf: outalloc];
+      [self _decompress];
     }
     
     return;
@@ -181,7 +169,7 @@
   // FIXME: This is a fatal error.
 }
 
-- (BOOL) initializeStream
+- (BOOL) _initializeStream
 {
   stream = (z_stream *) malloc (sizeof (z_stream));
   stream->zalloc = Z_NULL;
@@ -201,7 +189,7 @@
   return YES;
 }
 
-- (void) log: (NSString *) message, ...
+- (void) _log: (NSString *) message, ...
 {
   va_list args;
   va_start (args, message);
@@ -211,7 +199,7 @@
   va_end (args);
 }
 
-- (void) maybeGrowOutbuf: (unsigned) bytes
+- (void) _maybeGrowOutbuf: (unsigned) bytes
 {
   if (outbuf == NULL)
   {
@@ -230,7 +218,7 @@
   }
 }
 
-- (void) maybeGrowInbuf: (unsigned) bytes
+- (void) _maybeGrowInbuf: (unsigned) bytes
 {
   if (inbuf == NULL)
   {
@@ -247,6 +235,17 @@
     if (old != inalloc)
       inbuf = realloc (inbuf, inalloc);
   }
+}
+
+- (void) _processOutbuf
+{
+  if (!outsize)
+    return;
+  
+  for (unsigned i = 0; i < outsize; i++)
+    PASS_ON_PARSED_BYTE (outbuf[i]);
+  
+  outsize = 0;
 }
 
 @end

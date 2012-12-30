@@ -24,14 +24,12 @@
 #import "MUWorld.h"
 #import "MUWorldRegistry.h"
 
-#import "CTBadge.h"
 #import "JRSwizzle.h"
 #import "MASPreferencesWindowController.h"
 
 @interface MUApplicationController ()
 {
   NSUInteger _unreadCount;
-  CTBadge *_dockBadge;
   
   NSSound *_cachedSound;
   
@@ -82,7 +80,6 @@
 - (void) awakeFromNib
 {
   _connectionWindowControllers = [[NSMutableArray alloc] init];
-  _dockBadge = [CTBadge badgeWithColor: [NSColor blueColor] labelColor: [NSColor whiteColor]];
   
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (_worldsDidChange:)
@@ -531,9 +528,9 @@
 - (void) _updateApplicationBadge
 {
   if (_unreadCount == 0)
-    [NSApp setApplicationIconImage: nil];
+    [NSApp dockTile].badgeLabel = nil;
   else
-    [_dockBadge badgeApplicationDockIconWithValue: _unreadCount insetX: 0.0 y: 0.0];
+    [NSApp dockTile].badgeLabel = [NSString stringWithFormat: @"%lu", _unreadCount];
 }
 
 - (void) _updateCachedSound

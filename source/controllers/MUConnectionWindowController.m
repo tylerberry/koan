@@ -852,6 +852,12 @@ enum MUAbstractANSIColors
 
 #pragma mark - NSWindowDelegate protocol
 
+- (NSApplicationPresentationOptions) window: (NSWindow *) window
+       willUseFullScreenPresentationOptions: (NSApplicationPresentationOptions) proposedOptions
+{
+  return proposedOptions | NSApplicationPresentationAutoHideToolbar;
+}
+
 - (void) windowDidResize: (NSNotification *) notification
 {
   [self prepareDelayedReportWindowSizeToServer];
@@ -870,6 +876,26 @@ enum MUAbstractANSIColors
     
   	[self postConnectionWindowControllerWillCloseNotification];
   }
+}
+
+- (void) windowWillEnterFullScreen: (NSNotification *) notification
+{
+  [self.window setContentBorderThickness: 0.0 forEdge: NSMinYEdge];
+
+  [timeConnectedField setHidden: YES];
+  
+  splitView.frame = NSMakeRect (splitView.frame.origin.x, 0.0,
+                                splitView.frame.size.width, splitView.frame.size.height + 22.0);
+}
+
+- (void) windowWillExitFullScreen: (NSNotification *) notification
+{
+  [self.window setContentBorderThickness: 22.0 forEdge: NSMinYEdge];
+  
+  [timeConnectedField setHidden: NO];
+  
+  splitView.frame = NSMakeRect (splitView.frame.origin.x, 22.0,
+                                splitView.frame.size.width, splitView.frame.size.height - 22.0);
 }
 
 #pragma mark - Private methods

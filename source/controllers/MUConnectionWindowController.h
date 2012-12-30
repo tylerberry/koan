@@ -28,6 +28,8 @@
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;
   IBOutlet NSSplitView *splitView;
+  
+  IBOutlet NSTextField *timeConnectedField;
 }
 
 @property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;

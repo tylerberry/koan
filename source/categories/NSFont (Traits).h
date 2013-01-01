@@ -1,7 +1,7 @@
 //
 // NSFont (Traits).h
 //
-// Copyright (c) 2012 3James Software.
+// Copyright (c) 2013 3James Software.
 //
 // License:
 // 

@@ -34,7 +34,7 @@
 //   APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // Modifications by Tyler Berry.
-// Copyright (c) 2012 3James Software.
+// Copyright (c) 2013 3James Software.
 //
 // Notes:
 //

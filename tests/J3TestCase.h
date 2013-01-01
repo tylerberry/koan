@@ -1,6 +1,6 @@
 //
 // Copyright (c) 2005 Samuel Tesla
-// Copyright (c) 2012 Tyler Berry
+// Copyright (c) 2013 Tyler Berry
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License

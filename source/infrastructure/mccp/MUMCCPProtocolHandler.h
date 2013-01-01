@@ -9,26 +9,19 @@
 #import "MUProtocolHandler.h"
 #import "MUMUDConnectionState.h"
 
-typedef struct z_stream_s z_stream;
+@protocol MUMCCPProtocolHandlerDelegate
 
-@protocol MUMCCPProtocolHandlerDelegate;
-
-@interface MUMCCPProtocolHandler : MUProtocolHandler
-{
-  MUMUDConnectionState *connectionState;
-}
-
-@property (weak) NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
-
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (void) log: (NSString *) message arguments: (va_list) args;
 
 @end
 
 #pragma mark -
 
-@protocol MUMCCPProtocolHandlerDelegate
+@interface MUMCCPProtocolHandler : MUProtocolHandler
 
-- (void) log: (NSString *) message arguments: (va_list) args;
+@property (weak) NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
+
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState;
+- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState;
 
 @end

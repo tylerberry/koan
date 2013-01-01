@@ -10,19 +10,21 @@
 #include <zlib.h>
 
 @interface MUMCCPProtocolHandler ()
-{  
-  z_stream *stream;
+{
+  MUMUDConnectionState *_connectionState;
   
-  uint8_t *inbuf;
-  unsigned inalloc;
-  unsigned insize;
+  struct z_stream_s *_stream;
   
-  uint8_t *outbuf;
-  unsigned outalloc;
-  unsigned outsize;
+  uint8_t *_inbuf;
+  unsigned _inalloc;
+  unsigned _insize;
+  
+  uint8_t *_outbuf;
+  unsigned _outalloc;
+  unsigned _outsize;
 }
 
-@property (readonly) unsigned bytesPending;
+@property (readonly) size_t bytesPending;
 
 - (void) _cleanUpStream;
 - (void) _decompress;
@@ -38,20 +40,26 @@
 
 @implementation MUMCCPProtocolHandler
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState
 {
-  return [[self alloc] initWithConnectionState: telnetConnectionState];
+  return [[self alloc] initWithConnectionState: connectionState];
 }
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
   
-  connectionState = telnetConnectionState;
-  stream = NULL;
-  insize = 0;
-  outsize = 0;
+  _connectionState = connectionState;
+  _stream = NULL;
+  
+  _inbuf = NULL;
+  _inalloc = 0;
+  _insize = 0;
+  
+  _outbuf = NULL;
+  _outalloc = 0;
+  _outsize = 0;
   
   return self;
 }
@@ -59,21 +67,21 @@
 - (void) dealloc
 {
   [self _cleanUpStream];
-  if (inbuf) free (inbuf);
-  if (outbuf) free (outbuf);
+  if (_inbuf) free (_inbuf);
+  if (_outbuf) free (_outbuf);
 }
 
 #pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
-  if (!connectionState.isIncomingStreamCompressed)
+  if (!_connectionState.isIncomingStreamCompressed)
   {
     PASS_ON_PARSED_BYTE (byte);
     return;
   }
   
-  if (!stream)
+  if (!_stream)
   {
     if ([self _initializeStream])
     {
@@ -88,8 +96,8 @@
   }
   
   [self _maybeGrowInbuf: 1];
-  memcpy (inbuf + insize, &byte, 1);
-  insize += 1;
+  memcpy (_inbuf + _insize, &byte, 1);
+  _insize++;
   
   [self _decompress];
   
@@ -104,51 +112,51 @@
 
 @dynamic bytesPending;
 
-- (unsigned) bytesPending
+- (size_t) bytesPending
 {
-  return outsize;
+  return _outsize;
 }
 
 - (void) _cleanUpStream
 {
-  if (stream)
+  if (_stream)
   {
-    inflateEnd (stream);
-    free (stream);
-    stream = NULL;
+    inflateEnd (_stream);
+    free (_stream);
+    _stream = NULL;
   }
 }
 
 - (void) _decompress
 {
-  if (!insize)
+  if (_insize == 0)
     return;
   
-  stream->next_in = inbuf;
-  stream->next_out = outbuf + outsize;
-  stream->avail_in = insize;
-  stream->avail_out = outalloc - outsize;
+  _stream->next_in = _inbuf;
+  _stream->next_out = _outbuf + _outsize;
+  _stream->avail_in = _insize;
+  _stream->avail_out = _outalloc - _outsize;
   
-  int status = inflate (stream, Z_PARTIAL_FLUSH);
+  int status = inflate (_stream, Z_PARTIAL_FLUSH);
   
   if (status == Z_OK || status == Z_STREAM_END)
   {
-    memmove (inbuf, stream->next_in, stream->avail_in);
-    insize = stream->avail_in;
-    outsize = (unsigned) (stream->next_out - outbuf);
+    memmove (_inbuf, _stream->next_in, _stream->avail_in);
+    _insize = _stream->avail_in;
+    _outsize = (unsigned) (_stream->next_out - _outbuf);
     
     if (status == Z_STREAM_END)
     {
-      [self _maybeGrowOutbuf: insize];
+      [self _maybeGrowOutbuf: _insize];
       
       // Anything left in inbuf is uncompressed data.
-      memcpy (outbuf + outsize, inbuf, insize);
-      outsize += insize;
-      insize = 0;
+      memcpy (_outbuf + _outsize, _inbuf, _insize);
+      _outsize += _insize;
+      _insize = 0;
       
       [self _cleanUpStream];
       [self _log: @"    MCCP: Decompression of incoming data ended."];
-      connectionState.isIncomingStreamCompressed = NO;
+      _connectionState.isIncomingStreamCompressed = NO;
     }
     
     return;
@@ -156,12 +164,11 @@
   
   if (status == Z_BUF_ERROR)
   {
-    if (outsize * 2 > outalloc)
+    if (_outsize * 2 > _outalloc)
     {
-      [self _maybeGrowOutbuf: outalloc];
+      [self _maybeGrowOutbuf: _outalloc];
       [self _decompress];
     }
-    
     return;
   }
   
@@ -171,18 +178,18 @@
 
 - (BOOL) _initializeStream
 {
-  stream = (z_stream *) malloc (sizeof (z_stream));
-  stream->zalloc = Z_NULL;
-  stream->zfree = Z_NULL;
-  stream->opaque = Z_NULL;
-  stream->next_in = Z_NULL;
-  stream->avail_in = 0;
+  _stream = (z_stream *) malloc (sizeof (z_stream));
+  _stream->zalloc = Z_NULL;
+  _stream->zfree = Z_NULL;
+  _stream->opaque = Z_NULL;
+  _stream->next_in = Z_NULL;
+  _stream->avail_in = 0;
   
-  if (inflateInit (stream) != Z_OK)
+  if (inflateInit (_stream) != Z_OK)
   {
     // FIXME: This is also a fatal error.
-    free (stream);
-    stream = NULL;
+    free (_stream);
+    _stream = NULL;
     return NO;
   }
   
@@ -201,51 +208,51 @@
 
 - (void) _maybeGrowOutbuf: (unsigned) bytes
 {
-  if (outbuf == NULL)
+  if (_outbuf == NULL)
   {
-    outbuf = malloc (bytes);
-    outalloc = bytes;
+    _outbuf = malloc (bytes);
+    _outalloc = bytes;
   }
   else
   {
-    unsigned old = outalloc;
+    size_t old = _outalloc;
     
-    while (outalloc < outsize + bytes)
-      outalloc *= 2;
+    while (_outalloc < _outsize + bytes)
+      _outalloc *= 2;
     
-    if (old != outalloc)
-      outbuf = realloc (outbuf, outalloc);
+    if (old != _outalloc)
+      _outbuf = realloc (_outbuf, _outalloc);
   }
 }
 
 - (void) _maybeGrowInbuf: (unsigned) bytes
 {
-  if (inbuf == NULL)
+  if (_inbuf == NULL)
   {
-    inbuf = malloc (bytes);
-    inalloc = bytes;
+    _inbuf = malloc (bytes);
+    _inalloc = bytes;
   }
   else
   {
-    unsigned old = inalloc;
+    size_t old = _inalloc;
     
-    while (inalloc < insize + bytes)
-      inalloc *= 2;
+    while (_inalloc < _insize + bytes)
+      _inalloc *= 2;
     
-    if (old != inalloc)
-      inbuf = realloc (inbuf, inalloc);
+    if (old != _inalloc)
+      _inbuf = realloc (_inbuf, _inalloc);
   }
 }
 
 - (void) _processOutbuf
 {
-  if (!outsize)
+  if (!_outsize)
     return;
   
-  for (unsigned i = 0; i < outsize; i++)
-    PASS_ON_PARSED_BYTE (outbuf[i]);
+  for (unsigned i = 0; i < _outsize; i++)
+    PASS_ON_PARSED_BYTE (_outbuf[i]);
   
-  outsize = 0;
+  _outsize = 0;
 }
 
 @end

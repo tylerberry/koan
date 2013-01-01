@@ -29,6 +29,7 @@
 		2F3DBAD3165374DD0056D738 /* MUSoundsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAD2165374DD0056D738 /* MUSoundsPreferencesViewController.m */; };
 		2F3DBAD8165387120056D738 /* MUProxyPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAD7165387120056D738 /* MUProxyPreferencesViewController.m */; };
 		2F3DBADC1654EAD50056D738 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3DBADB1654EAD40056D738 /* libcrypto.dylib */; };
+		2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */; };
 		2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D3BFB166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F57F908163E473800732868 /* MUConnectPanelController.m */; };
@@ -52,7 +53,6 @@
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
 		2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */; };
 		2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F9F191633F7990071AE70 /* MUProfileViewController.m */; };
-		2F7092A01223966F00E0D178 /* CTBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F70929F1223966F00E0D178 /* CTBadge.m */; };
 		2F7092C112239AF900E0D178 /* CTBadge_1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */; };
 		2F7092C212239AF900E0D178 /* CTBadge_3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */; };
 		2F7092C312239AF900E0D178 /* CTBadge_4.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BF12239AF900E0D178 /* CTBadge_4.pdf */; };
@@ -167,7 +167,6 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		E6055F7F07492729007A13BD /* NSAttributedString (Allocating).m in Sources */ = {isa = PBXBuildFile; fileRef = E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */; };
 		E622A553074231A60069335B /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E622A551074231A60069335B /* MUConstants.m */; };
-		E62C8FBE07421D83005662BC /* MUConnectionToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = E62C8FBC07421D83005662BC /* MUConnectionToolbarController.m */; };
 		E62C905D07422595005662BC /* MUApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E62C905B07422595005662BC /* MUApplicationController.m */; };
 		E62C909F07422669005662BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E62C909E07422669005662BC /* Localizable.strings */; };
 		E62E832007A1D10400BF15E9 /* MUTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E62E831E07A1D10400BF15E9 /* MUTextView.m */; };
@@ -290,6 +289,8 @@
 		2F3DBAD7165387120056D738 /* MUProxyPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxyPreferencesViewController.m; sourceTree = "<group>"; };
 		2F3DBADB1654EAD40056D738 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		2F4580150D0F586B001B8686 /* GetMetadataForFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetMetadataForFile.h; sourceTree = "<group>"; };
+		2F4C3A3E168968DB0075FB7A /* MUConnectionWindowControllerRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConnectionWindowControllerRegistry.h; sourceTree = "<group>"; };
+		2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectionWindowControllerRegistry.m; sourceTree = "<group>"; };
 		2F4D3BFB166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLWeakCompatibilityStubs.m; sourceTree = "<group>"; };
 		2F4D3BFD166C0DC8002EBA99 /* PLWeakCompatibilityStubs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLWeakCompatibilityStubs.h; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
@@ -322,8 +323,6 @@
 		2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCPProtocolHandler.m; sourceTree = "<group>"; };
 		2F6F9F181633F7990071AE70 /* MUProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileViewController.h; sourceTree = "<group>"; };
 		2F6F9F191633F7990071AE70 /* MUProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileViewController.m; sourceTree = "<group>"; };
-		2F70929E1223966F00E0D178 /* CTBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTBadge.h; sourceTree = "<group>"; };
-		2F70929F1223966F00E0D178 /* CTBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTBadge.m; sourceTree = "<group>"; };
 		2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_1.pdf; sourceTree = "<group>"; };
 		2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_3.pdf; sourceTree = "<group>"; };
 		2F7092BF12239AF900E0D178 /* CTBadge_4.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_4.pdf; sourceTree = "<group>"; };
@@ -516,8 +515,6 @@
 		E6055FB6074929F3007A13BD /* Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E622A550074231A60069335B /* MUConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConstants.h; sourceTree = "<group>"; };
 		E622A551074231A60069335B /* MUConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConstants.m; sourceTree = "<group>"; };
-		E62C8FBB07421D83005662BC /* MUConnectionToolbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConnectionToolbarController.h; sourceTree = "<group>"; };
-		E62C8FBC07421D83005662BC /* MUConnectionToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectionToolbarController.m; sourceTree = "<group>"; };
 		E62C905A07422595005662BC /* MUApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUApplicationController.h; sourceTree = "<group>"; };
 		E62C905B07422595005662BC /* MUApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUApplicationController.m; sourceTree = "<group>"; };
 		E62C909A0742265F005662BC /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = resources/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
@@ -656,6 +653,8 @@
 				2F6C71F00BB460CA00709320 /* Scripting */,
 				2FE366630BCAC8D40068A6AA /* Third Party */,
 				32CA4F630368D1EE00C91783 /* Koan-Prefix.pch */,
+				2F4C3A3E168968DB0075FB7A /* MUConnectionWindowControllerRegistry.h */,
+				2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */,
 				E622A550074231A60069335B /* MUConstants.h */,
 				E622A551074231A60069335B /* MUConstants.m */,
 				E653A7CF07AEFAB900023476 /* MUGrowlService.h */,
@@ -901,8 +900,6 @@
 				2F8C6D26167E67450006F975 /* SSKeychain */,
 				2F7A2E70166F393E00FEB109 /* ATImageTextCell.h */,
 				2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */,
-				2F70929E1223966F00E0D178 /* CTBadge.h */,
-				2F70929F1223966F00E0D178 /* CTBadge.m */,
 			);
 			name = "Third Party";
 			path = thirdparty;
@@ -1015,8 +1012,6 @@
 				E62C905B07422595005662BC /* MUApplicationController.m */,
 				2F57F907163E473800732868 /* MUConnectPanelController.h */,
 				2F57F908163E473800732868 /* MUConnectPanelController.m */,
-				E62C8FBB07421D83005662BC /* MUConnectionToolbarController.h */,
-				E62C8FBC07421D83005662BC /* MUConnectionToolbarController.m */,
 				E670A83F07420FDF00E2DAEB /* MUConnectionWindowController.h */,
 				E670A84007420FDF00E2DAEB /* MUConnectionWindowController.m */,
 				2F7B4FB60BCAC1FD00C1586D /* MUDocumentController.h */,
@@ -1494,7 +1489,6 @@
 				2FA2B3D41666D686000C6F9A /* BFColorPickerViewController.m in Sources */,
 				2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */,
 				2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */,
-				2F7092A01223966F00E0D178 /* CTBadge.m in Sources */,
 				2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */,
 				2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */,
 				7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */,
@@ -1505,7 +1499,6 @@
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
 				2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */,
 				E670A84207420FDF00E2DAEB /* MUConnectionWindowController.m in Sources */,
-				E62C8FBE07421D83005662BC /* MUConnectionToolbarController.m in Sources */,
 				E622A553074231A60069335B /* MUConstants.m in Sources */,
 				2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */,
 				7EFE43870749C7CE002C7D48 /* MUFilter.m in Sources */,
@@ -1580,6 +1573,7 @@
 				2F6264A01663384D008DDBF2 /* NSString (CodePage437).m in Sources */,
 				2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */,
 				2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */,
+				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

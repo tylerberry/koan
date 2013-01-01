@@ -23,8 +23,8 @@ enum MCPStates
   enum MCPStates _mcpState;
 }
 
-- (void) bufferMCPByte: (uint8_t) byte;
-- (void) handleBufferedMCPMessage;
+- (void) _bufferMCPByte: (uint8_t) byte;
+- (void) _handleBufferedMCPMessage;
 
 @end
 
@@ -118,12 +118,12 @@ enum MCPStates
 
 #pragma mark - Private methods
 
-- (void) bufferMCPByte: (uint8_t) byte
+- (void) _bufferMCPByte: (uint8_t) byte
 {
   return;
 }
 
-- (void) handleBufferedMCPMessage
+- (void) _handleBufferedMCPMessage
 {
   return;
 }

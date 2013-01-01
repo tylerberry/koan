@@ -141,6 +141,7 @@ extern NSString * const MULPreferencesFontsAndColors;
 extern NSString * const MULPreferencesGeneral;
 extern NSString * const MULPreferencesProxy;
 extern NSString * const MULPreferencesSounds;
+extern NSString * const MULPreferencesChooseAnotherSound;
 
 #pragma mark Alert panel localization constants.
 

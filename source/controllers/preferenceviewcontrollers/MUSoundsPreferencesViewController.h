@@ -11,7 +11,6 @@
   IBOutlet NSPopUpButton *soundsPopUpButton;
 }
 
-- (IBAction) chooseSound: (id) sender;
 - (IBAction) playCurrentSound: (id) sender;
 
 @end

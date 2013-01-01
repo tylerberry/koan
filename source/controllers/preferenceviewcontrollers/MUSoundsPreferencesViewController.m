@@ -12,6 +12,7 @@
   NSMenuItem *_selectedMenuItem;
 }
 
+- (void) _chooseSound: (id) sender;
 - (void) _playSoundAtURL: (NSURL *) soundURL;
 - (void) _populateSoundsPopUpMenu;
 - (void) _selectSoundFromMenu: (id) sender;
@@ -48,7 +49,16 @@
 
 #pragma mark - Actions
 
-- (IBAction) chooseSound: (id) sender
+- (void) playCurrentSound:(id)sender
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  
+  [self _playSoundAtURL: [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]]];
+}
+
+#pragma mark - Private methods
+
+- (void) _chooseSound: (id) sender
 {
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   
@@ -93,15 +103,6 @@
     [soundsPopUpButton selectItem: _selectedMenuItem];
   }
 }
-
-- (void) playCurrentSound:(id)sender
-{
-  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  
-  [self _playSoundAtURL: [NSURL URLWithString: [userDefaults objectForKey: MUPSoundChoice]]];
-}
-
-#pragma mark - Private methods
 
 - (void) _playSoundAtURL: (NSURL *) soundURL
 {
@@ -170,8 +171,10 @@
   
   NSMenuItem *chooseAnotherSoundMenuItem = [[NSMenuItem alloc] init];
   
-  chooseAnotherSoundMenuItem.title = @"Choose Another Sound…";
+  chooseAnotherSoundMenuItem.title = _(MULPreferencesChooseAnotherSound);
   chooseAnotherSoundMenuItem.representedObject = nil;
+  chooseAnotherSoundMenuItem.target = self;
+  chooseAnotherSoundMenuItem.action = @selector (_chooseSound:);
   
   [newMenu addItem: chooseAnotherSoundMenuItem];
   

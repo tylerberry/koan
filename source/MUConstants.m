@@ -125,6 +125,7 @@ NSString * const MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
 NSString * const MULPreferencesGeneral = @"PreferencesGeneral";
 NSString * const MULPreferencesProxy = @"PreferencesProxy";
 NSString * const MULPreferencesSounds = @"PreferencesSounds";
+NSString * const MULPreferencesChooseAnotherSound = @"PreferencesChooseAnotherSound";
 
 #pragma mark Miscellaneous localization constants.
 

@@ -58,6 +58,9 @@ enum MUAbstractANSIColors
   
   BOOL currentlySearching;
   
+  BOOL _shouldScrollToBottomAfterFullScreenTransition;
+  BOOL _shouldScrollToBottomAfterResize;
+  
   NSTimer *pingTimer;
   MUFilterQueue *filterQueue;
   MUHistoryRing *historyRing;
@@ -80,7 +83,9 @@ enum MUAbstractANSIColors
 - (void) postConnectionWindowControllerWillCloseNotification;
 - (void) prepareDelayedReportWindowSizeToServer;
 - (void) sendPeriodicPing: (NSTimer *) timer;
+- (void) _scrollDisplayViewToBottom;
 - (void) setTextViewsNeedDisplay: (NSNotification *) notification;
+- (BOOL) _shouldScrollDisplayViewToBottom;
 - (NSString *) splitViewAutosaveName;
 - (void) tabCompleteWithDirection: (enum MUSearchDirections) direction;
 - (void) triggerDelayedReportWindowSizeToServer;
@@ -858,9 +863,24 @@ enum MUAbstractANSIColors
   return proposedOptions | NSApplicationPresentationAutoHideToolbar;
 }
 
+- (void) windowDidEnterFullScreen: (NSNotification *) notification
+{
+  if (_shouldScrollToBottomAfterFullScreenTransition)
+    [self _scrollDisplayViewToBottom];
+}
+
+- (void) windowDidExitFullScreen: (NSNotification *) notification
+{
+  if (_shouldScrollToBottomAfterFullScreenTransition)
+    [self _scrollDisplayViewToBottom];
+}
+
 - (void) windowDidResize: (NSNotification *) notification
 {
   [self prepareDelayedReportWindowSizeToServer];
+  
+  if (_shouldScrollToBottomAfterResize)
+    [self _scrollDisplayViewToBottom];
 }
 
 - (BOOL) windowShouldClose: (id) sender
@@ -872,7 +892,7 @@ enum MUAbstractANSIColors
 {
   if (notification.object == self.window)
   {
-  	[self.window setDelegate: nil];
+  	self.window.delegate = nil;
     
   	[self postConnectionWindowControllerWillCloseNotification];
   }
@@ -880,6 +900,8 @@ enum MUAbstractANSIColors
 
 - (void) windowWillEnterFullScreen: (NSNotification *) notification
 {
+  _shouldScrollToBottomAfterFullScreenTransition = [self _shouldScrollDisplayViewToBottom];
+  
   [self.window setContentBorderThickness: 0.0 forEdge: NSMinYEdge];
 
   [timeConnectedField setHidden: YES];
@@ -890,12 +912,21 @@ enum MUAbstractANSIColors
 
 - (void) windowWillExitFullScreen: (NSNotification *) notification
 {
+  _shouldScrollToBottomAfterFullScreenTransition = [self _shouldScrollDisplayViewToBottom];
+  
   [self.window setContentBorderThickness: 22.0 forEdge: NSMinYEdge];
   
   [timeConnectedField setHidden: NO];
   
   splitView.frame = NSMakeRect (splitView.frame.origin.x, 22.0,
                                 splitView.frame.size.width, splitView.frame.size.height - 22.0);
+}
+
+- (NSSize) windowWillResize: (NSWindow *) sender toSize: (NSSize) frameSize
+{
+  _shouldScrollToBottomAfterResize = [self _shouldScrollDisplayViewToBottom];
+  
+  return frameSize;
 }
 
 #pragma mark - Private methods
@@ -944,8 +975,7 @@ enum MUAbstractANSIColors
 {
   BOOL needsScrollToBottom = NO;
   
-  if (receivedTextView.enclosingScrollView.verticalScroller.isHidden
-      || 1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001) // Avoid == for floats.
+  if ([self _shouldScrollDisplayViewToBottom]) // Avoid == for floats.
     needsScrollToBottom = YES;
   
   NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string];
@@ -1008,7 +1038,7 @@ enum MUAbstractANSIColors
   [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
   
   if (needsScrollToBottom)
-    [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0)];
+    [self _scrollDisplayViewToBottom];
   
   [self postConnectionWindowControllerDidReceiveTextNotification];  
 }
@@ -1048,6 +1078,11 @@ enum MUAbstractANSIColors
                                                                 repeats: NO];
 }
 
+- (void) _scrollDisplayViewToBottom
+{
+  [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0) animate: YES];
+}
+
 - (void) sendPeriodicPing: (NSTimer *) timer
 {
   [telnetConnection writeLine: @"@@"];
@@ -1057,6 +1092,12 @@ enum MUAbstractANSIColors
 {
   [receivedTextView setNeedsDisplay: YES];
   [inputView setNeedsDisplay: YES];
+}
+
+- (BOOL) _shouldScrollDisplayViewToBottom
+{
+  return (receivedTextView.enclosingScrollView.verticalScroller.isHidden
+          || 1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001);
 }
 
 - (NSString *) splitViewAutosaveName

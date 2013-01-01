@@ -56,6 +56,23 @@
   return (NSUInteger) availableVerticalSpace / self.monospaceCharacterHeight;
 }
 
+- (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling
+{
+  if (animateScrolling)
+  {
+    NSRange glyphRange = [self.layoutManager glyphRangeForCharacterRange: range actualCharacterRange: NULL];
+    NSRect glyphRect = [self.layoutManager boundingRectForGlyphRange: glyphRange
+                                                     inTextContainer: self.textContainer];
+    
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext currentContext].duration = 1.0f;
+    [self.enclosingScrollView.contentView.animator setBoundsOrigin: glyphRect.origin];
+    [NSAnimationContext endGrouping];
+  }
+  else
+    [self scrollRangeToVisible: range];
+}
+
 #pragma mark - Overrides
 
 - (void) drawGrid: (NSRect) rect

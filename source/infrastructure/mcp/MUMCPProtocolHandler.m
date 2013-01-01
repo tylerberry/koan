@@ -108,10 +108,10 @@ enum MCPStates
       if (byte == '\n')
       {
         _mcpState = MUMCPNewLineState;
-        [self handleBufferedMCPMessage];
+        [self _handleBufferedMCPMessage];
       }
       else
-        [self bufferMCPByte: byte];
+        [self _bufferMCPByte: byte];
       break;
   }
 }

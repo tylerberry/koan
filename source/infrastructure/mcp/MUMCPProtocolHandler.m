@@ -17,8 +17,11 @@ enum MCPStates
 };
 
 @interface MUMCPProtocolHandler ()
-
-@property (assign) enum MCPStates mcpState;
+{
+  MUMUDConnectionState *_connectionState;
+  
+  enum MCPStates _mcpState;
+}
 
 - (void) bufferMCPByte: (uint8_t) byte;
 - (void) handleBufferedMCPMessage;
@@ -31,18 +34,18 @@ enum MCPStates
 
 @synthesize delegate;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState
 {
-  return [[self alloc] initWithConnectionState: telnetConnectionState];
+  return [[self alloc] initWithConnectionState: connectionState];
 }
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
   
-  connectionState = telnetConnectionState;
-  self.mcpState = MUMCPNewLineState;
+  _connectionState = connectionState;
+  _mcpState = MUMCPNewLineState;
   
   return self;
 }
@@ -51,28 +54,28 @@ enum MCPStates
 
 - (void) parseByte: (uint8_t) byte
 {
-  switch (self.mcpState)
+  switch (_mcpState)
   {
     case MUMCPNewLineState:
       if (byte == '#')
-        self.mcpState = MUMCPReceivedHashState;
+        _mcpState = MUMCPReceivedHashState;
       else
       {
         if (byte != '\n')
-          self.mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPPassThroughState;
         PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
     case MUMCPReceivedHashState:
       if (byte == '$')
-        self.mcpState = MUMCPReceivedHashDollarState;
+        _mcpState = MUMCPReceivedHashDollarState;
       else
       {
         if (byte == '\n')
-          self.mcpState = MUMCPNewLineState;
+          _mcpState = MUMCPNewLineState;
         else
-          self.mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPPassThroughState;
         PASS_ON_PARSED_BYTE ('#');
         PASS_ON_PARSED_BYTE (byte);
       }
@@ -80,15 +83,15 @@ enum MCPStates
       
     case MUMCPReceivedHashDollarState:
       if (byte == '#')
-        self.mcpState = MUMCPBufferMCPCommandState;
+        _mcpState = MUMCPBufferMCPCommandState;
       else if (byte == '"')
-        self.mcpState = MUMCPPassThroughState;
+        _mcpState = MUMCPPassThroughState;
       else
       {
         if (byte == '\n')
-          self.mcpState = MUMCPNewLineState;
+          _mcpState = MUMCPNewLineState;
         else
-          self.mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPPassThroughState;
         PASS_ON_PARSED_BYTE ('#');
         PASS_ON_PARSED_BYTE ('$');
         PASS_ON_PARSED_BYTE (byte);
@@ -97,14 +100,14 @@ enum MCPStates
       
     case MUMCPPassThroughState:
       if (byte == '\n')
-        self.mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPNewLineState;
       PASS_ON_PARSED_BYTE (byte);
       break;
       
     case MUMCPBufferMCPCommandState:
       if (byte == '\n')
       {
-        self.mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPNewLineState;
         [self handleBufferedMCPMessage];
       }
       else

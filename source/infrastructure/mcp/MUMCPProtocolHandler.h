@@ -12,14 +12,11 @@
 @protocol MUMCPProtocolHandlerDelegate;
 
 @interface MUMCPProtocolHandler : MUProtocolHandler
-{
-  MUMUDConnectionState *connectionState;
-}
 
 @property (weak, nonatomic) NSObject <MUMCPProtocolHandlerDelegate> *delegate;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState;
+- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState;
 
 @end
 

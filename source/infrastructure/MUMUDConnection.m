@@ -24,26 +24,33 @@ NSString *MUMUDConnectionWasClosedWithErrorNotification = @"MUMUDConnectionWasCl
 NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 @interface MUMUDConnection ()
+{
+  MUProtocolStack *_protocolStack;
+  MUSocketFactory *_socketFactory;
+  
+  NSString *_hostname;
+  int _port;
+  NSTimer *_pollTimer;
+}
 
-- (void) cleanUpPollTimer;
-- (void) displayAndLogString: (NSString *) string;
-- (void) fireTimer: (NSTimer *) timer;
-- (void) initializeSocket;
-- (BOOL) isUsingSocket: (MUSocket *) possibleSocket;
-- (void) poll;
-- (void) registerObjectForNotifications: (id) object;
-- (void) schedulePollTimer;
-- (void) unregisterObjectForNotifications: (id) object;
-- (void) writeDataWithPreprocessing: (NSData *) data;
+@property (strong, nonatomic) MUSocket *socket;
+
+- (void) _cleanUpPollTimer;
+- (void) _displayAndLogString: (NSString *) string;
+- (void) _fireTimer: (NSTimer *) timer;
+- (void) _initializeSocket;
+- (BOOL) _isUsingSocket: (MUSocket *) possibleSocket;
+- (void) _poll;
+- (void) _registerObjectForNotifications: (id) object;
+- (void) _schedulePollTimer;
+- (void) _unregisterObjectForNotifications: (id) object;
+- (void) _writeDataWithPreprocessing: (NSData *) data;
 
 @end
 
 #pragma mark -
 
 @implementation MUMUDConnection
-
-@synthesize delegate = _delegate;
-@synthesize socket, state;
 
 + (id) telnetWithSocketFactory: (MUSocketFactory *) factory
                       hostname: (NSString *) hostname
@@ -68,45 +75,46 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   if (!(self = [super init]))
     return nil;
   
-  state = [MUMUDConnectionState connectionState];
-  socketFactory = factory;
-  hostname = [newHostname copy];
-  port = newPort;
-  pollTimer = nil;
+  _state = [MUMUDConnectionState connectionState];
+  _dateConnected = nil;
+  _socketFactory = factory;
+  _hostname = [newHostname copy];
+  _port = newPort;
+  _pollTimer = nil;
   
-  protocolStack = [[MUProtocolStack alloc] initWithConnectionState: state];
-  [protocolStack setDelegate: self];
+  _protocolStack = [[MUProtocolStack alloc] initWithConnectionState: _state];
+  [_protocolStack setDelegate: self];
   
   // Ordering is important for byte protocol handlers: they should be added in
   // order with respect to outgoing data, and reverse order with respect to
   // incoming data.
   
-  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithConnectionState: state];
+  MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithConnectionState: _state];
   [mcpProtocolHandler setDelegate: self];
-  [protocolStack addProtocolHandler: mcpProtocolHandler];
+  [_protocolStack addProtocolHandler: mcpProtocolHandler];
   
-  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: state];
+  MUTelnetProtocolHandler *telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: _state];
   [telnetProtocolHandler setDelegate: self];
-  [protocolStack addProtocolHandler: telnetProtocolHandler];
+  [_protocolStack addProtocolHandler: telnetProtocolHandler];
   
-  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: state];
+  MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: _state];
   [mccpProtocolHandler setDelegate: self];
-  [protocolStack addProtocolHandler: mccpProtocolHandler];
+  [_protocolStack addProtocolHandler: mccpProtocolHandler];
   
   _delegate = newDelegate;
   if (_delegate)
-    [self registerObjectForNotifications: _delegate];
+    [self _registerObjectForNotifications: _delegate];
   
   return self;
 }
 
 - (void) dealloc
 {
-  [self unregisterObjectForNotifications: _delegate];
+  [self _unregisterObjectForNotifications: _delegate];
   _delegate = nil;
   
   [self close];
-  [self cleanUpPollTimer];
+  [self _cleanUpPollTimer];
   
 }
 
@@ -115,8 +123,8 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   if (_delegate == object)
     return;
   
-  [self unregisterObjectForNotifications: _delegate];
-  [self registerObjectForNotifications: object];
+  [self _unregisterObjectForNotifications: _delegate];
+  [self _registerObjectForNotifications: object];
   
   _delegate = object;
 }
@@ -135,7 +143,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 {
   NSString *lineWithLineEnding = [NSString stringWithFormat: @"%@\r\n",line];
   NSData *encodedData = [lineWithLineEnding dataUsingEncoding: self.state.stringEncoding allowLossyConversion: YES];
-  [self writeDataWithPreprocessing: encodedData];
+  [self _writeDataWithPreprocessing: encodedData];
 }
 
 #pragma mark - MUAbstractConnection overrides
@@ -147,14 +155,17 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) open
 {
-  [self initializeSocket];
-  [self schedulePollTimer];
+  [self _initializeSocket];
+  [self _schedulePollTimer];
   [self.socket open];
 }
 
 - (void) setStatusConnected
 {
   [super setStatusConnected];
+  
+  _dateConnected = [NSDate date];
+  
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionDidConnectNotification
                                                       object: self];
 }
@@ -169,6 +180,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedByClient
 {
   [super setStatusClosedByClient];
+  
+  _dateConnected = nil;
+  
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
                                                       object: self];
 }
@@ -176,6 +190,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedByServer
 {
   [super setStatusClosedByServer];
+  
+  _dateConnected = nil;
+  
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                       object: self];
 }
@@ -183,6 +200,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) setStatusClosedWithError: (NSString *) error
 {
   [super setStatusClosedWithError: error];
+  
+  _dateConnected = nil;
+  
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
                                                     userInfo: @{MUMUDConnectionErrorMessageKey: error}];
@@ -203,21 +223,21 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 - (void) socketWasClosedByClient: (NSNotification *) notification
 {
   [self.state reset];
-  [self cleanUpPollTimer]; 
+  [self _cleanUpPollTimer];
   [self setStatusClosedByClient];
 }
 
 - (void) socketWasClosedByServer: (NSNotification *) notification
 {
   [self.state reset];
-  [self cleanUpPollTimer];
+  [self _cleanUpPollTimer];
   [self setStatusClosedByServer];
 }
 
 - (void) socketWasClosedWithError: (NSNotification *) notification
 {
   [self.state reset];
-  [self cleanUpPollTimer];
+  [self _cleanUpPollTimer];
   [self setStatusClosedWithError: [notification.userInfo valueForKey: MUSocketErrorMessageKey]];
 }
 
@@ -225,7 +245,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
-  NSLog (@"[%@:%d] %@", hostname, port, [[NSString alloc] initWithFormat: message arguments: args]);
+  NSLog (@"[%@:%d] %@", _hostname, _port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
 #pragma mark - MUProtocolStackDelegate
@@ -268,7 +288,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
 {
-  if (!state.shouldReportWindowSizeChanges)
+  if (!_state.shouldReportWindowSizeChanges)
     return;
   
   uint8_t nawsSubnegotiationHeader[3] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionNegotiateAboutWindowSize};
@@ -306,35 +326,35 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
 
 #pragma mark - Private methods
 
-- (void) cleanUpPollTimer
+- (void) _cleanUpPollTimer
 {
-  [pollTimer invalidate];
-  pollTimer = nil;
+  [_pollTimer invalidate];
+  _pollTimer = nil;
 }
 
-- (void) displayAndLogString: (NSString *) string
+- (void) _displayAndLogString: (NSString *) string
 {
   [self.delegate displayString: [NSString stringWithFormat: @"%@\n", string]];
   [self log: @"%@", string];
 }
 
-- (void) fireTimer: (NSTimer *) timer
+- (void) _fireTimer: (NSTimer *) timer
 {
-  [self poll];
+  [self _poll];
 }
 
-- (void) initializeSocket
+- (void) _initializeSocket
 {
-  self.socket = [socketFactory makeSocketWithHostname: hostname port: port];
+  self.socket = [_socketFactory makeSocketWithHostname: _hostname port: _port];
   self.socket.delegate = self;
 }
 
-- (BOOL) isUsingSocket: (MUSocket *) possibleSocket
+- (BOOL) _isUsingSocket: (MUSocket *) possibleSocket
 {
   return possibleSocket == self.socket;
 }
 
-- (void) poll
+- (void) _poll
 {
   // It is possible for the connection to have been released but for there to
   // be a pending timer fire that was registered before the timers were
@@ -346,10 +366,10 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self.socket poll];
   
   if (self.socket.hasDataAvailable)
-    [protocolStack parseInputData: [self.socket readUpToLength: self.socket.availableBytes]];
+    [_protocolStack parseInputData: [self.socket readUpToLength: self.socket.availableBytes]];
 }
 
-- (void) registerObjectForNotifications: (id) object
+- (void) _registerObjectForNotifications: (id) object
 {
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   
@@ -375,16 +395,16 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                            object: self];
 }
 
-- (void) schedulePollTimer
+- (void) _schedulePollTimer
 {
-  pollTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05
-                                               target: self
-                                             selector: @selector (fireTimer:)
-                                             userInfo: nil
-                                              repeats: YES];
+  _pollTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05
+                                                target: self
+                                              selector: @selector (_fireTimer:)
+                                              userInfo: nil
+                                               repeats: YES];
 }
 
-- (void) unregisterObjectForNotifications: (id) object
+- (void) _unregisterObjectForNotifications: (id) object
 {
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   
@@ -395,9 +415,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [notificationCenter removeObserver: object name: MUSocketWasClosedWithErrorNotification object: self];
 }
 
-- (void) writeDataWithPreprocessing: (NSData *) data
+- (void) _writeDataWithPreprocessing: (NSData *) data
 {
-  [protocolStack preprocessOutputData: data];
+  [_protocolStack preprocessOutputData: data];
 }
 
 @end

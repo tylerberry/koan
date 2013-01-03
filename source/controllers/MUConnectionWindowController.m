@@ -5,10 +5,10 @@
 //
 
 #import "MUConnectionWindowController.h"
-#import "MUGrowlService.h"
 
 #import "MUANSIFormattingFilter.h"
 #import "MUFugueEditFilter.h"
+#import "MUGrowlService.h"
 #import "MULayoutManager.h"
 #import "MUNaiveURLFilter.h"
 #import "MUTextLogger.h"
@@ -53,48 +53,45 @@ enum MUAbstractANSIColors
 
 @interface MUConnectionWindowController ()
 {
-  MUProfile *profile;
-  MUMUDConnection *telnetConnection;
+  MUProfile *_profile;
+  MUMUDConnection *_telnetConnection;
   
-  BOOL currentlySearching;
+  BOOL _currentlySearching;
   
   BOOL _shouldScrollToBottomAfterFullScreenTransition;
   BOOL _shouldScrollToBottomAfterResize;
   
-  NSTimer *pingTimer;
-  MUFilterQueue *filterQueue;
-  MUHistoryRing *historyRing;
+  MUFilterQueue *_filterQueue;
+  MUHistoryRing *_historyRing;
   
   NSAttributedString *_currentPrompt;
   NSRange _currentTextRangeWithoutPrompt;
   
-  NSTimer *windowSizeNotificationTimer;
+  NSTimer *_pingTimer;
+  NSTimer *_windowSizeNotificationTimer;
 }
 
-- (BOOL) canCloseWindow;
-- (void) cleanUpPingTimer;
-- (MUFilter *) createLogger;
-- (void) didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-- (void) disconnect;
+- (void) _cleanUpPingTimer;
+- (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+- (void) _disconnect;
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
-- (void) endCompletion;
-- (BOOL) isUsingTelnet: (MUMUDConnection *) telnet;
-- (void) postConnectionWindowControllerDidReceiveTextNotification;
-- (void) postConnectionWindowControllerWillCloseNotification;
-- (void) prepareDelayedReportWindowSizeToServer;
-- (void) sendPeriodicPing: (NSTimer *) timer;
+- (void) _endCompletion;
+- (void) _postConnectionWindowControllerDidReceiveTextNotification;
+- (void) _postConnectionWindowControllerWillCloseNotification;
+- (void) _prepareDelayedReportWindowSizeToServer;
+- (void) _sendPeriodicPing: (NSTimer *) timer;
 - (void) _scrollDisplayViewToBottom;
-- (void) setTextViewsNeedDisplay: (NSNotification *) notification;
+- (void) _setTextViewsNeedDisplay: (NSNotification *) notification;
 - (BOOL) _shouldScrollDisplayViewToBottom;
-- (NSString *) splitViewAutosaveName;
-- (void) tabCompleteWithDirection: (enum MUSearchDirections) direction;
-- (void) triggerDelayedReportWindowSizeToServer;
+- (NSString *) _splitViewAutosaveName;
+- (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction;
+- (void) _triggerDelayedReportWindowSizeToServer: (NSTimer *) timer;
 - (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color;
 - (void) _updateBackgroundColor;
 - (void) _updateFonts;
 - (void) _updateLinkTextColor;
 - (void) _updateTextColor;
-- (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+- (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 
 #pragma mark - User defaults key path string methods
 
@@ -131,21 +128,21 @@ enum MUAbstractANSIColors
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
     return nil;
   
-  profile = newProfile;
+  _profile = newProfile;
   
-  historyRing = [MUHistoryRing historyRing];
-  filterQueue = [MUFilterQueue filterQueue];
+  _historyRing = [MUHistoryRing historyRing];
+  _filterQueue = [MUFilterQueue filterQueue];
   
-  [filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: profile delegate: self]];
-  [filterQueue addFilter: [MUFugueEditFilter filterWithProfile: profile delegate: self]];
-  [filterQueue addFilter: [MUNaiveURLFilter filter]];
-  [filterQueue addFilter: [self createLogger]];
+  [_filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: _profile delegate: self]];
+  [_filterQueue addFilter: [MUFugueEditFilter filterWithProfile: _profile delegate: self]];
+  [_filterQueue addFilter: [MUNaiveURLFilter filter]];
+  [_filterQueue addFilter: [_profile createLogger]];
   
   _currentPrompt = nil;
   _currentTextRangeWithoutPrompt = NSMakeRange (0, 0);
   
-  currentlySearching = NO;
-  windowSizeNotificationTimer = nil;
+  _currentlySearching = NO;
+  _windowSizeNotificationTimer = nil;
   
   return self;
 }
@@ -186,27 +183,33 @@ enum MUAbstractANSIColors
   
   // Restore window and split view title, size, and position.
   
-  self.window.title = profile.windowTitle;
-  self.window.frameAutosaveName = profile.uniqueIdentifier;
-  self.window.frameUsingName = profile.uniqueIdentifier;
+  self.window.title = _profile.windowTitle;
+  self.window.frameAutosaveName = _profile.uniqueIdentifier;
+  self.window.frameUsingName = _profile.uniqueIdentifier;
   
-  splitView.autosaveName = self.splitViewAutosaveName;
+  splitView.autosaveName = [self _splitViewAutosaveName];
   [splitView adjustSubviews];
   
   // Bindings and notifications.
   
-  [receivedTextView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
+  [receivedTextView bind: @"backgroundColor" toObject: _profile withKeyPath: @"effectiveBackgroundColor" options: nil];
   
-  [inputView bind: @"font" toObject: profile withKeyPath: @"effectiveFont" options: nil];
-  [inputView bind: @"textColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
-  [inputView bind: @"insertionPointColor" toObject: profile withKeyPath: @"effectiveTextColor" options: nil];
-  [inputView bind: @"backgroundColor" toObject: profile withKeyPath: @"effectiveBackgroundColor" options: nil];
+  [inputView bind: @"font" toObject: _profile withKeyPath: @"effectiveFont" options: nil];
+  [inputView bind: @"textColor" toObject: _profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"insertionPointColor" toObject: _profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"backgroundColor" toObject: _profile withKeyPath: @"effectiveBackgroundColor" options: nil];
   
-  [profile addObserver: self forKeyPath: @"effectiveBackgroundColor" options: NSKeyValueObservingOptionNew context: nil];
-  [profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
-  [profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
-  [profile addObserver: self forKeyPath: @"effectiveSystemTextColor" options: NSKeyValueObservingOptionNew context: nil];
-  [profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
+  [_profile addObserver: self
+             forKeyPath: @"effectiveBackgroundColor"
+                options: NSKeyValueObservingOptionNew
+                context: nil];
+  [_profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
+  [_profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
+  [_profile addObserver: self
+             forKeyPath: @"effectiveSystemTextColor"
+                options: NSKeyValueObservingOptionNew
+                context: nil];
+  [_profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
@@ -298,13 +301,13 @@ enum MUAbstractANSIColors
 
 - (void) dealloc
 {
-  [self disconnect];
+  [self _disconnect];
   
-  [profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
-  [profile removeObserver: self forKeyPath: @"effectiveFont"];
-  [profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
-  [profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
-  [profile removeObserver: self forKeyPath: @"effectiveTextColor"];
+  [_profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
+  [_profile removeObserver: self forKeyPath: @"effectiveFont"];
+  [_profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+  [_profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
+  [_profile removeObserver: self forKeyPath: @"effectiveTextColor"];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
@@ -337,7 +340,7 @@ enum MUAbstractANSIColors
                          change: (NSDictionary *) changeDictionary
                         context: (void *) context
 {
-  if (object == profile)
+  if (object == _profile)
   {
     if ([keyPath isEqualToString: @"effectiveBackgroundColor"])
     {
@@ -481,7 +484,7 @@ enum MUAbstractANSIColors
   
   if (toolbarItemAction == @selector (goToWorldURL:))
   {
-    NSString *url = profile.world.url;
+    NSString *url = _profile.world.url;
     
     return (url && ![url isEqualToString: @""]);
   }
@@ -519,7 +522,7 @@ enum MUAbstractANSIColors
 
 - (BOOL) isConnectedOrConnecting
 {
-  return telnetConnection.isConnected || telnetConnection.isConnecting;
+  return _telnetConnection.isConnected || _telnetConnection.isConnecting;
 }
 
 #pragma mark - Actions
@@ -528,17 +531,17 @@ enum MUAbstractANSIColors
 {
   [self.window makeKeyAndOrderFront: nil];
   
-  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), profile.windowTitle],
+  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), _profile.windowTitle],
                      _(MULOK),
                      _(MULCancel),
                      nil,
                      self.window,
                      self,
-                     @selector (willEndCloseSheet:returnCode:contextInfo:),
-                     @selector (didEndCloseSheet:returnCode:contextInfo:),
+                     @selector (_willEndCloseSheet:returnCode:contextInfo:),
+                     @selector (_didEndCloseSheet:returnCode:contextInfo:),
                      (void *) callback,
                      _(MULConfirmCloseMessage),
-                     profile.hostname);
+                     _profile.hostname);
 }
 
 - (IBAction) clearWindow: (id) sender
@@ -550,15 +553,15 @@ enum MUAbstractANSIColors
 {
   if (self.isConnectedOrConnecting)
     return;
-  if (!telnetConnection)
-    telnetConnection = [profile createNewTelnetConnectionWithDelegate: self];
-  // if (!telnetConnection) {  }  // TODO: Handle this error condition.
+  if (!_telnetConnection)
+    _telnetConnection = [_profile createNewTelnetConnectionWithDelegate: self];
+  // if (!_telnetConnection) {  }  // TODO: Handle this error condition.
   
-  [telnetConnection open];
+  [_telnetConnection open];
   
-  pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
+  _pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
                                                target: self
-                                             selector: @selector (sendPeriodicPing:)
+                                             selector: @selector (_sendPeriodicPing:)
                                              userInfo: nil
                                               repeats: YES];
   
@@ -575,21 +578,21 @@ enum MUAbstractANSIColors
 
 - (IBAction) disconnect: (id) sender
 {
-  [self disconnect];
+  [self _disconnect];
 }
 
 - (IBAction) goToWorldURL: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: profile.world.url]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: _profile.world.url]];
 }
 
 - (IBAction) sendInputText: (id) sender
 {
-  [telnetConnection writeLine: inputView.string];
+  [_telnetConnection writeLine: inputView.string];
   
-  if (!telnetConnection.state.serverWillEcho)
+  if (!_telnetConnection.state.serverWillEcho)
   {
-    [historyRing saveString: inputView.string];
+    [_historyRing saveString: inputView.string];
   
     if (_currentPrompt)
     {
@@ -610,14 +613,14 @@ enum MUAbstractANSIColors
 
 - (IBAction) nextCommand: (id) sender
 {
-  [historyRing updateString: inputView.string];
-  [inputView setString: [historyRing nextString]];
+  [_historyRing updateString: inputView.string];
+  [inputView setString: [_historyRing nextString]];
 }
 
 - (IBAction) previousCommand: (id) sender
 {
-  [historyRing updateString: inputView.string];
-  [inputView setString: [historyRing previousString]];
+  [_historyRing updateString: inputView.string];
+  [inputView setString: [_historyRing previousString]];
 }
 
 #pragma mark - Filter delegate methods
@@ -660,18 +663,18 @@ enum MUAbstractANSIColors
 
 - (void) reportWindowSizeToServer
 {
-  [telnetConnection sendNumberOfWindowLines: receivedTextView.numberOfLines
-                                    columns: receivedTextView.numberOfColumns];
+  [_telnetConnection sendNumberOfWindowLines: receivedTextView.numberOfLines
+                                     columns: receivedTextView.numberOfColumns];
 }
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
 {
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpen)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionOpenedForTitle: profile.windowTitle];
+  [MUGrowlService connectionOpenedForTitle: _profile.windowTitle];
   
-  if (profile.hasLoginInformation)
-    [telnetConnection writeLine: profile.loginString];
+  if (_profile.hasLoginInformation)
+    [_telnetConnection writeLine: _profile.loginString];
 }
 
 - (void) telnetConnectionIsConnecting: (NSNotification *) notification
@@ -682,28 +685,28 @@ enum MUAbstractANSIColors
 
 - (void) telnetConnectionWasClosedByClient: (NSNotification *) notification
 {
-  [self cleanUpPingTimer];
+  [self _cleanUpPingTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedForTitle: profile.windowTitle];
+  [MUGrowlService connectionClosedForTitle: _profile.windowTitle];
 }
 
 - (void) telnetConnectionWasClosedByServer: (NSNotification *) notification
 {
-  [self cleanUpPingTimer];
+  [self _cleanUpPingTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByServerForTitle: profile.windowTitle];
+  [MUGrowlService connectionClosedByServerForTitle: _profile.windowTitle];
 }
 
 - (void) telnetConnectionWasClosedWithError: (NSNotification *) notification
 {
   NSString *errorMessage = [[notification userInfo] valueForKey: MUMUDConnectionErrorMessageKey];
-  [self cleanUpPingTimer];
+  [self _cleanUpPingTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n",
                          [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByErrorForTitle: profile.windowTitle error: errorMessage];
+  [MUGrowlService connectionClosedByErrorForTitle: _profile.windowTitle error: errorMessage];
 }
 
 #pragma mark - MUTextViewPasteDelegate protocol
@@ -718,7 +721,7 @@ enum MUAbstractANSIColors
   }
   else if (textView == inputView)
   {
-    [self endCompletion];
+    [self _endCompletion];
     return NO;
   }
   return NO;
@@ -734,7 +737,7 @@ enum MUAbstractANSIColors
   }
   else if (textView == inputView)
   {
-    [self endCompletion];
+    [self _endCompletion];
     return NO;
   }
   return NO;
@@ -744,7 +747,7 @@ enum MUAbstractANSIColors
 
 - (void) splitViewDidResizeSubviews: (NSNotification *) notification
 {
-  [self prepareDelayedReportWindowSizeToServer];
+  [self _prepareDelayedReportWindowSizeToServer];
 }
 
 #pragma mark - NSTextViewDelegate protocol
@@ -785,7 +788,7 @@ enum MUAbstractANSIColors
     }
     else if (commandSelector == @selector (insertBacktab:))
     {
-      [self tabCompleteWithDirection: MUForwardSearch];
+      [self _tabCompleteWithDirection: MUForwardSearch];
       return YES;
     }
     else if (commandSelector == @selector (insertNewline:))
@@ -796,7 +799,7 @@ enum MUAbstractANSIColors
         key = [[NSApp currentEvent].charactersIgnoringModifiers characterAtIndex: 0];
       
       if ([NSApp currentEvent].charactersIgnoringModifiers.length > 1)
-        [self endCompletion];
+        [self _endCompletion];
       
       if (key == NSCarriageReturnCharacter || key == NSEnterCharacter)
       {
@@ -806,7 +809,7 @@ enum MUAbstractANSIColors
     }
     else if (commandSelector == @selector (insertTab:))
     {
-      [self tabCompleteWithDirection: MUBackwardSearch];
+      [self _tabCompleteWithDirection: MUBackwardSearch];
       return YES;
     }
     else if (commandSelector == @selector (moveDown:))
@@ -816,7 +819,7 @@ enum MUAbstractANSIColors
       if ([NSApp currentEvent].charactersIgnoringModifiers.length > 0)
         key = [[NSApp currentEvent].charactersIgnoringModifiers characterAtIndex: 0];
       
-      [self endCompletion];
+      [self _endCompletion];
       
       if (textView.selectedRange.location == textView.textStorage.length
           && key == NSDownArrowFunctionKey)
@@ -833,7 +836,7 @@ enum MUAbstractANSIColors
       if ([NSApp currentEvent].charactersIgnoringModifiers.length > 0)
         key = [[NSApp currentEvent].charactersIgnoringModifiers characterAtIndex: 0];
       
-      [self endCompletion];
+      [self _endCompletion];
       
       if (textView.selectedRange.location == 0
           && key == NSUpArrowFunctionKey)
@@ -877,7 +880,7 @@ enum MUAbstractANSIColors
 
 - (void) windowDidResize: (NSNotification *) notification
 {
-  [self prepareDelayedReportWindowSizeToServer];
+  [self _prepareDelayedReportWindowSizeToServer];
   
   if (_shouldScrollToBottomAfterResize)
     [self _scrollDisplayViewToBottom];
@@ -885,7 +888,13 @@ enum MUAbstractANSIColors
 
 - (BOOL) windowShouldClose: (id) sender
 {
-  return self.canCloseWindow;
+  if (self.isConnectedOrConnecting)
+  {
+    [self confirmClose: NULL];
+    return NO;
+  }
+  
+  return YES;
 }
 
 - (void) windowWillClose: (NSNotification *) notification
@@ -894,7 +903,7 @@ enum MUAbstractANSIColors
   {
   	self.window.delegate = nil;
     
-  	[self postConnectionWindowControllerWillCloseNotification];
+  	[self _postConnectionWindowControllerWillCloseNotification];
   }
 }
 
@@ -931,32 +940,13 @@ enum MUAbstractANSIColors
 
 #pragma mark - Private methods
 
-- (BOOL) canCloseWindow
+- (void) _cleanUpPingTimer
 {
-  if (self.isConnectedOrConnecting)
-  {
-    [self confirmClose: NULL];
-    return NO;
-  }
-  
-  return YES;
+  [_pingTimer invalidate];
+  _pingTimer = nil;  
 }
 
-- (void) cleanUpPingTimer
-{
-  [pingTimer invalidate];
-  pingTimer = nil;  
-}
-
-- (MUFilter *) createLogger
-{
-  if (profile)
-    return [profile createLogger];
-  else
-    return [MUTextLogger filter];
-}
-
-- (void) didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
+- (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
 {
   if (returnCode == NSAlertAlternateReturn) /* Cancel. */
   {
@@ -965,10 +955,10 @@ enum MUAbstractANSIColors
   }
 }
 
-- (void) disconnect
+- (void) _disconnect
 {
-  if (telnetConnection)
-    [telnetConnection close];
+  if (_telnetConnection)
+    [_telnetConnection close];
 }
 
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
@@ -993,11 +983,11 @@ enum MUAbstractANSIColors
     case MUSystemTextDisplayMode:
     case MUNormalTextDisplayMode:
       [receivedTextView.textStorage beginEditing];
-      [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: attributedString]];
+      [receivedTextView.textStorage appendAttributedString: [_filterQueue processCompleteLine: attributedString]];
       _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
       
       if (_currentPrompt)
-        [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: _currentPrompt]];
+        [receivedTextView.textStorage appendAttributedString: [_filterQueue processPartialLine: _currentPrompt]];
       
       [receivedTextView.textStorage endEditing];
       
@@ -1007,7 +997,7 @@ enum MUAbstractANSIColors
       _currentPrompt = [attributedString copy];
       
       [receivedTextView.textStorage beginEditing];
-      [receivedTextView.textStorage appendAttributedString: [filterQueue processPartialLine: attributedString]];
+      [receivedTextView.textStorage appendAttributedString: [_filterQueue processPartialLine: attributedString]];
       [receivedTextView.textStorage endEditing];
       
       break;
@@ -1028,7 +1018,7 @@ enum MUAbstractANSIColors
       }
       
       [receivedTextView.textStorage beginEditing];
-      [receivedTextView.textStorage appendAttributedString: [filterQueue processCompleteLine: combinedString]];
+      [receivedTextView.textStorage appendAttributedString: [_filterQueue processCompleteLine: combinedString]];
       [receivedTextView.textStorage endEditing];
       _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
       break;
@@ -1040,42 +1030,37 @@ enum MUAbstractANSIColors
   if (needsScrollToBottom)
     [self _scrollDisplayViewToBottom];
   
-  [self postConnectionWindowControllerDidReceiveTextNotification];  
+  [self _postConnectionWindowControllerDidReceiveTextNotification];
 }
 
-- (void) endCompletion
+- (void) _endCompletion
 {
-  currentlySearching = NO;
-  [historyRing resetSearchCursor];
+  _currentlySearching = NO;
+  [_historyRing resetSearchCursor];
 }
 
-- (BOOL) isUsingTelnet: (MUMUDConnection *) telnet
-{
-  return telnetConnection == telnet;
-}
-
-- (void) postConnectionWindowControllerDidReceiveTextNotification
+- (void) _postConnectionWindowControllerDidReceiveTextNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUConnectionWindowControllerDidReceiveTextNotification
   																										object: self];
 }
 
-- (void) postConnectionWindowControllerWillCloseNotification
+- (void) _postConnectionWindowControllerWillCloseNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUConnectionWindowControllerWillCloseNotification
                                                       object: self];
 }
 
-- (void) prepareDelayedReportWindowSizeToServer
+- (void) _prepareDelayedReportWindowSizeToServer
 {
-  if (windowSizeNotificationTimer)
+  if (_windowSizeNotificationTimer)
     return;
   
-  windowSizeNotificationTimer = [NSTimer scheduledTimerWithTimeInterval: 0.01
-                                                                 target: self
-                                                               selector: @selector (triggerDelayedReportWindowSizeToServer)
-                                                               userInfo: nil
-                                                                repeats: NO];
+  _windowSizeNotificationTimer = [NSTimer scheduledTimerWithTimeInterval: 0.01
+                                                                  target: self
+                                                                selector: @selector (_triggerDelayedReportWindowSizeToServer:)
+                                                                userInfo: nil
+                                                                 repeats: NO];
 }
 
 - (void) _scrollDisplayViewToBottom
@@ -1083,12 +1068,12 @@ enum MUAbstractANSIColors
   [receivedTextView scrollRangeToVisible: NSMakeRange (receivedTextView.textStorage.length, 0) animate: YES];
 }
 
-- (void) sendPeriodicPing: (NSTimer *) timer
+- (void) _sendPeriodicPing: (NSTimer *) timer
 {
-  [telnetConnection writeLine: @"@@"];
+  [_telnetConnection writeLine: @"@@"];
 }
 
-- (void) setTextViewsNeedDisplay: (NSNotification *) notification
+- (void) _setTextViewsNeedDisplay: (NSNotification *) notification
 {
   [receivedTextView setNeedsDisplay: YES];
   [inputView setNeedsDisplay: YES];
@@ -1100,49 +1085,49 @@ enum MUAbstractANSIColors
           || 1.0 - receivedTextView.enclosingScrollView.verticalScroller.floatValue < 0.000001);
 }
 
-- (NSString *) splitViewAutosaveName
+- (NSString *) _splitViewAutosaveName
 {
-  return [NSString stringWithFormat: @"%@.split", profile.uniqueIdentifier];
+  return [NSString stringWithFormat: @"%@.split", _profile.uniqueIdentifier];
 }
 
-- (void) tabCompleteWithDirection: (enum MUSearchDirections) direction
+- (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction
 {
   NSString *currentPrefix;
   
-  if (currentlySearching)
+  if (_currentlySearching)
   {
     currentPrefix = [[inputView.string copy] substringToIndex: inputView.selectedRange.location];
     
-    if ([historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
+    if ([_historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
       inputView.selectedRange = NSMakeRange (inputView.textStorage.length, 0);
-      [self endCompletion];
+      [self _endCompletion];
       return;
     }
   }
   else
     currentPrefix = [inputView.string copy];
   
-  NSString *foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
-                                                : [historyRing searchForwardForStringPrefix: currentPrefix];
+  NSString *foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
+                                                : [_historyRing searchForwardForStringPrefix: currentPrefix];
   
   if (foundString)
   {
     while ([foundString isEqualToString: inputView.string])
-      foundString = (direction == MUBackwardSearch) ? [historyRing searchBackwardForStringPrefix: currentPrefix]
-                                                    : [historyRing searchForwardForStringPrefix: currentPrefix];
+      foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
+                                                    : [_historyRing searchForwardForStringPrefix: currentPrefix];
     
     inputView.string = foundString;
     inputView.selectedRange = NSMakeRange (currentPrefix.length, inputView.textStorage.length - currentPrefix.length);
   }
   
-  currentlySearching = YES;
+  _currentlySearching = YES;
 }
 
-- (void) triggerDelayedReportWindowSizeToServer
+- (void) _triggerDelayedReportWindowSizeToServer: (NSTimer *) timer
 {
-  [windowSizeNotificationTimer invalidate];
-  windowSizeNotificationTimer = nil;
+  [_windowSizeNotificationTimer invalidate];
+  _windowSizeNotificationTimer = nil;
   [self reportWindowSizeToServer];
 }
 
@@ -1320,7 +1305,7 @@ enum MUAbstractANSIColors
         && [attributes[MUCustomBackgroundColorAttributeName] intValue] == MUDefaultBackgroundColorTag)
     {
       [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
-                                           value: profile.effectiveBackgroundColor
+                                           value: _profile.effectiveBackgroundColor
                                            range: attributeRange];
     }
     
@@ -1347,13 +1332,13 @@ enum MUAbstractANSIColors
         && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDisplayBrightAsBold])
     {
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
-                                           value: [profile.effectiveFont boldFontWithRespectTo: profile.effectiveFont]
+                                           value: [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont]
                                            range: attributeRange];
     }
     else
     {
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
-                                           value: profile.effectiveFont
+                                           value: _profile.effectiveFont
                                            range: attributeRange];
     }
     
@@ -1373,7 +1358,7 @@ enum MUAbstractANSIColors
 {
   NSMutableDictionary *linkTextAttributes = [receivedTextView.linkTextAttributes mutableCopy];
   
-  linkTextAttributes[NSForegroundColorAttributeName] = profile.effectiveLinkColor;
+  linkTextAttributes[NSForegroundColorAttributeName] = _profile.effectiveLinkColor;
   
   receivedTextView.linkTextAttributes = linkTextAttributes;
   receivedTextView.needsDisplay = YES;
@@ -1393,7 +1378,7 @@ enum MUAbstractANSIColors
       [receivedTextView.textStorage addAttribute: ([attributes objectForKey: MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName
                                                    : NSForegroundColorAttributeName)
-                                           value: profile.effectiveTextColor
+                                           value: _profile.effectiveTextColor
                                            range: attributeRange];
     }
     
@@ -1404,12 +1389,12 @@ enum MUAbstractANSIColors
   inputView.needsDisplay = YES;
 }
 
-- (void) willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
+- (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
 {
   if (returnCode == NSAlertDefaultReturn) /* Close. */
   {
     if (self.isConnectedOrConnecting)
-      [self disconnect];
+      [self _disconnect];
     
     [self.window close];
 

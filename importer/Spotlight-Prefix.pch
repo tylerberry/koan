@@ -1,0 +1,9 @@
+//
+// Spotlight-Prefix.pch
+//
+// Copyright (c) 2013 3James Software.
+//
+
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#endif

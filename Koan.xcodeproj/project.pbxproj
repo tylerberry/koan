@@ -356,6 +356,7 @@
 		2F93AB2A166B40D2006516F5 /* VolumeMax@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "VolumeMax@2x.tiff"; sourceTree = "<group>"; };
 		2F93AB2B166B40D2006516F5 /* VolumeMin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = VolumeMin.tiff; sourceTree = "<group>"; };
 		2F93AB2C166B40D2006516F5 /* VolumeMin@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "VolumeMin@2x.tiff"; sourceTree = "<group>"; };
+		2F940FB51693C38400E1CF39 /* Spotlight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Spotlight-Prefix.pch"; sourceTree = "<group>"; };
 		2F97B0AD16337BF000B33F4A /* MUWorldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWorldViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWorldViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F97B0B016337C2900B33F4A /* MUPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPlayerViewController.h; sourceTree = "<group>"; };
@@ -914,6 +915,7 @@
 				2FE367EC0BCAD35E0068A6AA /* MUSpotlightImporterMain.c */,
 				2FE3691E0BCAD8370068A6AA /* schema.strings */,
 				2FE368420BCAD5DB0068A6AA /* schema.xml */,
+				2F940FB51693C38400E1CF39 /* Spotlight-Prefix.pch */,
 			);
 			name = "Spotlight Importer";
 			path = importer;
@@ -1740,6 +1742,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "importer/Spotlight-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "importer/Importer-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Spotlight";
@@ -1754,6 +1758,8 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "importer/Spotlight-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "importer/Importer-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Spotlight";

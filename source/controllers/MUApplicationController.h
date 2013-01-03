@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
 #import "MUProfilesWindowController.h"

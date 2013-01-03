@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 3James Software. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface MULayoutManager : NSLayoutManager
 
 @end

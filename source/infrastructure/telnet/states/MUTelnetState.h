@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "MUTelnetConstants.h"
 #import "MUTelnetProtocolHandler.h"
 #import "MUTelnetStateMachine.h"

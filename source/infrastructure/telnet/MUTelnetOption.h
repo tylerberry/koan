@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #define TELNET_OPTION_MAX UINT8_MAX
 
 // This implements the Telnet Q Method: <http://rfc.net/rfc1143.html>

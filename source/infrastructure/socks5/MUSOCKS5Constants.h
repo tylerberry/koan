@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 enum MUSOCKS5Miscellaneous
 {
   MUSOCKS5Version = 0x05,

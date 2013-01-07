@@ -243,7 +243,7 @@
 														<int key="NSTCFlags">1</int>
 													</object>
 													<object class="NSTextViewSharedData" key="NSSharedData">
-														<int key="NSFlags">67119429</int>
+														<int key="NSFlags">10565</int>
 														<int key="NSTextCheckingTypes">0</int>
 														<nil key="NSMarkedAttributes"/>
 														<object class="NSColor" key="NSBackgroundColor" id="152545664">
@@ -283,7 +283,12 @@
 															<integer value="1" key="NSUnderline"/>
 														</dictionary>
 														<nil key="NSDefaultParagraphStyle"/>
-														<nil key="NSTextFinder"/>
+														<object class="NSTextFinder" key="NSTextFinder">
+															<reference key="NSTextFinderClient" ref="684670211"/>
+															<int key="NSTextFinderStyle">1</int>
+															<bool key="NSIncrementalSearchingEnabled">NO</bool>
+															<bool key="NSIncrementalSearchingShouldDimContentView">YES</bool>
+														</object>
 														<int key="NSPreferredTextFinderStyle">1</int>
 													</object>
 													<int key="NSTVFlags">6</int>
@@ -655,7 +660,7 @@ wGw</bytes>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="179891519">
 								<int key="NSCellFlags">68157504</int>
-								<int key="NSCellFlags2">71304192</int>
+								<int key="NSCellFlags2">-2076179456</int>
 								<string key="NSContents">3:04:11</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
@@ -912,6 +917,7 @@ wGw</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">182</int>
 						<reference key="object" ref="179891519"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="755075144"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -996,7 +1002,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">211</int>
+			<int key="maxID">212</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

@@ -151,9 +151,15 @@
     [super pasteAsPlainText: sender];
 }
 
-- (IBAction) pasteAsRichText: (id) sender
+- (IBAction) performFindPanelAction: (id) sender
 {
-  [self pasteAsPlainText: sender];
+  BOOL result = NO;
+  
+  if ([self.pasteDelegate respondsToSelector: @selector (textView:performFindPanelAction:)])
+    result = [self.pasteDelegate textView: self performFindPanelAction: sender];
+  
+  if (!result)
+    [super performFindPanelAction: sender];
 }
 
 @end

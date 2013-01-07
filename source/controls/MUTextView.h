@@ -29,5 +29,6 @@
 
 - (BOOL) textView: (MUTextView *) textView insertText: (id) string;
 - (BOOL) textView: (MUTextView *) textView pasteAsPlainText: (id) originalSender;
+- (BOOL) textView: (MUTextView *) textView performFindPanelAction: (id) originalSender;
 
 @end

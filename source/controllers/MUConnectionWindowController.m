@@ -68,6 +68,7 @@ enum MUAbstractANSIColors
   NSRange _currentTextRangeWithoutPrompt;
   
   NSTimer *_pingTimer;
+  NSTimer *_timeConnectedFieldTimer;
   NSTimer *_windowSizeNotificationTimer;
 }
 
@@ -84,6 +85,7 @@ enum MUAbstractANSIColors
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification;
 - (BOOL) _shouldScrollDisplayViewToBottom;
 - (NSString *) _splitViewAutosaveName;
+- (void) _stopTimeConnectedFieldTimer;
 - (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction;
 - (void) _triggerDelayedReportWindowSizeToServer: (NSTimer *) timer;
 - (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color;
@@ -91,6 +93,7 @@ enum MUAbstractANSIColors
 - (void) _updateFonts;
 - (void) _updateLinkTextColor;
 - (void) _updateTextColor;
+- (void) _updateTimeConnectedField: (NSTimer *) timer;
 - (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 
 #pragma mark - User defaults key path string methods
@@ -176,6 +179,14 @@ enum MUAbstractANSIColors
   
   if ([self.window respondsToSelector: @selector (setCollectionBehavior:)])
     [self.window setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+  
+  // And we can use the find bar and incremental searching.
+  
+  if ([receivedTextView respondsToSelector: @selector (setUsesFindBar:)])
+    [receivedTextView setUsesFindBar: YES];
+  
+  if ([receivedTextView respondsToSelector: @selector (setIncrementalSearchingEnabled:)])
+    [receivedTextView setIncrementalSearchingEnabled: YES];
   
   // Set the initial link text color.
   
@@ -673,6 +684,12 @@ enum MUAbstractANSIColors
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionOpenedForTitle: _profile.windowTitle];
   
+  _timeConnectedFieldTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1
+                                                              target: self
+                                                            selector: @selector (_updateTimeConnectedField:)
+                                                            userInfo: nil
+                                                             repeats: YES];
+  
   if (_profile.hasLoginInformation)
     [_telnetConnection writeLine: _profile.loginString];
 }
@@ -686,6 +703,7 @@ enum MUAbstractANSIColors
 - (void) telnetConnectionWasClosedByClient: (NSNotification *) notification
 {
   [self _cleanUpPingTimer];
+  [self _stopTimeConnectedFieldTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedForTitle: _profile.windowTitle];
@@ -694,6 +712,7 @@ enum MUAbstractANSIColors
 - (void) telnetConnectionWasClosedByServer: (NSNotification *) notification
 {
   [self _cleanUpPingTimer];
+  [self _stopTimeConnectedFieldTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByServerForTitle: _profile.windowTitle];
@@ -701,8 +720,11 @@ enum MUAbstractANSIColors
 
 - (void) telnetConnectionWasClosedWithError: (NSNotification *) notification
 {
-  NSString *errorMessage = [[notification userInfo] valueForKey: MUMUDConnectionErrorMessageKey];
   [self _cleanUpPingTimer];
+  [self _stopTimeConnectedFieldTimer];
+  
+  NSString *errorMessage = [[notification userInfo] valueForKey: MUMUDConnectionErrorMessageKey];
+  
   [self _displayString: [NSString stringWithFormat: @"%@\n",
                          [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
        textDisplayMode: MUSystemTextDisplayMode];
@@ -739,6 +761,16 @@ enum MUAbstractANSIColors
   {
     [self _endCompletion];
     return NO;
+  }
+  return NO;
+}
+
+- (BOOL) textView: (MUTextView *) textView performFindPanelAction: (id) originalSender
+{
+  if (textView == inputView)
+  {
+    [receivedTextView performFindPanelAction: originalSender];
+    return YES;
   }
   return NO;
 }
@@ -1090,6 +1122,15 @@ enum MUAbstractANSIColors
   return [NSString stringWithFormat: @"%@.split", _profile.uniqueIdentifier];
 }
 
+- (void) _stopTimeConnectedFieldTimer
+{
+  [_timeConnectedFieldTimer invalidate];
+  _timeConnectedFieldTimer = nil;
+  
+  timeConnectedField.stringValue = @"Disconnected";
+  [timeConnectedField setEnabled: NO];
+}
+
 - (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction
 {
   NSString *currentPrefix;
@@ -1387,6 +1428,27 @@ enum MUAbstractANSIColors
   
   receivedTextView.needsDisplay = YES;
   inputView.needsDisplay = YES;
+}
+
+- (void) _updateTimeConnectedField: (NSTimer *) timer
+{
+  NSDate *now = [NSDate date];
+  
+  NSUInteger componentUnits = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+  NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components: componentUnits
+                                                                     fromDate: _telnetConnection.dateConnected
+                                                                       toDate: now
+                                                                      options: 0];
+  
+  if (dateComponents.day > 0)
+    timeConnectedField.stringValue = [NSString stringWithFormat: @"%ld:%02ld:%02ld:%02ld",
+                                      dateComponents.day, dateComponents.hour, dateComponents.minute, dateComponents.second];
+  else if (dateComponents.hour > 0)
+    timeConnectedField.stringValue = [NSString stringWithFormat: @"%ld:%02ld:%02ld",
+                                      dateComponents.hour, dateComponents.minute, dateComponents.second];
+  else
+    timeConnectedField.stringValue = [NSString stringWithFormat: @"%ld:%02ld",
+                                      dateComponents.minute, dateComponents.second];
 }
 
 - (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo

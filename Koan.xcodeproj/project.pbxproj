@@ -53,10 +53,6 @@
 		2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 2F6C72A90BB46BD000709320 /* Koan.sdef */; };
 		2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */; };
 		2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F9F191633F7990071AE70 /* MUProfileViewController.m */; };
-		2F7092C112239AF900E0D178 /* CTBadge_1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */; };
-		2F7092C212239AF900E0D178 /* CTBadge_3.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */; };
-		2F7092C312239AF900E0D178 /* CTBadge_4.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092BF12239AF900E0D178 /* CTBadge_4.pdf */; };
-		2F7092C412239AF900E0D178 /* CTBadge_5.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2F7092C012239AF900E0D178 /* CTBadge_5.pdf */; };
 		2F7093D61223B3F000E0D178 /* Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = 2F7093D51223B3F000E0D178 /* Growl Registration Ticket.growlRegDict */; };
 		2F7A2E72166F393E00FEB109 /* ATImageTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */; };
 		2F7B4F3B0BCAB87B00C1586D /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
@@ -323,10 +319,6 @@
 		2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMCPProtocolHandler.m; sourceTree = "<group>"; };
 		2F6F9F181633F7990071AE70 /* MUProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileViewController.h; sourceTree = "<group>"; };
 		2F6F9F191633F7990071AE70 /* MUProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileViewController.m; sourceTree = "<group>"; };
-		2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_1.pdf; sourceTree = "<group>"; };
-		2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_3.pdf; sourceTree = "<group>"; };
-		2F7092BF12239AF900E0D178 /* CTBadge_4.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_4.pdf; sourceTree = "<group>"; };
-		2F7092C012239AF900E0D178 /* CTBadge_5.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = CTBadge_5.pdf; sourceTree = "<group>"; };
 		2F7093D51223B3F000E0D178 /* Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
 		2F7A2E70166F393E00FEB109 /* ATImageTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ATImageTextCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ATImageTextCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -673,7 +665,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2F7092BC12239AEE00E0D178 /* Badges */,
 				E6B5E3AA06A6EE0C00F53EBB /* Xibs */,
 				2F7093D51223B3F000E0D178 /* Growl Registration Ticket.growlRegDict */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -797,17 +788,6 @@
 			);
 			name = Scripting;
 			path = scripting;
-			sourceTree = "<group>";
-		};
-		2F7092BC12239AEE00E0D178 /* Badges */ = {
-			isa = PBXGroup;
-			children = (
-				2F7092BD12239AF900E0D178 /* CTBadge_1.pdf */,
-				2F7092BE12239AF900E0D178 /* CTBadge_3.pdf */,
-				2F7092BF12239AF900E0D178 /* CTBadge_4.pdf */,
-				2F7092C012239AF900E0D178 /* CTBadge_5.pdf */,
-			);
-			name = Badges;
 			sourceTree = "<group>";
 		};
 		2F7094031223BB1B00E0D178 /* MCP */ = {
@@ -1372,10 +1352,6 @@
 				2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */,
 				2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */,
 				2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */,
-				2F7092C112239AF900E0D178 /* CTBadge_1.pdf in Resources */,
-				2F7092C212239AF900E0D178 /* CTBadge_3.pdf in Resources */,
-				2F7092C312239AF900E0D178 /* CTBadge_4.pdf in Resources */,
-				2F7092C412239AF900E0D178 /* CTBadge_5.pdf in Resources */,
 				2F7093D61223B3F000E0D178 /* Growl Registration Ticket.growlRegDict in Resources */,
 				2FB1F806161C045500AFD977 /* ActionTemplate.pdf in Resources */,
 				2FB1F807161C045500AFD977 /* AddTemplate.pdf in Resources */,

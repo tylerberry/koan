@@ -65,6 +65,7 @@
 "PreferencesWindowName" = "Preferences";
 "PreferencesFontsAndColors" = "Fonts and Colors";
 "PreferencesGeneral" = "General";
+"PreferencesLogging" = "Logging";
 "PreferencesProxy" = "Proxy";
 "PreferencesSounds" = "Sounds";
 "PreferencesChooseAnotherSound" = "Choose Another Sound…"; // Use ellipsis.

@@ -74,6 +74,8 @@
 		2F93AB2E166B40D2006516F5 /* VolumeMax@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2F93AB2A166B40D2006516F5 /* VolumeMax@2x.tiff */; };
 		2F93AB2F166B40D2006516F5 /* VolumeMin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2F93AB2B166B40D2006516F5 /* VolumeMin.tiff */; };
 		2F93AB30166B40D2006516F5 /* VolumeMin@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2F93AB2C166B40D2006516F5 /* VolumeMin@2x.tiff */; };
+		2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */; };
+		2F940FDA169ACCE500E1CF39 /* MULoggingPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F940FDC169ACCE500E1CF39 /* MULoggingPreferencesView.xib */; };
 		2F97B0AF16337BF000B33F4A /* MUWorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */; };
 		2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0B116337C2900B33F4A /* MUPlayerViewController.m */; };
 		2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0C01633905700B33F4A /* MUProfileContentView.m */; };
@@ -349,6 +351,9 @@
 		2F93AB2B166B40D2006516F5 /* VolumeMin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = VolumeMin.tiff; sourceTree = "<group>"; };
 		2F93AB2C166B40D2006516F5 /* VolumeMin@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "VolumeMin@2x.tiff"; sourceTree = "<group>"; };
 		2F940FB51693C38400E1CF39 /* Spotlight-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Spotlight-Prefix.pch"; sourceTree = "<group>"; };
+		2F940FD5169ACB3C00E1CF39 /* MULoggingPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULoggingPreferencesViewController.h; sourceTree = "<group>"; };
+		2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULoggingPreferencesViewController.m; sourceTree = "<group>"; };
+		2F940FDB169ACCE500E1CF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MULoggingPreferencesView.xib; sourceTree = "<group>"; };
 		2F97B0AD16337BF000B33F4A /* MUWorldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWorldViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWorldViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F97B0B016337C2900B33F4A /* MUPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPlayerViewController.h; sourceTree = "<group>"; };
@@ -761,6 +766,8 @@
 				2F3DBAC5165309750056D738 /* MUFontsAndColorsPreferencesViewController.m */,
 				2F6264531662FCF5008DDBF2 /* MUGeneralPreferencesViewController.h */,
 				2F6264541662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m */,
+				2F940FD5169ACB3C00E1CF39 /* MULoggingPreferencesViewController.h */,
+				2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */,
 				2F3DBAD1165374DD0056D738 /* MUSoundsPreferencesViewController.h */,
 				2F3DBAD2165374DD0056D738 /* MUSoundsPreferencesViewController.m */,
 				2F3DBAD6165387120056D738 /* MUProxyPreferencesViewController.h */,
@@ -1019,6 +1026,7 @@
 				2F67576A1671D2640067BFC4 /* MUFontsAndColorsPreferencesView.xib */,
 				2F6757671671D25D0067BFC4 /* MUGeneralPreferencesView.xib */,
 				2F6BE97D167250A7008CA6E6 /* MULogBrowser.xib */,
+				2F940FDC169ACCE500E1CF39 /* MULoggingPreferencesView.xib */,
 				2F6BE97F167250A7008CA6E6 /* MUMainMenu.xib */,
 				2F6BE981167250A7008CA6E6 /* MUProfilesWindow.xib */,
 				2F6757611671D2420067BFC4 /* MUProxyPreferencesView.xib */,
@@ -1366,6 +1374,7 @@
 				2F93AB2E166B40D2006516F5 /* VolumeMax@2x.tiff in Resources */,
 				2F93AB2F166B40D2006516F5 /* VolumeMin.tiff in Resources */,
 				2F93AB30166B40D2006516F5 /* VolumeMin@2x.tiff in Resources */,
+				2F940FDA169ACCE500E1CF39 /* MULoggingPreferencesView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1552,6 +1561,7 @@
 				2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */,
 				2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
+				2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1683,6 +1693,14 @@
 				2F6BE982167250A7008CA6E6 /* en */,
 			);
 			name = MUProfilesWindow.xib;
+			sourceTree = "<group>";
+		};
+		2F940FDC169ACCE500E1CF39 /* MULoggingPreferencesView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F940FDB169ACCE500E1CF39 /* en */,
+			);
+			name = MULoggingPreferencesView.xib;
 			sourceTree = "<group>";
 		};
 		2FE3691E0BCAD8370068A6AA /* schema.strings */ = {

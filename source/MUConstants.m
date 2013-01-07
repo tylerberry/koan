@@ -67,6 +67,11 @@ NSString * const MUSlowBlinkAttributeName = @"MUSlowBlink";
 NSString * const MUCustomForegroundColorAttributeName = @"MUCustomForegroundColor";
 NSString * const MUCustomBackgroundColorAttributeName = @"MUCustomBackgroundColor";
 
+#pragma mark Pasteboard type constants.
+
+NSString * const MUPlayerPasteboardType = @"MUPlayerPasteboardType";
+NSString * const MUWorldPasteboardType = @"MUWorldPasteboardType";
+
 #pragma mark Notification constants.
 
 NSString * const MUConnectionWindowControllerWillCloseNotification = @"MUConnectionWindowControllerWillCloseNotification";
@@ -123,6 +128,7 @@ NSString * const MULConfirmQuitMessage = @"ConfirmQuitMessage";
 NSString * const MULPreferencesWindowName = @"PreferencesWindowName";
 NSString * const MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
 NSString * const MULPreferencesGeneral = @"PreferencesGeneral";
+NSString * const MULPreferencesLogging = @"PreferencesLogging";
 NSString * const MULPreferencesProxy = @"PreferencesProxy";
 NSString * const MULPreferencesSounds = @"PreferencesSounds";
 NSString * const MULPreferencesChooseAnotherSound = @"PreferencesChooseAnotherSound";

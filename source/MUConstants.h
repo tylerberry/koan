@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #pragma mark Application constants.
 
 extern NSString * const MUApplicationName;
@@ -97,6 +95,11 @@ enum MUCustomColorTags
   MUANSI256FixedColorTag
 };
 
+#pragma mark Pasteboard type constants.
+
+extern NSString * const MUPlayerPasteboardType;
+extern NSString * const MUWorldPasteboardType;
+
 #pragma mark Notification constants.
 
 extern NSString * const MUConnectionWindowControllerWillCloseNotification;
@@ -139,6 +142,7 @@ extern NSString * const MULConnectionClosedByError;
 extern NSString * const MULPreferencesWindowName;
 extern NSString * const MULPreferencesFontsAndColors;
 extern NSString * const MULPreferencesGeneral;
+extern NSString * const MULPreferencesLogging;
 extern NSString * const MULPreferencesProxy;
 extern NSString * const MULPreferencesSounds;
 extern NSString * const MULPreferencesChooseAnotherSound;

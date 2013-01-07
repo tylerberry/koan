@@ -24,8 +24,6 @@
 //   DEALINGS IN THE SOFTWARE.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface NSObject (BetterHashing)
 
 - (NSUInteger) betterHash;

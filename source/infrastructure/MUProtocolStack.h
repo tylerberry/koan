@@ -4,13 +4,21 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "MUMUDConnectionState.h"
 #import "MUProtocolHandler.h"
 
 @class MUProtocolStack;
-@protocol MUProtocolStackDelegate;
+
+@protocol MUProtocolStackDelegate
+
+@required
+- (void) displayDataAsText: (NSData *) parsedData;
+- (void) displayDataAsPrompt: (NSData *) parsedData;
+- (void) writeDataToSocket: (NSData *) preprocessedData;
+
+@end
+
+#pragma mark -
 
 @interface MUProtocolStack : NSObject <MUProtocolHandler>
 
@@ -25,16 +33,5 @@
 
 - (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler;
 - (void) clearAllProtocols;
-
-@end
-
-#pragma mark -
-
-@protocol MUProtocolStackDelegate
-
-@required
-- (void) displayDataAsText: (NSData *) parsedData;
-- (void) displayDataAsPrompt: (NSData *) parsedData;
-- (void) writeDataToSocket: (NSData *) preprocessedData;
 
 @end

@@ -4,7 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "Cocoa/Cocoa.h"
 #import "NSString (CodePage437).h"
 
 @implementation NSString (CodePage437)

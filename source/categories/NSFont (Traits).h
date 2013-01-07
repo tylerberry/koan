@@ -24,8 +24,6 @@
 //   DEALINGS IN THE SOFTWARE.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface NSFont (Traits)
 
 @property (unsafe_unretained, readonly) BOOL isBold;

@@ -24,8 +24,6 @@
 //   DEALINGS IN THE SOFTWARE.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface NSAttributedString (Allocating)
 
 + (NSAttributedString *) attributedStringWithAttributedString: (NSAttributedString *) source;

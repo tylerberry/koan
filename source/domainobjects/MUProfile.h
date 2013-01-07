@@ -4,7 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "MUWorld.h"
 #import "MUPlayer.h"
 #import "MUFilter.h"

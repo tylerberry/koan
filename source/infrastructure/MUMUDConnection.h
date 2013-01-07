@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "MUByteDestination.h"
 #import "MUByteSource.h"
 #import "MUAbstractConnection.h"

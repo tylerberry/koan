@@ -4,7 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
 #import <Growl/GrowlApplicationBridge.h>
 
 @interface MUGrowlService : NSObject <GrowlApplicationBridgeDelegate>

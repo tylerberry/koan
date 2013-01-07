@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @protocol MUReadBuffer
 
 - (void) appendByte: (uint8_t) byte;

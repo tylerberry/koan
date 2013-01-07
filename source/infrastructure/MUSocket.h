@@ -4,12 +4,11 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <netinet/in.h>
-
 #import "MUByteDestination.h"
 #import "MUByteSource.h"
 #import "MUAbstractConnection.h"
+
+#include <netinet/in.h>
 
 @protocol MUSocketDelegate;
 

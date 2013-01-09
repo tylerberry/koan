@@ -19,21 +19,30 @@ NSString * const MUSparkleURLString = @"http://sparkle.andymatuschak.org/";
 
 #pragma mark User defaults constants.
 
-NSString * const MUPBackgroundColor = @"MUPBackgroundColor";
-NSString * const MUPFont = @"MUPFont";
-NSString * const MUPLinkColor = @"MUPLinkColor";
-NSString * const MUPTextColor = @"MUPTextColor";
-NSString * const MUPSystemTextColor = @"MUPSystemTextColor";
 NSString * const MUPWorlds = @"MUPWorlds";
 NSString * const MUPProfiles = @"MUPProfiles";
 NSString * const MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
-NSString * const MUPProxySettings = @"MUPProxySettings";
-NSString * const MUPUseProxy = @"MUPUseProxy";
+
+// General.
+
+NSString * const MUPAutomaticReconnect = @"MUPAutomaticReconnect";
+NSString * const MUPLimitAutomaticReconnect = @"MUPLimitAutomaticReconnect";
+NSString * const MUPAutomaticReconnectCount = @"MUPAutomaticReconnectCount";
+
+// Sounds.
 
 NSString * const MUPPlaySounds = @"MUPPlaySounds";
 NSString * const MUPPlayWhenActive = @"MUPPlayWhenActive";
 NSString * const MUPSoundChoice = @"MUPSoundChoice";
 NSString * const MUPSoundVolume = @"MUPSoundVolume";
+
+// Colors.
+
+NSString * const MUPBackgroundColor = @"MUPBackgroundColor";
+NSString * const MUPFont = @"MUPFont";
+NSString * const MUPLinkColor = @"MUPLinkColor";
+NSString * const MUPTextColor = @"MUPTextColor";
+NSString * const MUPSystemTextColor = @"MUPSystemTextColor";
 
 NSString * const MUPANSIBlackColor = @"MUPANSIBlackColor";
 NSString * const MUPANSIRedColor = @"MUPANSIRedColor";
@@ -54,6 +63,11 @@ NSString * const MUPANSIBrightCyanColor = @"MUPANSIBrightCyanColor";
 NSString * const MUPANSIBrightWhiteColor = @"MUPANSIBrightWhiteColor";
 
 NSString * const MUPDisplayBrightAsBold = @"MUPDisplayBrightAsBold";
+
+// Proxy.
+
+NSString * const MUPProxySettings = @"MUPProxySettings";
+NSString * const MUPUseProxy = @"MUPUseProxy";
 
 #pragma mark Custom string attributes.
 

@@ -9,18 +9,20 @@
 #import "NSColor (ANSI).h"
 #import "NSObject (BetterHashing).h"
 
-#import "MUAcknowledgementsController.h"
 #import "MUFontsAndColorsPreferencesViewController.h"
+#import "MUGeneralPreferencesViewController.h"
+#import "MULoggingPreferencesViewController.h"
+#import "MUProxyPreferencesViewController.h"
+#import "MUSoundsPreferencesViewController.h"
+
+#import "MUAcknowledgementsController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
-#import "MUGeneralPreferencesViewController.h"
 #import "MUPlayer.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
-#import "MUProxyPreferencesViewController.h"
 #import "MUProxySettings.h"
 #import "MUSocketFactory.h"
-#import "MUSoundsPreferencesViewController.h"
 #import "MUWorld.h"
 #import "MUWorldRegistry.h"
 
@@ -197,6 +199,7 @@
     NSArray *preferenceViewControllers = @[[[MUGeneralPreferencesViewController alloc] init],
     [[MUFontsAndColorsPreferencesViewController alloc] init],
     [[MUSoundsPreferencesViewController alloc] init],
+    [[MULoggingPreferencesViewController alloc] init],
     [[MUProxyPreferencesViewController alloc] init]];
     
     _preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers: preferenceViewControllers
@@ -356,6 +359,10 @@
   
   //initialValues[@"NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints"] = @YES;
   
+  initialValues[MUPAutomaticReconnect] = @YES;
+  initialValues[MUPLimitAutomaticReconnect] = @YES;
+  initialValues[MUPAutomaticReconnectCount] = @3;
+  
   initialValues[MUPFont] = [NSArchiver archivedDataWithRootObject:
                             [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]]];
   
@@ -387,9 +394,9 @@
   initialValues[MUPPlaySounds] = @YES;
   initialValues[MUPPlayWhenActive] = @NO;
   initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
-  initialValues[MUPSoundVolume] = @(1.0);
+  initialValues[MUPSoundVolume] = @1.0;
   
-  initialValues[MUPUseProxy] = @(0);
+  initialValues[MUPUseProxy] = @0;
   initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];

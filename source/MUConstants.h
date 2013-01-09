@@ -17,21 +17,32 @@ extern NSString * const MUSparkleURLString;
 
 #pragma mark User defaults constants.
 
-extern NSString * const MUPBackgroundColor;
-extern NSString * const MUPFont;
-extern NSString * const MUPLinkColor;
-extern NSString * const MUPTextColor;
+// Stuff stored in user defaults that isn't in preferences exactly.
+
 extern NSString * const MUPWorlds;
 extern NSString * const MUPProfiles;
 extern NSString * const MUPProfilesOutlineViewState;
-extern NSString * const MUPSystemTextColor;
-extern NSString * const MUPProxySettings;
-extern NSString * const MUPUseProxy;
+
+// General.
+
+extern NSString * const MUPAutomaticReconnect;
+extern NSString * const MUPLimitAutomaticReconnect;
+extern NSString * const MUPAutomaticReconnectCount;
+
+// Sounds.
 
 extern NSString * const MUPPlaySounds;
 extern NSString * const MUPPlayWhenActive;
 extern NSString * const MUPSoundChoice;
 extern NSString * const MUPSoundVolume;
+
+// Colors.
+
+extern NSString * const MUPBackgroundColor;
+extern NSString * const MUPFont;
+extern NSString * const MUPLinkColor;
+extern NSString * const MUPSystemTextColor;
+extern NSString * const MUPTextColor;
 
 extern NSString * const MUPANSIBlackColor;
 extern NSString * const MUPANSIRedColor;
@@ -52,6 +63,11 @@ extern NSString * const MUPANSIBrightCyanColor;
 extern NSString * const MUPANSIBrightWhiteColor;
 
 extern NSString * const MUPDisplayBrightAsBold;
+
+// Proxy.
+
+extern NSString * const MUPProxySettings;
+extern NSString * const MUPUseProxy;
 
 #pragma mark Custom string attributes.
 

@@ -6,7 +6,6 @@
 
 #import "MUConnectPanelController.h"
 
-#import "MUPortFormatter.h"
 #import "MUWorldRegistry.h"
 
 @implementation MUConnectPanelController
@@ -21,9 +20,6 @@
 
 - (void) windowDidLoad
 {
-  MUPortFormatter *newConnectionPortFormatter = [[MUPortFormatter alloc] init];
-  newConnectionPortField.formatter = newConnectionPortFormatter;
-  
   newConnectionHostnameField.objectValue = nil;
   newConnectionPortField.objectValue = nil;
   newConnectionSaveWorldButton.state = NSOffState;
@@ -34,7 +30,7 @@
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
   MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
-                                         port: @(newConnectionPortField.intValue)];;
+                                         port: @(newConnectionPortField.intValue)];
   
   if ([newConnectionSaveWorldButton state] == NSOnState)
   {

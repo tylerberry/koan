@@ -41,7 +41,7 @@
   NSMutableData *subnegotiationBuffer;
   
   NSObject <MUTelnetProtocolHandlerDelegate> *delegate;
-  MUTelnetOption *options[TELNET_OPTION_MAX];
+  MUTelnetOption *options[TELNET_OPTION_MAX + 1];
   BOOL receivedCR;
   BOOL optionRequestSent;
 }

@@ -53,7 +53,7 @@
     case MUTelnetEndOfRecord:
       if (!stateMachine.telnetConfirmed)
       {
-        [protocolHandler log: @"Not telnet: IAC EOR without receiving earlier telnet sequences."];
+        [protocolHandler log: @"  Telnet: IAC EOR without receiving earlier telnet sequences."];
         return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
       }
       
@@ -83,8 +83,16 @@
     case MUTelnetBeginSubnegotiation:
       if (!stateMachine.telnetConfirmed)
       {
-        [protocolHandler log: @"Not telnet: IAC SB without receiving earlier telnet sequences."];
-        return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
+        [protocolHandler log: @"  Telnet: IAC SB without receiving earlier telnet sequences."];
+        
+        // Ideally we would like to take the action below - drop into a non-telnet state if this awful violation of the
+        // telnet spec happens. Unfortunately, there are some MUDs that do send IAC SB without having negotiated any
+        // options, and it happens before any other data is sent from the MUD, so there's no possibility of detecting it
+        // in advance.
+        //
+        // Technically it would still be RFC-correct to go non-telnet here, but it would harm functionality.
+        
+        // return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
       }
       
       return [MUTelnetSubnegotiationOptionState state];
@@ -93,7 +101,7 @@
     default:
       if (!stateMachine.telnetConfirmed)
       {
-        [protocolHandler log: @"Not telnet: IAC SE without receiving earlier telnet sequences."];
+        [protocolHandler log: @"  Telnet: IAC SE without receiving earlier telnet sequences."];
         return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
       }
       

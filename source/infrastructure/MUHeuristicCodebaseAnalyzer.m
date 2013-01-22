@@ -127,6 +127,13 @@
   }
 }
 
+- (void) reset
+{
+  _definitiveCodebaseFound = NO;
+  self.codebase = MUCodebaseUnknown;
+  self.codebaseFamily = MUCodebaseFamilyUnknown;
+}
+
 #pragma mark - Codebase-specific behavior tweaks
 
 - (BOOL) shouldSuppressGoAhead

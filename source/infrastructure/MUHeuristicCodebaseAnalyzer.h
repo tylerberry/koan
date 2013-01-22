@@ -37,4 +37,6 @@ typedef enum MUCodebaseFamily
 - (void) noteTelnetWont: (uint8_t) byte;
 - (void) noteTextLine: (NSString *) text;
 
+- (void) reset;
+
 @end

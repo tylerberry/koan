@@ -412,7 +412,7 @@
 
 - (void) resetTest
 {
-  connectionState = [MUMUDConnectionState connectionState];
+  connectionState = [[MUMUDConnectionState alloc] init];
   
   protocolStack = [[MUProtocolStack alloc] initWithConnectionState: connectionState];
   protocolStack.delegate = self;

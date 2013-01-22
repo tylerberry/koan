@@ -63,7 +63,7 @@
 - (void) testIACTransitionsThatInvalidateTelnet
 {
   MUByteSet *byteSet = [[MUTelnetState telnetCommandBytes] inverseSet];
-  [byteSet addByte: MUTelnetBeginSubnegotiation];
+  //[byteSet addByte: MUTelnetBeginSubnegotiation];   // This used to invalidate Telnet, but can't due to server bugs.
   [byteSet addByte: MUTelnetEndSubnegotiation];
   NSData *bytes = [byteSet dataValue];
   for (unsigned i = 0; i < [bytes length]; ++i)

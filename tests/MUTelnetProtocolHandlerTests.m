@@ -12,6 +12,7 @@
 
 @interface MUTelnetProtocolHandlerTests ()
 {
+  MUMUDConnectionState *connectionState;
   MUProtocolStack *protocolStack;
   MUTelnetProtocolHandler *protocolHandler;
   NSMutableData *mockSocketData;
@@ -263,7 +264,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[11] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -272,7 +273,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 11]];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSUTF8StringEncoding];
 }
 
 - (void) testCharsetLatin1Accepted
@@ -281,7 +282,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[13] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1'};
   const uint8_t charsetReply[16] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -290,7 +291,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 13];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 16]];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSISOLatin1StringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSISOLatin1StringEncoding];
 }
 
 - (void) testCharsetRejected
@@ -299,7 +300,7 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[10] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'N', 'V', 'A', 'L', 'I', 'D'};
   const uint8_t charsetReply[6] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetRejected, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
@@ -308,14 +309,14 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 10];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 6]];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
 }
 
 - (void) testCharsetNonStandardBehavior
 {
   [self simulateDo: MUTelnetOptionCharset];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[17] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, MUTelnetInterpretAsCommand, MUTelnetWill, MUTelnetOptionTransmitBinary, MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTransmitBinary};
@@ -324,7 +325,7 @@
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 17]];
   
-  [self assertUInteger: protocolHandler.connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  [self assertUInteger: connectionState.stringEncoding equals: NSUTF8StringEncoding];
 }
 
 - (void) testDoEndOfRecord
@@ -411,7 +412,7 @@
 
 - (void) resetTest
 {
-  MUMUDConnectionState *connectionState = [MUMUDConnectionState connectionState];
+  connectionState = [MUMUDConnectionState connectionState];
   
   protocolStack = [[MUProtocolStack alloc] initWithConnectionState: connectionState];
   protocolStack.delegate = self;

@@ -8,15 +8,12 @@
 
 @implementation MUMUDConnectionState
 
-+ (id) connectionState
-{
-  return [[self alloc] init];
-}
-
-- (id) init
+- (id) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 {
   if (!(self = [super init]))
     return nil;
+  
+  _codebaseAnalyzer = [[MUHeuristicCodebaseAnalyzer alloc] initWithDelegate: newDelegate];
   
   _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   _isIncomingStreamCompressed = NO;
@@ -28,8 +25,15 @@
   return self;
 }
 
+- (id) init
+{
+  return [self initWithCodebaseAnalyzerDelegate: nil];
+}
+
 - (void) reset
 {
+  [_codebaseAnalyzer reset];
+  
   self.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   self.isIncomingStreamCompressed = NO;
   self.nextTerminalTypeIndex = 0;

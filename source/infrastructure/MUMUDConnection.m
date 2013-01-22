@@ -75,7 +75,7 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   if (!(self = [super init]))
     return nil;
   
-  _state = [MUMUDConnectionState connectionState];
+  _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: self];
   _dateConnected = nil;
   _socketFactory = factory;
   _hostname = [newHostname copy];
@@ -256,8 +256,12 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
                                                     length: parsedData.length
                                                   encoding: self.state.stringEncoding];
   
+  // This is a pseudo-encoding: if we are using ASCII, substitute in CP437 characters. 8BitMUSH for life!
+  
   if (self.state.stringEncoding == NSASCIIStringEncoding)
     parsedString = [parsedString stringWithCodePage437Substitutions];
+  
+  [self.state.codebaseAnalyzer noteTextLine: parsedString];
   
   [self.delegate displayString: parsedString];
 }
@@ -270,6 +274,8 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   
   if (self.state.stringEncoding == NSASCIIStringEncoding)
     parsedPromptString = [parsedPromptString stringWithCodePage437Substitutions];
+  
+  [self.state.codebaseAnalyzer notePrompt: parsedPromptString];
   
   [self.delegate displayPrompt: parsedPromptString];
 }

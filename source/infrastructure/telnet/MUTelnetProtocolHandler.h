@@ -11,7 +11,6 @@
 
 @class MUTelnetState;
 @class MUTelnetStateMachine;
-@protocol MUTelnetProtocolHandlerDelegate;
 @protocol MUWriteBuffer;
 
 #pragma mark -
@@ -34,6 +33,16 @@
 
 #pragma mark -
 
+@protocol MUTelnetProtocolHandlerDelegate
+
+@required
+- (void) log: (NSString *) message arguments: (va_list) args;
+- (void) reportWindowSizeToServer;
+
+@end
+
+#pragma mark -
+
 @interface MUTelnetProtocolHandler : MUProtocolHandler <MUTelnetProtocolHandler, MUTelnetOptionDelegate>
 {
   MUTelnetStateMachine *stateMachine;
@@ -45,8 +54,6 @@
   BOOL receivedCR;
   BOOL optionRequestSent;
 }
-
-@property (readonly) MUMUDConnectionState *connectionState;
 
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 - (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
@@ -63,15 +70,5 @@
 - (BOOL) optionYesForHim: (uint8_t) option;
 - (BOOL) optionYesForUs: (uint8_t) option;- (void) shouldAllowDo: (BOOL) value forOption: (uint8_t) option;
 - (void) shouldAllowWill: (BOOL) value forOption: (uint8_t) option;
-
-@end
-
-#pragma mark -
-
-@protocol MUTelnetProtocolHandlerDelegate
-
-@required
-- (void) log: (NSString *) message arguments: (va_list) args;
-- (void) reportWindowSizeToServer;
 
 @end

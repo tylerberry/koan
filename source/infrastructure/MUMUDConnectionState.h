@@ -4,6 +4,8 @@
 // Copyright (c) 2013 3James Software.
 //
 
+#import "MUHeuristicCodebaseAnalyzer.h"
+
 enum charsetNegotiationStatus
 {
   MUTelnetCharsetNegotiationInactive = 0,
@@ -13,6 +15,8 @@ enum charsetNegotiationStatus
 
 @interface MUMUDConnectionState : NSObject
 
+@property (strong, nonatomic) MUHeuristicCodebaseAnalyzer *codebaseAnalyzer;
+
 @property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
 @property (assign) BOOL isIncomingStreamCompressed;
 @property (assign) unsigned nextTerminalTypeIndex;
@@ -20,7 +24,7 @@ enum charsetNegotiationStatus
 @property (assign) BOOL serverWillEcho;
 @property (assign) NSStringEncoding stringEncoding;
 
-+ (id) connectionState;
+- (id) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 
 - (void) reset;
 

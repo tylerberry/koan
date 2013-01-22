@@ -18,6 +18,9 @@ static NSArray *offerableCharsets;
 #pragma mark -
 
 @interface MUTelnetProtocolHandler ()
+{
+  MUMUDConnectionState *_connectionState;
+}
 
 - (void) forOption: (uint8_t) option allowWill: (BOOL) willValue allowDo: (BOOL) doValue;
 - (void) initializeOptions;
@@ -231,6 +234,8 @@ static NSArray *offerableCharsets;
   }
   else if (option == MUTelnetOptionCharset)
     [self sendCharsetRequestSubnegotiation];
+  
+  [_connectionState.codebaseAnalyzer noteTelnetDo: option];
 }
 
 - (void) receivedDont: (uint8_t) option
@@ -239,6 +244,8 @@ static NSArray *offerableCharsets;
   
   if (option == MUTelnetOptionNegotiateAboutWindowSize)
     _connectionState.shouldReportWindowSizeChanges = NO;
+  
+  [_connectionState.codebaseAnalyzer noteTelnetDont: option];
 }
 
 - (void) receivedWill: (uint8_t) option
@@ -249,6 +256,8 @@ static NSArray *offerableCharsets;
     _connectionState.serverWillEcho = YES;
   else if (option == MUTelnetOptionMCCP2)
     [self forOption: MUTelnetOptionMCCP1 allowWill: NO allowDo: NO];
+  
+  [_connectionState.codebaseAnalyzer noteTelnetWill: option];
 }
 
 - (void) receivedWont: (uint8_t) option
@@ -257,6 +266,8 @@ static NSArray *offerableCharsets;
   
   if (option == MUTelnetOptionEcho)
     _connectionState.serverWillEcho = NO;
+  
+  [_connectionState.codebaseAnalyzer noteTelnetWont: option];
 }
 
 - (void) useBufferedDataAsPrompt
@@ -288,19 +299,19 @@ static NSArray *offerableCharsets;
 {
   NSMutableData *footerData = [NSMutableData dataWithData: data];
   
-  /*
   if ([self optionYesForUs: MUTelnetOptionEndOfRecord])
   {
     uint8_t endOfRecordBytes[] = {MUTelnetInterpretAsCommand, MUTelnetEndOfRecord};
     [footerData appendBytes: &endOfRecordBytes length: 2];
   }
   
-  if (stateMachine.telnetConfirmed && ![self optionYesForUs: MUTelnetOptionSuppressGoAhead])
+  if (stateMachine.telnetConfirmed
+      && ![self optionYesForUs: MUTelnetOptionSuppressGoAhead]
+      && _connectionState.codebaseAnalyzer.codebaseFamily != MUCodebaseFamilyPennMUSH) // PennMUSH chokes on IAC GA.
   {
     uint8_t goAheadBytes[] = {MUTelnetInterpretAsCommand, MUTelnetGoAhead};
     [footerData appendBytes: &goAheadBytes length: 2];
-  }
-  */
+  } 
   
   PASS_ON_PREPROCESSED_FOOTER_DATA (footerData);
 }
@@ -482,10 +493,10 @@ static NSArray *offerableCharsets;
       {
         if ([acceptableCharsets containsObject: charset])
         {
-          self.connectionState.stringEncoding = [self stringEncodingForName: charset];
+          _connectionState.stringEncoding = [self stringEncodingForName: charset];
           [self sendCharsetAcceptedSubnegotiationForCharset: charset];
           
-          if (self.connectionState.stringEncoding == NSASCIIStringEncoding)
+          if (_connectionState.stringEncoding == NSASCIIStringEncoding)
           {
             [self disableOptionForUs: MUTelnetOptionTransmitBinary];
             [self disableOptionForHim: MUTelnetOptionTransmitBinary];
@@ -505,7 +516,7 @@ static NSArray *offerableCharsets;
       
     case MUTelnetCharsetAccepted:
     {
-      if (self.connectionState.charsetNegotiationStatus != MUTelnetCharsetNegotiationActive)
+      if (_connectionState.charsetNegotiationStatus != MUTelnetCharsetNegotiationActive)
       {
         [self log: @"  Telnet: Received %@ ACCEPTED subnegotiation, but no active negotiation in progress.", [MUTelnetOption optionNameForByte: bytes[0]]];
       }
@@ -518,13 +529,13 @@ static NSArray *offerableCharsets;
       
       NSString *acceptedCharset = [[NSString alloc] initWithBytes: bytes + 2 length: length - 2 encoding: NSASCIIStringEncoding];
       
-      self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+      _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
       
       if ([acceptableCharsets containsObject: acceptedCharset])
       {
-        self.connectionState.stringEncoding = [self stringEncodingForName: acceptedCharset];
+        _connectionState.stringEncoding = [self stringEncodingForName: acceptedCharset];
         
-        if (self.connectionState.stringEncoding == NSASCIIStringEncoding)
+        if (_connectionState.stringEncoding == NSASCIIStringEncoding)
         {
           [self disableOptionForUs: MUTelnetOptionTransmitBinary];
           [self disableOptionForHim: MUTelnetOptionTransmitBinary];
@@ -544,10 +555,10 @@ static NSArray *offerableCharsets;
     }
       
     case MUTelnetCharsetRejected:
-      if (self.connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationInactive)
+      if (_connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationInactive)
         [self log: @"  Telnet: Received %@ REJECTED subnegotiation, but no active negotiation in progress.", length, [MUTelnetOption optionNameForByte: bytes[0]]];
       
-      self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+      _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
       
       if (length > 2)
         [self log: @"  Telnet: Invalid length of %u for %@ REJECTED subnegotiation. [%@]", length, [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
@@ -585,10 +596,10 @@ static NSArray *offerableCharsets;
   [charsetAcceptedData appendBytes: [charset cStringUsingEncoding: NSASCIIStringEncoding]
                             length: [charset lengthOfBytesUsingEncoding: NSASCIIStringEncoding]];
   
-  if (self.connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
-    self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationIgnoreRejected;
+  if (_connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
+    _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationIgnoreRejected;
   else
-    self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+    _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   
   [self sendSubnegotiationWithData: charsetAcceptedData];
   [self log: @"    Sent: IAC SB %@ ACCEPTED %@ IAC SE.", [MUTelnetOption optionNameForByte: MUTelnetOptionCharset], charset];
@@ -599,10 +610,10 @@ static NSArray *offerableCharsets;
   uint8_t bytes[] = {MUTelnetOptionCharset, MUTelnetCharsetRejected};
   NSMutableData *charsetRejectedData = [NSMutableData dataWithBytes: bytes length: 2];
   
-  if (self.connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
-    self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationIgnoreRejected;
+  if (_connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
+    _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationIgnoreRejected;
   else
-    self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+    _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   
   [self sendSubnegotiationWithData: charsetRejectedData];
   [self log: @"    Sent: IAC SB %@ REJECTED IAC SE.", [MUTelnetOption optionNameForByte: MUTelnetOptionCharset]];
@@ -610,7 +621,7 @@ static NSArray *offerableCharsets;
 
 - (void) sendCharsetRequestSubnegotiation
 {
-  if (self.connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
+  if (_connectionState.charsetNegotiationStatus == MUTelnetCharsetNegotiationActive)
     return;
   
   uint8_t bytes[] = {MUTelnetOptionCharset, MUTelnetCharsetRequest};
@@ -624,7 +635,7 @@ static NSArray *offerableCharsets;
                              length: [charset lengthOfBytesUsingEncoding: NSASCIIStringEncoding]];
   }
   
-  self.connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationActive;
+  _connectionState.charsetNegotiationStatus = MUTelnetCharsetNegotiationActive;
   
   [self sendSubnegotiationWithData: charsetRequestData];
   [self log: @"    Sent: IAC SB %@ REQUEST <%@> IAC SE.", [MUTelnetOption optionNameForByte: MUTelnetOptionCharset], [offerableCharsets componentsJoinedByString: @" "]];
@@ -705,7 +716,7 @@ static NSArray *offerableCharsets;
       break;
   }
   
-  self.connectionState.isIncomingStreamCompressed = YES;
+  _connectionState.isIncomingStreamCompressed = YES;
 }
 
 #pragma mark - MSSP
@@ -766,8 +777,11 @@ static NSArray *offerableCharsets;
 
 - (void) logMSSPVariableData: (NSData *) variableData valueData: (NSData *) valueData
 {
-  [self log: @"    MSSP:   %@ = %@.", [[NSString alloc] initWithData: variableData encoding: NSASCIIStringEncoding],
-   [[NSString alloc] initWithData: valueData encoding: NSASCIIStringEncoding]];
+  NSString *variableString = [[NSString alloc] initWithData: variableData encoding: NSASCIIStringEncoding];
+  NSString *valueString = [[NSString alloc] initWithData: valueData encoding: NSASCIIStringEncoding];
+  
+  [_connectionState.codebaseAnalyzer noteMSSPVariable: variableString value: valueString];
+  [self log: @"    MSSP:   %@ = %@.", variableString, valueString];
 }
 
 #pragma mark - NAWS
@@ -805,10 +819,10 @@ static NSArray *offerableCharsets;
   uint8_t prefixBytes[] = {MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs};
   NSMutableData *terminalTypeData = [NSMutableData dataWithBytes: prefixBytes length: 2];
   
-  NSString *terminalType = offerableTerminalTypes[self.connectionState.nextTerminalTypeIndex++];
+  NSString *terminalType = offerableTerminalTypes[_connectionState.nextTerminalTypeIndex++];
   
-  if (self.connectionState.nextTerminalTypeIndex >= offerableTerminalTypes.count)
-    self.connectionState.nextTerminalTypeIndex = 0;
+  if (_connectionState.nextTerminalTypeIndex >= offerableTerminalTypes.count)
+    _connectionState.nextTerminalTypeIndex = 0;
   
   [terminalTypeData appendBytes: [terminalType cStringUsingEncoding: NSASCIIStringEncoding]
                          length: [terminalType lengthOfBytesUsingEncoding: NSASCIIStringEncoding]];

@@ -173,6 +173,9 @@
 
 - (void) maybeUseBufferedDataAsPrompt
 {
+  if (_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
+    return;                                                                         // PennMUSH does, though.
+  
   NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsingBuffer.bytes
                                                        length: _parsingBuffer.length
                                                      encoding: _connectionState.stringEncoding];

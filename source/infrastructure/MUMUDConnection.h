@@ -42,7 +42,7 @@ extern NSString *MUMUDConnectionErrorMessageKey;
 
 #pragma mark -
 
-@interface MUMUDConnection : MUAbstractConnection <MUSocketDelegate, MUProtocolStackDelegate, MUTelnetProtocolHandlerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate>
+@interface MUMUDConnection : MUAbstractConnection <MUHeuristicCodebaseAnalyzerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate, MUProtocolStackDelegate, MUSocketDelegate, MUTelnetProtocolHandlerDelegate>
 
 @property (weak, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
 @property (strong, nonatomic) MUMUDConnectionState *state;

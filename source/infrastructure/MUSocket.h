@@ -36,9 +36,9 @@ extern NSString *MUSocketErrorMessageKey;
 
 @property (weak, nonatomic) NSObject <MUSocketDelegate> *delegate;
 
-+ (id) socketWithHostname: (NSString *) hostname port: (int) port;
++ (id) socketWithHostname: (NSString *) hostname port: (uint16_t) port;
 
-- (id) initWithHostname: (NSString *) hostname port: (int) port;
+- (id) initWithHostname: (NSString *) hostname port: (uint16_t) port;
 
 @end
 

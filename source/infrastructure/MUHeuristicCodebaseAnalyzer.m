@@ -11,16 +11,20 @@
   BOOL _definitiveCodebaseFound;
 }
 
+- (void) log: (NSString *) message, ...;
+
 @end
 
 #pragma mark -
 
 @implementation MUHeuristicCodebaseAnalyzer
 
-- (id) init
+- (id) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate
 {
   if (!(self = [super init]))
     return nil;
+  
+  _delegate = newDelegate;
   
   _codebase = MUCodebaseUnknown;
   _codebaseFamily = MUCodebaseFamilyUnknown;
@@ -29,9 +33,14 @@
   return self;
 }
 
+- (id) init
+{
+  return [self initWithDelegate: nil];
+}
+
 #pragma mark - Accumulating heuristics
 
-- (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value
+- (void) noteMSSPVariable: (NSString *) variableString value: (NSString *) valueString
 {
   if (_definitiveCodebaseFound)
     return;
@@ -39,23 +48,30 @@
   // MSSP data is provided directly from the codebase. If it's lying, we're screwed anyway,
   // so any information acquired from MSSP is automatically treated as authoritative.
   
-  if ([variable isEqualToString: @"CODEBASE"])
+  if ([variableString isEqualToString: @"CODEBASE"])
   {
-    NSArray *valueWords = [value componentsSeparatedByString: @" "];
-    
-    if ([valueWords[0] isEqualToString: @"StickyMUSH"])
+    if ([valueString rangeOfString: @"StickyMUSH"].location != NSNotFound)
     {
       _definitiveCodebaseFound = YES;
-      self.codebase = MUCodebaseStickyMUSH;
-      self.codebaseFamily = MUCodebaseFamilyPennMUSH;
+      _codebase = MUCodebaseStickyMUSH;
+      _codebaseFamily = MUCodebaseFamilyPennMUSH;
+      
+      [self log: @"Analyzer: MSSP identifies as StickyMUSH."];
     }
-    if ([valueWords[0] isEqualToString: @"PennMUSH"])
+    else if ([valueString rangeOfString: @"PennMUSH"].location != NSNotFound)
     {
       _definitiveCodebaseFound = YES;
-      self.codebase = MUCodebasePennMUSH;
-      self.codebaseFamily = MUCodebaseFamilyPennMUSH;
+      _codebase = MUCodebasePennMUSH;
+      _codebaseFamily = MUCodebaseFamilyPennMUSH;
+      
+      [self log: @"Analyzer: MSSP identifies as PennMUSH."];
     }
   }
+}
+
+- (void) notePrompt: (NSString *) promptString
+{
+  [self noteTextLine: promptString];
 }
 
 - (void) noteTelnetDo: (uint8_t) byte
@@ -82,7 +98,7 @@
     return;
 }
 
-- (void) noteTextLine: (NSString *) textLine
+- (void) noteTextLine: (NSString *) textString
 {
   // TODO: Make this use regex instead, it's probably faster. Note we can't use NSRegularExpression because we run on
   // 10.6.
@@ -96,33 +112,59 @@
     // somebody does because that would be awful. Therefore if we have any guess at all as to what we're running on, we
     // shouldn't do textual matching anymore. We're hoping this is sent early, in the connect banner for example.
     
-    if ([textLine.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
+    if ([textString.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
     {
-      self.codebase = MUCodebasePennMUSH;
-      self.codebaseFamily = MUCodebaseFamilyPennMUSH;
+      _codebase = MUCodebasePennMUSH;
+      _codebaseFamily = MUCodebaseFamilyPennMUSH;
+      
+      [self log: @"Analyzer: Guessing PennMUSH from received text."];
     }
-    else if ([textLine.lowercaseString rangeOfString: @"mux"].location != NSNotFound)
+    else if ([textString.lowercaseString rangeOfString: @"rhost"].location != NSNotFound)
     {
-      self.codebase = MUCodebaseTinyMUX;
-      self.codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      _codebase = MUCodebaseRhostMUSH;
+      _codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      
+      [self log: @"Analyzer: Guessing RhostMUSH from received text."];
     }
-    else if ([textLine.lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
+    else if ([textString.lowercaseString rangeOfString: @"mux"].location != NSNotFound)
     {
-      self.codebase = MUCodebaseLPMUDWithDGD;
-      self.codebaseFamily = MUCodebaseFamilyMUD;
+      _codebase = MUCodebaseTinyMUX;
+      _codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      
+      [self log: @"Analyzer: Guessing TinyMUX from received text."];
     }
-    else if ([textLine.lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
+    else if ([textString.lowercaseString rangeOfString: @"tinymush"].location != NSNotFound)
     {
-      self.codebase = MUCodebaseLPMUD;
-      self.codebaseFamily = MUCodebaseFamilyMUD;
+      _codebase = MUCodebaseTinyMUSH;
+      _codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      
+      [self log: @"Analyzer: Guessing TinyMUSH from received text."];
     }
-    else if ([textLine.lowercaseString rangeOfString: @"mud"].location != NSNotFound)
+    else if ([textString.lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
     {
-      self.codebaseFamily = MUCodebaseFamilyMUD;
+      _codebase = MUCodebaseLPMUDWithDGD;
+      _codebaseFamily = MUCodebaseFamilyMUD;
+      
+      [self log: @"Analyzer: Guessing LPMUD with DGD from received text."];
     }
-    else if ([textLine.lowercaseString rangeOfString: @"mush"].location != NSNotFound)
+    else if ([textString.lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
     {
-      self.codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      _codebase = MUCodebaseLPMUD;
+      _codebaseFamily = MUCodebaseFamilyMUD;
+      
+      [self log: @"Analyzer: Guessing LPMUD from received text."];
+    }
+    else if ([textString.lowercaseString rangeOfString: @"mud"].location != NSNotFound)
+    {
+      _codebaseFamily = MUCodebaseFamilyMUD;
+      
+      [self log: @"Analyzer: Guessing generic MUD from received text."];
+    }
+    else if ([textString.lowercaseString rangeOfString: @"mush"].location != NSNotFound)
+    {
+      _codebaseFamily = MUCodebaseFamilyTinyMUSH;
+      
+      [self log: @"Analyzer: Guessing generic TinyMUSH from received text."];
     }
   }
 }
@@ -130,19 +172,20 @@
 - (void) reset
 {
   _definitiveCodebaseFound = NO;
-  self.codebase = MUCodebaseUnknown;
-  self.codebaseFamily = MUCodebaseFamilyUnknown;
+  _codebase = MUCodebaseUnknown;
+  _codebaseFamily = MUCodebaseFamilyUnknown;
 }
 
-#pragma mark - Codebase-specific behavior tweaks
+#pragma mark - Private methods
 
-- (BOOL) shouldSuppressGoAhead
+- (void) log: (NSString *) message, ...
 {
-  // PennMUSH chokes when it receives IAC GA.
-  if (self.codebaseFamily == MUCodebaseFamilyPennMUSH)
-    return YES;
+  va_list args;
+  va_start (args, message);
   
-  return NO;
+  [self.delegate log: message arguments: args];
+  
+  va_end (args);
 }
 
 @end

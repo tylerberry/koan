@@ -5,6 +5,8 @@
 //
 
 #import "MUProxySocket.h"
+#import "MUSocketSubclass.h"
+
 #import "MUProxySettings.h"
 #import "MUSOCKS5Constants.h"
 #import "MUSOCKS5Authentication.h"
@@ -44,7 +46,7 @@
   return self;
 }
 
-- (void) performPostConnectNegotiation
+- (void) _performPostConnectNegotiation
 {
   [self performMethodSpecificNegotiation: self.selectMethod];
   [self makeRequest];

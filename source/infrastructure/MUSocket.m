@@ -5,6 +5,7 @@
 //
 
 #import "MUSocket.h"
+#import "MUSocketSubclass.h"
 #import "MUAbstractConnectionSubclass.h"
 
 #include <errno.h>
@@ -83,7 +84,6 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 - (void) _connectSocket;
 - (void) _createSocket;
 - (void) _open;
-- (void) _performPostConnectNegotiation;
 - (void) _read;
 - (void) _registerObjectForNotifications: (id) object;
 - (void) _resolveHostname;
@@ -153,6 +153,12 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 - (void) open
 {
   [NSThread detachNewThreadSelector: @selector (_runThread:) toTarget: self withObject: nil];
+}
+
+- (void) performPostConnectNegotiation
+{
+  // Override in subclass to do something after connecting but before changing status.
+  return;
 }
 
 #pragma mark - MUAbstractConnection overrides
@@ -398,7 +404,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
     [self _resolveHostname];
     [self _createSocket];
     [self _connectSocket];
-    [self _performPostConnectNegotiation];
+    [self performPostConnectNegotiation];
     [self performSelectorOnMainThread: @selector (setStatusConnected) withObject: nil waitUntilDone: YES];
   }
   @catch (MUSocketException *socketException)
@@ -477,11 +483,6 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
     
     [_dataToWrite setData: [NSData data]];
   }
-}
-
-- (void) _performPostConnectNegotiation
-{
-  // Override in subclass to do something after connecting but before changing status
 }
 
 - (void) _registerObjectForNotifications: (id) object

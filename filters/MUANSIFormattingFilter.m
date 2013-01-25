@@ -168,9 +168,8 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
                        value: @(MUDefaultForegroundColorTag)
                        range: lastCharacterRange];
     
-    [editString removeAttribute: NSBackgroundColorAttributeName
-                          range: lastCharacterRange];
-    
+    [editString removeAttribute: NSBackgroundColorAttributeName range: lastCharacterRange];
+    [editString removeAttribute: NSUnderlineStyleAttributeName range: lastCharacterRange];
     [editString removeAttribute: MUInverseColorsAttributeName range: lastCharacterRange];
   }
   

@@ -11,6 +11,8 @@
 
 @property (copy) NSMutableArray *connectionWindowControllers;
 
+@property (readonly) NSUInteger connectedWorldCount;
+
 + (MUConnectionWindowControllerRegistry *) defaultRegistry;
 
 @end

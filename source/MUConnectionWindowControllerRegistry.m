@@ -24,6 +24,7 @@
     return nil;
   
   _connectionWindowControllers = [[NSMutableArray alloc] init];
+  _connectedWorldCount = 0;
   
   return self;
 }

@@ -22,14 +22,6 @@
 
 @dynamic content, headers;
 
-- (id) init
-{
-  if (!(self = [super init]))
-    return nil;
-  
-  return self;
-}
-
 #pragma mark - NSDocument overrides
 
 - (NSData *) dataOfType: (NSString *) typeName error: (NSError **) error

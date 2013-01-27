@@ -75,8 +75,8 @@ NSString * const MUBoldFontAttributeName = @"MUBoldFont";
 NSString * const MUItalicFontAttributeName = @"MUItalicFont";
 NSString * const MUInverseColorsAttributeName = @"MUInverseColors";
 
-NSString * const MURapidBlinkAttributeName = @"MURapidBlink";
-NSString * const MUSlowBlinkAttributeName = @"MUSlowBlink";
+NSString * const MUBlinkingTextAttributeName = @"MUBlinkingText";
+NSString * const MUHiddenTextAttributeName = @"MUHiddenText";
 
 NSString * const MUCustomForegroundColorAttributeName = @"MUCustomForegroundColor";
 NSString * const MUCustomBackgroundColorAttributeName = @"MUCustomBackgroundColor";

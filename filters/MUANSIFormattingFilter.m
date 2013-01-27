@@ -382,7 +382,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 - (void) _resetBlinkInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  return;
+  [self _removeAttribute: MUBlinkingTextAttributeName inString: string fromLocation: startLocation];
 }
 
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -466,7 +466,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 - (void) _resetHiddenTextInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  return;
+  [self _removeAttribute: MUHiddenTextAttributeName inString: string fromLocation: startLocation];
 }
 
 - (void) _resetInverseInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
@@ -812,9 +812,17 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         break;
         
       case MUANSISlowBlinkOn:
+        [self _setAttribute: MUBlinkingTextAttributeName
+                    toValue: @(MUSlowBlink)
+                   inString: string
+               fromLocation: startLocation];
         break;
         
       case MUANSIRapidBlinkOn:
+        [self _setAttribute: MUBlinkingTextAttributeName
+                    toValue: @(MURapidBlink)
+                   inString: string
+               fromLocation: startLocation];
         break;
         
       case MUANSIInverseOn:
@@ -838,6 +846,10 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
       }
         
       case MUANSIHiddenTextOn:
+        [self _setAttribute: MUHiddenTextAttributeName
+                    toValue: @1
+                   inString: string
+               fromLocation: startLocation];
         break;
         
       case MUANSIStrikethroughOn:

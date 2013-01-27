@@ -75,6 +75,12 @@ extern NSString * const MUBoldFontAttributeName;
 extern NSString * const MUItalicFontAttributeName;
 extern NSString * const MUInverseColorsAttributeName;
 
+extern NSString * const MUBlinkingTextAttributeName;
+extern NSString * const MUHiddenTextAttributeName;
+
+#define MUSlowBlink 1
+#define MURapidBlink 2
+
 extern NSString * const MUCustomForegroundColorAttributeName;
 extern NSString * const MUCustomBackgroundColorAttributeName;
 

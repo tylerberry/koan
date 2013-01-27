@@ -18,7 +18,7 @@
 {
   // The default implementation does some magic trickery to only draw the underlines under actual characters and not
   // under leading or trailing whitespace, which is exactly the kind of magic trickery that we want to avoid when
-  // underlines are sometimes used deliberately for FANSI formatting. So we take out all the magic and just call the
+  // underlines are sometimes used deliberately for ANSI art formatting. So we take out all the magic and just call the
   // drawing method.
   
   [self drawUnderlineForGlyphRange: glyphRange

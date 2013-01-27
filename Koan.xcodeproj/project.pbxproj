@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2F07053616139B6200A71314 /* NSObject+BetterHashing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject+BetterHashing.m */; };
 		2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F07053A16139F4C00A71314 /* JRSwizzle.m */; };
-		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
 		2F10B17616323C6400948438 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F10B17516323C6400948438 /* libssl.dylib */; };
 		2F174F6D1679211C0030C9D3 /* AutoHyperlinks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */; };
@@ -54,6 +53,8 @@
 		2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E481512E69ADD00D9B29C /* MUMCPProtocolHandler.m */; };
 		2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F9F191633F7990071AE70 /* MUProfileViewController.m */; };
 		2F7093D61223B3F000E0D178 /* Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = 2F7093D51223B3F000E0D178 /* Growl Registration Ticket.growlRegDict */; };
+		2F78FE5516B548350037B2EC /* MUTextLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F78FE5416B548350037B2EC /* MUTextLog.m */; };
+		2F78FE5616B54D180037B2EC /* MUTextLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F78FE5416B548350037B2EC /* MUTextLog.m */; };
 		2F7A2E72166F393E00FEB109 /* ATImageTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */; };
 		2F7B4F3B0BCAB87B00C1586D /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FB70BCAC1FD00C1586D /* MUDocumentController.m */; };
@@ -104,7 +105,7 @@
 		2FC93E2B0BB103C500149459 /* MUTelnetProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */; };
 		2FCFEF3E0BCADEB40061FB6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */; };
-		2FCFEFDD0BCAE36D0061FB6B /* MUTextLogDocumentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */; };
+		2FCFEFDD0BCAE36D0061FB6B /* MUTextLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */; };
 		2FD0E1EC117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */; };
 		2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */; };
 		2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14E0D67E86A007F0036 /* growl-icon.png */; };
@@ -112,7 +113,6 @@
 		2FDFA1560D67F630007F0036 /* MUAcknowledgementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FDFA1550D67F630007F0036 /* MUAcknowledgementsController.m */; };
 		2FE368160BCAD4F00068A6AA /* GetMetadataForFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FE367EB0BCAD35E0068A6AA /* GetMetadataForFile.m */; };
 		2FE368170BCAD4F30068A6AA /* MUSpotlightImporterMain.c in Sources */ = {isa = PBXBuildFile; fileRef = 2FE367EC0BCAD35E0068A6AA /* MUSpotlightImporterMain.c */; };
-		2FE368180BCAD5010068A6AA /* MUTextLogDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */; };
 		2FE368440BCAD5DB0068A6AA /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FE368420BCAD5DB0068A6AA /* schema.xml */; };
 		2FE3691F0BCAD8370068A6AA /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2FE3691E0BCAD8370068A6AA /* schema.strings */; };
 		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -322,6 +322,8 @@
 		2F6F9F181633F7990071AE70 /* MUProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileViewController.h; sourceTree = "<group>"; };
 		2F6F9F191633F7990071AE70 /* MUProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileViewController.m; sourceTree = "<group>"; };
 		2F7093D51223B3F000E0D178 /* Growl Registration Ticket.growlRegDict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Growl Registration Ticket.growlRegDict"; sourceTree = "<group>"; };
+		2F78FE5316B548350037B2EC /* MUTextLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTextLog.h; sourceTree = "<group>"; };
+		2F78FE5416B548350037B2EC /* MUTextLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLog.m; sourceTree = "<group>"; };
 		2F7A2E70166F393E00FEB109 /* ATImageTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ATImageTextCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ATImageTextCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F7B4F380BCAB87B00C1586D /* MULogBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULogBrowserWindowController.h; sourceTree = "<group>"; };
@@ -402,8 +404,8 @@
 		2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUOutlineView.m; sourceTree = "<group>"; };
 		2FC93E280BB103C500149459 /* MUTelnetProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetProtocolHandler.h; sourceTree = "<group>"; };
 		2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetProtocolHandler.m; sourceTree = "<group>"; };
-		2FCFEFDB0BCAE36D0061FB6B /* MUTextLogDocumentTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTextLogDocumentTests.h; sourceTree = "<group>"; };
-		2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTextLogDocumentTests.m; sourceTree = "<group>"; };
+		2FCFEFDB0BCAE36D0061FB6B /* MUTextLogTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTextLogTests.h; sourceTree = "<group>"; };
+		2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTextLogTests.m; sourceTree = "<group>"; };
 		2FD0E1EA117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetSubnegotiationOptionState.h; sourceTree = "<group>"; };
 		2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetSubnegotiationOptionState.m; sourceTree = "<group>"; };
 		2FD7F68012ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUHeuristicCodebaseAnalyzer.h; sourceTree = "<group>"; };
@@ -1072,8 +1074,8 @@
 				7EFACED10BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m */,
 				7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */,
 				7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */,
-				2FCFEFDB0BCAE36D0061FB6B /* MUTextLogDocumentTests.h */,
-				2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */,
+				2FCFEFDB0BCAE36D0061FB6B /* MUTextLogTests.h */,
+				2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */,
 				E6E7A63D0749698F007005AC /* MUTextLoggerTests.h */,
 				E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */,
 				2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */,
@@ -1135,6 +1137,8 @@
 				2FA60E4A12E1384F008BD147 /* MUProfilesSection.m */,
 				2FA60E3912E1379F008BD147 /* MUSection.h */,
 				2FA60E3A12E1379F008BD147 /* MUSection.m */,
+				2F78FE5316B548350037B2EC /* MUTextLog.h */,
+				2F78FE5416B548350037B2EC /* MUTextLog.m */,
 				2F82CB9D12422DFC00D32655 /* MUTreeNode.h */,
 				2F82CB9E12422DFC00D32655 /* MUTreeNode.m */,
 				E6DA667007776D9900C46267 /* MUWorld.h */,
@@ -1434,8 +1438,7 @@
 			files = (
 				2FE368160BCAD4F00068A6AA /* GetMetadataForFile.m in Sources */,
 				2FE368170BCAD4F30068A6AA /* MUSpotlightImporterMain.c in Sources */,
-				2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */,
-				2FE368180BCAD5010068A6AA /* MUTextLogDocument.m in Sources */,
+				2F78FE5616B54D180037B2EC /* MUTextLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1460,7 +1463,7 @@
 				7EFACED20BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m in Sources */,
 				7EF77CCB0BCC99E30047CF5D /* MUTelnetOptionTests.m in Sources */,
 				7E87757309AD630E00A883BC /* MUTelnetStateMachineTests.m in Sources */,
-				2FCFEFDD0BCAE36D0061FB6B /* MUTextLogDocumentTests.m in Sources */,
+				2FCFEFDD0BCAE36D0061FB6B /* MUTextLogTests.m in Sources */,
 				7E87756909AD62E400A883BC /* MUTextLoggerTests.m in Sources */,
 				2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */,
 				7E87757009AD62E400A883BC /* MUWorldTests.m in Sources */,
@@ -1566,6 +1569,7 @@
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
 				2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */,
 				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
+				2F78FE5516B548350037B2EC /* MUTextLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

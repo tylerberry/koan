@@ -6,12 +6,7 @@
 
 @interface MUTextLogDocument : NSDocument
 
-@property (strong, nonatomic) NSString *content;
-@property (strong, nonatomic) NSDictionary *headers;
-
-- (id) mockInitWithString: (NSString *) string;
-
-- (void) fillDictionaryWithMetadata: (NSMutableDictionary *) dictionary;
-- (NSString *) headerForKey: (id) key;
+@property (nonatomic) NSString *content;
+@property (nonatomic) NSDictionary *headers;
 
 @end

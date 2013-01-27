@@ -8,7 +8,7 @@
 #include <CoreServices/CoreServices.h> 
 #include <Foundation/Foundation.h>
 
-#import "MUTextLogDocument.h"
+#import "MUTextLog.h"
 #include "GetMetadataForFile.h"
 
 Boolean
@@ -20,14 +20,14 @@ GetMetadataForFile (void *thisInterface,
   Boolean result = FALSE;
   @autoreleasepool
   {
-    MUTextLogDocument *logDocument = [[MUTextLogDocument alloc]
-                                      initWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
-                                      ofType: nil
-                                      error: nil];
+    NSString *logString = [NSString stringWithContentsOfURL: [NSURL fileURLWithPath: (__bridge NSString *) pathToFile]
+                                                   encoding: NSUTF8StringEncoding
+                                                      error: nil];
+    MUTextLog *textLog = [[MUTextLog alloc] initWithString: logString];
     
-    if (logDocument)
+    if (textLog)
     {
-      [logDocument fillDictionaryWithMetadata: (__bridge NSMutableDictionary *) attributes];
+      [textLog fillDictionaryWithMetadata: (__bridge NSMutableDictionary *) attributes];
       result = TRUE;
     }
     

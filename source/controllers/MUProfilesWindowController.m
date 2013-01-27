@@ -348,8 +348,6 @@
   if (!availableType)
     return NO;
   
-  // Add the new items (we do this backwards, otherwise they will end up in reverse order).
-  
   NSIndexPath *newNodeIndexPath;
   
   if (targetItem)
@@ -389,23 +387,18 @@
     NSData *pasteboardData = [draggingInfo.draggingPasteboard dataForType: availableType];
     NSArray *newNodes = [NSKeyedUnarchiver unarchiveObjectWithData: pasteboardData];
     
+    // Add the new items (we do this backwards, otherwise they will end up in reverse order).
+    
     for (NSInteger i = newNodes.count - 1; i >= 0; i--)
     {
-      // We only want to copy in each item in the array once - if a folder is open and the folder and its contents were
-      // selected and dragged, we only want to drag the folder, of course.
+      [newNodes[i] createNewUniqueIdentifier];
+        
+      [self _addNode: newNodes[i] atIndexPath: newNodeIndexPath];
+        
+      NSTreeNode *node = [self outlineView: outlineView
+                   itemForPersistentObject: [newNodes[i] uniqueIdentifier]];
       
-      if (YES) // (![newNodes[i] isDescendantOfNodes: newNodes])
-      {
-        [newNodes[i] createNewUniqueIdentifier];
-        
-        [self _addNode: newNodes[i] atIndexPath: newNodeIndexPath];
-        
-        NSTreeNode *node = [self outlineView: outlineView
-                     itemForPersistentObject: [newNodes[i] uniqueIdentifier]];
-        
-        [outlineView reloadItem: node];
-        [outlineView expandItem: node];
-      }
+      [outlineView expandItem: node]; // Somewhat arbitrarily, we expand the copy.
     }
     
     NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
@@ -413,9 +406,7 @@
     for (NSInteger i = [outlineView rowForItem: targetItem]; i < outlineView.numberOfRows; i++)
     {
       if ([newNodes containsObject: ((NSTreeNode *) [outlineView itemAtRow: i]).representedObject])
-      {
         [indexSet addIndex: i];
-      }
     }
     
     [outlineView selectRowIndexes: indexSet byExtendingSelection: NO];

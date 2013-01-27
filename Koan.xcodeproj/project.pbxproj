@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */; };
+		2F07053616139B6200A71314 /* NSObject+BetterHashing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject+BetterHashing.m */; };
 		2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F07053A16139F4C00A71314 /* JRSwizzle.m */; };
 		2F0A203E0BCAEC2600E833AD /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
@@ -34,8 +34,8 @@
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F57F908163E473800732868 /* MUConnectPanelController.m */; };
 		2F6264551662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6264541662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m */; };
-		2F6264A01663384D008DDBF2 /* NSString (CodePage437).m in Sources */ = {isa = PBXBuildFile; fileRef = 2F62649F1663384D008DDBF2 /* NSString (CodePage437).m */; };
-		2F6264A316644620008DDBF2 /* NSColor (ANSI).m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6264A216644620008DDBF2 /* NSColor (ANSI).m */; };
+		2F6264A01663384D008DDBF2 /* NSString+CodePage437.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F62649F1663384D008DDBF2 /* NSString+CodePage437.m */; };
+		2F6264A316644620008DDBF2 /* NSColor+ANSI.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6264A216644620008DDBF2 /* NSColor+ANSI.m */; };
 		2F67575F1671D2420067BFC4 /* MUProxyPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F6757611671D2420067BFC4 /* MUProxyPreferencesView.xib */; };
 		2F6757621671D2480067BFC4 /* MUSoundsPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F6757641671D2480067BFC4 /* MUSoundsPreferencesView.xib */; };
 		2F6757651671D25D0067BFC4 /* MUGeneralPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F6757671671D25D0067BFC4 /* MUGeneralPreferencesView.xib */; };
@@ -136,7 +136,7 @@
 		7E4FB2890BCC877B007BC40F /* MUTelnetWillState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2750BCC877B007BC40F /* MUTelnetWillState.m */; };
 		7E4FB28B0BCC877B007BC40F /* MUTelnetWontState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2770BCC877B007BC40F /* MUTelnetWontState.m */; };
 		7E50AC2309AEB90B00E0BFE7 /* MUProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */; };
-		7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */; };
+		7E5103120AD1D5AA00142EF3 /* NSFont+Traits.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */; };
 		7E5C2DDD09B105B2006993E1 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
 		7E68DC5D092AC2FB004554BD /* MUSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC39092AC2FB004554BD /* MUSocket.m */; };
 		7E87735409AD44DE00A883BC /* MUSocketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E87735209AD44DE00A883BC /* MUSocketFactory.m */; };
@@ -163,7 +163,7 @@
 		7EFE43870749C7CE002C7D48 /* MUFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43830749C7CE002C7D48 /* MUFilter.m */; };
 		8D11072D0486CEB800E47090 /* MUKoanMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* MUKoanMain.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		E6055F7F07492729007A13BD /* NSAttributedString (Allocating).m in Sources */ = {isa = PBXBuildFile; fileRef = E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */; };
+		E6055F7F07492729007A13BD /* NSAttributedString+Allocating.m in Sources */ = {isa = PBXBuildFile; fileRef = E6055F7D07492729007A13BD /* NSAttributedString+Allocating.m */; };
 		E622A553074231A60069335B /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E622A551074231A60069335B /* MUConstants.m */; };
 		E62C905D07422595005662BC /* MUApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E62C905B07422595005662BC /* MUApplicationController.m */; };
 		E62C909F07422669005662BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E62C909E07422669005662BC /* Localizable.strings */; };
@@ -297,10 +297,10 @@
 		2F57F908163E473800732868 /* MUConnectPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectPanelController.m; sourceTree = "<group>"; };
 		2F6264531662FCF5008DDBF2 /* MUGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		2F6264541662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUGeneralPreferencesViewController.m; sourceTree = "<group>"; };
-		2F62649E1663381E008DDBF2 /* NSString (CodePage437).h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSString (CodePage437).h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		2F62649F1663384D008DDBF2 /* NSString (CodePage437).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSString (CodePage437).m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		2F6264A116644620008DDBF2 /* NSColor (ANSI).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSColor (ANSI).h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		2F6264A216644620008DDBF2 /* NSColor (ANSI).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSColor (ANSI).m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2F62649E1663381E008DDBF2 /* NSString+CodePage437.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSString+CodePage437.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2F62649F1663384D008DDBF2 /* NSString+CodePage437.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSString+CodePage437.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2F6264A116644620008DDBF2 /* NSColor+ANSI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSColor+ANSI.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2F6264A216644620008DDBF2 /* NSColor+ANSI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSColor+ANSI.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F6757601671D2420067BFC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MUProxyPreferencesView.xib; sourceTree = "<group>"; };
 		2F6757631671D2480067BFC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MUSoundsPreferencesView.xib; sourceTree = "<group>"; };
 		2F6757661671D25D0067BFC4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MUGeneralPreferencesView.xib; sourceTree = "<group>"; };
@@ -466,8 +466,8 @@
 		7E4FB2770BCC877B007BC40F /* MUTelnetWontState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetWontState.m; sourceTree = "<group>"; };
 		7E50AC1F09AEB90B00E0BFE7 /* MUProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySocket.h; sourceTree = "<group>"; };
 		7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySocket.m; sourceTree = "<group>"; };
-		7E51030F0AD1D5AA00142EF3 /* NSFont (Traits).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSFont (Traits).h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSFont (Traits).m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		7E51030F0AD1D5AA00142EF3 /* NSFont+Traits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSFont+Traits.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSFont+Traits.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7E5C2DD909B105B2006993E1 /* MUSOCKS5Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Authentication.h; sourceTree = "<group>"; };
 		7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Authentication.m; sourceTree = "<group>"; };
 		7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachineTests.h; sourceTree = "<group>"; };
@@ -510,8 +510,8 @@
 		7EFE43B20749CB16002C7D48 /* MUFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUFilterTests.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Koan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koan.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6055F7C07492729007A13BD /* NSAttributedString (Allocating).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSAttributedString (Allocating).h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSAttributedString (Allocating).m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		E6055F7C07492729007A13BD /* NSAttributedString+Allocating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSAttributedString+Allocating.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		E6055F7D07492729007A13BD /* NSAttributedString+Allocating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSAttributedString+Allocating.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E6055FB6074929F3007A13BD /* Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Tests-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E622A550074231A60069335B /* MUConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConstants.h; sourceTree = "<group>"; };
 		E622A551074231A60069335B /* MUConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConstants.m; sourceTree = "<group>"; };
@@ -531,8 +531,8 @@
 		E6505ABF07820CC00016F30E /* User Stories.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "User Stories.rtf"; sourceTree = "<group>"; };
 		E653A7CF07AEFAB900023476 /* MUGrowlService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUGrowlService.h; sourceTree = "<group>"; };
 		E653A7D007AEFAB900023476 /* MUGrowlService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUGrowlService.m; sourceTree = "<group>"; };
-		E6550DFE07763B72002E81FF /* NSObject (BetterHashing).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSObject (BetterHashing).h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSObject (BetterHashing).m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		E6550DFE07763B72002E81FF /* NSObject+BetterHashing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSObject+BetterHashing.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		E6550DFF07763B72002E81FF /* NSObject+BetterHashing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSObject+BetterHashing.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E65CE071075438F9003A796A /* Koan.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Koan.icns; sourceTree = "<group>"; };
 		E670A83F07420FDF00E2DAEB /* MUConnectionWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConnectionWindowController.h; sourceTree = "<group>"; };
 		E670A84007420FDF00E2DAEB /* MUConnectionWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectionWindowController.m; sourceTree = "<group>"; };
@@ -976,16 +976,16 @@
 		E6550EF307764C01002E81FF /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				E6055F7C07492729007A13BD /* NSAttributedString (Allocating).h */,
-				E6055F7D07492729007A13BD /* NSAttributedString (Allocating).m */,
-				2F6264A116644620008DDBF2 /* NSColor (ANSI).h */,
-				2F6264A216644620008DDBF2 /* NSColor (ANSI).m */,
-				7E51030F0AD1D5AA00142EF3 /* NSFont (Traits).h */,
-				7E5103100AD1D5AA00142EF3 /* NSFont (Traits).m */,
-				E6550DFE07763B72002E81FF /* NSObject (BetterHashing).h */,
-				E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */,
-				2F62649E1663381E008DDBF2 /* NSString (CodePage437).h */,
-				2F62649F1663384D008DDBF2 /* NSString (CodePage437).m */,
+				E6055F7C07492729007A13BD /* NSAttributedString+Allocating.h */,
+				E6055F7D07492729007A13BD /* NSAttributedString+Allocating.m */,
+				2F6264A116644620008DDBF2 /* NSColor+ANSI.h */,
+				2F6264A216644620008DDBF2 /* NSColor+ANSI.m */,
+				7E51030F0AD1D5AA00142EF3 /* NSFont+Traits.h */,
+				7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */,
+				E6550DFE07763B72002E81FF /* NSObject+BetterHashing.h */,
+				E6550DFF07763B72002E81FF /* NSObject+BetterHashing.m */,
+				2F62649E1663381E008DDBF2 /* NSString+CodePage437.h */,
+				2F62649F1663384D008DDBF2 /* NSString+CodePage437.m */,
 				2F946F3816AECC6400661918 /* NSTreeController+IndexPaths.h */,
 				2F946F3916AECC6400661918 /* NSTreeController+IndexPaths.m */,
 			);
@@ -1553,14 +1553,14 @@
 				E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */,
 				2F97B0AF16337BF000B33F4A /* MUWorldViewController.m in Sources */,
 				7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */,
-				E6055F7F07492729007A13BD /* NSAttributedString (Allocating).m in Sources */,
-				2F6264A316644620008DDBF2 /* NSColor (ANSI).m in Sources */,
+				E6055F7F07492729007A13BD /* NSAttributedString+Allocating.m in Sources */,
+				2F6264A316644620008DDBF2 /* NSColor+ANSI.m in Sources */,
 				2FA2B3D01666D686000C6F9A /* NSColor+BFColorPickerPopover.m in Sources */,
 				2FA2B3D11666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m in Sources */,
 				2FA2B3D21666D686000C6F9A /* NSColorWell+BFColorPickerPopover.m in Sources */,
-				7E5103120AD1D5AA00142EF3 /* NSFont (Traits).m in Sources */,
-				2F07053616139B6200A71314 /* NSObject (BetterHashing).m in Sources */,
-				2F6264A01663384D008DDBF2 /* NSString (CodePage437).m in Sources */,
+				7E5103120AD1D5AA00142EF3 /* NSFont+Traits.m in Sources */,
+				2F07053616139B6200A71314 /* NSObject+BetterHashing.m in Sources */,
+				2F6264A01663384D008DDBF2 /* NSString+CodePage437.m in Sources */,
 				2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */,
 				2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,

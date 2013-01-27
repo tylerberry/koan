@@ -13,7 +13,7 @@
 #import "MUNaiveURLFilter.h"
 #import "MUTextLogger.h"
 
-#import "NSFont (Traits).h"
+#import "NSFont+Traits.h"
 
 #import <objc/objc-runtime.h>
 

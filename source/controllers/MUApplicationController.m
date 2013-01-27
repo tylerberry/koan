@@ -6,8 +6,8 @@
 
 #import "MUApplicationController.h"
 
-#import "NSColor (ANSI).h"
-#import "NSObject (BetterHashing).h"
+#import "NSColor+ANSI.h"
+#import "NSObject+BetterHashing.h"
 
 #import "MUFontsAndColorsPreferencesViewController.h"
 #import "MUGeneralPreferencesViewController.h"

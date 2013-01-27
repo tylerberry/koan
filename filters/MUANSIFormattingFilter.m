@@ -5,8 +5,8 @@
 //
 
 #import "MUANSIFormattingFilter.h"
-#import "NSColor (ANSI).h"
-#import "NSFont (Traits).h"
+#import "NSColor+ANSI.h"
+#import "NSFont+Traits.h"
 
 static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 

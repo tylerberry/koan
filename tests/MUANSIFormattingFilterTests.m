@@ -7,8 +7,8 @@
 #import "MUANSIFormattingFilterTests.h"
 #import "MUANSIFormattingFilter.h"
 #import "MUProfile.h"
-#import "NSColor (ANSI).h"
-#import "NSFont (Traits).h"
+#import "NSColor+ANSI.h"
+#import "NSFont+Traits.h"
 
 #define TESTING_BACKGROUND_COLOR [NSColor redColor]
 #define TESTING_LINK_COLOR [NSColor yellowColor]

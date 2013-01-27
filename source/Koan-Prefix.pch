@@ -9,6 +9,6 @@
 #endif
 
 #import "MUConstants.h"
-#import "categories/NSAttributedString (Allocating).h"
+#import "categories/NSAttributedString+Allocating.h"
 
 #define _(name) NSLocalizedString (name, nil)

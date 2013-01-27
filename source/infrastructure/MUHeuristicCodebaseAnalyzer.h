@@ -10,6 +10,7 @@ typedef enum MUCodebase
   MUCodebaseTinyMUSH,
   MUCodebasePennMUSH,
   MUCodebaseStickyMUSH,
+  MUCodebaseTinyBitMUSH,
   MUCodebaseRhostMUSH,
   MUCodebaseLPMUD,
   MUCodebaseLPMUDWithDGD,

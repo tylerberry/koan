@@ -112,7 +112,14 @@
     // somebody does because that would be awful. Therefore if we have any guess at all as to what we're running on, we
     // shouldn't do textual matching anymore. We're hoping this is sent early, in the connect banner for example.
     
-    if ([textString.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
+    if ([textString.lowercaseString rangeOfString: @"stickymush"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseStickyMUSH;
+      _codebaseFamily = MUCodebaseFamilyPennMUSH;
+      
+      [self log: @"Analyzer: Guessing StickyMUSH from received text."];
+    }
+    else if ([textString.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
     {
       _codebase = MUCodebasePennMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
@@ -132,6 +139,14 @@
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
       [self log: @"Analyzer: Guessing TinyMUX from received text."];
+    }
+    else if ([textString.lowercaseString rangeOfString: @"tinybit"].location != NSNotFound
+             || [textString.lowercaseString rangeOfString: @"8bit"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseTinyBitMUSH;
+      _codebaseFamily = MUCodebaseFamilyPennMUSH;
+      
+      [self log: @"Analyzer: Guessing TinyBit MUSH from received text."];
     }
     else if ([textString.lowercaseString rangeOfString: @"tinymush"].location != NSNotFound)
     {

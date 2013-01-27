@@ -16,6 +16,7 @@
 - (id) initWithName: (NSString *) newName children: (NSArray *) newChildren;
 - (id) init;
 
+- (void) createNewUniqueIdentifier;
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode;
 
 @end

@@ -39,6 +39,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
   _name = [newName copy];
   _parent = nil;
   _uniqueIdentifier = [self _createUniqueIdentifier];
+  _uniqueIdentifiers[_uniqueIdentifier] = @YES;
   
   if (newChildren)
     _children = [newChildren mutableCopy];
@@ -141,6 +142,12 @@ static NSMutableDictionary *_uniqueIdentifiers;
 }
 
 #pragma mark - Actions
+
+- (void) createNewUniqueIdentifier
+{
+  _uniqueIdentifier = [self _createUniqueIdentifier];
+  _uniqueIdentifiers[_uniqueIdentifier] = @YES;
+}
 
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode
 {

@@ -6,7 +6,6 @@
 
 #import "MUPlayerViewController.h"
 #import "MUProfilesWindowController.h"
-#import "MUPortFormatter.h"
 #import "MUProfile.h"
 #import "MUProfileContentView.h"
 #import "MUProfileRegistry.h"
@@ -17,11 +16,14 @@
 #import "MUWorldViewController.h"
 
 #import "ATImageTextCell.h"
+#import "NSTreeController+IndexPaths.h"
 
 @interface MUProfilesWindowController ()
 {
   NSMutableArray *_profilesExpandedItems;
   NSUndoManager *_undoManager;
+  
+  NSArray *_draggedNodes;
   
   MUPlayerViewController *_playerViewController;
   MUProfileViewController *_profileViewController;
@@ -29,6 +31,8 @@
 }
 
 - (void) _applicationWillTerminate: (NSNotification *) notification;
+- (NSDragOperation) _dragOperationForOutlineView: (NSOutlineView *) outlineView
+                                    draggingInfo: (id <NSDraggingInfo>) draggingInfo;
 - (void) _registerForNotifications;
 
 #pragma mark - Tree controller handling
@@ -72,6 +76,13 @@
   
   profilesOutlineView.target = self;
   profilesOutlineView.doubleAction = @selector (openConnectionForDoubleClickedProfile:);
+  
+  [profilesOutlineView registerForDraggedTypes: @[MUWorldPasteboardType, MUPlayerPasteboardType]];
+  
+  [profilesOutlineView setDraggingSourceOperationMask: (NSDragOperationCopy | NSDragOperationMove)
+                                             forLocal: YES];
+  [profilesOutlineView setDraggingSourceOperationMask: NSDragOperationCopy
+                                             forLocal: NO];
 }
 
 - (void) dealloc
@@ -181,11 +192,11 @@
       
       NSUInteger numberOfIndexes = selectionIndexPath.length;
       NSUInteger indexes[numberOfIndexes];
-    
+      
       [selectionIndexPath getIndexes: indexes];
-    
+      
       indexes[numberOfIndexes - 1]++;
-    
+      
       newIndexPath = [NSIndexPath indexPathWithIndexes: indexes length: numberOfIndexes];
     }
     else if ([node isKindOfClass: [MUPlayer class]])
@@ -325,6 +336,73 @@
 
 #pragma mark - NSOutlineView data source
 
+- (BOOL) outlineView: (NSOutlineView *) outlineView
+          acceptDrop: (id <NSDraggingInfo>) draggingInfo
+                item: (id) targetItem
+          childIndex: (NSInteger) childIndex
+{
+  NSArray *typesArray = @[MUWorldPasteboardType, MUPlayerPasteboardType];
+  NSString *availableType = [draggingInfo.draggingPasteboard availableTypeFromArray: typesArray];
+  
+  if (!availableType)
+    return NO;
+  
+  NSData *pasteboardData = [draggingInfo.draggingPasteboard dataForType: availableType];
+  NSArray *newNodes = [NSKeyedUnarchiver unarchiveObjectWithData: pasteboardData];
+  
+  // Add the new items (we do this backwards, otherwise they will end up in reverse order).
+  
+  NSIndexPath *newNodeIndexPath;
+  
+  if (targetItem)
+  {
+    NSIndexPath *baseIndexPath = [profilesTreeController indexPathOfTreeNode: targetItem];
+    newNodeIndexPath = [baseIndexPath indexPathByAddingIndex: childIndex];
+  }
+  else
+    newNodeIndexPath = [[NSIndexPath alloc] initWithIndex: childIndex];
+  
+  for (NSInteger i = newNodes.count - 1; i >= 0; i--)
+  {
+    // We only want to copy in each item in the array once - if a folder is open and the folder and its contents were
+    // selected and dragged, we only want to drag the folder, of course.
+    
+    if (YES) // (![newNodes[i] isDescendantOfNodes: newNodes])
+    {
+      if ([self _dragOperationForOutlineView: outlineView draggingInfo: draggingInfo] == NSDragOperationCopy)
+        [newNodes[i] createNewUniqueIdentifier];
+      
+      [self _addNode: newNodes[i] atIndexPath: newNodeIndexPath];
+    }
+  }
+  
+  if (draggingInfo.draggingSource == outlineView
+      && [self _dragOperationForOutlineView: outlineView draggingInfo: draggingInfo] == NSDragOperationMove)
+  {
+    for (MUTreeNode *node in _draggedNodes)
+    {
+      [self _deleteNodeAtIndexPath: [profilesTreeController indexPathOfRepresentedObject: node]];
+    }
+  }
+  
+  if (targetItem && ![outlineView isItemExpanded: targetItem])
+    [outlineView expandItem: targetItem];
+  
+  NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+  
+  for (NSInteger i = [outlineView rowForItem: targetItem]; i < outlineView.numberOfRows; i++)
+  {
+    if ([newNodes containsObject: ((NSTreeNode *) [outlineView itemAtRow: i]).representedObject])
+    {
+      [indexSet addIndex: i];
+    }
+  }
+  
+  [outlineView selectRowIndexes: indexSet byExtendingSelection: NO];
+  
+  return YES;
+}
+
 // I tried implementing this the recommended way, but in 10.6 at least there seems
 // to be no functional way of getting it working.
 //
@@ -374,6 +452,60 @@
   return ((MUTreeNode *) ((NSTreeNode *) item).representedObject).uniqueIdentifier;
 }
 
+- (NSDragOperation) outlineView: (NSOutlineView *) outlineView
+                   validateDrop: (id <NSDraggingInfo>) draggingInfo
+                   proposedItem: (id) proposedItem
+             proposedChildIndex: (NSInteger) proposedChildIndex
+{
+  MUTreeNode *proposedNode = (MUTreeNode *) ((NSTreeNode *) proposedItem).representedObject;
+  
+  if (([draggingInfo.draggingPasteboard availableTypeFromArray: @[MUWorldPasteboardType]]
+       && [proposedNode isKindOfClass: [MUSection class]])
+      || ([draggingInfo.draggingPasteboard availableTypeFromArray: @[MUPlayerPasteboardType]]
+          && [proposedNode isKindOfClass: [MUWorld class]]))
+  {
+    if (proposedChildIndex == -1)  // Onto an object
+    {
+      // Make the index it will go to explicit.
+      [outlineView setDropItem: proposedItem dropChildIndex: 0];
+    }
+    
+    return [self _dragOperationForOutlineView: outlineView draggingInfo: draggingInfo];
+  }
+  
+  return NSDragOperationNone;
+}
+
+- (BOOL) outlineView: (NSOutlineView *) outlineView
+          writeItems: (NSArray *) items
+        toPasteboard: (NSPasteboard *) pasteboard
+{
+  MUTreeNode *firstNode = (MUTreeNode *) ((NSTreeNode *) items[0]).representedObject;
+  NSString *pasteboardType;
+  
+  if ([firstNode isKindOfClass: [MUWorld class]])
+    pasteboardType = MUWorldPasteboardType;
+  else if ([firstNode isKindOfClass: [MUPlayer class]])
+    pasteboardType = MUPlayerPasteboardType;
+  else
+    return NO;
+  
+  NSMutableArray *representedNodes = [NSMutableArray arrayWithCapacity: items.count];
+  
+  for (NSTreeNode *item in items)
+  {
+    MUTreeNode *node = (MUTreeNode *) item.representedObject;
+    [representedNodes addObject: node];
+  }
+  
+  [pasteboard setData: [NSKeyedArchiver archivedDataWithRootObject: representedNodes]
+              forType: pasteboardType];
+  
+  _draggedNodes = representedNodes;
+  
+  return YES;
+}
+
 #pragma mark - NSOutlineView delegate
 
 - (BOOL) outlineView: (NSOutlineView *) outlineView isGroupItem: (id) item
@@ -406,13 +538,13 @@
 }
 
 /*
-- (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
-{
-  if ([self outlineView: outlineView isGroupItem: item])
-    return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: self];
-  else
-    return [outlineView makeViewWithIdentifier: @"DataCell" owner: self];
-}
+ - (NSView *) outlineView: (NSOutlineView *) outlineView viewForTableColumn: (NSTableColumn *) tableColumn item: (id) item
+ {
+ if ([self outlineView: outlineView isGroupItem: item])
+ return [outlineView makeViewWithIdentifier: @"HeaderCell" owner: self];
+ else
+ return [outlineView makeViewWithIdentifier: @"DataCell" owner: self];
+ }
  */
 
 - (void) outlineView: (NSOutlineView *) outlineView
@@ -576,6 +708,20 @@
 - (void) _applicationWillTerminate: (NSNotification *) notification
 {
   [self _saveProfilesOutlineViewState];
+}
+
+- (NSDragOperation) _dragOperationForOutlineView: (NSOutlineView *) outlineView
+                                    draggingInfo: (id <NSDraggingInfo>) draggingInfo
+{
+  if (draggingInfo.draggingSource == outlineView)
+  {
+    if (draggingInfo.draggingSourceOperationMask & NSDragOperationMove)
+      return NSDragOperationMove;
+    else
+      return NSDragOperationCopy;
+  }
+  else
+    return NSDragOperationCopy;
 }
 
 - (void) _registerForNotifications

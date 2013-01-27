@@ -18,7 +18,7 @@
 
 #pragma mark -
 
-@interface MUProfilesWindowController : NSWindowController <MUOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
+@interface MUProfilesWindowController : NSWindowController <NSOutlineViewDataSource, MUOutlineViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
 {
   IBOutlet NSTreeController *profilesTreeController;
   

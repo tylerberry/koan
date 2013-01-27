@@ -40,6 +40,7 @@
 - (void) _addNode: (MUTreeNode *) node atIndexPath: (NSIndexPath *) indexPath;
 - (void) _deleteNodeAtIndexPath: (NSIndexPath *) indexPath;
 - (void) _expandProfilesOutlineView;
+- (void) _moveNode: (NSTreeNode *) node toIndexPath: (NSIndexPath *) indexPath;
 - (void) _openConnectionForTreeNode: (MUTreeNode *) treeNode;
 - (void) _populateProfilesFromWorldRegistry;
 - (void) _populateProfilesTree;
@@ -347,58 +348,78 @@
   if (!availableType)
     return NO;
   
-  NSData *pasteboardData = [draggingInfo.draggingPasteboard dataForType: availableType];
-  NSArray *newNodes = [NSKeyedUnarchiver unarchiveObjectWithData: pasteboardData];
-  
   // Add the new items (we do this backwards, otherwise they will end up in reverse order).
   
   NSIndexPath *newNodeIndexPath;
   
   if (targetItem)
   {
+    [outlineView expandItem: targetItem];
+    
     NSIndexPath *baseIndexPath = [profilesTreeController indexPathOfTreeNode: targetItem];
     newNodeIndexPath = [baseIndexPath indexPathByAddingIndex: childIndex];
   }
   else
     newNodeIndexPath = [[NSIndexPath alloc] initWithIndex: childIndex];
   
-  for (NSInteger i = newNodes.count - 1; i >= 0; i--)
-  {
-    // We only want to copy in each item in the array once - if a folder is open and the folder and its contents were
-    // selected and dragged, we only want to drag the folder, of course.
-    
-    if (YES) // (![newNodes[i] isDescendantOfNodes: newNodes])
-    {
-      if ([self _dragOperationForOutlineView: outlineView draggingInfo: draggingInfo] == NSDragOperationCopy)
-        [newNodes[i] createNewUniqueIdentifier];
-      
-      [self _addNode: newNodes[i] atIndexPath: newNodeIndexPath];
-    }
-  }
-  
   if (draggingInfo.draggingSource == outlineView
       && [self _dragOperationForOutlineView: outlineView draggingInfo: draggingInfo] == NSDragOperationMove)
   {
-    for (MUTreeNode *node in _draggedNodes)
+    for (NSTreeNode *node in _draggedNodes)
     {
-      [self _deleteNodeAtIndexPath: [profilesTreeController indexPathOfRepresentedObject: node]];
+      BOOL shouldExpand = [outlineView isItemExpanded: node];
+      
+      [self _moveNode: node toIndexPath: newNodeIndexPath];
+      
+      if (shouldExpand)
+        [outlineView expandItem: node];
     }
+    
+    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+    
+    for (NSTreeNode *node in _draggedNodes)
+    {
+      [indexSet addIndex: [outlineView rowForItem: node]];
+    }
+    
+    [outlineView selectRowIndexes: indexSet byExtendingSelection: NO];
   }
-  
-  if (targetItem && ![outlineView isItemExpanded: targetItem])
-    [outlineView expandItem: targetItem];
-  
-  NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
-  
-  for (NSInteger i = [outlineView rowForItem: targetItem]; i < outlineView.numberOfRows; i++)
+  else // NSDragOperationCopy
   {
-    if ([newNodes containsObject: ((NSTreeNode *) [outlineView itemAtRow: i]).representedObject])
+    NSData *pasteboardData = [draggingInfo.draggingPasteboard dataForType: availableType];
+    NSArray *newNodes = [NSKeyedUnarchiver unarchiveObjectWithData: pasteboardData];
+    
+    for (NSInteger i = newNodes.count - 1; i >= 0; i--)
     {
-      [indexSet addIndex: i];
+      // We only want to copy in each item in the array once - if a folder is open and the folder and its contents were
+      // selected and dragged, we only want to drag the folder, of course.
+      
+      if (YES) // (![newNodes[i] isDescendantOfNodes: newNodes])
+      {
+        [newNodes[i] createNewUniqueIdentifier];
+        
+        [self _addNode: newNodes[i] atIndexPath: newNodeIndexPath];
+        
+        NSTreeNode *node = [self outlineView: outlineView
+                     itemForPersistentObject: [newNodes[i] uniqueIdentifier]];
+        
+        [outlineView reloadItem: node];
+        [outlineView expandItem: node];
+      }
     }
+    
+    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+    
+    for (NSInteger i = [outlineView rowForItem: targetItem]; i < outlineView.numberOfRows; i++)
+    {
+      if ([newNodes containsObject: ((NSTreeNode *) [outlineView itemAtRow: i]).representedObject])
+      {
+        [indexSet addIndex: i];
+      }
+    }
+    
+    [outlineView selectRowIndexes: indexSet byExtendingSelection: NO];
   }
-  
-  [outlineView selectRowIndexes: indexSet byExtendingSelection: NO];
   
   return YES;
 }
@@ -490,18 +511,20 @@
   else
     return NO;
   
+  NSMutableArray *nodes = [NSMutableArray arrayWithCapacity: items.count];
   NSMutableArray *representedNodes = [NSMutableArray arrayWithCapacity: items.count];
   
-  for (NSTreeNode *item in items)
+  for (NSTreeNode *node in items)
   {
-    MUTreeNode *node = (MUTreeNode *) item.representedObject;
-    [representedNodes addObject: node];
+    MUTreeNode *representedNode = (MUTreeNode *) node.representedObject;
+    [nodes addObject: node];
+    [representedNodes addObject: representedNode];
   }
   
   [pasteboard setData: [NSKeyedArchiver archivedDataWithRootObject: representedNodes]
               forType: pasteboardType];
   
-  _draggedNodes = representedNodes;
+  _draggedNodes = nodes;
   
   return YES;
 }
@@ -784,6 +807,15 @@
   
   for (id stateObject in stateArray)
     [profilesOutlineView expandItem: [self outlineView: profilesOutlineView itemForPersistentObject: stateObject]];
+}
+
+- (void) _moveNode: (NSTreeNode *) node toIndexPath: (NSIndexPath *) indexPath
+{
+  NSIndexPath *oldIndexPath = [profilesTreeController indexPathOfTreeNode: node];
+  
+  [profilesTreeController moveNode: node toIndexPath: indexPath];
+  
+  [[_undoManager prepareWithInvocationTarget: self] _moveNode: node toIndexPath: oldIndexPath];
 }
 
 - (void) _openConnectionForTreeNode: (MUTreeNode *) treeNode

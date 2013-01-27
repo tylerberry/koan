@@ -18,6 +18,7 @@
 #import "MUAcknowledgementsController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
+#import "MUConnectionWindowControllerRegistry.h"
 #import "MUPlayer.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
@@ -35,7 +36,6 @@
   
   NSSound *_cachedSound;
   
-  NSMutableArray *_connectionWindowControllers;
   MUAcknowledgementsController *_acknowledgementsController;
   MUConnectPanelController *_connectPanelController;
   MASPreferencesWindowController *_preferencesController;
@@ -81,8 +81,6 @@
 
 - (void) awakeFromNib
 {
-  _connectionWindowControllers = [[NSMutableArray alloc] init];
-  
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (_worldsDidChange:)
                                                name: MUWorldsDidChangeNotification
@@ -256,16 +254,8 @@
 
 - (NSApplicationTerminateReply) applicationShouldTerminate: (NSApplication *) application
 {
-  NSUInteger count = _connectionWindowControllers.count;
-  NSUInteger openConnections = 0;
-  
-  while (count--)
-  {
-    MUConnectionWindowController *controller = _connectionWindowControllers[count];
-    if (controller && controller.isConnectedOrConnecting)
-      openConnections++;
-  }
-  
+  NSUInteger openConnections = [MUConnectionWindowControllerRegistry defaultRegistry].connectedCount;
+
   if (openConnections > 0)
   {
     NSAlert *alert;
@@ -315,13 +305,6 @@
 
 #pragma mark - MUConnectionWindowControllerDelegate protocol
 
-- (void) connectionWindowControllerWillClose: (NSNotification *) notification
-{
-  MUConnectionWindowController *controller = notification.object;
-  
-  [_connectionWindowControllers removeObject: controller];
-}
-
 - (void) connectionWindowControllerDidReceiveText: (NSNotification *) notification
 {
   if (self._shouldPlayNotificationSound)
@@ -339,7 +322,8 @@
 
 - (void) openConnectionForProfile: (MUProfile *) profile
 {
-  [self _openConnectionWithController: [[MUConnectionWindowController alloc] initWithProfile: profile]];
+  MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
+  [self _openConnectionWithController: [registry controllerForProfile: profile]];
 }
 
 #pragma mark - Responder chain methods
@@ -410,20 +394,21 @@
 
 - (void) _openConnectionFromMenuItem: (id) sender
 {
-  MUConnectionWindowController *controller;
   MUProfile *profile = ((NSMenuItem *) sender).representedObject;
-  controller = [[MUConnectionWindowController alloc] initWithProfile: profile];
   
-  [self _openConnectionWithController: controller];
+  MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
+  [self _openConnectionWithController: [registry controllerForProfile: profile]];
 }
 
 - (void) _openConnectionWithController: (MUConnectionWindowController *) controller
 {
   controller.delegate = self;
   
-  [_connectionWindowControllers addObject: controller];
-  [controller showWindow: self];
-  [controller connect: nil];
+  [controller showWindow: nil];
+  [controller.window makeKeyAndOrderFront: nil];
+
+  if (!controller.isConnectedOrConnecting)
+    [controller connect: nil];
 }
 
 - (void) _playNotificationSound
@@ -513,7 +498,7 @@
 {
   if (cont)
   {
-    for (MUConnectionWindowController *controller in _connectionWindowControllers)
+    for (MUConnectionWindowController *controller in [MUConnectionWindowControllerRegistry defaultRegistry].controllers)
     {
       if (controller.isConnectedOrConnecting)
       {

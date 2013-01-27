@@ -9,10 +9,14 @@
 
 @interface MUConnectionWindowControllerRegistry : NSObject
 
-@property (copy) NSMutableArray *connectionWindowControllers;
+@property (copy) NSMutableSet *controllers;
 
-@property (readonly) NSUInteger connectedWorldCount;
+@property (readonly) NSUInteger count;
+@property (readonly) NSUInteger connectedCount;
 
 + (MUConnectionWindowControllerRegistry *) defaultRegistry;
+
+- (MUConnectionWindowController *) controllerForProfile: (MUProfile *) profile;
+- (MUConnectionWindowController *) controllerForWorld: (MUWorld *) world;
 
 @end

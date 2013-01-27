@@ -1,3 +1,4 @@
+
 //
 // MUConnectionWindowController.m
 //
@@ -53,9 +54,6 @@ enum MUAbstractANSIColors
 
 @interface MUConnectionWindowController ()
 {
-  MUProfile *_profile;
-  MUMUDConnection *_telnetConnection;
-  
   BOOL _currentlySearching;
   
   BOOL _shouldScrollToBottomAfterFullScreenTransition;
@@ -194,33 +192,36 @@ enum MUAbstractANSIColors
   
   // Restore window and split view title, size, and position.
   
-  self.window.title = _profile.windowTitle;
-  self.window.frameAutosaveName = _profile.uniqueIdentifier;
-  self.window.frameUsingName = _profile.uniqueIdentifier;
+  self.window.title = self.profile.windowTitle;
+  self.window.frameAutosaveName = self.profile.uniqueIdentifier;
+  self.window.frameUsingName = self.profile.uniqueIdentifier;
   
   splitView.autosaveName = [self _splitViewAutosaveName];
   [splitView adjustSubviews];
   
   // Bindings and notifications.
   
-  [receivedTextView bind: @"backgroundColor" toObject: _profile withKeyPath: @"effectiveBackgroundColor" options: nil];
+  [receivedTextView bind: @"backgroundColor"
+                toObject: self.profile
+             withKeyPath: @"effectiveBackgroundColor"
+                 options: nil];
   
-  [inputView bind: @"font" toObject: _profile withKeyPath: @"effectiveFont" options: nil];
-  [inputView bind: @"textColor" toObject: _profile withKeyPath: @"effectiveTextColor" options: nil];
-  [inputView bind: @"insertionPointColor" toObject: _profile withKeyPath: @"effectiveTextColor" options: nil];
-  [inputView bind: @"backgroundColor" toObject: _profile withKeyPath: @"effectiveBackgroundColor" options: nil];
+  [inputView bind: @"font" toObject: self.profile withKeyPath: @"effectiveFont" options: nil];
+  [inputView bind: @"textColor" toObject: self.profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"insertionPointColor" toObject: self.profile withKeyPath: @"effectiveTextColor" options: nil];
+  [inputView bind: @"backgroundColor" toObject: self.profile withKeyPath: @"effectiveBackgroundColor" options: nil];
   
-  [_profile addObserver: self
-             forKeyPath: @"effectiveBackgroundColor"
-                options: NSKeyValueObservingOptionNew
-                context: nil];
-  [_profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
-  [_profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
-  [_profile addObserver: self
-             forKeyPath: @"effectiveSystemTextColor"
-                options: NSKeyValueObservingOptionNew
-                context: nil];
-  [_profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
+  [self.profile addObserver: self
+                 forKeyPath: @"effectiveBackgroundColor"
+                    options: NSKeyValueObservingOptionNew
+                    context: nil];
+  [self.profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: nil];
+  [self.profile addObserver: self forKeyPath: @"effectiveLinkColor" options: NSKeyValueObservingOptionNew context: nil];
+  [self.profile addObserver: self
+                 forKeyPath: @"effectiveSystemTextColor"
+                    options: NSKeyValueObservingOptionNew
+                    context: nil];
+  [self.profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: nil];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
@@ -314,11 +315,11 @@ enum MUAbstractANSIColors
 {
   [self _disconnect];
   
-  [_profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
-  [_profile removeObserver: self forKeyPath: @"effectiveFont"];
-  [_profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
-  [_profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
-  [_profile removeObserver: self forKeyPath: @"effectiveTextColor"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveFont"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
+  [self.profile removeObserver: self forKeyPath: @"effectiveTextColor"];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
@@ -351,7 +352,7 @@ enum MUAbstractANSIColors
                          change: (NSDictionary *) changeDictionary
                         context: (void *) context
 {
-  if (object == _profile)
+  if (object == self.profile)
   {
     if ([keyPath isEqualToString: @"effectiveBackgroundColor"])
     {
@@ -495,7 +496,7 @@ enum MUAbstractANSIColors
   
   if (toolbarItemAction == @selector (goToWorldURL:))
   {
-    NSString *url = _profile.world.url;
+    NSString *url = self.profile.world.url;
     
     return (url && ![url isEqualToString: @""]);
   }
@@ -533,7 +534,7 @@ enum MUAbstractANSIColors
 
 - (BOOL) isConnectedOrConnecting
 {
-  return _telnetConnection.isConnected || _telnetConnection.isConnecting;
+  return self.connection.isConnected || self.connection.isConnecting;
 }
 
 #pragma mark - Actions
@@ -542,7 +543,7 @@ enum MUAbstractANSIColors
 {
   [self.window makeKeyAndOrderFront: nil];
   
-  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), _profile.windowTitle],
+  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), self.profile.windowTitle],
                      _(MULOK),
                      _(MULCancel),
                      nil,
@@ -552,7 +553,7 @@ enum MUAbstractANSIColors
                      @selector (_didEndCloseSheet:returnCode:contextInfo:),
                      (void *) callback,
                      _(MULConfirmCloseMessage),
-                     _profile.hostname);
+                     self.profile.hostname);
 }
 
 - (IBAction) clearWindow: (id) sender
@@ -564,11 +565,11 @@ enum MUAbstractANSIColors
 {
   if (self.isConnectedOrConnecting)
     return;
-  if (!_telnetConnection)
-    _telnetConnection = [_profile createNewTelnetConnectionWithDelegate: self];
-  // if (!_telnetConnection) {  }  // TODO: Handle this error condition.
+  if (!_connection)
+    _connection = [self.profile createNewTelnetConnectionWithDelegate: self];
+  // if (!_onnection) {  }  // TODO: Handle this error condition.
   
-  [_telnetConnection open];
+  [self.connection open];
   
   _pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
                                                target: self
@@ -594,14 +595,14 @@ enum MUAbstractANSIColors
 
 - (IBAction) goToWorldURL: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: _profile.world.url]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: self.profile.world.url]];
 }
 
 - (IBAction) sendInputText: (id) sender
 {
-  [_telnetConnection writeLine: inputView.string];
+  [self.connection writeLine: inputView.string];
   
-  if (!_telnetConnection.state.serverWillEcho)
+  if (!self.connection.state.serverWillEcho)
   {
     [_historyRing saveString: inputView.string];
   
@@ -674,15 +675,15 @@ enum MUAbstractANSIColors
 
 - (void) reportWindowSizeToServer
 {
-  [_telnetConnection sendNumberOfWindowLines: receivedTextView.numberOfLines
-                                     columns: receivedTextView.numberOfColumns];
+  [self.connection sendNumberOfWindowLines: receivedTextView.numberOfLines
+                                   columns: receivedTextView.numberOfColumns];
 }
 
 - (void) telnetConnectionDidConnect: (NSNotification *) notification
 {
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpen)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionOpenedForTitle: _profile.windowTitle];
+  [MUGrowlService connectionOpenedForTitle: self.profile.windowTitle];
   
   _timeConnectedFieldTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1
                                                               target: self
@@ -690,8 +691,8 @@ enum MUAbstractANSIColors
                                                             userInfo: nil
                                                              repeats: YES];
   
-  if (_profile.hasLoginInformation)
-    [_telnetConnection writeLine: _profile.loginString];
+  if (self.profile.hasLoginInformation)
+    [self.connection writeLine: self.profile.loginString];
 }
 
 - (void) telnetConnectionIsConnecting: (NSNotification *) notification
@@ -706,7 +707,7 @@ enum MUAbstractANSIColors
   [self _stopTimeConnectedFieldTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedForTitle: _profile.windowTitle];
+  [MUGrowlService connectionClosedForTitle: self.profile.windowTitle];
 }
 
 - (void) telnetConnectionWasClosedByServer: (NSNotification *) notification
@@ -715,7 +716,7 @@ enum MUAbstractANSIColors
   [self _stopTimeConnectedFieldTimer];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByServerForTitle: _profile.windowTitle];
+  [MUGrowlService connectionClosedByServerForTitle: self.profile.windowTitle];
 }
 
 - (void) telnetConnectionWasClosedWithError: (NSNotification *) notification
@@ -728,7 +729,7 @@ enum MUAbstractANSIColors
   [self _displayString: [NSString stringWithFormat: @"%@\n",
                          [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByErrorForTitle: _profile.windowTitle error: errorMessage];
+  [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: errorMessage];
 }
 
 #pragma mark - MUTextViewPasteDelegate protocol
@@ -989,8 +990,8 @@ enum MUAbstractANSIColors
 
 - (void) _disconnect
 {
-  if (_telnetConnection)
-    [_telnetConnection close];
+  if (self.connection)
+    [self.connection close];
 }
 
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
@@ -1102,11 +1103,11 @@ enum MUAbstractANSIColors
 
 - (void) _sendPeriodicPing: (NSTimer *) timer
 {
-  if (_telnetConnection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
-      || _telnetConnection.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
-    [_telnetConnection writeLine: @"IDLE"];
-  else if (_telnetConnection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH)
-    [_telnetConnection writeLine: @"@@"];
+  if (self.connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
+      || self.connection.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
+    [self.connection writeLine: @"IDLE"];
+  else if (self.connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH)
+    [self.connection writeLine: @"@@"];
 }
 
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification
@@ -1123,7 +1124,7 @@ enum MUAbstractANSIColors
 
 - (NSString *) _splitViewAutosaveName
 {
-  return [NSString stringWithFormat: @"%@.split", _profile.uniqueIdentifier];
+  return [NSString stringWithFormat: @"%@.split", self.profile.uniqueIdentifier];
 }
 
 - (void) _stopTimeConnectedFieldTimer
@@ -1350,7 +1351,7 @@ enum MUAbstractANSIColors
         && [attributes[MUCustomBackgroundColorAttributeName] intValue] == MUDefaultBackgroundColorTag)
     {
       [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
-                                           value: _profile.effectiveBackgroundColor
+                                           value: self.profile.effectiveBackgroundColor
                                            range: attributeRange];
     }
     
@@ -1376,14 +1377,16 @@ enum MUAbstractANSIColors
     if (attributes[MUBoldFontAttributeName]
         && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDisplayBrightAsBold])
     {
+      NSFont *effectiveFont = self.profile.effectiveFont;
+      
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
-                                           value: [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont]
+                                           value: [effectiveFont boldFontWithRespectTo: effectiveFont]
                                            range: attributeRange];
     }
     else
     {
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
-                                           value: _profile.effectiveFont
+                                           value: self.profile.effectiveFont
                                            range: attributeRange];
     }
     
@@ -1403,7 +1406,7 @@ enum MUAbstractANSIColors
 {
   NSMutableDictionary *linkTextAttributes = [receivedTextView.linkTextAttributes mutableCopy];
   
-  linkTextAttributes[NSForegroundColorAttributeName] = _profile.effectiveLinkColor;
+  linkTextAttributes[NSForegroundColorAttributeName] = self.profile.effectiveLinkColor;
   
   receivedTextView.linkTextAttributes = linkTextAttributes;
   receivedTextView.needsDisplay = YES;
@@ -1423,7 +1426,7 @@ enum MUAbstractANSIColors
       [receivedTextView.textStorage addAttribute: ([attributes objectForKey: MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName
                                                    : NSForegroundColorAttributeName)
-                                           value: _profile.effectiveTextColor
+                                           value: self.profile.effectiveTextColor
                                            range: attributeRange];
     }
     
@@ -1440,7 +1443,7 @@ enum MUAbstractANSIColors
   
   NSUInteger componentUnits = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
   NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components: componentUnits
-                                                                     fromDate: _telnetConnection.dateConnected
+                                                                     fromDate: self.connection.dateConnected
                                                                        toDate: now
                                                                       options: 0];
   

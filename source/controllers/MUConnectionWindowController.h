@@ -31,7 +31,10 @@
 }
 
 @property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;
+@property (readonly) MUMUDConnection *connection;
 @property (readonly) BOOL isConnectedOrConnecting;
+
+@property (strong, readonly) MUProfile *profile;
 
 // Designated initializer.
 - (id) initWithProfile: (MUProfile *) newProfile;

@@ -76,6 +76,7 @@
 		2F93AB30166B40D2006516F5 /* VolumeMin@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2F93AB2C166B40D2006516F5 /* VolumeMin@2x.tiff */; };
 		2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */; };
 		2F940FDA169ACCE500E1CF39 /* MULoggingPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F940FDC169ACCE500E1CF39 /* MULoggingPreferencesView.xib */; };
+		2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F946F3916AECC6400661918 /* NSTreeController+IndexPaths.m */; };
 		2F97B0AF16337BF000B33F4A /* MUWorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */; };
 		2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0B116337C2900B33F4A /* MUPlayerViewController.m */; };
 		2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0C01633905700B33F4A /* MUProfileContentView.m */; };
@@ -106,7 +107,6 @@
 		2FCFEFDD0BCAE36D0061FB6B /* MUTextLogDocumentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCFEFDC0BCAE36D0061FB6B /* MUTextLogDocumentTests.m */; };
 		2FD0E1EC117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */; };
 		2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */; };
-		2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */; };
 		2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA14E0D67E86A007F0036 /* growl-icon.png */; };
 		2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2FDFA1500D67E870007F0036 /* openssl-icon.gif */; };
 		2FDFA1560D67F630007F0036 /* MUAcknowledgementsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FDFA1550D67F630007F0036 /* MUAcknowledgementsController.m */; };
@@ -354,6 +354,9 @@
 		2F940FD5169ACB3C00E1CF39 /* MULoggingPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULoggingPreferencesViewController.h; sourceTree = "<group>"; };
 		2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULoggingPreferencesViewController.m; sourceTree = "<group>"; };
 		2F940FDB169ACCE500E1CF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MULoggingPreferencesView.xib; sourceTree = "<group>"; };
+		2F946F3716AE9B8E00661918 /* MUSocketSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUSocketSubclass.h; sourceTree = "<group>"; };
+		2F946F3816AECC6400661918 /* NSTreeController+IndexPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTreeController+IndexPaths.h"; sourceTree = "<group>"; };
+		2F946F3916AECC6400661918 /* NSTreeController+IndexPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTreeController+IndexPaths.m"; sourceTree = "<group>"; };
 		2F97B0AD16337BF000B33F4A /* MUWorldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWorldViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWorldViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F97B0B016337C2900B33F4A /* MUPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPlayerViewController.h; sourceTree = "<group>"; };
@@ -405,7 +408,6 @@
 		2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetSubnegotiationOptionState.m; sourceTree = "<group>"; };
 		2FD7F68012ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUHeuristicCodebaseAnalyzer.h; sourceTree = "<group>"; };
 		2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHeuristicCodebaseAnalyzer.m; sourceTree = "<group>"; };
-		2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sparkle-icon.png"; sourceTree = "<group>"; };
 		2FDFA14E0D67E86A007F0036 /* growl-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "growl-icon.png"; sourceTree = "<group>"; };
 		2FDFA1500D67E870007F0036 /* openssl-icon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "openssl-icon.gif"; sourceTree = "<group>"; };
 		2FDFA1540D67F630007F0036 /* MUAcknowledgementsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAcknowledgementsController.h; sourceTree = "<group>"; };
@@ -689,7 +691,6 @@
 				2F3DBACD165372FC0056D738 /* Sounds.png */,
 				2F3DBACE165372FD0056D738 /* Sounds@2x.png */,
 				2FB1F802161BFAEE00AFD977 /* Spacer.tiff */,
-				2FDFA14C0D67E85E007F0036 /* sparkle-icon.png */,
 				2F93AB29166B40D2006516F5 /* VolumeMax.tiff */,
 				2F93AB2A166B40D2006516F5 /* VolumeMax@2x.tiff */,
 				2F93AB2B166B40D2006516F5 /* VolumeMin.tiff */,
@@ -985,6 +986,8 @@
 				E6550DFF07763B72002E81FF /* NSObject (BetterHashing).m */,
 				2F62649E1663381E008DDBF2 /* NSString (CodePage437).h */,
 				2F62649F1663384D008DDBF2 /* NSString (CodePage437).m */,
+				2F946F3816AECC6400661918 /* NSTreeController+IndexPaths.h */,
+				2F946F3916AECC6400661918 /* NSTreeController+IndexPaths.m */,
 			);
 			name = Categories;
 			path = categories;
@@ -1174,6 +1177,7 @@
 				7E68DC34092AC2FB004554BD /* MUReadBuffer.h */,
 				7E68DC35092AC2FB004554BD /* MUReadBuffer.m */,
 				7E68DC38092AC2FB004554BD /* MUSocket.h */,
+				2F946F3716AE9B8E00661918 /* MUSocketSubclass.h */,
 				7E68DC39092AC2FB004554BD /* MUSocket.m */,
 				7E87735109AD44DE00A883BC /* MUSocketFactory.h */,
 				7E87735209AD44DE00A883BC /* MUSocketFactory.m */,
@@ -1359,7 +1363,6 @@
 				E62C909F07422669005662BC /* Localizable.strings in Resources */,
 				2FDFA14F0D67E86A007F0036 /* growl-icon.png in Resources */,
 				2FDFA1510D67E870007F0036 /* openssl-icon.gif in Resources */,
-				2FDFA14D0D67E85E007F0036 /* sparkle-icon.png in Resources */,
 				2F7093D61223B3F000E0D178 /* Growl Registration Ticket.growlRegDict in Resources */,
 				2FB1F806161C045500AFD977 /* ActionTemplate.pdf in Resources */,
 				2FB1F807161C045500AFD977 /* AddTemplate.pdf in Resources */,
@@ -1562,6 +1565,7 @@
 				2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
 				2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */,
+				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

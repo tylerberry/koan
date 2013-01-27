@@ -12,8 +12,8 @@
 }
 
 - (void) _connectionDidClose: (NSNotification *) notification;
-- (void) _donnectionWillOpen: (NSNotification *) notification;
-- (void) connectionWindowControllerWillClose: (NSNotification *) notification;
+- (void) _connectionWillOpen: (NSNotification *) notification;
+- (void) _connectionWindowControllerWillClose: (NSNotification *) notification;
 - (void) _registerForNotifications;
 - (void) _unregisterForNotifications;
 
@@ -74,6 +74,20 @@
   }
 }
 
+- (MUConnectionWindowController *) controllerForWorld: (MUWorld *) world
+{
+  MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
+  
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector (_connectionWindowControllerWillClose:)
+                                               name: MUConnectionWindowControllerWillCloseNotification
+                                             object: controller];
+  
+  [_controllers addObject: controller];
+  
+  return controller;
+}
+
 #pragma mark - Property method implementations
 
 - (NSUInteger) count
@@ -82,6 +96,16 @@
 }
 
 #pragma mark - Private methods
+
+- (void) _connectionDidClose: (NSNotification *) notification
+{
+  _connectedCount--;
+}
+
+- (void) _connectionWillOpen: (NSNotification *) notification
+{
+  _connectedCount++;
+}
 
 - (void) _connectionWindowControllerWillClose: (NSNotification *) notification
 {
@@ -95,22 +119,12 @@
   [_controllersKeyedByProfileUniqueIdentifier removeObjectForKey: controller.profile.uniqueIdentifier];
 }
 
-- (void) _connectionDidClose: (NSNotification *) notification
-{
-  _connectedCount--;
-}
-
-- (void) _donnectionWillOpen: (NSNotification *) notification
-{
-  _connectedCount++;
-}
-
 - (void) _registerForNotifications
 {
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
   
   [notificationCenter addObserver: self
-                         selector: @selector (_donnectionWillOpen:)
+                         selector: @selector (_connectionWillOpen:)
                              name: MUMUDConnectionIsConnectingNotification
                            object: nil];
   [notificationCenter addObserver: self

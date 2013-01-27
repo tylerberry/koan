@@ -152,10 +152,9 @@
   
   MUWorld *world = [MUWorld worldWithHostname: url.host port: url.port];
   
-  MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
+  MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
   
-  [self _openConnectionWithController: controller];
-  
+  [self _openConnectionWithController: [registry controllerForWorld: world]];
 }
 
 - (IBAction) openBugsWebPage: (id) sender
@@ -298,9 +297,9 @@
 
 - (void) openConnectionForWorld: (MUWorld *) world
 {
-  MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithWorld: world];
+  MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
   
-  [self _openConnectionWithController: controller];
+  [self _openConnectionWithController: [registry controllerForWorld: world]];
 }
 
 #pragma mark - MUConnectionWindowControllerDelegate protocol
@@ -442,7 +441,6 @@
     
     if (autoconnect)
     {
-      profile.world = world;
       if (profile.autoconnect)
       {
         didAutoconnect = YES;

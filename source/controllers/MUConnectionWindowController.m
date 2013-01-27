@@ -1102,7 +1102,11 @@ enum MUAbstractANSIColors
 
 - (void) _sendPeriodicPing: (NSTimer *) timer
 {
-  [_telnetConnection writeLine: @"@@"];
+  if (_telnetConnection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
+      || _telnetConnection.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
+    [_telnetConnection writeLine: @"IDLE"];
+  else if (_telnetConnection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH)
+    [_telnetConnection writeLine: @"@@"];
 }
 
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification

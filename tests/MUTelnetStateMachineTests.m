@@ -186,6 +186,11 @@
   return;
 }
 
+- (void) sendNAWSSubnegotiationWithNumberOfLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
+{
+  return;
+}
+
 - (void) useBufferedDataAsPrompt
 {
   return;

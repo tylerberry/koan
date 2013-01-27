@@ -18,11 +18,14 @@
 @protocol MUTelnetProtocolHandler
 
 - (void) bufferSubnegotiationByte: (uint8_t) byte;
-- (void) bufferTextByte: (uint8_t) byte;
-
 - (void) handleBufferedSubnegotiation;
-- (void) log: (NSString *) message, ...;
+
+- (void) bufferTextByte: (uint8_t) byte;
 - (void) useBufferedDataAsPrompt;
+
+- (void) sendNAWSSubnegotiationWithNumberOfLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
+
+- (void) log: (NSString *) message, ...;
 
 - (void) receivedDo: (uint8_t) option;
 - (void) receivedDont: (uint8_t) option;
@@ -49,17 +52,15 @@
   
   NSMutableData *subnegotiationBuffer;
   
-  NSObject <MUTelnetProtocolHandlerDelegate> *delegate;
   MUTelnetOption *options[TELNET_OPTION_MAX + 1];
   BOOL receivedCR;
   BOOL optionRequestSent;
 }
 
+@property (weak) NSObject <MUTelnetProtocolHandlerDelegate> *delegate;
+
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 - (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
-
-- (NSObject <MUTelnetProtocolHandlerDelegate> *) delegate;
-- (void) setDelegate: (NSObject <MUTelnetProtocolHandlerDelegate> *) object;
 
 // Option negotation.
 

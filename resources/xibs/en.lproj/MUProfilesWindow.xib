@@ -91,7 +91,7 @@
 															<string key="NSFrameSize">{200, 486}</string>
 															<reference key="NSSuperview" ref="276075311"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="1039916593"/>
+															<reference key="NSNextKeyView" ref="431300614"/>
 															<string key="NSReuseIdentifierKey">_NS:13</string>
 															<bool key="NSEnabled">YES</bool>
 															<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -239,7 +239,7 @@
 											<string key="NSFrame">{{0, 23}, {200, 486}}</string>
 											<reference key="NSSuperview" ref="865949446"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="431300614"/>
+											<reference key="NSNextKeyView" ref="276075311"/>
 											<string key="NSReuseIdentifierKey">_NS:9</string>
 											<int key="NSsFlags">133648</int>
 											<reference key="NSVScroller" ref="1039916593"/>
@@ -368,7 +368,7 @@
 													<string key="NSFrameSize">{477, 509}</string>
 													<reference key="NSSuperview" ref="323591889"/>
 													<reference key="NSWindow"/>
-													<reference key="NSNextKeyView" ref="369788587"/>
+													<reference key="NSNextKeyView" ref="606328272"/>
 													<string key="NSReuseIdentifierKey">_NS:13</string>
 												</object>
 											</array>
@@ -417,7 +417,7 @@
 									<string key="NSFrame">{{201, 0}, {477, 509}}</string>
 									<reference key="NSSuperview" ref="96870285"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView" ref="606328272"/>
+									<reference key="NSNextKeyView" ref="323591889"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
 									<int key="NSsFlags">133648</int>
 									<reference key="NSVScroller" ref="369788587"/>
@@ -1094,6 +1094,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addNewPlayer:">id</string>
 						<string key="addNewWorld:">id</string>
+						<string key="openConnectionForDoubleClickedProfile:">id</string>
 						<string key="openConnectionForSelectedProfile:">id</string>
 						<string key="openWebsiteForSelectedProfile:">id</string>
 						<string key="showActionContextMenu:">id</string>
@@ -1106,6 +1107,10 @@
 						</object>
 						<object class="IBActionInfo" key="addNewWorld:">
 							<string key="name">addNewWorld:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openConnectionForDoubleClickedProfile:">
+							<string key="name">openConnectionForDoubleClickedProfile:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="openConnectionForSelectedProfile:">

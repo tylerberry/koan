@@ -81,7 +81,7 @@
 				<bool key="NS.allowsfloats">YES</bool>
 			</object>
 			<object class="NSCustomView" id="1005">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSTextField" id="834720082">
@@ -89,7 +89,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{312, 54}, {34, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="428918459"/>
 						<string key="NSReuseIdentifierKey">_NS:1535</string>
 						<bool key="NSEnabled">YES</bool>
@@ -130,7 +129,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{351, 52}, {50, 22}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="458823639"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
@@ -166,7 +164,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 54}, {72, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="846939646"/>
 						<string key="NSReuseIdentifierKey">_NS:1535</string>
 						<string key="NSHuggingPriority">{350, 750}</string>
@@ -188,7 +185,6 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{94, 52}, {213, 22}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="834720082"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="NSAntiCompressionPriority">{550, 750}</string>
@@ -212,7 +208,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 22}, {72, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="714201312"/>
 						<string key="NSReuseIdentifierKey">_NS:1535</string>
 						<string key="NSHuggingPriority">{350, 750}</string>
@@ -234,7 +229,6 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{94, 20}, {307, 22}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="780302838">
@@ -256,7 +250,6 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{17, 86}, {72, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="11858742"/>
 						<string key="NSReuseIdentifierKey">_NS:1535</string>
 						<string key="NSHuggingPriority">{350, 750}</string>
@@ -278,7 +271,6 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{94, 84}, {307, 22}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="74349837"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="NSAntiCompressionPriority">{750, 750}</string>
@@ -299,8 +291,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{421, 126}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="704210111"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -410,6 +400,14 @@
 					<int key="connectionID">364</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="428918459"/>
+						<reference key="destination" ref="714201312"/>
+					</object>
+					<int key="connectionID">430</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.port</string>
 						<reference key="source" ref="428918459"/>
@@ -435,10 +433,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">nextKeyView</string>
-						<reference key="source" ref="428918459"/>
-						<reference key="destination" ref="714201312"/>
+						<reference key="source" ref="846939646"/>
+						<reference key="destination" ref="428918459"/>
 					</object>
-					<int key="connectionID">430</int>
+					<int key="connectionID">429</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -462,14 +460,6 @@
 						</object>
 					</object>
 					<int key="connectionID">403</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">nextKeyView</string>
-						<reference key="source" ref="846939646"/>
-						<reference key="destination" ref="428918459"/>
-					</object>
-					<int key="connectionID">429</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">

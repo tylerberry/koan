@@ -19,6 +19,7 @@ typedef enum MUANSICode
   MUANSIInverseOn = 7,
   MUANSIHiddenTextOn = 8,
   MUANSIStrikethroughOn = 9,
+  MUANSIDoubleUnderlineOn = 21,
   MUANSIBoldOff = 22,
   MUANSIItalicsOff = 23,
   MUANSIUnderlineOff = 24,

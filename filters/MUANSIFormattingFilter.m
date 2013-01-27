@@ -861,6 +861,13 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         break;
       }
         
+      case MUANSIDoubleUnderlineOn:
+        [self _setAttribute: NSUnderlineStyleAttributeName
+                    toValue: @(NSUnderlinePatternSolid | NSUnderlineStyleDouble)
+                   inString: string
+               fromLocation: startLocation];
+        break;
+        
       case MUANSIBoldOff:
         [self _resetBoldInString: string fromLocation: startLocation];
         break;

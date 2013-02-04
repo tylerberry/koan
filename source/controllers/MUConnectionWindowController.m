@@ -56,7 +56,6 @@ enum MUAbstractANSIColors
 }
 
 - (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-- (void) _displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt;
 - (void) _endCompletion;
 - (void) _postConnectionWindowControllerDidReceiveTextNotification;
 - (void) _postConnectionWindowControllerWillCloseNotification;
@@ -640,14 +639,43 @@ enum MUAbstractANSIColors
   }
 }
 
-- (void) displayAttributedString: (NSAttributedString *) attributedString
+- (void) displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt
 {
-  [self _displayAttributedString: attributedString asPrompt: NO];
-}
+  BOOL needsScrollToBottom = NO;
+  
+  if ([self _shouldScrollDisplayViewToBottom])
+    needsScrollToBottom = YES;
+  
+  if (prompt)
+    _currentPrompt = [attributedString copy];
+  
+  if (_currentPrompt)
+  {
+    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
+                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
+    
+    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
+  }
+  
+  [receivedTextView.textStorage beginEditing];
+  [receivedTextView.textStorage appendAttributedString: attributedString];
+  [receivedTextView.textStorage endEditing];
+  
+  if (!prompt)
+  {
+    _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
+    
+    if (_currentPrompt)
+      [receivedTextView.textStorage appendAttributedString: _currentPrompt];
+  }
+  
+  [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
+  
+  if (needsScrollToBottom)
+    [self _scrollDisplayViewToBottom];
+  
+  [self _postConnectionWindowControllerDidReceiveTextNotification];
 
-- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
-{  
-  [self _displayAttributedString: attributedString asPrompt: YES];
 }
 
 - (void) reportWindowSizeToServer
@@ -921,44 +949,6 @@ enum MUAbstractANSIColors
     if (contextInfo)
       ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, NO);
   }
-}
-
-- (void) _displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt
-{
-  BOOL needsScrollToBottom = NO;
-  
-  if ([self _shouldScrollDisplayViewToBottom])
-    needsScrollToBottom = YES;
-  
-  if (prompt)
-    _currentPrompt = [attributedString copy];
-  
-  if (_currentPrompt)
-  {
-    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
-                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
-    
-    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
-  }
-  
-  [receivedTextView.textStorage beginEditing];
-  [receivedTextView.textStorage appendAttributedString: attributedString];
-  [receivedTextView.textStorage endEditing];
-  
-  if (!prompt)
-  {
-    _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
-  
-    if (_currentPrompt)
-      [receivedTextView.textStorage appendAttributedString: _currentPrompt];
-  }
-  
-  [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
-  
-  if (needsScrollToBottom)
-    [self _scrollDisplayViewToBottom];
-  
-  [self _postConnectionWindowControllerDidReceiveTextNotification];
 }
 
 - (void) _endCompletion

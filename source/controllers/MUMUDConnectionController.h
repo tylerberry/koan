@@ -14,8 +14,7 @@
 
 @required
 - (void) clearPrompt;
-- (void) displayAttributedString: (NSAttributedString *) attributedString;
-- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString;
+- (void) displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt;
 - (void) reportWindowSizeToServer;
 - (void) startDisplayingTimeConnected;
 - (void) stopDisplayingTimeConnected;

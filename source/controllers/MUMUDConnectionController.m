@@ -25,11 +25,14 @@ enum MUTextDisplayModes
   MUFilterQueue *_filterQueue;
   
   NSAttributedString *_currentRawPrompt;
+  NSString *_recentSentString;
   NSMutableArray *_recentReceivedStrings;
+  NSUInteger _reconnectCount;
   
   NSTimer *_pingTimer;
 }
 
+- (void) _attemptReconnect;
 - (void) _cleanUpPingTimer;
 - (void) _sendPeriodicPing: (NSTimer *) timer;
 
@@ -52,12 +55,17 @@ enum MUTextDisplayModes
   
   _filterQueue = [MUFilterQueue filterQueue];
   
-  _recentReceivedStrings = [NSMutableArray array];
-  
   [_filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: _profile delegate: self]];
   [_filterQueue addFilter: [MUFugueEditFilter filterWithProfile: _profile delegate: fugueEditDelegate]];
   [_filterQueue addFilter: [MUNaiveURLFilter filter]];
   [_filterQueue addFilter: [_profile createLogger]];
+  
+  _currentRawPrompt = nil;
+  _recentReceivedStrings = [NSMutableArray array];
+  _recentSentString = nil;
+  _reconnectCount = 0;
+  
+  _pingTimer = nil;
   
   return self;
 }
@@ -68,8 +76,6 @@ enum MUTextDisplayModes
 {
   if (self.isConnectedOrConnecting)
     return;
-  
-  // if (!_connection) {  }  // TODO: Handle this error condition.
   
   [_connection open];
   
@@ -98,6 +104,7 @@ enum MUTextDisplayModes
 
 - (void) sendString: (NSString *) string
 {
+  _recentSentString = [string copy];
   [_connection writeLine: string];
 }
 
@@ -125,25 +132,21 @@ enum MUTextDisplayModes
   if (string && string.length > 0)
   {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
+      [_recentReceivedStrings removeObjectAtIndex: 0];
     
-    if ([defaults boolForKey: MUPDropDuplicateLines])
+    if ([_recentReceivedStrings containsObject: string])
     {
-      if (![_recentReceivedStrings containsObject: string])
-      {
-        while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
-        {
-          [_recentReceivedStrings removeObjectAtIndex: 0];
-        }
-        
-        [_recentReceivedStrings addObject: [string copy]];
-      }
-      else
+      if ([defaults boolForKey: MUPDropDuplicateLines])
       {
         ++_droppedLines;
         // NSLog (@"Dropped lines: %lu", ++_droppedLines);
         return;
       }
     }
+    else
+      [_recentReceivedStrings addObject: [string copy]];
     
     [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
   }
@@ -156,6 +159,8 @@ enum MUTextDisplayModes
 
 - (void) MUDConnectionDidConnect: (NSNotification *) notification
 {
+  _reconnectCount = 0;
+  
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpen)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionOpenedForTitle: self.profile.windowTitle];
@@ -188,6 +193,8 @@ enum MUTextDisplayModes
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByServerForTitle: self.profile.windowTitle];
+  
+  [self _attemptReconnect];
 }
 
 - (void) MUDConnectionWasClosedWithError: (NSNotification *) notification
@@ -201,9 +208,21 @@ enum MUTextDisplayModes
                          [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: errorMessage];
+  
+  [self _attemptReconnect];
 }
 
 #pragma mark - Private methods
+
+- (void) _attemptReconnect
+{
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  if ([defaults boolForKey: MUPAutomaticReconnect]
+      && ++_reconnectCount < (NSUInteger) [defaults integerForKey: MUPAutomaticReconnectCount]
+      && ![_recentSentString isEqualToString: @"QUIT"])
+    [self connect];
+}
 
 - (void) _cleanUpPingTimer
 {
@@ -219,12 +238,12 @@ enum MUTextDisplayModes
   {
     case MUSystemTextDisplayMode:
     case MUNormalTextDisplayMode:
-      [self.delegate displayAttributedString: [_filterQueue processCompleteLine: attributedString]];
+      [self.delegate displayAttributedString: [_filterQueue processCompleteLine: attributedString] asPrompt: NO];
       break;
       
     case MUPromptTextDisplayMode:
       _currentRawPrompt = [attributedString copy];
-      [self.delegate displayAttributedStringAsPrompt: [_filterQueue processPartialLine: attributedString]];
+      [self.delegate displayAttributedString: [_filterQueue processPartialLine: attributedString] asPrompt: YES];
       break;
       
     case MUEchoedTextDisplayMode:
@@ -240,7 +259,7 @@ enum MUTextDisplayModes
       else
         fullLine = attributedString;
       
-      [self.delegate displayAttributedString: [_filterQueue processCompleteLine: fullLine]];
+      [self.delegate displayAttributedString: [_filterQueue processCompleteLine: fullLine] asPrompt: NO];
       [self.delegate clearPrompt];
       break;
     }

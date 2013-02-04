@@ -28,6 +28,9 @@ NSString * const MUPProfilesOutlineViewState = @"MUPProfilesOutlineViewState";
 NSString * const MUPAutomaticReconnect = @"MUPAutomaticReconnect";
 NSString * const MUPLimitAutomaticReconnect = @"MUPLimitAutomaticReconnect";
 NSString * const MUPAutomaticReconnectCount = @"MUPAutomaticReconnectCount";
+NSString * const MUPDropDuplicateLines = @"MUPDropDuplicateLines";
+NSString * const MUPDropDuplicateLinesCount = @"MUPDropDuplicateLinesCount";
+NSString * const MUPDropDuplicatePackets = @"MUPDropDuplicatePackets";
 
 // Sounds.
 

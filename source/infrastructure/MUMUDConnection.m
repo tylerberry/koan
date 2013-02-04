@@ -16,6 +16,8 @@
 
 #import "NSString+CodePage437.h"
 
+static NSUInteger _droppedSpamCount = 0;
+
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
 NSString *MUMUDConnectionIsConnectingNotification = @"MUMUDConnectionIsConnectingNotification";
 NSString *MUMUDConnectionWasClosedByClientNotification = @"MUMUDConnectionWasClosedByClientNotification";
@@ -28,6 +30,8 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   MUProtocolStack *_protocolStack;
   MUTelnetProtocolHandler *_telnetProtocolHandler;
   MUSocketFactory *_socketFactory;
+  
+  NSData *_lastReceivedData;
   
   NSString *_hostname;
   int _port;
@@ -145,6 +149,9 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   NSString *lineWithLineEnding = [NSString stringWithFormat: @"%@\r\n",line];
   NSData *encodedData = [lineWithLineEnding dataUsingEncoding: self.state.stringEncoding allowLossyConversion: YES];
   [self _writeDataWithPreprocessing: encodedData];
+  
+  _lastReceivedData = nil;  // If we send data, that should reset packet-level flood detection, so if we send 'who'
+                            // twice and get identical replies (for example) we don't mysteriously get no response.
 }
 
 #pragma mark - MUAbstractConnection overrides
@@ -340,7 +347,26 @@ NSString *MUMUDConnectionErrorMessageKey = @"MUMUDConnectionErrorMessageKey";
   [self.socket poll];
   
   if (self.socket.hasDataAvailable)
-    [_protocolStack parseInputData: [self.socket readUpToLength: self.socket.availableBytes]];
+  {
+    NSData *receivedData = [self.socket readUpToLength: self.socket.availableBytes];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey: MUPDropDuplicatePackets])
+    {
+      if (![receivedData isEqualToData: _lastReceivedData])
+      {
+        _lastReceivedData = [receivedData copy];
+        [_protocolStack parseInputData: receivedData];
+      }
+      else
+      {
+        NSLog (@"Dropped spam packets: %lu", ++_droppedSpamCount);
+      }
+    }
+    else
+    {
+      [_protocolStack parseInputData: receivedData];
+    }
+  }
 }
 
 - (void) _registerObjectForNotifications: (id) object

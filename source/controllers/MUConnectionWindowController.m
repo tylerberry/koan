@@ -18,6 +18,8 @@
 
 #import <objc/objc-runtime.h>
 
+static NSUInteger _droppedLines = 0;
+
 enum MUSearchDirections
 {
   MUBackwardSearch,
@@ -62,6 +64,7 @@ enum MUAbstractANSIColors
   MUFilterQueue *_filterQueue;
   MUHistoryRing *_historyRing;
   
+  NSMutableArray *_recentReceivedStrings;
   NSAttributedString *_currentPrompt;
   NSRange _currentTextRangeWithoutPrompt;
   
@@ -144,6 +147,8 @@ enum MUAbstractANSIColors
   
   _currentlySearching = NO;
   _windowSizeNotificationTimer = nil;
+  
+  _recentReceivedStrings = [[NSMutableArray alloc] init];
   
   return self;
 }
@@ -670,7 +675,30 @@ enum MUAbstractANSIColors
 - (void) displayString: (NSString *) string
 {
   if (string && string.length > 0)
-  [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
+  {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([defaults boolForKey: MUPDropDuplicateLines])
+    {
+      if (![_recentReceivedStrings containsObject: string])
+      {
+        while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
+        {
+          [_recentReceivedStrings objectAtIndex: 0];
+        }
+        
+        [_recentReceivedStrings addObject: [string copy]];
+      }
+      else
+      {
+        ++_droppedLines;
+        // NSLog (@"Dropped lines: %lu", ++_droppedLines);
+        return;
+      }
+    }
+    
+    [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
+  }
 }
 
 - (void) reportWindowSizeToServer

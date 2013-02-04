@@ -346,6 +346,10 @@
   initialValues[MUPLimitAutomaticReconnect] = @YES;
   initialValues[MUPAutomaticReconnectCount] = @3;
   
+  initialValues[MUPDropDuplicateLines] = @YES;
+  initialValues[MUPDropDuplicateLinesCount] = @3;
+  initialValues[MUPDropDuplicatePackets] = @YES;
+  
   initialValues[MUPFont] = [NSArchiver archivedDataWithRootObject:
                             [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]]];
   

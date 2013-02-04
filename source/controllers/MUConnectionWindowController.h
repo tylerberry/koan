@@ -8,7 +8,7 @@
 #import "MUFilterQueue.h"
 #import "MUFugueEditFilter.h"
 #import "MUHistoryRing.h"
-#import "MUProfile.h"
+#import "MUMUDConnectionController.h"
 #import "MUTextView.h"
 
 @protocol MUConnectionWindowControllerDelegate
@@ -21,7 +21,7 @@
 
 #pragma mark -
 
-@interface MUConnectionWindowController : NSWindowController <MUANSIFormattingFilterDelegate, MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
+@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionControllerDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
 {
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;
@@ -31,10 +31,7 @@
 }
 
 @property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;
-@property (readonly) MUMUDConnection *connection;
-@property (readonly) BOOL isConnectedOrConnecting;
-
-@property (strong, readonly) MUProfile *profile;
+@property (readonly) MUMUDConnectionController *connectionController;
 
 // Designated initializer.
 - (id) initWithProfile: (MUProfile *) newProfile;

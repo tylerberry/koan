@@ -8,7 +8,7 @@
 
 @interface MUConnectionWindowControllerRegistry ()
 {
-  NSMutableDictionary *_controllersKeyedByProfileUniqueIdentifier;
+  NSMutableDictionary *_controllersByProfileUniqueIdentifier;
 }
 
 - (void) _connectionDidClose: (NSNotification *) notification;
@@ -41,7 +41,7 @@
     return nil;
   
   _controllers = [[NSMutableSet alloc] init];
-  _controllersKeyedByProfileUniqueIdentifier = [[NSMutableDictionary alloc] init];
+  _controllersByProfileUniqueIdentifier = [[NSMutableDictionary alloc] init];
   _connectedCount = 0;
   
   [self _registerForNotifications];
@@ -56,8 +56,8 @@
 
 - (MUConnectionWindowController *) controllerForProfile: (MUProfile *) profile
 {
-  if (_controllersKeyedByProfileUniqueIdentifier[profile.uniqueIdentifier])
-    return _controllersKeyedByProfileUniqueIdentifier[profile.uniqueIdentifier];
+  if (_controllersByProfileUniqueIdentifier[profile.uniqueIdentifier])
+    return _controllersByProfileUniqueIdentifier[profile.uniqueIdentifier];
   else
   {
     MUConnectionWindowController *controller = [[MUConnectionWindowController alloc] initWithProfile: profile];
@@ -67,7 +67,7 @@
                                                  name: MUConnectionWindowControllerWillCloseNotification
                                                object: controller];
     
-    _controllersKeyedByProfileUniqueIdentifier[profile.uniqueIdentifier] = controller;
+    _controllersByProfileUniqueIdentifier[profile.uniqueIdentifier] = controller;
     [_controllers addObject: controller];
     
     return controller;
@@ -116,7 +116,7 @@
                                                 object: controller];
   
   [_controllers removeObject: controller];
-  [_controllersKeyedByProfileUniqueIdentifier removeObjectForKey: controller.profile.uniqueIdentifier];
+  [_controllersByProfileUniqueIdentifier removeObjectForKey: controller.connectionController.profile.uniqueIdentifier];
 }
 
 - (void) _registerForNotifications

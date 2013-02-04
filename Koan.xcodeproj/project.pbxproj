@@ -15,6 +15,7 @@
 		2F174F6E16792EF90030C9D3 /* AutoHyperlinks.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */; };
 		2F174F70167AB8F10030C9D3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */; };
 		2F174F72167ABD1C0030C9D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F71167ABD1C0030C9D3 /* Security.framework */; };
+		2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */; };
 		2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* MUFilterQueue.m */; };
 		2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* MUMUDConnectionState.m */; };
 		2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* MUReadBuffer.m */; };
@@ -266,6 +267,8 @@
 		2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoHyperlinks.framework.xcodeproj; path = AutoHyperlinks/AutoHyperlinks.framework.xcodeproj; sourceTree = "<group>"; };
 		2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2F174F71167ABD1C0030C9D3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2F17CF7916BF50A900577E46 /* MUMUDConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionController.h; sourceTree = "<group>"; };
+		2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionController.m; sourceTree = "<group>"; };
 		2F1C1796122854B90079F1E1 /* MUFilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterQueue.h; sourceTree = "<group>"; };
 		2F1C1797122854B90079F1E1 /* MUFilterQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterQueue.m; sourceTree = "<group>"; };
 		2F2718E912141166006710C7 /* MUMUDConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionState.h; sourceTree = "<group>"; };
@@ -1012,6 +1015,8 @@
 				2F7B4FB70BCAC1FD00C1586D /* MUDocumentController.m */,
 				2F7B4F380BCAB87B00C1586D /* MULogBrowserWindowController.h */,
 				2F7B4F390BCAB87B00C1586D /* MULogBrowserWindowController.m */,
+				2F17CF7916BF50A900577E46 /* MUMUDConnectionController.h */,
+				2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */,
 				E63CC4E2077A06CD003A54AA /* MUProfilesWindowController.h */,
 				E63CC4E3077A06CD003A54AA /* MUProfilesWindowController.m */,
 			);
@@ -1281,7 +1286,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = MU;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "3James Software";
 			};
 			buildConfigurationList = E69E22380854FB100055BCF5 /* Build configuration list for PBXProject "Koan" */;
@@ -1570,6 +1575,7 @@
 				2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */,
 				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
 				2F78FE5516B548350037B2EC /* MUTextLog.m in Sources */,
+				2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1899,7 +1905,6 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1938,7 +1943,6 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

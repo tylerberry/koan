@@ -32,11 +32,11 @@ extern NSString *MUMUDConnectionErrorMessageKey;
 - (void) reportWindowSizeToServer;
 
 @optional
-- (void) telnetConnectionDidConnect: (NSNotification *) notification;
-- (void) telnetConnectionIsConnecting: (NSNotification *) notification;
-- (void) telnetConnectionWasClosedByClient: (NSNotification *) notification;
-- (void) telnetConnectionWasClosedByServer: (NSNotification *) notification;
-- (void) telnetConnectionWasClosedWithError: (NSNotification *) notification;
+- (void) MUDConnectionDidConnect: (NSNotification *) notification;
+- (void) MUDConnectionIsConnecting: (NSNotification *) notification;
+- (void) MUDConnectionWasClosedByClient: (NSNotification *) notification;
+- (void) MUDConnectionWasClosedByServer: (NSNotification *) notification;
+- (void) MUDConnectionWasClosedWithError: (NSNotification *) notification;
 
 @end
 

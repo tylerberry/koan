@@ -47,7 +47,7 @@
 + (void) _initializeUserDefaults;
 
 - (void) _openConnectionFromMenuItem: (id) sender;
-- (void) _openConnectionWithController: (MUConnectionWindowController *) controller;
+- (void) _openConnectionWithWindowController: (MUConnectionWindowController *) controller;
 - (void) _playNotificationSound;
 - (void) _rebuildConnectionsMenuWithAutoconnect: (BOOL) autoconnect;
 - (void) _recursivelyConfirmClose: (BOOL) cont;
@@ -154,7 +154,7 @@
   
   MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
   
-  [self _openConnectionWithController: [registry controllerForWorld: world]];
+  [self _openConnectionWithWindowController: [registry controllerForWorld: world]];
 }
 
 - (IBAction) openBugsWebPage: (id) sender
@@ -299,7 +299,7 @@
 {
   MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
   
-  [self _openConnectionWithController: [registry controllerForWorld: world]];
+  [self _openConnectionWithWindowController: [registry controllerForWorld: world]];
 }
 
 #pragma mark - MUConnectionWindowControllerDelegate protocol
@@ -322,7 +322,7 @@
 - (void) openConnectionForProfile: (MUProfile *) profile
 {
   MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
-  [self _openConnectionWithController: [registry controllerForProfile: profile]];
+  [self _openConnectionWithWindowController: [registry controllerForProfile: profile]];
 }
 
 #pragma mark - Responder chain methods
@@ -400,17 +400,17 @@
   MUProfile *profile = ((NSMenuItem *) sender).representedObject;
   
   MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
-  [self _openConnectionWithController: [registry controllerForProfile: profile]];
+  [self _openConnectionWithWindowController: [registry controllerForProfile: profile]];
 }
 
-- (void) _openConnectionWithController: (MUConnectionWindowController *) controller
+- (void) _openConnectionWithWindowController: (MUConnectionWindowController *) controller
 {
   controller.delegate = self;
   
   [controller showWindow: nil];
   [controller.window makeKeyAndOrderFront: nil];
 
-  if (!controller.isConnectedOrConnecting)
+  if (!controller.connectionController.isConnectedOrConnecting)
     [controller connect: nil];
 }
 
@@ -502,7 +502,7 @@
   {
     for (MUConnectionWindowController *controller in [MUConnectionWindowControllerRegistry defaultRegistry].controllers)
     {
-      if (controller.isConnectedOrConnecting)
+      if (controller.connectionController.isConnectedOrConnecting)
       {
         [controller confirmClose: @selector (_recursivelyConfirmClose:)];
         return;

@@ -17,7 +17,63 @@
 		2F174F72167ABD1C0030C9D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F71167ABD1C0030C9D3 /* Security.framework */; };
 		2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */; };
 		2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* MUFilterQueue.m */; };
+		2F1DC57316DB3A1A00A038FE /* pcre_chartables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56016DB3A1A00A038FE /* pcre_chartables.c */; };
+		2F1DC57416DB3A1A00A038FE /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
+		2F1DC57516DB3A1A00A038FE /* pcre_config.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56216DB3A1A00A038FE /* pcre_config.c */; };
+		2F1DC57616DB3A1A00A038FE /* pcre_dfa_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56316DB3A1A00A038FE /* pcre_dfa_exec.c */; };
+		2F1DC57716DB3A1A00A038FE /* pcre_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56416DB3A1A00A038FE /* pcre_exec.c */; };
+		2F1DC57816DB3A1A00A038FE /* pcre_fullinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56516DB3A1A00A038FE /* pcre_fullinfo.c */; };
+		2F1DC57916DB3A1A00A038FE /* pcre_get.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56616DB3A1A00A038FE /* pcre_get.c */; };
+		2F1DC57A16DB3A1A00A038FE /* pcre_globals.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56716DB3A1A00A038FE /* pcre_globals.c */; };
+		2F1DC57B16DB3A1A00A038FE /* pcre_jit_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56816DB3A1A00A038FE /* pcre_jit_compile.c */; };
+		2F1DC57C16DB3A1A00A038FE /* pcre_maketables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56916DB3A1A00A038FE /* pcre_maketables.c */; };
+		2F1DC57D16DB3A1A00A038FE /* pcre_newline.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56A16DB3A1A00A038FE /* pcre_newline.c */; };
+		2F1DC57E16DB3A1A00A038FE /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
+		2F1DC57F16DB3A1A00A038FE /* pcre_refcount.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56C16DB3A1A00A038FE /* pcre_refcount.c */; };
+		2F1DC58016DB3A1A00A038FE /* pcre_study.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56D16DB3A1A00A038FE /* pcre_study.c */; };
+		2F1DC58116DB3A1A00A038FE /* pcre_tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56E16DB3A1A00A038FE /* pcre_tables.c */; };
+		2F1DC58216DB3A1A00A038FE /* pcre_ucd.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56F16DB3A1A00A038FE /* pcre_ucd.c */; };
+		2F1DC58316DB3A1A00A038FE /* pcre_valid_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57016DB3A1A00A038FE /* pcre_valid_utf8.c */; };
+		2F1DC58416DB3A1A00A038FE /* pcre_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57116DB3A1A00A038FE /* pcre_version.c */; };
+		2F1DC58516DB3A1A00A038FE /* pcre_xclass.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */; };
+		2F1DC58A16DB3CD600A038FE /* pcre_byte_order.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC58816DB3CD600A038FE /* pcre_byte_order.c */; };
+		2F1DC58B16DB3CD600A038FE /* pcre_string_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC58916DB3CD600A038FE /* pcre_string_utils.c */; };
+		2F1DC58C16DB3D7F00A038FE /* pcre_byte_order.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC58816DB3CD600A038FE /* pcre_byte_order.c */; };
+		2F1DC58D16DB3D7F00A038FE /* pcre_chartables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56016DB3A1A00A038FE /* pcre_chartables.c */; };
+		2F1DC58E16DB3D7F00A038FE /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
+		2F1DC58F16DB3D7F00A038FE /* pcre_config.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56216DB3A1A00A038FE /* pcre_config.c */; };
+		2F1DC59016DB3D7F00A038FE /* pcre_dfa_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56316DB3A1A00A038FE /* pcre_dfa_exec.c */; };
+		2F1DC59116DB3D7F00A038FE /* pcre_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56416DB3A1A00A038FE /* pcre_exec.c */; };
+		2F1DC59216DB3D7F00A038FE /* pcre_fullinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56516DB3A1A00A038FE /* pcre_fullinfo.c */; };
+		2F1DC59316DB3D7F00A038FE /* pcre_get.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56616DB3A1A00A038FE /* pcre_get.c */; };
+		2F1DC59416DB3D7F00A038FE /* pcre_globals.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56716DB3A1A00A038FE /* pcre_globals.c */; };
+		2F1DC59516DB3D7F00A038FE /* pcre_jit_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56816DB3A1A00A038FE /* pcre_jit_compile.c */; };
+		2F1DC59616DB3D7F00A038FE /* pcre_maketables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56916DB3A1A00A038FE /* pcre_maketables.c */; };
+		2F1DC59716DB3D7F00A038FE /* pcre_newline.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56A16DB3A1A00A038FE /* pcre_newline.c */; };
+		2F1DC59816DB3D7F00A038FE /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
+		2F1DC59916DB3D7F00A038FE /* pcre_refcount.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56C16DB3A1A00A038FE /* pcre_refcount.c */; };
+		2F1DC59A16DB3D7F00A038FE /* pcre_string_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC58916DB3CD600A038FE /* pcre_string_utils.c */; };
+		2F1DC59B16DB3D7F00A038FE /* pcre_study.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56D16DB3A1A00A038FE /* pcre_study.c */; };
+		2F1DC59C16DB3D7F00A038FE /* pcre_tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56E16DB3A1A00A038FE /* pcre_tables.c */; };
+		2F1DC59D16DB3D7F00A038FE /* pcre_ucd.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56F16DB3A1A00A038FE /* pcre_ucd.c */; };
+		2F1DC59E16DB3D7F00A038FE /* pcre_valid_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57016DB3A1A00A038FE /* pcre_valid_utf8.c */; };
+		2F1DC59F16DB3D7F00A038FE /* pcre_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57116DB3A1A00A038FE /* pcre_version.c */; };
+		2F1DC5A016DB3D7F00A038FE /* pcre_xclass.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */; };
+		2F1DC5D916DB44A400A038FE /* AGRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC5D816DB44A400A038FE /* AGRegex.m */; };
 		2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* MUMUDConnectionState.m */; };
+		2F30904A16D5E71B00266E4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904916D5E71B00266E4A /* UIKit.framework */; };
+		2F30904C16D5E71B00266E4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904B16D5E71B00266E4A /* Foundation.framework */; };
+		2F30904E16D5E71B00266E4A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904D16D5E71B00266E4A /* CoreGraphics.framework */; };
+		2F30905416D5E71B00266E4A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2F30905216D5E71B00266E4A /* InfoPlist.strings */; };
+		2F30905616D5E71B00266E4A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30905516D5E71B00266E4A /* main.m */; };
+		2F30905A16D5E71B00266E4A /* MUIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30905916D5E71B00266E4A /* MUIAppDelegate.m */; };
+		2F30905C16D5E71B00266E4A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F30905B16D5E71B00266E4A /* Default.png */; };
+		2F30905E16D5E71B00266E4A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F30905D16D5E71B00266E4A /* Default@2x.png */; };
+		2F30906016D5E71B00266E4A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F30905F16D5E71B00266E4A /* Default-568h@2x.png */; };
+		2F30906316D5E71B00266E4A /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F30906116D5E71B00266E4A /* iPhone.storyboard */; };
+		2F30906616D5E71B00266E4A /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F30906416D5E71B00266E4A /* iPad.storyboard */; };
+		2F30906916D5E71B00266E4A /* MUIMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906816D5E71B00266E4A /* MUIMasterViewController.m */; };
+		2F30906C16D5E71B00266E4A /* MUIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */; };
 		2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* MUReadBuffer.m */; };
 		2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */; };
 		2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBABC1652FF910056D738 /* MASPreferencesWindowController.m */; };
@@ -205,6 +261,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = AutoHyperlinks.framework;
 		};
+		2F1DC58616DB3A2C00A038FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2F1DC55716DB1BA600A038FE;
+			remoteInfo = "PCRE Pre-build";
+		};
 		2F8C6D2A167E69540006F975 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */;
@@ -271,9 +334,54 @@
 		2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionController.m; sourceTree = "<group>"; };
 		2F1C1796122854B90079F1E1 /* MUFilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterQueue.h; sourceTree = "<group>"; };
 		2F1C1797122854B90079F1E1 /* MUFilterQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterQueue.m; sourceTree = "<group>"; };
+		2F1DC55C16DB1D3F00A038FE /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Makefile; sourceTree = "<group>"; usesTabs = 1; };
+		2F1DC55E16DB363C00A038FE /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		2F1DC56016DB3A1A00A038FE /* pcre_chartables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_chartables.c; sourceTree = "<group>"; };
+		2F1DC56116DB3A1A00A038FE /* pcre_compile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_compile.c; sourceTree = "<group>"; };
+		2F1DC56216DB3A1A00A038FE /* pcre_config.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_config.c; sourceTree = "<group>"; };
+		2F1DC56316DB3A1A00A038FE /* pcre_dfa_exec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_dfa_exec.c; sourceTree = "<group>"; };
+		2F1DC56416DB3A1A00A038FE /* pcre_exec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_exec.c; sourceTree = "<group>"; };
+		2F1DC56516DB3A1A00A038FE /* pcre_fullinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_fullinfo.c; sourceTree = "<group>"; };
+		2F1DC56616DB3A1A00A038FE /* pcre_get.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_get.c; sourceTree = "<group>"; };
+		2F1DC56716DB3A1A00A038FE /* pcre_globals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_globals.c; sourceTree = "<group>"; };
+		2F1DC56816DB3A1A00A038FE /* pcre_jit_compile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_jit_compile.c; sourceTree = "<group>"; };
+		2F1DC56916DB3A1A00A038FE /* pcre_maketables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_maketables.c; sourceTree = "<group>"; };
+		2F1DC56A16DB3A1A00A038FE /* pcre_newline.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_newline.c; sourceTree = "<group>"; };
+		2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_ord2utf8.c; sourceTree = "<group>"; };
+		2F1DC56C16DB3A1A00A038FE /* pcre_refcount.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_refcount.c; sourceTree = "<group>"; };
+		2F1DC56D16DB3A1A00A038FE /* pcre_study.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_study.c; sourceTree = "<group>"; };
+		2F1DC56E16DB3A1A00A038FE /* pcre_tables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_tables.c; sourceTree = "<group>"; };
+		2F1DC56F16DB3A1A00A038FE /* pcre_ucd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_ucd.c; sourceTree = "<group>"; };
+		2F1DC57016DB3A1A00A038FE /* pcre_valid_utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_valid_utf8.c; sourceTree = "<group>"; };
+		2F1DC57116DB3A1A00A038FE /* pcre_version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_version.c; sourceTree = "<group>"; };
+		2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_xclass.c; sourceTree = "<group>"; };
+		2F1DC58816DB3CD600A038FE /* pcre_byte_order.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_byte_order.c; sourceTree = "<group>"; };
+		2F1DC58916DB3CD600A038FE /* pcre_string_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcre_string_utils.c; sourceTree = "<group>"; };
+		2F1DC5D616DB3F0500A038FE /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
+		2F1DC5D716DB44A400A038FE /* AGRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRegex.h; sourceTree = "<group>"; };
+		2F1DC5D816DB44A400A038FE /* AGRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRegex.m; sourceTree = "<group>"; };
 		2F2718E912141166006710C7 /* MUMUDConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionState.h; sourceTree = "<group>"; };
 		2F2718EA12141166006710C7 /* MUMUDConnectionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionState.m; sourceTree = "<group>"; };
 		2F2D76E90BBB1C8400BBB71A /* Characteristics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Characteristics.txt; sourceTree = "<group>"; };
+		2F30904816D5E71B00266E4A /* Koan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F30904916D5E71B00266E4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		2F30904B16D5E71B00266E4A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		2F30904D16D5E71B00266E4A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		2F30905116D5E71B00266E4A /* Koan for iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Koan for iOS-Info.plist"; sourceTree = "<group>"; };
+		2F30905316D5E71B00266E4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2F30905516D5E71B00266E4A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2F30905716D5E71B00266E4A /* Koan for iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Koan for iOS-Prefix.pch"; sourceTree = "<group>"; };
+		2F30905816D5E71B00266E4A /* MUIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUIAppDelegate.h; sourceTree = "<group>"; };
+		2F30905916D5E71B00266E4A /* MUIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIAppDelegate.m; sourceTree = "<group>"; };
+		2F30905B16D5E71B00266E4A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2F30905D16D5E71B00266E4A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		2F30905F16D5E71B00266E4A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		2F30906216D5E71B00266E4A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
+		2F30906516D5E71B00266E4A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPad.storyboard; sourceTree = "<group>"; };
+		2F30906716D5E71B00266E4A /* MUIMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUIMasterViewController.h; sourceTree = "<group>"; };
+		2F30906816D5E71B00266E4A /* MUIMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIMasterViewController.m; sourceTree = "<group>"; };
+		2F30906A16D5E71B00266E4A /* MUIDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUIDetailViewController.h; sourceTree = "<group>"; };
+		2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIDetailViewController.m; sourceTree = "<group>"; };
 		2F3DBAB91652FF910056D738 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
 		2F3DBABB1652FF910056D738 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -563,6 +671,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2F30904516D5E71B00266E4A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F30904A16D5E71B00266E4A /* UIKit.framework in Frameworks */,
+				2F30904C16D5E71B00266E4A /* Foundation.framework in Frameworks */,
+				2F30904E16D5E71B00266E4A /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2FE367EF0BCAD3730068A6AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -614,9 +732,12 @@
 				2F10B17516323C6400948438 /* libssl.dylib */,
 				2FA24AD11623639A00A9D92B /* libz.dylib */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				2F30904D16D5E71B00266E4A /* CoreGraphics.framework */,
+				2F30904B16D5E71B00266E4A /* Foundation.framework */,
 				2F174F71167ABD1C0030C9D3 /* Security.framework */,
 				2F8CEAE5153AD20200B488E7 /* SenTestingKit.framework */,
 				2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */,
+				2F30904916D5E71B00266E4A /* UIKit.framework */,
 			);
 			name = "OS Frameworks";
 			sourceTree = "<group>";
@@ -627,6 +748,7 @@
 				8D1107320486CEB800E47090 /* Koan.app */,
 				7E87751809AD558700A883BC /* KoanTests.octest */,
 				2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */,
+				2F30904816D5E71B00266E4A /* Koan.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -649,6 +771,7 @@
 		29B97315FDCFA39411CA2CEA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2F30904F16D5E71B00266E4A /* Koan for iOS */,
 				E6550EF307764C01002E81FF /* Categories */,
 				E670A81207420F8C00E2DAEB /* Controllers */,
 				E6E7BF6C0788FE180065EDD6 /* Controls */,
@@ -738,6 +861,77 @@
 				2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2F1DC55B16DB1D2500A038FE /* PCRE */ = {
+			isa = PBXGroup;
+			children = (
+				2F1DC55C16DB1D3F00A038FE /* Makefile */,
+				2F1DC55E16DB363C00A038FE /* config.h */,
+				2F1DC55F16DB376000A038FE /* pcre-8.32 */,
+			);
+			name = PCRE;
+			path = pcre;
+			sourceTree = "<group>";
+		};
+		2F1DC55F16DB376000A038FE /* pcre-8.32 */ = {
+			isa = PBXGroup;
+			children = (
+				2F1DC5D616DB3F0500A038FE /* pcre.h */,
+				2F1DC58816DB3CD600A038FE /* pcre_byte_order.c */,
+				2F1DC56016DB3A1A00A038FE /* pcre_chartables.c */,
+				2F1DC56116DB3A1A00A038FE /* pcre_compile.c */,
+				2F1DC56216DB3A1A00A038FE /* pcre_config.c */,
+				2F1DC56316DB3A1A00A038FE /* pcre_dfa_exec.c */,
+				2F1DC56416DB3A1A00A038FE /* pcre_exec.c */,
+				2F1DC56516DB3A1A00A038FE /* pcre_fullinfo.c */,
+				2F1DC56616DB3A1A00A038FE /* pcre_get.c */,
+				2F1DC56716DB3A1A00A038FE /* pcre_globals.c */,
+				2F1DC56816DB3A1A00A038FE /* pcre_jit_compile.c */,
+				2F1DC56916DB3A1A00A038FE /* pcre_maketables.c */,
+				2F1DC56A16DB3A1A00A038FE /* pcre_newline.c */,
+				2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */,
+				2F1DC56C16DB3A1A00A038FE /* pcre_refcount.c */,
+				2F1DC58916DB3CD600A038FE /* pcre_string_utils.c */,
+				2F1DC56D16DB3A1A00A038FE /* pcre_study.c */,
+				2F1DC56E16DB3A1A00A038FE /* pcre_tables.c */,
+				2F1DC56F16DB3A1A00A038FE /* pcre_ucd.c */,
+				2F1DC57016DB3A1A00A038FE /* pcre_valid_utf8.c */,
+				2F1DC57116DB3A1A00A038FE /* pcre_version.c */,
+				2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */,
+			);
+			path = "pcre-8.32";
+			sourceTree = "<group>";
+		};
+		2F30904F16D5E71B00266E4A /* Koan for iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2F30905816D5E71B00266E4A /* MUIAppDelegate.h */,
+				2F30905916D5E71B00266E4A /* MUIAppDelegate.m */,
+				2F30906116D5E71B00266E4A /* iPhone.storyboard */,
+				2F30906416D5E71B00266E4A /* iPad.storyboard */,
+				2F30906716D5E71B00266E4A /* MUIMasterViewController.h */,
+				2F30906816D5E71B00266E4A /* MUIMasterViewController.m */,
+				2F30906A16D5E71B00266E4A /* MUIDetailViewController.h */,
+				2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */,
+				2F30905016D5E71B00266E4A /* Supporting Files */,
+			);
+			name = "Koan for iOS";
+			path = "../Koan for iOS";
+			sourceTree = "<group>";
+		};
+		2F30905016D5E71B00266E4A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2F30905116D5E71B00266E4A /* Koan for iOS-Info.plist */,
+				2F30905216D5E71B00266E4A /* InfoPlist.strings */,
+				2F30905516D5E71B00266E4A /* main.m */,
+				2F30905716D5E71B00266E4A /* Koan for iOS-Prefix.pch */,
+				2F30905B16D5E71B00266E4A /* Default.png */,
+				2F30905D16D5E71B00266E4A /* Default@2x.png */,
+				2F30905F16D5E71B00266E4A /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2F3DBAB71652FF910056D738 /* MASPreferences */ = {
@@ -890,8 +1084,11 @@
 				2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */,
 				2F07053816139F3300A71314 /* JRSwizzle */,
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
+				2F1DC55B16DB1D2500A038FE /* PCRE */,
 				2F4D3BFE166C1032002EBA99 /* PLWeakCompatibility */,
 				2F8C6D26167E67450006F975 /* SSKeychain */,
+				2F1DC5D716DB44A400A038FE /* AGRegex.h */,
+				2F1DC5D816DB44A400A038FE /* AGRegex.m */,
 				2F7A2E70166F393E00FEB109 /* ATImageTextCell.h */,
 				2F7A2E71166F393E00FEB109 /* ATImageTextCell.m */,
 			);
@@ -1217,7 +1414,41 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		2F1DC55716DB1BA600A038FE /* PCRE Pre-build */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 2F1DC55816DB1BA600A038FE /* Build configuration list for PBXLegacyTarget "PCRE Pre-build" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SOURCE_ROOT)/source/thirdparty/pcre";
+			dependencies = (
+			);
+			name = "PCRE Pre-build";
+			passBuildSettingsInEnvironment = 0;
+			productName = "PCRE Pre-build";
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
+		2F30904716D5E71B00266E4A /* Koan for iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2F30906F16D5E71B00266E4A /* Build configuration list for PBXNativeTarget "Koan for iOS" */;
+			buildPhases = (
+				2F30904416D5E71B00266E4A /* Sources */,
+				2F30904516D5E71B00266E4A /* Frameworks */,
+				2F30904616D5E71B00266E4A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Koan for iOS";
+			productName = "Koan for iOS";
+			productReference = 2F30904816D5E71B00266E4A /* Koan.app */;
+			productType = "com.apple.product-type.application";
+		};
 		2FE367F00BCAD3730068A6AA /* Koan Spotlight Importer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FE367F30BCAD3740068A6AA /* Build configuration list for PBXNativeTarget "Koan Spotlight Importer" */;
@@ -1268,6 +1499,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2F1DC58716DB3A2C00A038FE /* PBXTargetDependency */,
 				2F174F6C1679210F0030C9D3 /* PBXTargetDependency */,
 				2F8C6D2B167E69540006F975 /* PBXTargetDependency */,
 				2FCFEF6D0BCADF680061FB6B /* PBXTargetDependency */,
@@ -1315,8 +1547,10 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Koan */,
+				2F30904716D5E71B00266E4A /* Koan for iOS */,
 				7E87751709AD558700A883BC /* Koan Unit Tests */,
 				2FE367F00BCAD3730068A6AA /* Koan Spotlight Importer */,
+				2F1DC55716DB1BA600A038FE /* PCRE Pre-build */,
 			);
 		};
 /* End PBXProject section */
@@ -1339,6 +1573,19 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2F30904616D5E71B00266E4A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F30905416D5E71B00266E4A /* InfoPlist.strings in Resources */,
+				2F30905C16D5E71B00266E4A /* Default.png in Resources */,
+				2F30905E16D5E71B00266E4A /* Default@2x.png in Resources */,
+				2F30906016D5E71B00266E4A /* Default-568h@2x.png in Resources */,
+				2F30906316D5E71B00266E4A /* iPhone.storyboard in Resources */,
+				2F30906616D5E71B00266E4A /* iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2FE367ED0BCAD3730068A6AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1437,6 +1684,38 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2F30904416D5E71B00266E4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F1DC58C16DB3D7F00A038FE /* pcre_byte_order.c in Sources */,
+				2F1DC58D16DB3D7F00A038FE /* pcre_chartables.c in Sources */,
+				2F1DC58E16DB3D7F00A038FE /* pcre_compile.c in Sources */,
+				2F1DC58F16DB3D7F00A038FE /* pcre_config.c in Sources */,
+				2F1DC59016DB3D7F00A038FE /* pcre_dfa_exec.c in Sources */,
+				2F1DC59116DB3D7F00A038FE /* pcre_exec.c in Sources */,
+				2F1DC59216DB3D7F00A038FE /* pcre_fullinfo.c in Sources */,
+				2F1DC59316DB3D7F00A038FE /* pcre_get.c in Sources */,
+				2F1DC59416DB3D7F00A038FE /* pcre_globals.c in Sources */,
+				2F1DC59516DB3D7F00A038FE /* pcre_jit_compile.c in Sources */,
+				2F1DC59616DB3D7F00A038FE /* pcre_maketables.c in Sources */,
+				2F1DC59716DB3D7F00A038FE /* pcre_newline.c in Sources */,
+				2F1DC59816DB3D7F00A038FE /* pcre_ord2utf8.c in Sources */,
+				2F1DC59916DB3D7F00A038FE /* pcre_refcount.c in Sources */,
+				2F1DC59A16DB3D7F00A038FE /* pcre_string_utils.c in Sources */,
+				2F1DC59B16DB3D7F00A038FE /* pcre_study.c in Sources */,
+				2F1DC59C16DB3D7F00A038FE /* pcre_tables.c in Sources */,
+				2F1DC59D16DB3D7F00A038FE /* pcre_ucd.c in Sources */,
+				2F1DC59E16DB3D7F00A038FE /* pcre_valid_utf8.c in Sources */,
+				2F1DC59F16DB3D7F00A038FE /* pcre_version.c in Sources */,
+				2F1DC5A016DB3D7F00A038FE /* pcre_xclass.c in Sources */,
+				2F30905616D5E71B00266E4A /* main.m in Sources */,
+				2F30905A16D5E71B00266E4A /* MUIAppDelegate.m in Sources */,
+				2F30906916D5E71B00266E4A /* MUIMasterViewController.m in Sources */,
+				2F30906C16D5E71B00266E4A /* MUIDetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2FE367EE0BCAD3730068A6AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1576,6 +1855,28 @@
 				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
 				2F78FE5516B548350037B2EC /* MUTextLog.m in Sources */,
 				2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */,
+				2F1DC58A16DB3CD600A038FE /* pcre_byte_order.c in Sources */,
+				2F1DC57316DB3A1A00A038FE /* pcre_chartables.c in Sources */,
+				2F1DC57416DB3A1A00A038FE /* pcre_compile.c in Sources */,
+				2F1DC57516DB3A1A00A038FE /* pcre_config.c in Sources */,
+				2F1DC57616DB3A1A00A038FE /* pcre_dfa_exec.c in Sources */,
+				2F1DC57716DB3A1A00A038FE /* pcre_exec.c in Sources */,
+				2F1DC57816DB3A1A00A038FE /* pcre_fullinfo.c in Sources */,
+				2F1DC57916DB3A1A00A038FE /* pcre_get.c in Sources */,
+				2F1DC57A16DB3A1A00A038FE /* pcre_globals.c in Sources */,
+				2F1DC57B16DB3A1A00A038FE /* pcre_jit_compile.c in Sources */,
+				2F1DC57C16DB3A1A00A038FE /* pcre_maketables.c in Sources */,
+				2F1DC57D16DB3A1A00A038FE /* pcre_newline.c in Sources */,
+				2F1DC57E16DB3A1A00A038FE /* pcre_ord2utf8.c in Sources */,
+				2F1DC57F16DB3A1A00A038FE /* pcre_refcount.c in Sources */,
+				2F1DC58B16DB3CD600A038FE /* pcre_string_utils.c in Sources */,
+				2F1DC58016DB3A1A00A038FE /* pcre_study.c in Sources */,
+				2F1DC58116DB3A1A00A038FE /* pcre_tables.c in Sources */,
+				2F1DC58216DB3A1A00A038FE /* pcre_ucd.c in Sources */,
+				2F1DC58316DB3A1A00A038FE /* pcre_valid_utf8.c in Sources */,
+				2F1DC58416DB3A1A00A038FE /* pcre_version.c in Sources */,
+				2F1DC58516DB3A1A00A038FE /* pcre_xclass.c in Sources */,
+				2F1DC5D916DB44A400A038FE /* AGRegex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1586,6 +1887,11 @@
 			isa = PBXTargetDependency;
 			name = AutoHyperlinks.framework;
 			targetProxy = 2F174F6B1679210F0030C9D3 /* PBXContainerItemProxy */;
+		};
+		2F1DC58716DB3A2C00A038FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2F1DC55716DB1BA600A038FE /* PCRE Pre-build */;
+			targetProxy = 2F1DC58616DB3A2C00A038FE /* PBXContainerItemProxy */;
 		};
 		2F8C6D2B167E69540006F975 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1605,6 +1911,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2F30905216D5E71B00266E4A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F30905316D5E71B00266E4A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2F30906116D5E71B00266E4A /* iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F30906216D5E71B00266E4A /* en */,
+			);
+			name = iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		2F30906416D5E71B00266E4A /* iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F30906516D5E71B00266E4A /* en */,
+			);
+			name = iPad.storyboard;
+			sourceTree = "<group>";
+		};
 		2F6757611671D2420067BFC4 /* MUProxyPreferencesView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1744,6 +2074,91 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2F1DC55916DB1BA600A038FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		2F1DC55A16DB1BA600A038FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		2F30906D16D5E71B00266E4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Koan for iOS/Koan for iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					HAVE_CONFIG_H,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "Koan for iOS/Koan for iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Koan;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2F30906E16D5E71B00266E4A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Koan for iOS/Koan for iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					"NS_BLOCK_ASSERTIONS=1",
+				);
+				INFOPLIST_FILE = "Koan for iOS/Koan for iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = Koan;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		2FE367F40BCAD3740068A6AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1849,13 +2264,18 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/Koan-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					HAVE_CONFIG_H,
+					SUPPORT_UTF8,
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/externals",
 					"$(SOURCE_ROOT)/filters",
 					"$(SOURCE_ROOT)/source",
 					"$(SOURCE_ROOT)/source/infrastructure",
+					"$(SOURCE_ROOT)/source/thirdparty/pcre/pcre-8.32",
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -1878,12 +2298,17 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "source/Koan-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					SUPPORT_UTF8,
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/externals",
 					"$(SOURCE_ROOT)/filters",
 					"$(SOURCE_ROOT)/source",
 					"$(SOURCE_ROOT)/source/infrastructure",
+					"$(SOURCE_ROOT)/source/thirdparty/pcre/pcre-8.32",
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -1973,6 +2398,23 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2F1DC55816DB1BA600A038FE /* Build configuration list for PBXLegacyTarget "PCRE Pre-build" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F1DC55916DB1BA600A038FE /* Debug */,
+				2F1DC55A16DB1BA600A038FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		2F30906F16D5E71B00266E4A /* Build configuration list for PBXNativeTarget "Koan for iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F30906D16D5E71B00266E4A /* Debug */,
+				2F30906E16D5E71B00266E4A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		2FE367F30BCAD3740068A6AA /* Build configuration list for PBXNativeTarget "Koan Spotlight Importer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

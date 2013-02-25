@@ -6,9 +6,8 @@
 
 #ifdef __OBJC__
   #import <Cocoa/Cocoa.h>
+  #import "MUConstants.h"
+  #import "categories/NSAttributedString+Allocating.h"
 #endif
-
-#import "MUConstants.h"
-#import "categories/NSAttributedString+Allocating.h"
 
 #define _(name) NSLocalizedString (name, nil)

@@ -44,3 +44,4 @@ VersionX-revision.h
 # Project-specific files.
 
 frameworks/*.framework
+source/thirdparty/pcre/pcre-8*

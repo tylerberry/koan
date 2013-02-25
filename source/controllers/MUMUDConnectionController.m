@@ -27,6 +27,7 @@ enum MUTextDisplayModes
   NSAttributedString *_currentRawPrompt;
   NSString *_recentSentString;
   NSMutableArray *_recentReceivedStrings;
+  NSTimer *_clearRecentReceivedStringTimer;
   NSUInteger _reconnectCount;
   
   NSTimer *_pingTimer;
@@ -34,6 +35,7 @@ enum MUTextDisplayModes
 
 - (void) _attemptReconnect;
 - (void) _cleanUpPingTimer;
+- (void) _clearRecentReceivedStrings: (NSTimer *) timer;
 - (void) _sendPeriodicPing: (NSTimer *) timer;
 
 @end
@@ -64,6 +66,7 @@ enum MUTextDisplayModes
   _recentReceivedStrings = [NSMutableArray array];
   _recentSentString = nil;
   _reconnectCount = 0;
+  _clearRecentReceivedStringTimer = nil;
   
   _pingTimer = nil;
   
@@ -148,6 +151,15 @@ enum MUTextDisplayModes
     else
       [_recentReceivedStrings addObject: [string copy]];
     
+    if (_clearRecentReceivedStringTimer.isValid)
+      [_clearRecentReceivedStringTimer invalidate];
+    
+    _clearRecentReceivedStringTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                                       target: self
+                                                                     selector: @selector (_clearRecentReceivedStrings:)
+                                                                     userInfo: nil
+                                                                      repeats: NO];
+    
     [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
   }
 }
@@ -228,6 +240,11 @@ enum MUTextDisplayModes
 {
   [_pingTimer invalidate];
   _pingTimer = nil;
+}
+
+- (void) _clearRecentReceivedStrings: (NSTimer *) timer
+{
+  _recentReceivedStrings = [NSMutableArray array];
 }
 
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode

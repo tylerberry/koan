@@ -80,8 +80,6 @@
 	<string>NSApplication</string>
 	<key>OSAScriptingDefinition</key>
 	<string>Koan.sdef</string>
-	<key>SUFeedURL</key>
-	<string>https://www.3james.org/appcasts/koan.rss</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

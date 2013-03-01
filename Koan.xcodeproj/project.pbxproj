@@ -1002,7 +1002,8 @@
 				2F8C6D27167E67A40006F975 /* SSKeychain.h */,
 				2F8C6D28167E67A40006F975 /* SSKeychain.m */,
 			);
-			path = SSKeychain;
+			name = SSKeychain;
+			path = SSKeychain/SSKeychain;
 			sourceTree = "<group>";
 		};
 		2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */ = {

@@ -16,7 +16,7 @@
   NSString *plainString = attributedString.string;
   
   if ([regex findInString: plainString])
-    return [NSAttributedString attributedStringWithString: @""];
+    return [[NSAttributedString alloc] initWithString: @""];
   
   return attributedString;
 }

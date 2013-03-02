@@ -42,7 +42,7 @@
     [self.delegate setInputViewString: [[plainString substringFromIndex: _profile.player.fugueEditPrefix.length]
                                         stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     
-    return [NSAttributedString attributedStringWithString: @""];
+    return [[NSAttributedString alloc] initWithString: @""];
   }
   else
     return attributedString;

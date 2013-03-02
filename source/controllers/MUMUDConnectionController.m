@@ -251,7 +251,7 @@ enum MUTextDisplayModes
 
 - (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
 {  
-  NSAttributedString *attributedString = [NSAttributedString attributedStringWithString: string];
+  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string];
   
   switch (textDisplayMode)
   {

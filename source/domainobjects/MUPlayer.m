@@ -68,6 +68,18 @@ static const int32_t currentPlayerVersion = 4;
   UInt32 passwordLength = 0;
   SecKeychainItemRef itemRef;
   
+  if (!self.world.hostname || self.world.hostname.length == 0)
+  {
+    NSLog (@"Tried to get Keychain password for empty hostname.");
+    return nil;
+  }
+  
+  if (!self.name || self.name.length == 0)
+  {
+    NSLog (@"Tried to get Keychain password for empty player name.");
+    return nil;
+  }
+  
   const char *hostnameUTF8String = [self.world.hostname UTF8String];
   const char *playerUTF8String = [self.name UTF8String];
   
@@ -120,6 +132,18 @@ static const int32_t currentPlayerVersion = 4;
 - (void) setPassword: (NSString *) password
 {
   SecKeychainItemRef itemRef;
+  
+  if (!self.world.hostname || self.world.hostname.length == 0)
+  {
+    NSLog (@"Tried to set Keychain password for empty hostname.");
+    return;
+  }
+  
+  if (!self.name || self.name.length == 0)
+  {
+    NSLog (@"Tried to set Keychain password for empty player name.");
+    return;
+  }
   
   const char *hostnameUTF8String = [self.world.hostname UTF8String];
   const char *playerUTF8String = [self.name UTF8String];

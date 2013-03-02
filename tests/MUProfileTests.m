@@ -21,13 +21,12 @@
 
 - (void) testUniqueIdentifer
 {
-  MUWorld *world = [[MUWorld alloc] init];
-  world.name = @"Test World";
+  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201];
   
   MUProfile *profile = [MUProfile profileWithWorld: world];
   [self assert: profile.uniqueIdentifier equals: world.uniqueIdentifier];
   
-  MUPlayer *player = [MUPlayer playerWithName: @"User" password: @""];
+  MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;
   
   profile = [MUProfile profileWithWorld: world player: player];
@@ -36,13 +35,15 @@
 
 - (void) testHasLoginInformation
 {
-  MUWorld *world = [[MUWorld alloc] init];
-  world.name = @"Test World";
+  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201];
   MUProfile *profile = [MUProfile profileWithWorld: world];
+                    
   [self assertFalse: profile.hasLoginInformation message: @"no login info"];
-  MUPlayer *player = [MUPlayer playerWithName: @"User" password: @"foo"];
+                    
+  MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;
   profile.player = player;
+                    
   [self assertTrue: profile.hasLoginInformation message: @"has login info"];
 }
 

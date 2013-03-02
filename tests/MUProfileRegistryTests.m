@@ -143,7 +143,7 @@
 
 - (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world
 {
-  MUPlayer *player = [MUPlayer playerWithName: @"User" password: @""];
+  MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;
   
   return player;

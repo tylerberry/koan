@@ -21,40 +21,48 @@
 
 - (void) testLoginStringHasQuotesForMultiwordUsername
 {
-  MUPlayer *player = [MUPlayer playerWithName: @"My User" password: @"password"];
+  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUPlayer *testPlayer = [MUPlayer playerWithName: @"My User"];
+  testPlayer.parent = testWorld;
+  testPlayer.password = @"password";
   
-  [self assert: player.loginString
+  [self assert: testPlayer.loginString
         equals: @"connect \"My User\" password"];
+  
+  // Clean up after ourselves.
+  testPlayer.password = nil;
+  [self assert: testPlayer.loginString
+        equals: @"connect \"My User\""];
+  
 }
 
 - (void) testLoginStringHasNoQuotesForSingleWordUsername
 {
-  MUPlayer *player = [MUPlayer playerWithName: @"Bob" password: @"drowssap"];
-  [self assert: player.loginString
+  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUPlayer *testPlayer = [MUPlayer playerWithName: @"Bob"];
+  testPlayer.parent = testWorld;
+  testPlayer.password = @"drowssap";
+  
+  [self assert: testPlayer.loginString
         equals: @"connect Bob drowssap"];
+  
+  // Clean up after ourselves.
+  testPlayer.password = nil;
+  [self assert: testPlayer.loginString
+        equals: @"connect Bob"];
 }
 
-- (void) testLoginStringWithNilPassword
+- (void) testLoginStringWithNoPassword
 {
-  MUPlayer *player = [MUPlayer playerWithName: @"guest" password: nil];
-  [self assert: player.loginString
-  			equals: @"connect guest"];
-}
-
-- (void) testLoginStringWithZeroLengthPassword
-{
-  MUPlayer *player = [MUPlayer playerWithName: @"guest" password: @""];
+  MUPlayer *player = [MUPlayer playerWithName: @"guest"];
   [self assert: player.loginString
   			equals: @"connect guest"];
 }
 
 - (void) testNoLoginStringForNilPlayerName
 {
-  MUPlayer *playerOne = [MUPlayer playerWithName: nil password: nil];
+  MUPlayer *playerOne = [MUPlayer playerWithName: nil];
   [self assertNil: playerOne.loginString];
-  
-  MUPlayer *playerTwo = [MUPlayer playerWithName: nil password: @"nonsense"];
-  [self assertNil: playerTwo.loginString];
 }
 
 @end

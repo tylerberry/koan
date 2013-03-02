@@ -10,8 +10,8 @@
 
 - (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
-  return [NSAttributedString attributedStringWithString: attributedString.string.uppercaseString
-                                             attributes: [attributedString attributesAtIndex: 0 effectiveRange: 0]];
+  return [[NSAttributedString alloc] initWithString: attributedString.string.uppercaseString
+                                         attributes: [attributedString attributesAtIndex: 0 effectiveRange: 0]];
 }
 
 - (NSAttributedString *) filterPartialLine: (NSAttributedString *) attributedString
@@ -39,7 +39,7 @@
 {
   MUFilterQueue *queue = [[MUFilterQueue alloc] init];
   
-  NSAttributedString *input = [NSAttributedString attributedStringWithString: @"Foo"];
+  NSAttributedString *input = [[NSAttributedString alloc] initWithString: @"Foo"];
   NSAttributedString *output = [queue processCompleteLine: input];
   [self assert: output equals: input];
 }
@@ -52,7 +52,7 @@
   
   NSString *baseString = @"Foo";
   NSString *uppercaseString = baseString.uppercaseString;
-  NSAttributedString *input = [NSAttributedString attributedStringWithString: baseString];
+  NSAttributedString *input = [[NSAttributedString alloc] initWithString: baseString];
   NSAttributedString *output = [queue processCompleteLine: input];
   [self assert: output.string equals: uppercaseString];
 }

@@ -130,7 +130,7 @@
 
 - (void) assertInput: (NSString *) input producesURL: (NSURL *) url forRange: (NSRange) range
 {
-  NSAttributedString *attributedInput = [NSAttributedString attributedStringWithString: input];
+  NSAttributedString *attributedInput = [[NSAttributedString alloc] initWithString: input];
   NSAttributedString *attributedOutput = [queue processCompleteLine: attributedInput];
   NSURL *foundURL;
   NSRange foundRange;

@@ -53,7 +53,7 @@
 
 - (void) testColorString
 {
-  NSMutableAttributedString *string = [NSMutableAttributedString attributedStringWithString: @"Foo"];
+  NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: @"Foo"];
   [string addAttribute: NSForegroundColorAttributeName
                  value: [NSColor redColor]
                  range: NSMakeRange (0, [string length])];
@@ -64,7 +64,7 @@
 
 - (void) testFontString
 {
-  NSMutableAttributedString *string = [NSMutableAttributedString attributedStringWithString: @"Foo"];
+  NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString: @"Foo"];
   [string addAttribute: NSFontAttributeName
                  value: [NSFont fontWithName: @"Monaco" size: 10.0]
                  range: NSMakeRange (0, [string length])];
@@ -91,9 +91,9 @@
 
 - (void) testComplexEmptyStringConcatenation
 {
-  NSMutableAttributedString *one = [NSMutableAttributedString attributedStringWithString: @"One"];
-  NSMutableAttributedString *two = [NSMutableAttributedString attributedStringWithString: @"Two"];
-  NSMutableAttributedString *empty = [NSMutableAttributedString attributedStringWithString: @""];
+  NSMutableAttributedString *one = [[NSMutableAttributedString alloc] initWithString: @"One"];
+  NSMutableAttributedString *two = [[NSMutableAttributedString alloc] initWithString: @"Two"];
+  NSMutableAttributedString *empty = [[NSMutableAttributedString alloc] initWithString: @""];
   
   [one addAttribute: NSForegroundColorAttributeName
               value: [NSColor redColor]
@@ -122,7 +122,7 @@
 
 - (void) assertFilterString: (NSString *) string
 {
-  [self assertFilter: [NSAttributedString attributedStringWithString: string]];
+  [self assertFilter: [[NSAttributedString alloc] initWithString: string]];
 }
 
 - (void) assertLoggedOutput: (NSString *) string

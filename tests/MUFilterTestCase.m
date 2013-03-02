@@ -26,8 +26,8 @@
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output message: (NSString *) message
 {
   NSAttributedString *attributedInput = [self constructAttributedStringForString: input];
-  NSAttributedString *attributedExpectedOutput = [NSAttributedString attributedStringWithString: output];
-  NSMutableAttributedString *actualOutput = [NSMutableAttributedString attributedStringWithAttributedString: [self.queue processCompleteLine: attributedInput]];
+  NSAttributedString *attributedExpectedOutput = [[NSAttributedString alloc] initWithString: output];
+  NSMutableAttributedString *actualOutput = [[NSMutableAttributedString alloc] initWithAttributedString: [self.queue processCompleteLine: attributedInput]];
   
   [actualOutput setAttributes: @{} range: NSMakeRange (0, actualOutput.length)];
   [self assert: actualOutput equals: attributedExpectedOutput message: message];  
@@ -39,7 +39,7 @@
   NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
   
   [attributes setValue: font forKey: NSFontAttributeName];
-  return [NSMutableAttributedString attributedStringWithString: string attributes: attributes];
+  return [[NSMutableAttributedString alloc] initWithString: string attributes: attributes];
 }
 
 @end

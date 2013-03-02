@@ -10,7 +10,7 @@
 
 - (NSIndexPath *) indexPathOfTreeNode: (NSTreeNode *) treeNode
 {
-  return [self indexPathOfRepresentedObject: treeNode.representedObject];
+  return [self MU_indexPathOfRepresentedObject: treeNode.representedObject inNodes: [self.arrangedObjects childNodes]];
 }
 
 - (NSIndexPath *) indexPathOfRepresentedObject: (id) object

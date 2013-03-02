@@ -19,6 +19,3 @@
 [submodule "source/thirdparty/AutoHyperlinks"]
 	path = source/thirdparty/AutoHyperlinks
 	url = git@github.com:tylerberry/AutoHyperlinks.framework.git
-[submodule "source/thirdparty/SSKeychain"]
-	path = source/thirdparty/SSKeychain
-	url = https://github.com/soffes/sskeychain

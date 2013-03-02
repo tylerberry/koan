@@ -104,7 +104,6 @@
 		2F82CADA1241F81300D32655 /* MUFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CAD91241F81300D32655 /* MUFolder.m */; };
 		2F82CB9F12422DFC00D32655 /* MUTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CB9E12422DFC00D32655 /* MUTreeNode.m */; };
 		2F861FB811FD53F2007136D5 /* MUProtocolStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F861FB711FD53F2007136D5 /* MUProtocolStack.m */; };
-		2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F8C6D28167E67A40006F975 /* SSKeychain.m */; };
 		2F8C6D2D167E69940006F975 /* MMTabBarView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0705631613F4D700A71314 /* MMTabBarView.framework */; };
 		2F8C6D2E167E69B30006F975 /* MMTabBarView.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0705631613F4D700A71314 /* MMTabBarView.framework */; };
 		2F8CEADC153ACD7500B488E7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8CEAD9153ACD7500B488E7 /* Growl.framework */; };
@@ -429,8 +428,6 @@
 		2F82CB9E12422DFC00D32655 /* MUTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNode.m; sourceTree = "<group>"; };
 		2F861FB611FD53F2007136D5 /* MUProtocolStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProtocolStack.h; sourceTree = "<group>"; };
 		2F861FB711FD53F2007136D5 /* MUProtocolStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProtocolStack.m; sourceTree = "<group>"; };
-		2F8C6D27167E67A40006F975 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
-		2F8C6D28167E67A40006F975 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
 		2F8CEAD9153ACD7500B488E7 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		2F8CEAE2153AD1EA00B488E7 /* J3TestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J3TestCase.h; sourceTree = "<group>"; };
 		2F8CEAE3153AD1EA00B488E7 /* J3TestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = J3TestCase.m; sourceTree = "<group>"; };
@@ -996,16 +993,6 @@
 			path = mccp;
 			sourceTree = "<group>";
 		};
-		2F8C6D26167E67450006F975 /* SSKeychain */ = {
-			isa = PBXGroup;
-			children = (
-				2F8C6D27167E67A40006F975 /* SSKeychain.h */,
-				2F8C6D28167E67A40006F975 /* SSKeychain.m */,
-			);
-			name = SSKeychain;
-			path = SSKeychain/SSKeychain;
-			sourceTree = "<group>";
-		};
 		2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */ = {
 			isa = PBXGroup;
 			children = (
@@ -1056,7 +1043,6 @@
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
 				2F1DC55B16DB1D2500A038FE /* PCRE */,
 				2F4D3BFE166C1032002EBA99 /* PLWeakCompatibility */,
-				2F8C6D26167E67450006F975 /* SSKeychain */,
 				2F1DC5D716DB44A400A038FE /* AGRegex.h */,
 				2F1DC5D816DB44A400A038FE /* AGRegex.m */,
 				2F7A2E70166F393E00FEB109 /* ATImageTextCell.h */,
@@ -1820,7 +1806,6 @@
 				2F6264A01663384D008DDBF2 /* NSString+CodePage437.m in Sources */,
 				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
 				2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */,
-				2F8C6D29167E67A40006F975 /* SSKeychain.m in Sources */,
 				2F5DBA9416DD493900DE627E /* pcre_chartables.c in Sources */,
 				2F5DBA8B16DD30B200DE627E /* pcre_compile.c in Sources */,
 				2F1DC57716DB3A1A00A038FE /* pcre_exec.c in Sources */,

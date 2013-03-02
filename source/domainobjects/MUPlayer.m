@@ -190,7 +190,7 @@ static const int32_t currentPlayerVersion = 4;
 - (NSString *) windowTitle
 {
   // FIXME: This is not the right way to get the window title.
-  return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
+  return [NSString stringWithFormat: @"%@ @ %@", self.name, self.world.name];
 }
 
 - (MUWorld *) world

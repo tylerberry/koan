@@ -272,8 +272,8 @@
   else if ([node isKindOfClass: [MUPlayer class]])
   {
     MUPlayer *player = (MUPlayer *) node;
-    MUWorld *world = (MUWorld *) player.parent;
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: world.url]];
+    
+    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: player.world.url]];
   }
 }
 
@@ -641,7 +641,7 @@
     if (!_worldViewController)
       _worldViewController = [[MUWorldViewController alloc] init];
     
-    _worldViewController.world = (MUWorld *) player.parent;
+    _worldViewController.world = player.world;
     
     [profileContentView addSubview: _worldViewController.view];
     [profileContentView addSubview: _playerViewController.view];
@@ -649,7 +649,7 @@
     if (!_profileViewController)
       _profileViewController = [[MUProfileViewController alloc] init];
     
-    _profileViewController.profile = [[MUProfileRegistry defaultRegistry] profileForWorld: (MUWorld *) player.parent
+    _profileViewController.profile = [[MUProfileRegistry defaultRegistry] profileForWorld: player.world
                                                                                    player: player];
     
     [profileContentView addSubview: _profileViewController.view];
@@ -816,8 +816,7 @@
   else if ([treeNode isKindOfClass: [MUPlayer class]])
   {
     MUPlayer *player = (MUPlayer *) treeNode;
-    MUWorld *world = (MUWorld *) player.parent;
-    [self.delegate openConnectionForProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: world
+    [self.delegate openConnectionForProfile: [[MUProfileRegistry defaultRegistry] profileForWorld: player.world
                                                                                            player: player]];
   }
 }

@@ -6,32 +6,30 @@
 
 #import "MUPlayer.h"
 
-static const int32_t currentPlayerVersion = 3;
+#import <Security/Security.h>
+
+static const int32_t currentPlayerVersion = 4;
 
 @implementation MUPlayer
 
-@dynamic loginString, windowTitle;
+@dynamic loginString, password, windowTitle, world;
 
 + (MUPlayer *) playerWithName: (NSString *) newName
-  									 password: (NSString *) newPassword
 {
-  return [[self alloc] initWithName: newName password: newPassword];
+  return [[self alloc] initWithName: newName];
 }
 
 - (id) initWithName: (NSString *) newName
-           password: (NSString *) newPassword
 {
   if (!(self = [super initWithName: newName children: nil]))
     return nil;
-  
-  _password = [newPassword copy];
   
   return self;
 }
 
 - (id) init
 {
-  return [self initWithName: @"New player" password: @""];
+  return [self initWithName: @"New player"];
 }
 
 #pragma mark - Property method implementations
@@ -64,10 +62,140 @@ static const int32_t currentPlayerVersion = 3;
   }
 }
 
+- (NSString *) password
+{
+  void *passwordBytes = NULL;
+  UInt32 passwordLength = 0;
+  SecKeychainItemRef itemRef;
+  
+  const char *hostnameUTF8String = [self.world.hostname UTF8String];
+  const char *playerUTF8String = [self.name UTF8String];
+  
+  OSStatus status = SecKeychainFindInternetPassword (NULL,
+                                                     (UInt32) strlen (hostnameUTF8String),
+                                                     hostnameUTF8String,
+                                                     0,
+                                                     NULL,
+                                                     (UInt32) strlen (playerUTF8String),
+                                                     playerUTF8String,
+                                                     0,
+                                                     NULL,
+                                                     self.world.port.unsignedShortValue,
+                                                     kSecProtocolTypeTelnet,
+                                                     kSecAuthenticationTypeDefault,
+                                                     &passwordLength,
+                                                     &passwordBytes,
+                                                     &itemRef);
+  
+  if (status == errSecSuccess)
+  {
+    NSString *password = [[NSString alloc] initWithBytes: passwordBytes
+                                                  length: passwordLength
+                                                encoding: NSUTF8StringEncoding];
+    
+    SecKeychainItemFreeContent (NULL, passwordBytes);
+    
+    return password;
+  }
+  else if (status == errSecItemNotFound)
+  {
+    if (passwordBytes)
+      SecKeychainItemFreeContent (NULL, passwordBytes);
+    
+    return nil;
+  }
+  else
+	{
+    NSString *errorString = (__bridge_transfer NSString *) SecCopyErrorMessageString (status, NULL);
+    
+    NSLog (@"Keychain error %u: %@", status, errorString);
+    
+    if (passwordBytes)
+      SecKeychainItemFreeContent (NULL, passwordBytes);
+    
+    return nil;
+	}
+}
+
+- (void) setPassword: (NSString *) password
+{
+  SecKeychainItemRef itemRef;
+  
+  const char *hostnameUTF8String = [self.world.hostname UTF8String];
+  const char *playerUTF8String = [self.name UTF8String];
+  
+  OSStatus status = SecKeychainFindInternetPassword (NULL,
+                                                     (UInt32) strlen (hostnameUTF8String),
+                                                     hostnameUTF8String,
+                                                     0,
+                                                     NULL,
+                                                     (UInt32) strlen (playerUTF8String),
+                                                     playerUTF8String,
+                                                     0,
+                                                     NULL,
+                                                     self.world.port.unsignedShortValue,
+                                                     kSecProtocolTypeTelnet,
+                                                     kSecAuthenticationTypeDefault,
+                                                     0,
+                                                     NULL,
+                                                     &itemRef);
+  
+  if (status == errSecSuccess)
+  {
+    if (!password || password.length == 0)
+    {
+      SecKeychainItemDelete (itemRef);
+    }
+    else
+    {
+      const char *passwordUTF8String = [password UTF8String];
+      
+      SecKeychainItemModifyAttributesAndData (itemRef,
+                                              NULL,
+                                              (UInt32) strlen (passwordUTF8String),
+                                              passwordUTF8String);
+    }
+  }
+  else if (status == errSecItemNotFound)
+  {
+    if (!password || password.length == 0)
+      return;
+    
+    const char *passwordUTF8String = [password UTF8String];
+    
+    SecKeychainAddInternetPassword (NULL,
+                                    (UInt32) strlen (hostnameUTF8String),
+                                    hostnameUTF8String,
+                                    0,
+                                    NULL,
+                                    (UInt32) strlen (playerUTF8String),
+                                    playerUTF8String,
+                                    0,
+                                    NULL,
+                                    self.world.port.unsignedShortValue,
+                                    kSecProtocolTypeTelnet,
+                                    kSecAuthenticationTypeDefault,
+                                    (UInt32) strlen (passwordUTF8String),
+                                    passwordUTF8String,
+                                    NULL);
+  }
+  else
+  {
+    NSString *errorString = (__bridge_transfer NSString *) SecCopyErrorMessageString (status, NULL);
+    
+    NSLog (@"Keychain error %u: %@", status, errorString);
+  }
+}
+
 - (NSString *) windowTitle
 {
   // FIXME: This is not the right way to get the window title.
   return [NSString stringWithFormat: @"%@ @ %@", self.name, self.parent.name];
+}
+
+- (MUWorld *) world
+{
+  return (MUWorld *) self.parent;
 }
 
 #pragma mark - NSCoding protocol
@@ -78,7 +206,6 @@ static const int32_t currentPlayerVersion = 3;
   
   [encoder encodeInt32: currentPlayerVersion forKey: @"playerVersion"];
   
-  [encoder encodeObject: self.password forKey: @"password"];
   [encoder encodeObject: self.fugueEditPrefix forKey: @"fugueEditPrefix"];
 }
 
@@ -99,8 +226,6 @@ static const int32_t currentPlayerVersion = 3;
       return nil;
   }
   
-  _password = [decoder decodeObjectForKey: @"password"];
-  
   if (version == 1)
     self.name = [decoder decodeObjectForKey: @"name"];
   
@@ -116,8 +241,7 @@ static const int32_t currentPlayerVersion = 3;
 
 - (id) copyWithZone: (NSZone *) zone
 {
-  MUPlayer *copy = [[MUPlayer allocWithZone: zone] initWithName: self.name
-                                                       password: self.password];
+  MUPlayer *copy = [[MUPlayer allocWithZone: zone] initWithName: self.name];
   
   copy.fugueEditPrefix = self.fugueEditPrefix;
   

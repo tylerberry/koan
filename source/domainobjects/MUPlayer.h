@@ -10,15 +10,14 @@
 
 @property (copy) NSString *fugueEditPrefix;
 @property (copy) NSString *password;
+@property (readonly) MUWorld *world;
 
 @property (readonly) NSString *loginString;
 @property (readonly) NSString *windowTitle;
 
-+ (MUPlayer *) playerWithName: (NSString *) newName
-  									 password: (NSString *) newPassword;
++ (MUPlayer *) playerWithName: (NSString *) newName;
 
 // Designated initializer.
-- (id) initWithName: (NSString *) newName
-           password: (NSString *) newPassword;
+- (id) initWithName: (NSString *) newName;
 
 @end

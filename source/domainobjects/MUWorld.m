@@ -8,7 +8,7 @@
 #import "MUPlayer.h"
 #import "MUSocketFactory.h"
 
-static const int32_t currentWorldVersion = 8;
+static const int32_t currentWorldVersion = 9;
 
 @implementation MUWorld
 
@@ -17,22 +17,26 @@ static const int32_t currentWorldVersion = 8;
 + (MUWorld *) worldWithName: (NSString *) name
                    hostname: (NSString *) hostname
                        port: (NSNumber *) port
+                   forceTLS: (BOOL) forceTLS
                         URL: (NSString *) url
                    children: (NSArray *) children
 {
   return [[self alloc] initWithName: name
                            hostname: hostname
                                port: port
+                           forceTLS: forceTLS
                                 URL: url
                            children: children];
 }
 
 + (MUWorld *) worldWithHostname: (NSString *) hostname
                            port: (NSNumber *) port
+                       forceTLS: (BOOL) forceTLS
 {
   return [[self alloc] initWithName: hostname
                            hostname: hostname
                                port: port
+                           forceTLS: forceTLS
                                 URL: nil
                            children: nil];
 }
@@ -40,6 +44,7 @@ static const int32_t currentWorldVersion = 8;
 - (id) initWithName: (NSString *) name
            hostname: (NSString *) hostname
                port: (NSNumber *) port
+           forceTLS: (BOOL) forceTLS
                 URL: (NSString *) url
            children: (NSArray *) children
 {
@@ -55,10 +60,12 @@ static const int32_t currentWorldVersion = 8;
 
 - (id) initWithHostname: (NSString *) hostname
                    port: (NSNumber *) port
+               forceTLS: (BOOL) forceTLS
 {
   return [self initWithName: hostname
                    hostname: hostname
                        port: port
+                   forceTLS: forceTLS
                         URL: @""
                    children: nil];
 }
@@ -68,6 +75,7 @@ static const int32_t currentWorldVersion = 8;
   return [self initWithName: @"New world"
                    hostname: @""
                        port: @0
+                   forceTLS: NO
                         URL: @""
                    children: nil];
 }
@@ -76,7 +84,7 @@ static const int32_t currentWorldVersion = 8;
 
 - (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [MUMUDConnection telnetWithHostname: self.hostname port: self.port.intValue delegate: delegate];
+  return [MUMUDConnection connectionWithWorld: self delegate: delegate];
 }
 
 #pragma mark - Property method implementations
@@ -101,6 +109,7 @@ static const int32_t currentWorldVersion = 8;
   
   [encoder encodeObject: self.hostname forKey: @"hostname"];
   [encoder encodeInt: self.port.intValue forKey: @"port"];
+  [encoder encodeBool: self.forceTLS forKey: @"forceTLS"];
   [encoder encodeObject: self.url forKey: @"URL"];
 }
 
@@ -154,6 +163,11 @@ static const int32_t currentWorldVersion = 8;
     _url = [decoder decodeObjectForKey: @"worldURL"];
   else
     _url = @"";
+  
+  if (version >= 9)
+    _forceTLS = [decoder decodeBoolForKey: @"forceTLS"];
+  else
+    _forceTLS = NO;
 
   return self;
 }
@@ -165,6 +179,7 @@ static const int32_t currentWorldVersion = 8;
   return [[MUWorld allocWithZone: zone] initWithName: self.name
                                             hostname: self.hostname
                                                 port: self.port
+                                            forceTLS: self.forceTLS
                                                  URL: self.url
                                             children: self.children];
 }

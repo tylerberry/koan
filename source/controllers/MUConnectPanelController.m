@@ -8,6 +8,14 @@
 
 #import "MUWorldRegistry.h"
 
+@interface MUConnectPanelController ()
+
+- (void) _resetInterface;
+
+@end
+
+#pragma mark -
+
 @implementation MUConnectPanelController
 
 - (id) init
@@ -20,9 +28,7 @@
 
 - (void) windowDidLoad
 {
-  newConnectionHostnameField.objectValue = nil;
-  newConnectionPortField.objectValue = nil;
-  newConnectionSaveWorldButton.state = NSOffState;
+  [self _resetInterface];
 }
 
 #pragma mark - Actions
@@ -30,9 +36,10 @@
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
   MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
-                                         port: @(newConnectionPortField.intValue)];
+                                         port: @(newConnectionPortField.intValue)
+                                     forceTLS: (forceSSLButton.state == NSOnState)];
   
-  if ([newConnectionSaveWorldButton state] == NSOnState)
+  if (newConnectionSaveWorldButton.state == NSOnState)
   {
     MUWorldRegistry *registry = [MUWorldRegistry defaultRegistry];
     [[registry mutableArrayValueForKey: @"worlds"] insertObject: world
@@ -42,8 +49,16 @@
   [self.delegate openConnectionForWorld: world];
   [self.window close];
   
+  [self _resetInterface];
+}
+
+#pragma mark - Private methods
+
+- (void) _resetInterface
+{
   newConnectionHostnameField.objectValue = nil;
   newConnectionPortField.objectValue = nil;
+  forceSSLButton.state = NSOffState;
   newConnectionSaveWorldButton.state = NSOffState;
 }
 

@@ -12,6 +12,7 @@
 #import "MUMUDConnectionState.h"
 #import "MUProtocolStack.h"
 #import "MUTelnetProtocolHandler.h"
+#import "MUWorld.h"
 #import "MUWriteBuffer.h"
 
 @class MUSocketFactory;
@@ -48,13 +49,11 @@ extern NSString *MUMUDConnectionErrorKey;
 
 @property (readonly) NSDate *dateConnected;
 
-+ (id) telnetWithHostname: (NSString *) hostname
-                     port: (int) port
-                 delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
++ (id) connectionWithWorld: (MUWorld *) world
+                  delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port
-               delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
+- (id) initWithWorld: (MUWorld *) world
+            delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
 - (void) writeLine: (NSString *) line;

@@ -150,7 +150,7 @@
   if (!([url.scheme isEqualToString: @"telnet"] || [url.scheme isEqualToString: @"koan"]))
     return;
   
-  MUWorld *world = [MUWorld worldWithHostname: url.host port: url.port];
+  MUWorld *world = [MUWorld worldWithHostname: url.host port: url.port forceTLS: NO];
   
   MUConnectionWindowControllerRegistry *registry = [MUConnectionWindowControllerRegistry defaultRegistry];
   

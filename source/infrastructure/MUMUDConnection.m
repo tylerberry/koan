@@ -32,14 +32,14 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   NSData *_lastReceivedData;
   
-  NSString *_hostname;
-  int _port;
+  MUWorld *_world;
   NSTimer *_pollTimer;
 }
 
 - (void) _cleanUpStreams;
 - (void) _displayAndLogString: (NSString *) string;
 - (void) _registerObjectForNotifications: (id) object;
+- (void) _turnOnTLSForStreams;
 - (void) _unregisterObjectForNotifications: (id) object;
 - (void) _writeBufferedDataToOutputStream;
 - (void) _writeDataWithPreprocessing: (NSData *) data;
@@ -50,16 +50,14 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 @implementation MUMUDConnection
 
-+ (id) telnetWithHostname: (NSString *) hostname
-                     port: (int) port
-                 delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
++ (id) connectionWithWorld: (MUWorld *) world
+                  delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [[self alloc] initWithHostname: hostname port: port delegate: delegate];
+  return [[self alloc] initWithWorld: world delegate: delegate];
 }
 
-- (id) initWithHostname: (NSString *) newHostname
-                   port: (int) newPort
-               delegate: (NSObject <MUMUDConnectionDelegate> *) newDelegate;
+- (id) initWithWorld: (MUWorld *) world
+            delegate: (NSObject <MUMUDConnectionDelegate> *) newDelegate;
 {
   if (!(self = [super init]))
     return nil;
@@ -72,8 +70,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: self];
   _dateConnected = nil;
-  _hostname = [newHostname copy];
-  _port = newPort;
+  _world = world;
   _pollTimer = nil;
   
   _protocolStack = [[MUProtocolStack alloc] initWithConnectionState: _state];
@@ -155,13 +152,22 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   CFReadStreamRef readStream;
   CFWriteStreamRef writeStream;
   
-  CFStreamCreatePairWithSocketToHost (NULL, (__bridge CFStringRef) _hostname, _port, &readStream, &writeStream);
+  CFStreamCreatePairWithSocketToHost (NULL,
+                                      (__bridge CFStringRef) _world.hostname,
+                                      (UInt32) _world.port.integerValue,
+                                      &readStream,
+                                      &writeStream);
   
   _inputStream = (__bridge_transfer NSInputStream *) readStream;
   _outputStream = (__bridge_transfer NSOutputStream *) writeStream;
   
   _inputStream.delegate = self;
   _outputStream.delegate = self;
+  
+  if (_world.forceTLS)
+  {
+    [self _turnOnTLSForStreams];
+  }
   
   [_inputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
   [_outputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
@@ -224,7 +230,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
-  NSLog (@"[%@:%d] %@", _hostname, _port, [[NSString alloc] initWithFormat: message arguments: args]);
+  NSLog (@"[%@:%@] %@", _world.hostname, _world.port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
 #pragma mark - NSStreamDelegate
@@ -399,6 +405,27 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                          selector: @selector (MUDConnectionWasClosedWithError:)
                              name: MUMUDConnectionWasClosedWithErrorNotification
                            object: self];
+}
+
+- (void) _turnOnTLSForStreams
+{
+  [_inputStream setProperty: NSStreamSocketSecurityLevelNegotiatedSSL
+                     forKey: NSStreamSocketSecurityLevelKey];
+  [_outputStream setProperty: NSStreamSocketSecurityLevelNegotiatedSSL
+                      forKey: NSStreamSocketSecurityLevelKey];
+  
+  NSDictionary *sslSettings = @{(NSString *) kCFStreamSSLAllowsExpiredCertificates: @YES,
+                                (NSString *) kCFStreamSSLAllowsExpiredRoots: @YES,
+                                (NSString *) kCFStreamSSLAllowsAnyRoot: @YES,
+                                (NSString *) kCFStreamSSLValidatesCertificateChain: @NO,
+                                (NSString *) kCFStreamSSLPeerName: [NSNull null]};
+  
+  CFReadStreamSetProperty ((CFReadStreamRef) _inputStream,
+                           kCFStreamPropertySSLSettings,
+                           (CFTypeRef) sslSettings);
+  CFWriteStreamSetProperty ((CFWriteStreamRef) _outputStream,
+                            kCFStreamPropertySSLSettings,
+                            (CFTypeRef) sslSettings);
 }
 
 - (void) _unregisterObjectForNotifications: (id) object

@@ -19,6 +19,7 @@
 {
   IBOutlet NSTextField *newConnectionHostnameField;
   IBOutlet NSTextField *newConnectionPortField;
+  IBOutlet NSButton *forceSSLButton;
   IBOutlet NSButton *newConnectionSaveWorldButton;
 }
 

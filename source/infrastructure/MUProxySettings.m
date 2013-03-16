@@ -23,7 +23,7 @@ static const int32_t currentProxyVersion = 3;
   
   NSNumber *systemSOCKSProxyEnabled = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSEnable);
   
-  if ([systemSOCKSProxyEnabled integerValue] == 1)
+  if (systemSOCKSProxyEnabled.integerValue == 1)
   {
     CFRelease (proxySettings);
     return YES;
@@ -44,7 +44,7 @@ static const int32_t currentProxyVersion = 3;
   
   NSNumber *systemSOCKSProxyEnabled = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSEnable);
   
-  if ([systemSOCKSProxyEnabled integerValue] == 1)
+  if (systemSOCKSProxyEnabled.integerValue == 1)
   {
     NSString *systemSOCKSProxyHostname = (NSString *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSProxy);
     NSNumber *systemSOCKSProxyPort = (NSNumber *) CFDictionaryGetValue (proxySettings, kSCPropNetProxiesSOCKSPort);

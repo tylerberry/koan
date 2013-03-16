@@ -7,11 +7,15 @@
 #import "MUAbstractConnection.h"
 
 @interface MUAbstractConnection ()
+{
+@protected
+  MUConnectionStatus _status;
+}
 
 - (void) setStatusConnected;
 - (void) setStatusConnecting;
 - (void) setStatusClosedByClient;
 - (void) setStatusClosedByServer;
-- (void) setStatusClosedWithError: (NSString *) error;
+- (void) setStatusClosedWithError: (NSError *) error;
 
 @end

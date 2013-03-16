@@ -157,7 +157,6 @@
 		2FE368440BCAD5DB0068A6AA /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FE368420BCAD5DB0068A6AA /* schema.xml */; };
 		2FE3691F0BCAD8370068A6AA /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2FE3691E0BCAD8370068A6AA /* schema.strings */; };
 		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		7E070B000933D01E000A36CF /* MUSOCKS5MethodSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
 		7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */; };
@@ -176,11 +175,7 @@
 		7E4FB2870BCC877B007BC40F /* MUTelnetTextState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2730BCC877B007BC40F /* MUTelnetTextState.m */; };
 		7E4FB2890BCC877B007BC40F /* MUTelnetWillState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2750BCC877B007BC40F /* MUTelnetWillState.m */; };
 		7E4FB28B0BCC877B007BC40F /* MUTelnetWontState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2770BCC877B007BC40F /* MUTelnetWontState.m */; };
-		7E50AC2309AEB90B00E0BFE7 /* MUProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */; };
 		7E5103120AD1D5AA00142EF3 /* NSFont+Traits.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */; };
-		7E5C2DDD09B105B2006993E1 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
-		7E68DC5D092AC2FB004554BD /* MUSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC39092AC2FB004554BD /* MUSocket.m */; };
-		7E87735409AD44DE00A883BC /* MUSocketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E87735209AD44DE00A883BC /* MUSocketFactory.m */; };
 		7E87756409AD62E400A883BC /* MUFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE43B20749CB16002C7D48 /* MUFilterTests.m */; };
 		7E87756509AD62E400A883BC /* MUHistoryRingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */; };
 		7E87756809AD62E400A883BC /* MUNaiveURLFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6505498077EA20E0016F30E /* MUNaiveURLFilterTests.m */; };
@@ -194,7 +189,6 @@
 		7E87757209AD62FE00A883BC /* MUSOCKS5PrimitiveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */; };
 		7E87757309AD630E00A883BC /* MUTelnetStateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */; };
 		7E87764409AD6B3000A883BC /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E622A551074231A60069335B /* MUConstants.m */; };
-		7EC10AEC09AF947C00D840A1 /* MUSOCKS5Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */; };
 		7EC3030A092B978B00AFA5C7 /* MUMUDConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC30307092B978B00AFA5C7 /* MUMUDConnection.m */; };
 		7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC301B4092B78F200AFA5C7 /* MUWriteBuffer.m */; };
 		7EE11F3B0BD8284100C78D9C /* MUTelnetNotTelnetState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE11F390BD8284100C78D9C /* MUTelnetNotTelnetState.m */; };
@@ -515,7 +509,7 @@
 		7E070AFC0933D01E000A36CF /* MUSOCKS5MethodSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5MethodSelection.h; sourceTree = "<group>"; };
 		7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5MethodSelection.m; sourceTree = "<group>"; };
 		7E070B260933D32B000A36CF /* MUSOCKS5Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Constants.h; sourceTree = "<group>"; };
-		7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MUAbstractConnection.h; path = ../MUAbstractConnection.h; sourceTree = "<group>"; };
+		7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnection.h; sourceTree = "<group>"; };
 		7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAbstractConnection.m; sourceTree = "<group>"; };
 		7E13BA1A09AE950600508460 /* MUProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySettings.h; sourceTree = "<group>"; };
 		7E13BA1B09AE950600508460 /* MUProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySettings.m; sourceTree = "<group>"; };
@@ -749,7 +743,6 @@
 				E6550EF307764C01002E81FF /* Categories */,
 				E670A81207420F8C00E2DAEB /* Controllers */,
 				E6E7BF6C0788FE180065EDD6 /* Controls */,
-				2F7B4FD40BCAC3A800C1586D /* Documents */,
 				E6E7BF500788FDA40065EDD6 /* Domain Objects */,
 				E6E7BF540788FDED0065EDD6 /* Infrastructure */,
 				2F6C71F00BB460CA00709320 /* Scripting */,
@@ -979,7 +972,7 @@
 				2F7B4FEB0BCAC40F00C1586D /* MUTextLogDocument.m */,
 			);
 			name = Documents;
-			path = documents;
+			path = ../documents;
 			sourceTree = "<group>";
 		};
 		2F7CDB73121EFB39001B4879 /* MCCP */ = {
@@ -1117,7 +1110,6 @@
 			isa = PBXGroup;
 			children = (
 				7E4FB2630BCC877B007BC40F /* States */,
-				7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */,
 				7E68DC3A092AC2FB004554BD /* MUTelnetConstants.h */,
 				7EF77C910BCC945D0047CF5D /* MUTelnetOption.h */,
 				7EF77C920BCC945D0047CF5D /* MUTelnetOption.m */,
@@ -1286,6 +1278,7 @@
 		E6E7BF500788FDA40065EDD6 /* Domain Objects */ = {
 			isa = PBXGroup;
 			children = (
+				2F7B4FD40BCAC3A800C1586D /* Documents */,
 				2F82CAD81241F81300D32655 /* MUFolder.h */,
 				2F82CAD91241F81300D32655 /* MUFolder.m */,
 				E677D20E0778041F00B417D2 /* MUPlayer.h */,
@@ -1314,6 +1307,7 @@
 				2F7094031223BB1B00E0D178 /* MCP */,
 				7E0709EF09339A1E000A36CF /* SOCKS5 */,
 				7E68DC33092AC2FB004554BD /* Telnet */,
+				7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */,
 				2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */,
 				7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */,
 				7E68DCD4092AC77D004554BD /* MUByteDestination.h */,
@@ -1723,7 +1717,6 @@
 				2FDFA1560D67F630007F0036 /* MUAcknowledgementsController.m in Sources */,
 				7E43C1C20ACB1A4000A8E677 /* MUANSIFormattingFilter.m in Sources */,
 				E62C905D07422595005662BC /* MUApplicationController.m in Sources */,
-				2F8E7E2F12ED2B2C00AFA68C /* MUProtocolHandler.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
 				2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */,
 				E670A84207420FDF00E2DAEB /* MUConnectionWindowController.m in Sources */,
@@ -1759,16 +1752,11 @@
 				2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */,
 				E63CC4E5077A06CD003A54AA /* MUProfilesWindowController.m in Sources */,
 				2FA60E5512E13939008BD147 /* MUProfilesSection.m in Sources */,
+				2F8E7E2F12ED2B2C00AFA68C /* MUProtocolHandler.m in Sources */,
 				2F861FB811FD53F2007136D5 /* MUProtocolStack.m in Sources */,
 				2F3DBAD8165387120056D738 /* MUProxyPreferencesViewController.m in Sources */,
 				7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */,
-				7E50AC2309AEB90B00E0BFE7 /* MUProxySocket.m in Sources */,
 				2FA60E5412E13939008BD147 /* MUSection.m in Sources */,
-				7E68DC5D092AC2FB004554BD /* MUSocket.m in Sources */,
-				7E87735409AD44DE00A883BC /* MUSocketFactory.m in Sources */,
-				7E5C2DDD09B105B2006993E1 /* MUSOCKS5Authentication.m in Sources */,
-				7E070B000933D01E000A36CF /* MUSOCKS5MethodSelection.m in Sources */,
-				7EC10AEC09AF947C00D840A1 /* MUSOCKS5Request.m in Sources */,
 				2F3DBAD3165374DD0056D738 /* MUSoundsPreferencesViewController.m in Sources */,
 				7E4FB2790BCC877B007BC40F /* MUTelnetDontState.m in Sources */,
 				7E4FB27B0BCC877B007BC40F /* MUTelnetDoState.m in Sources */,

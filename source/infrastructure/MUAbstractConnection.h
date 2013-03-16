@@ -14,10 +14,6 @@ typedef enum MUConnectionStatus
 #pragma mark -
 
 @interface MUAbstractConnection : NSObject
-{
-@protected
-  MUConnectionStatus status;
-}
 
 @property (readonly) MUConnectionStatus status;
 

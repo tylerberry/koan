@@ -216,12 +216,12 @@ enum MUTextDisplayModes
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
   
-  NSString *errorMessage = notification.userInfo[MUMUDConnectionErrorMessageKey];
+  NSError *error = notification.userInfo[MUMUDConnectionErrorKey];
   
   [self _displayString: [NSString stringWithFormat: @"%@\n",
-                         [NSString stringWithFormat: _(MULConnectionClosedByError), errorMessage]]
+                         [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]]
        textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: errorMessage];
+  [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: error.localizedDescription];
   
   [self _attemptReconnect];
 }

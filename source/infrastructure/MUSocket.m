@@ -25,7 +25,7 @@ NSString *MUSocketIsConnectingNotification = @"MUSocketIsConnectingNotification"
 NSString *MUSocketWasClosedByClientNotification = @"MUSocketWasClosedByClientNotification";
 NSString *MUSocketWasClosedByServerNotification = @"MUSocketWasClosedByServerNotification";
 NSString *MUSocketWasClosedWithErrorNotification = @"MUSocketWasClosedWithErrorNotification";
-NSString *MUSocketErrorMessageKey = @"MUSocketErrorMessageKey";
+NSString *MUSocketErrorKey = @"MUSocketErrorKey";
 
 #pragma mark - C Function Prototypes
 
@@ -191,12 +191,12 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
                                                       object: self];
 }
 
-- (void) setStatusClosedWithError: (NSString *) error
+- (void) setStatusClosedWithError: (NSError *) error
 {
   [super setStatusClosedWithError: error];
   [[NSNotificationCenter defaultCenter] postNotificationName: MUSocketWasClosedWithErrorNotification
                                                       object: self
-                                                    userInfo: @{MUSocketErrorMessageKey: error}];
+                                                    userInfo: @{MUSocketErrorKey: error}];
 }
 
 #pragma mark - MUByteSource protocol
@@ -410,7 +410,7 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
   @catch (MUSocketException *socketException)
   {
     [self performSelectorOnMainThread: @selector (setStatusClosedWithError:)
-                           withObject: socketException.reason
+                           withObject: socketException
                         waitUntilDone: YES];
   }
 }

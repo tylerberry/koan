@@ -9,7 +9,6 @@
 
 @implementation MUAbstractConnection
 
-@synthesize status;
 @dynamic isClosed, isConnected, isConnecting;
 
 - (id) init
@@ -17,7 +16,7 @@
   if (!(self = [super init]))
     return nil;
   
-  status = MUConnectionStatusNotConnected;
+  _status = MUConnectionStatusNotConnected;
   
   return self;
 }
@@ -55,27 +54,27 @@
 
 - (void) setStatusConnected
 {
-  status = MUConnectionStatusConnected;
+  _status = MUConnectionStatusConnected;
 }
 
 - (void) setStatusConnecting
 {
-  status = MUConnectionStatusConnecting;
+  _status = MUConnectionStatusConnecting;
 }
 
 - (void) setStatusClosedByClient
 {
-  status = MUConnectionStatusNotConnected;
+  _status = MUConnectionStatusNotConnected;
 }
 
 - (void) setStatusClosedByServer
 {
-  status = MUConnectionStatusNotConnected;
+  _status = MUConnectionStatusNotConnected;
 }
 
-- (void) setStatusClosedWithError: (NSString *) error
+- (void) setStatusClosedWithError: (NSError *) error
 {
-  status = MUConnectionStatusNotConnected;
+  _status = MUConnectionStatusNotConnected;
 }
 
 @end

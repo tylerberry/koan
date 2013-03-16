@@ -5,6 +5,7 @@
 //
 
 #import "MUMUDConnection.h"
+#import "MUSocket.h"
 
 @class MUProxySettings;
 

@@ -8,6 +8,5 @@
 
 - (IBAction) openGrowlWebPage: (id) sender;
 - (IBAction) openOpenSSLWebPage: (id) sender;
-- (IBAction) openSparkleWebPage: (id) sender;
 
 @end

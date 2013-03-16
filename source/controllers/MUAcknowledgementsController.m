@@ -26,9 +26,4 @@
   [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUOpenSSLURLString]];
 }
 
-- (IBAction) openSparkleWebPage: (id) sender
-{
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUSparkleURLString]];
-}
-
 @end

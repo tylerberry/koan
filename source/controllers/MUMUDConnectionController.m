@@ -37,6 +37,7 @@ enum MUTextDisplayModes
 - (void) _attemptReconnect;
 - (void) _cleanUpPingTimer;
 - (void) _clearRecentReceivedStrings: (NSTimer *) timer;
+- (void) _resetRecentStrings;
 - (void) _sendPeriodicPing: (NSTimer *) timer;
 
 @end
@@ -195,6 +196,7 @@ enum MUTextDisplayModes
 {
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
+  [self _resetRecentStrings];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedForTitle: self.profile.windowTitle];
@@ -204,6 +206,7 @@ enum MUTextDisplayModes
 {
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
+  [self _resetRecentStrings];
   [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
        textDisplayMode: MUSystemTextDisplayMode];
   [MUGrowlService connectionClosedByServerForTitle: self.profile.windowTitle];
@@ -215,13 +218,24 @@ enum MUTextDisplayModes
 {
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
+  [self _resetRecentStrings];
   
   NSError *error = notification.userInfo[MUMUDConnectionErrorKey];
   
-  [self _displayString: [NSString stringWithFormat: @"%@\n",
-                         [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]]
-       textDisplayMode: MUSystemTextDisplayMode];
-  [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: error.localizedDescription];
+  [MUGrowlService connectionClosedByErrorForTitle: self.profile.windowTitle error: error];
+  
+  if (error)
+  {
+    [self _displayString: [NSString stringWithFormat: @"%@\n",
+                           [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]]
+         textDisplayMode: MUSystemTextDisplayMode];
+  }
+  else
+  {
+    [self _displayString: [NSString stringWithFormat: @"%@\n",
+                           [NSString stringWithFormat: _(MULConnectionClosedByError), _(MULConnectionNoErrorAvailable)]]
+         textDisplayMode: MUSystemTextDisplayMode];
+  }
   
   [self _attemptReconnect];
 }
@@ -285,8 +299,15 @@ enum MUTextDisplayModes
   }
 }
 
+- (void) _resetRecentStrings
+{
+  _recentReceivedStrings = [NSMutableArray array];
+  _recentSentString = nil;
+}
+
 - (void) _sendPeriodicPing: (NSTimer *) timer
 {
+  return;
   if (_connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
       || _connection.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
     [_connection writeLine: @"IDLE"];

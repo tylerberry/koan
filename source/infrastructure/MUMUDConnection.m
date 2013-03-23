@@ -39,7 +39,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) _cleanUpStreams;
 - (void) _displayAndLogString: (NSString *) string;
 - (void) _registerObjectForNotifications: (id) object;
-- (void) _turnOnTLSForStreams;
+- (void) _resetState;
 - (void) _unregisterObjectForNotifications: (id) object;
 - (void) _writeBufferedDataToOutputStream;
 - (void) _writeDataWithPreprocessing: (NSData *) data;
@@ -165,9 +165,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _outputStream.delegate = self;
   
   if (_world.forceTLS)
-  {
-    [self _turnOnTLSForStreams];
-  }
+    [self enableTLS];
   
   [_inputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
   [_outputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
@@ -200,6 +198,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedByClient];
   
   _dateConnected = nil;
+  [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
                                                       object: self];
@@ -210,6 +209,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedByServer];
   
   _dateConnected = nil;
+  [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                       object: self];
@@ -220,6 +220,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedWithError: error];
   
   _dateConnected = nil;
+  [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
@@ -263,19 +264,26 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     case NSStreamEventHasBytesAvailable:
       if (stream == _inputStream)
       {
-        uint8_t *bytes = malloc (2048 * sizeof (uint8_t));
-        NSUInteger readLength = [_inputStream read: bytes maxLength: 2048];
+        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1024;
+        uint8_t *bytes = malloc (numberOfBytesToRead * sizeof (uint8_t));
+        NSInteger readLength = [_inputStream read: bytes maxLength: numberOfBytesToRead];
         
         if (readLength == 0)
         {
+          free (bytes);
           [self _cleanUpStreams];
           [self setStatusClosedByServer];
+        }
+        else if (readLength < 0) // Error reading.
+        {
+          free (bytes);
         }
         else
         {
           NSData *receivedData = [NSData dataWithBytesNoCopy: bytes length: readLength freeWhenDone: YES];
-          
-          if ([[NSUserDefaults standardUserDefaults] boolForKey: MUPDropDuplicatePackets])
+
+          if (!_state.needsSingleByteSocketReads
+              && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDropDuplicatePackets])
           {
             if (![receivedData isEqualToData: _lastReceivedData])
             {
@@ -292,6 +300,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
             [_protocolStack parseInputData: receivedData];
           }
         }
+        
+        if (!_inputStream.hasBytesAvailable)
+          [_protocolStack maybeUseBufferedDataAsPrompt];
       }
       return;
       
@@ -299,9 +310,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
       if (stream == _outputStream)
       {
         if (_outgoingDataBuffer.length > 0)
-        {
           [self _writeBufferedDataToOutputStream];
-        }
         else
           _outputStreamHasSpaceAvailable = YES;
       }
@@ -350,6 +359,19 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 }
 
 #pragma mark - MUTelnetProtocolHandlerDelegate
+
+- (void) enableTLS
+{
+  NSDictionary *sslSettings = @{(NSString *) kCFStreamSSLAllowsExpiredCertificates: @YES,
+                                (NSString *) kCFStreamSSLAllowsExpiredRoots: @YES,
+                                (NSString *) kCFStreamSSLAllowsAnyRoot: @YES,
+                                (NSString *) kCFStreamSSLValidatesCertificateChain: @NO,
+                                (NSString *) kCFStreamSSLPeerName: _world.hostname,
+                                (NSString *) kCFStreamSSLLevel: (NSString *) kCFStreamSocketSecurityLevelNegotiatedSSL};
+  
+  CFReadStreamSetProperty ((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
+  CFWriteStreamSetProperty ((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
+}
 
 - (void) reportWindowSizeToServer
 {
@@ -407,25 +429,11 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                            object: self];
 }
 
-- (void) _turnOnTLSForStreams
+- (void) _resetState
 {
-  [_inputStream setProperty: NSStreamSocketSecurityLevelNegotiatedSSL
-                     forKey: NSStreamSocketSecurityLevelKey];
-  [_outputStream setProperty: NSStreamSocketSecurityLevelNegotiatedSSL
-                      forKey: NSStreamSocketSecurityLevelKey];
-  
-  NSDictionary *sslSettings = @{(NSString *) kCFStreamSSLAllowsExpiredCertificates: @YES,
-                                (NSString *) kCFStreamSSLAllowsExpiredRoots: @YES,
-                                (NSString *) kCFStreamSSLAllowsAnyRoot: @YES,
-                                (NSString *) kCFStreamSSLValidatesCertificateChain: @NO,
-                                (NSString *) kCFStreamSSLPeerName: [NSNull null]};
-  
-  CFReadStreamSetProperty ((CFReadStreamRef) _inputStream,
-                           kCFStreamPropertySSLSettings,
-                           (CFTypeRef) sslSettings);
-  CFWriteStreamSetProperty ((CFWriteStreamRef) _outputStream,
-                            kCFStreamPropertySSLSettings,
-                            (CFTypeRef) sslSettings);
+  _lastReceivedData = nil;
+  [_state reset];
+  [_telnetProtocolHandler resetOptionStates];
 }
 
 - (void) _unregisterObjectForNotifications: (id) object
@@ -445,7 +453,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   NSInteger bytesWritten = [_outputStream write: (const uint8_t *) bytes maxLength: _outgoingDataBuffer.length];
   if (bytesWritten < 0)
   {
-    // Error condition.
+    // FIXME: Error condition. Is this the correct way to handle this?
+    _outputStreamHasSpaceAvailable = NO;
+    return;
   }
   [_outgoingDataBuffer replaceBytesInRange: NSMakeRange (0, bytesWritten) withBytes: NULL length: 0];
   _outputStreamHasSpaceAvailable = NO;

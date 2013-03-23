@@ -17,6 +17,7 @@
   
   _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   _isIncomingStreamCompressed = NO;
+  _needsSingleByteSocketReads = NO;
   _nextTerminalTypeIndex = 0;
   _serverWillEcho = NO;
   _shouldReportWindowSizeChanges = NO;
@@ -36,6 +37,7 @@
   
   self.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   self.isIncomingStreamCompressed = NO;
+  self.needsSingleByteSocketReads = NO;
   self.nextTerminalTypeIndex = 0;
   self.serverWillEcho = NO;
   self.shouldReportWindowSizeChanges = NO;

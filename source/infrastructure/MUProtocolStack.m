@@ -18,7 +18,6 @@
   NSMutableArray *_preprocessingBufferStack;
 }
 
-- (void) maybeUseBufferedDataAsPrompt;
 - (void) sendPreprocessedDataToSocket;
 - (void) useBufferedDataAsPrompt;
 
@@ -66,6 +65,27 @@
   }
 }
 
+- (void) maybeUseBufferedDataAsPrompt
+{
+  if (_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
+    return;                                                                         // PennMUSH does, though.
+  
+  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsingBuffer.bytes
+                                                       length: _parsingBuffer.length
+                                                     encoding: _connectionState.stringEncoding];
+  
+  // This is a heuristic. I've made it as tight as I can to avoid false positives.
+  
+  if ([promptCandidate hasSuffix: @" "])
+  {
+    promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
+    
+    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
+         [promptCandidate characterAtIndex: promptCandidate.length - 1]])
+      [self useBufferedDataAsPrompt];
+  }
+}
+
 - (void) parseInputData: (NSData *) data
 {
   if (self.protocolHandlers.count == 0)
@@ -78,9 +98,6 @@
   
   for (NSUInteger i = 0; i < data.length; i++)
     [firstProtocolHandler parseByte: bytes[i]];
-    
-  if (_parsingBuffer.length > 0)
-    [self maybeUseBufferedDataAsPrompt];
 }
 
 - (void) preprocessOutputData: (NSData *) data
@@ -170,27 +187,6 @@
 }
 
 #pragma mark - Private methods
-
-- (void) maybeUseBufferedDataAsPrompt
-{
-  if (_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
-    return;                                                                         // PennMUSH does, though.
-  
-  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsingBuffer.bytes
-                                                       length: _parsingBuffer.length
-                                                     encoding: _connectionState.stringEncoding];
-  
-  // This is a heuristic. I've made it as tight as I can to avoid false positives.
-  
-  if ([promptCandidate hasSuffix: @" "])
-  {
-    promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
-    
-    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
-         [promptCandidate characterAtIndex: promptCandidate.length - 1]])
-      [self useBufferedDataAsPrompt];
-  }
-}
 
 - (void) sendPreprocessedDataToSocket
 {

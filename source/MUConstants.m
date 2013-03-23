@@ -125,6 +125,7 @@ NSString * const MULConnectionOpen = @"ConnectionOpen";
 NSString * const MULConnectionClosed = @"ConnectionClosed";
 NSString * const MULConnectionClosedByServer = @"ConnectionClosedByServer";
 NSString * const MULConnectionClosedByError = @"ConnectionClosedByError";
+NSString * const MULConnectionNoErrorAvailable = @"ConnectionNoErrorAvailable";
 
 #pragma mark Alert panel localization constants.
 

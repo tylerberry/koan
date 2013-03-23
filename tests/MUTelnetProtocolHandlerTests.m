@@ -376,6 +376,11 @@
 
 #pragma mark - MUTelnetProtocolHandlerDelegate protocol
 
+- (void) enableTLS
+{
+  return;
+}
+
 - (void) log: (NSString *) message arguments: (va_list) args
 {
   return;

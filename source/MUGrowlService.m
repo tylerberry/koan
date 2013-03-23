@@ -61,10 +61,14 @@ static BOOL _growlIsReady = NO;
                                            description: _(MUGConnectionClosedByServer)];
 }
 
-+ (void) connectionClosedByErrorForTitle: (NSString *) title error: (NSString *) error
++ (void) connectionClosedByErrorForTitle: (NSString *) title error: (NSError *) error
 {
-  NSString *description = [NSString stringWithFormat: _(MUGConnectionClosedByError),
-                           error];
+  NSString *description;
+  
+  if (error)
+    description = [NSString stringWithFormat: _(MUGConnectionClosedByError), error.localizedDescription];
+  else
+    description = [NSString stringWithFormat: _(MUGConnectionClosedByError), _(MULConnectionNoErrorAvailable)];
   
   [[MUGrowlService defaultGrowlService] notifyWithName: @"Connection closed by error"
                                                  title: title

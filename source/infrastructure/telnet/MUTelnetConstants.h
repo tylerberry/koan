@@ -113,3 +113,8 @@ enum MUTelnetCharsetSubnegotiationCommands
   MUTelnetCharsetTTableAck = 6,
   MUTelnetCharsetTTableNak = 7
 };
+
+enum MUTelnetStartTLSSubnegotiationCommands
+{
+  MUTelnetStartTLSFollows = 1
+};

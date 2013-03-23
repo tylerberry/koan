@@ -21,7 +21,7 @@
 
 - (void) testUniqueIdentifer
 {
-  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   
   MUProfile *profile = [MUProfile profileWithWorld: world];
   [self assert: profile.uniqueIdentifier equals: world.uniqueIdentifier];
@@ -35,7 +35,7 @@
 
 - (void) testHasLoginInformation
 {
-  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   MUProfile *profile = [MUProfile profileWithWorld: world];
                     
   [self assertFalse: profile.hasLoginInformation message: @"no login info"];

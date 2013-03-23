@@ -4,7 +4,8 @@
 "ConnectionOpen" = "Connection open.";
 "ConnectionClosed" = "Connection closed.";
 "ConnectionClosedByServer" = "Connection closed by server.";
-"ConnectionClosedByError" = "Connection closed with error \"%@\".";
+"ConnectionClosedByError" = "Connection closed with error: %@";
+"ConnectionNoErrorAvailable" = "No error available";
 
 // Toolbar item titles.
 

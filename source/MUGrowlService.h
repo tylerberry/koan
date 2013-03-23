@@ -13,6 +13,6 @@
 + (void) connectionOpenedForTitle: (NSString *) title;
 + (void) connectionClosedForTitle: (NSString *) title;
 + (void) connectionClosedByServerForTitle: (NSString *) title;
-+ (void) connectionClosedByErrorForTitle: (NSString *) title error: (NSString *) error;
++ (void) connectionClosedByErrorForTitle: (NSString *) title error: (NSError *) error;
 
 @end

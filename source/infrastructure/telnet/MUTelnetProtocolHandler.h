@@ -39,6 +39,7 @@
 @protocol MUTelnetProtocolHandlerDelegate
 
 @required
+- (void) enableTLS;
 - (void) log: (NSString *) message arguments: (va_list) args;
 - (void) reportWindowSizeToServer;
 
@@ -63,6 +64,8 @@
 - (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 // Option negotation.
+
+- (void) resetOptionStates;
 
 - (void) disableOptionForHim: (uint8_t) option;
 - (void) disableOptionForUs: (uint8_t) option;

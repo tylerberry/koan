@@ -19,6 +19,7 @@ enum charsetNegotiationStatus
 
 @property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
 @property (assign) BOOL isIncomingStreamCompressed;
+@property (assign) BOOL needsSingleByteSocketReads;
 @property (assign) unsigned nextTerminalTypeIndex;
 @property (assign) BOOL shouldReportWindowSizeChanges;
 @property (assign) BOOL serverWillEcho;

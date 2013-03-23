@@ -161,6 +161,7 @@ extern NSString * const MULConnectionOpen;
 extern NSString * const MULConnectionClosed;
 extern NSString * const MULConnectionClosedByServer;
 extern NSString * const MULConnectionClosedByError;
+extern NSString * const MULConnectionNoErrorAvailable;
 
 #pragma mark Preferences localization constants.
 

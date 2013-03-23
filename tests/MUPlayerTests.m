@@ -21,7 +21,7 @@
 
 - (void) testLoginStringHasQuotesForMultiwordUsername
 {
-  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   MUPlayer *testPlayer = [MUPlayer playerWithName: @"My User"];
   testPlayer.parent = testWorld;
   testPlayer.password = @"password";
@@ -38,7 +38,7 @@
 
 - (void) testLoginStringHasNoQuotesForSingleWordUsername
 {
-  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201];
+  MUWorld *testWorld = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   MUPlayer *testPlayer = [MUPlayer playerWithName: @"Bob"];
   testPlayer.parent = testWorld;
   testPlayer.password = @"drowssap";

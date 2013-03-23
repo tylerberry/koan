@@ -23,7 +23,6 @@ static NSArray *offerableCharsets;
 }
 
 - (void) forOption: (uint8_t) option allowWill: (BOOL) willValue allowDo: (BOOL) doValue;
-- (void) initializeOptions;
 - (void) negotiateOptions;
 - (void) sendCommand: (uint8_t) command withByte: (uint8_t) byte;
 - (void) sendEscapedByte: (uint8_t) byte;
@@ -43,6 +42,9 @@ static NSArray *offerableCharsets;
 - (void) sendCharsetRequestSubnegotiation;
 - (void) sendCharsetTTableRejectedSubnegotiation;
 - (NSStringEncoding) stringEncodingForName: (NSString *) encodingName;
+
+- (void) handleStartTLSSubnegotiation: (NSData *) subnegotiationData;
+- (void) sendStartTLSFollowsSubnegotiation;
 
 - (void) handleMCCPSubnegotiation: (NSData *) subnegotiationData version: (uint8_t) versionByte;
 
@@ -87,7 +89,7 @@ static NSArray *offerableCharsets;
   receivedCR = NO;
   optionRequestSent = NO;
   
-  [self initializeOptions];
+  [self resetOptionStates];
   return self;
 }
 
@@ -123,6 +125,24 @@ static NSArray *offerableCharsets;
 - (BOOL) optionYesForUs: (uint8_t) option
 {
   return [options[option] weAreYes];
+}
+
+- (void) resetOptionStates
+{
+  for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
+    options[i] = [[MUTelnetOption alloc] initWithOption: i delegate: self];
+  
+  [self forOption: MUTelnetOptionEcho allowWill: YES allowDo: NO];
+  [self forOption: MUTelnetOptionTransmitBinary allowWill: YES allowDo: YES];
+  [self forOption: MUTelnetOptionSuppressGoAhead allowWill: YES allowDo: YES];
+  //[self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
+  //[self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
+  //[self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
+  [self forOption: MUTelnetOptionStartTLS allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
+  [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];
+  [self forOption: MUTelnetOptionMCCP2 allowWill: YES allowDo: NO];
 }
 
 - (void) shouldAllowWill: (BOOL) value forOption: (uint8_t) option
@@ -182,6 +202,10 @@ static NSArray *offerableCharsets;
       [self handleCharsetSubnegotiation: subnegotiationBuffer];
       break;
       
+    case MUTelnetOptionStartTLS:
+      [self handleStartTLSSubnegotiation: subnegotiationBuffer];
+      break;
+      
     case MUTelnetOptionMSSP:
       [self handleMSSPSubnegotiation: subnegotiationBuffer];
       break;
@@ -219,11 +243,16 @@ static NSArray *offerableCharsets;
   
   if (option == MUTelnetOptionNegotiateAboutWindowSize)
   {
-    _state.shouldReportWindowSizeChanges = YES;
-    [self.delegate reportWindowSizeToServer];
+    //_state.shouldReportWindowSizeChanges = YES;
+    //[self.delegate reportWindowSizeToServer];
   }
   else if (option == MUTelnetOptionCharset)
-    [self sendCharsetRequestSubnegotiation];
+    ;//[self sendCharsetRequestSubnegotiation];
+  else if (option == MUTelnetOptionStartTLS)
+  {
+    _state.needsSingleByteSocketReads = YES;
+    //[self sendStartTLSFollowsSubnegotiation];
+  }
   
   [_state.codebaseAnalyzer noteTelnetDo: option];
 }
@@ -373,23 +402,6 @@ static NSArray *offerableCharsets;
 {
   [self shouldAllowWill: willValue forOption: option];
   [self shouldAllowDo: doValue forOption: option];
-}
-
-- (void) initializeOptions
-{
-  for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
-    options[i] = [[MUTelnetOption alloc] initWithOption: i delegate: self];
-  
-  [self forOption: MUTelnetOptionEcho allowWill: YES allowDo: NO];
-  [self forOption: MUTelnetOptionTransmitBinary allowWill: YES allowDo: YES];
-  [self forOption: MUTelnetOptionSuppressGoAhead allowWill: YES allowDo: YES];
-  [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
-  [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
-  [self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
-  [self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
-  [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
-  [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];
-  [self forOption: MUTelnetOptionMCCP2 allowWill: YES allowDo: NO];
 }
 
 - (void) negotiateOptions
@@ -708,6 +720,40 @@ static NSArray *offerableCharsets;
   
   // There is no "invalid encoding" value, so default to NVT ASCII.
   else return NSASCIIStringEncoding;
+}
+
+#pragma mark - START-TLS
+
+- (void) handleStartTLSSubnegotiation: (NSData *) subnegotiationData
+{
+  const uint8_t *bytes = subnegotiationData.bytes;
+  
+  if (subnegotiationData.length != 2)
+  {
+    [self log: @"%@ irregularity: %@ subnegotiation length is not 2. [%@]",
+     [MUTelnetOption optionNameForByte: bytes[0]], [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    return;
+  }
+  
+  if (bytes[1] != MUTelnetStartTLSFollows)
+  {
+    [self log: @"%@ irregularity: Second byte is not FOLLOWS. [%@]",
+     [MUTelnetOption optionNameForByte: bytes[0]], subnegotiationData];
+    return;
+  }
+  
+  [self log: @"Received: IAC SB %@ FOLLOWS IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]]];
+  
+  [self sendStartTLSFollowsSubnegotiation];
+  [self.delegate performSelector: @selector (enableTLS) withObject: nil afterDelay: 0.5];
+}
+
+- (void) sendStartTLSFollowsSubnegotiation
+{
+  uint8_t tlsFollowsBytes[2] = {MUTelnetOptionStartTLS, MUTelnetStartTLSFollows};
+  
+  [self sendSubnegotiationWithBytes: tlsFollowsBytes length: 2];
+  [self log: @"    Sent: IAC SB %@ FOLLOWS IAC SE.", [MUTelnetOption optionNameForByte: MUTelnetOptionStartTLS]];
 }
 
 #pragma mark - MCCP

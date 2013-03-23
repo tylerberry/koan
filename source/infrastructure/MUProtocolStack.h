@@ -28,6 +28,7 @@
 - (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
 - (void) flushBufferedData;
+- (void) maybeUseBufferedDataAsPrompt;
 - (void) parseInputData: (NSData *) data;
 - (void) preprocessOutputData: (NSData *) data;
 

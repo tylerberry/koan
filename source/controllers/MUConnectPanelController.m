@@ -60,6 +60,8 @@
   newConnectionPortField.objectValue = nil;
   forceSSLButton.state = NSOffState;
   newConnectionSaveWorldButton.state = NSOffState;
+
+  [self.window makeFirstResponder: newConnectionHostnameField];
 }
 
 @end

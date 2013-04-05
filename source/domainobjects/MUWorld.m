@@ -53,6 +53,7 @@ static const int32_t currentWorldVersion = 9;
   
   _hostname = [hostname copy];
   _port = [port copy];
+  _forceTLS = forceTLS;
   _url = [url copy];
   
   return self;

@@ -15,6 +15,12 @@
 #import "MUWriteBuffer.h"
 
 @interface MUProxySocket ()
+{
+  MUProxySettings *_proxySettings;
+  NSString *_realHostname;
+  uint16_t _realPort;
+  MUWriteBuffer *_outputBuffer;
+}
 
 - (void) makeRequest;
 - (void) performMethodSpecificNegotiation: (MUSOCKS5Method) method;
@@ -27,26 +33,26 @@
 
 @implementation MUProxySocket
 
-+ (id) socketWithHostname: (NSString *) hostname port: (int) port proxySettings: (MUProxySettings *) settings
++ (id) socketWithHostname: (NSString *) hostname port: (uint16_t) port proxySettings: (MUProxySettings *) settings
 {
   return [[self alloc] initWithHostname: hostname port: port proxySettings: settings];
 }
 
-- (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue proxySettings: (MUProxySettings *) settings
+- (id) initWithHostname: (NSString *) hostnameValue port: (uint16_t) portValue proxySettings: (MUProxySettings *) settings
 {
   if (!(self = [super initWithHostname: settings.hostname port: settings.port.intValue]))
     return nil;
   
-  realHostname = [hostnameValue copy];
-  realPort = portValue;
-  proxySettings = settings;
-  outputBuffer = [MUWriteBuffer buffer];
-  [outputBuffer setByteDestination: self];
+  _realHostname = [hostnameValue copy];
+  _realPort = portValue;
+  _proxySettings = [settings copy];
+  _outputBuffer = [MUWriteBuffer buffer];
+  [_outputBuffer setByteDestination: self];
   
   return self;
 }
 
-- (void) _performPostConnectNegotiation
+- (void) performPostConnectNegotiation
 {
   [self performMethodSpecificNegotiation: self.selectMethod];
   [self makeRequest];
@@ -56,10 +62,10 @@
 
 - (void) makeRequest
 {
-  MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: realHostname port: realPort];
+  MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: _realHostname port: _realPort];
 
-  [request appendToBuffer: outputBuffer];
-  [outputBuffer flush];
+  [request appendToBuffer: _outputBuffer];
+  [_outputBuffer flush];
   [request parseReplyFromByteSource: self];
   if (request.reply != MUSOCKS5Success)
     [MUSocketException socketError: @"Unable to establish connection via proxy"];  
@@ -75,11 +81,11 @@
 
 - (void) performUsernamePasswordNegotiation
 {
-  MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: proxySettings.username
-                                                                                password: proxySettings.password];
+  MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: _proxySettings.username
+                                                                                password: _proxySettings.password];
   
-  [auth appendToBuffer: outputBuffer];
-  [outputBuffer flush];
+  [auth appendToBuffer: _outputBuffer];
+  [_outputBuffer flush];
   [auth parseReplyFromSource: self];
   if (!auth.authenticated)
     [MUSocketException socketError: @"Could not authenticate to proxy"];
@@ -89,10 +95,10 @@
 {
   MUSOCKS5MethodSelection *methodSelection = [MUSOCKS5MethodSelection socksMethodSelection];
 
-  if (proxySettings.hasAuthentication)
+  if (_proxySettings.hasAuthentication)
     [methodSelection addMethod: MUSOCKS5UsernamePassword];
-  [methodSelection appendToBuffer: outputBuffer];
-  [outputBuffer flush];
+  [methodSelection appendToBuffer: _outputBuffer];
+  [_outputBuffer flush];
   [methodSelection parseResponseFromByteSource: self];
   return methodSelection.selectedMethod;
 }

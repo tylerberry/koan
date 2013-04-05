@@ -10,19 +10,13 @@
 @class MUWriteBuffer;
 
 @interface MUProxySocket : MUSocket
-{
-  MUProxySettings *proxySettings;
-  NSString *realHostname;
-  int realPort;
-  MUWriteBuffer *outputBuffer;
-}
 
 + (id) socketWithHostname: (NSString *) hostname
-                     port: (int) port
+                     port: (uint16_t) port
             proxySettings: (MUProxySettings *) settings;
 
 - (id) initWithHostname: (NSString *) hostname
-                   port: (int) port
+                   port: (uint16_t) port
           proxySettings: (MUProxySettings *) settings;
 
 @end

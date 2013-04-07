@@ -44,6 +44,7 @@ enum MUTelnetOptions
   MUTelnetOptionLineMode = 34,                 // RFC 1184.
   MUTelnetOptionXDisplayLocation = 35,         // RFC 1096.
   MUTelnetOptionEnvironment = 36,              // RFC 1408.
+  MUTelnetOptionAuthentication = 37,           // RFC 1409.
   MUTelnetOptionNewEnvironment = 39,           // RFC 1572.
   MUTelnetOptionCharset = 42,                  // RFC 2066.
   

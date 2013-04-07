@@ -9,7 +9,7 @@
 
 @implementation MUAbstractConnection
 
-@dynamic isClosed, isConnected, isConnecting;
+@dynamic isClosed, isConnected, isConnecting, isConnectedOrConnecting;
 
 - (id) init
 {
@@ -36,6 +36,11 @@
 - (BOOL) isConnecting
 {
   return self.status == MUConnectionStatusConnecting;
+}
+
+- (BOOL) isConnectedOrConnecting
+{
+  return self.isConnected || self.isConnecting;
 }
 
 #pragma mark - Methods

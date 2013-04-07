@@ -29,8 +29,6 @@
 @property (strong, readonly) MUMUDConnection *connection;
 @property (strong, readonly) MUProfile *profile;
 
-@property (readonly) BOOL isConnectedOrConnecting;
-
 - (id) initWithProfile: (MUProfile *) newProfile
      fugueEditDelegate: (NSObject <MUFugueEditFilterDelegate> *) fugueEditDelegate;
 

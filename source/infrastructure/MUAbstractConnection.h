@@ -21,6 +21,8 @@ typedef enum MUConnectionStatus
 @property (readonly) BOOL isConnected;
 @property (readonly) BOOL isConnecting;
 
+@property (readonly) BOOL isConnectedOrConnecting;
+
 - (void) close;
 - (void) open;
 

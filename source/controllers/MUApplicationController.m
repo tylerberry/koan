@@ -410,7 +410,7 @@
   [controller showWindow: nil];
   [controller.window makeKeyAndOrderFront: nil];
 
-  if (!controller.connectionController.isConnectedOrConnecting)
+  if (!controller.connectionController.connection.isConnectedOrConnecting)
     [controller connect: nil];
 }
 
@@ -502,7 +502,7 @@
   {
     for (MUConnectionWindowController *controller in [MUConnectionWindowControllerRegistry defaultRegistry].controllers)
     {
-      if (controller.connectionController.isConnectedOrConnecting)
+      if (controller.connectionController.connection.isConnectedOrConnecting)
       {
         [controller confirmClose: @selector (_recursivelyConfirmClose:)];
         return;

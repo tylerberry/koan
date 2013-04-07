@@ -472,7 +472,7 @@ enum MUAbstractANSIColors
   
   if (menuItemAction == @selector (connectOrDisconnect:))
   {
-    if (self.connectionController.isConnectedOrConnecting)
+    if (self.connectionController.connection.isConnectedOrConnecting)
       [menuItem setTitle: _(MULDisconnect)];
     else
       [menuItem setTitle: _(MULConnect)];
@@ -560,7 +560,7 @@ enum MUAbstractANSIColors
 
 - (IBAction) connectOrDisconnect: (id) sender
 {
-  if (self.connectionController.isConnectedOrConnecting)
+  if (self.connectionController.connection.isConnectedOrConnecting)
     [self disconnect: sender];
   else
     [self connect: sender];
@@ -890,7 +890,7 @@ enum MUAbstractANSIColors
 
 - (BOOL) windowShouldClose: (id) sender
 {
-  if (self.connectionController.isConnectedOrConnecting)
+  if (self.connectionController.connection.isConnectedOrConnecting)
   {
     [self confirmClose: NULL];
     return NO;
@@ -1331,7 +1331,7 @@ enum MUAbstractANSIColors
 {
   if (returnCode == NSAlertDefaultReturn) /* Close. */
   {
-    if (self.connectionController.isConnectedOrConnecting)
+    if (self.connectionController.connection.isConnectedOrConnecting)
       [self.connectionController disconnect];
     
     [self.window close];

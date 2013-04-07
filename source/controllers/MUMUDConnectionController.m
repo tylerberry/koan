@@ -46,8 +46,6 @@ enum MUTextDisplayModes
 
 @implementation MUMUDConnectionController
 
-@dynamic isConnectedOrConnecting;
-
 - (id) initWithProfile: (MUProfile *) newProfile
      fugueEditDelegate: (NSObject <MUFugueEditFilterDelegate> *) fugueEditDelegate
 {
@@ -80,7 +78,7 @@ enum MUTextDisplayModes
 
 - (void) connect
 {
-  if (self.isConnectedOrConnecting)
+  if (_connection.isConnectedOrConnecting)
     return;
   
   [_connection open];
@@ -94,8 +92,7 @@ enum MUTextDisplayModes
 
 - (void) disconnect
 {
-  if (_connection)
-    [_connection close];
+  [_connection close];
 }
 
 - (void) echoString: (NSString *) string
@@ -112,13 +109,6 @@ enum MUTextDisplayModes
 {
   _recentSentString = [string copy];
   [_connection writeLine: string];
-}
-
-#pragma mark - Property method implementations
-
-- (BOOL) isConnectedOrConnecting
-{
-  return _connection.isConnected || _connection.isConnecting;
 }
 
 #pragma mark - MUMUDConnectionDelegate protocol
@@ -302,7 +292,6 @@ enum MUTextDisplayModes
 - (void) _resetRecentStrings
 {
   _recentReceivedStrings = [NSMutableArray array];
-  _recentSentString = nil;
 }
 
 - (void) _sendPeriodicPing: (NSTimer *) timer

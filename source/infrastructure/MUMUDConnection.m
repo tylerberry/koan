@@ -105,7 +105,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _delegate = nil;
   
   [self close];
-  
 }
 
 - (void) setDelegate: (NSObject <MUMUDConnectionDelegate> *) object
@@ -143,8 +142,11 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) close
 {
-  [self _cleanUpStreams];
-  [self setStatusClosedByClient];
+  if (self.isConnectedOrConnecting)
+  {
+    [self _cleanUpStreams];
+    [self setStatusClosedByClient];
+  }
 }
 
 - (void) open

@@ -73,6 +73,9 @@
     case MUTelnetOptionEnvironment:
       return @"ENVIRON";
       
+    case MUTelnetOptionAuthentication:
+      return @"AUTHENTICATION";
+      
     case MUTelnetOptionNewEnvironment:
       return @"NEW-ENVIRON";
       

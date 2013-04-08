@@ -135,11 +135,11 @@ static NSArray *offerableCharsets;
   [self forOption: MUTelnetOptionEcho allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionTransmitBinary allowWill: YES allowDo: YES];
   [self forOption: MUTelnetOptionSuppressGoAhead allowWill: YES allowDo: YES];
-  //[self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionTerminalType allowWill: NO allowDo: YES];
   [self forOption: MUTelnetOptionEndOfRecord allowWill: YES allowDo: YES];
-  //[self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
-  //[self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
-  [self forOption: MUTelnetOptionStartTLS allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionNegotiateAboutWindowSize allowWill: NO allowDo: YES];
+  [self forOption: MUTelnetOptionCharset allowWill: YES allowDo: YES];
+  //[self forOption: MUTelnetOptionStartTLS allowWill: NO allowDo: YES]; // Disabled due to not working properly.
   [self forOption: MUTelnetOptionMSSP allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionMCCP1 allowWill: YES allowDo: NO];
   [self forOption: MUTelnetOptionMCCP2 allowWill: YES allowDo: NO];

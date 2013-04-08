@@ -40,7 +40,7 @@
 			<object class="NSWindowTemplate" id="184820200">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{664, 401}, {407, 211}}</string>
+				<string key="NSWindowRect">{{664, 401}, {407, 147}}</string>
 				<int key="NSWTFlags">1886914560</int>
 				<string key="NSWindowTitle">Connect to Server</string>
 				<object class="NSMutableString" key="NSWindowClass">
@@ -58,7 +58,7 @@
 						<object class="NSTextField" id="674569707">
 							<reference key="NSNextResponder" ref="775085298"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{94, 169}, {199, 22}}</string>
+							<string key="NSFrame">{{94, 105}, {199, 22}}</string>
 							<reference key="NSSuperview" ref="775085298"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="250193136"/>
@@ -98,7 +98,7 @@
 						<object class="NSTextField" id="37590835">
 							<reference key="NSNextResponder" ref="775085298"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{17, 171}, {72, 17}}</string>
+							<string key="NSFrame">{{17, 107}, {72, 17}}</string>
 							<reference key="NSSuperview" ref="775085298"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="674569707"/>
@@ -130,7 +130,7 @@
 						<object class="NSTextField" id="229967287">
 							<reference key="NSNextResponder" ref="775085298"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{337, 171}, {50, 22}}</string>
+							<string key="NSFrame">{{337, 107}, {50, 22}}</string>
 							<reference key="NSSuperview" ref="775085298"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1057314602"/>
@@ -151,7 +151,7 @@
 						<object class="NSTextField" id="250193136">
 							<reference key="NSNextResponder" ref="775085298"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{298, 173}, {34, 17}}</string>
+							<string key="NSFrame">{{298, 109}, {34, 17}}</string>
 							<reference key="NSSuperview" ref="775085298"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="229967287"/>
@@ -224,10 +224,10 @@
 						<object class="NSButton" id="1057314602">
 							<reference key="NSNextResponder" ref="775085298"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{18, 145}, {371, 18}}</string>
+							<string key="NSFrame">{{18, 81}, {371, 18}}</string>
 							<reference key="NSSuperview" ref="775085298"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="850527870"/>
+							<reference key="NSNextKeyView" ref="647192116"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1057746441">
@@ -248,34 +248,8 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
-						<object class="NSTextField" id="850527870">
-							<reference key="NSNextResponder" ref="775085298"/>
-							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{36, 83}, {354, 56}}</string>
-							<reference key="NSSuperview" ref="775085298"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="647192116"/>
-							<string key="NSReuseIdentifierKey">_NS:9</string>
-							<string key="NSAntiCompressionPriority">{250, 750}</string>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="585440168">
-								<int key="NSCellFlags">67108864</int>
-								<int key="NSCellFlags2">272760832</int>
-								<string key="NSContents">Only use this option when connecting to servers that provide a dedicated SSL/TLS port. It should not be used with servers that support the STARTTLS Telnet extension, such as recent versions of TinyMUX.</string>
-								<object class="NSFont" key="NSSupport">
-									<string key="NSName">LucidaGrande</string>
-									<double key="NSSize">11</double>
-									<int key="NSfFlags">3100</int>
-								</object>
-								<string key="NSCellIdentifier">_NS:9</string>
-								<reference key="NSControlView" ref="850527870"/>
-								<reference key="NSBackgroundColor" ref="60697543"/>
-								<reference key="NSTextColor" ref="553944063"/>
-							</object>
-							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						</object>
 					</array>
-					<string key="NSFrameSize">{407, 211}</string>
+					<string key="NSFrameSize">{407, 147}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="37590835"/>
@@ -430,7 +404,6 @@
 							<reference ref="250193136"/>
 							<reference ref="1057314602"/>
 							<reference ref="647192116"/>
-							<reference ref="850527870"/>
 							<reference ref="776433676"/>
 						</array>
 						<reference key="parent" ref="184820200"/>
@@ -541,19 +514,6 @@
 						<reference key="object" ref="1057746441"/>
 						<reference key="parent" ref="1057314602"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">49</int>
-						<reference key="object" ref="850527870"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="585440168"/>
-						</array>
-						<reference key="parent" ref="775085298"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">50</int>
-						<reference key="object" ref="585440168"/>
-						<reference key="parent" ref="850527870"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -580,9 +540,7 @@
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="49.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="50.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

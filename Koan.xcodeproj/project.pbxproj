@@ -154,6 +154,9 @@
 		2FE368170BCAD4F30068A6AA /* MUSpotlightImporterMain.c in Sources */ = {isa = PBXBuildFile; fileRef = 2FE367EC0BCAD35E0068A6AA /* MUSpotlightImporterMain.c */; };
 		2FE368440BCAD5DB0068A6AA /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FE368420BCAD5DB0068A6AA /* schema.xml */; };
 		2FE3691F0BCAD8370068A6AA /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2FE3691E0BCAD8370068A6AA /* schema.strings */; };
+		2FE47378171339D2002C17E7 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
+		2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */; };
+		2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */; };
 		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
@@ -1679,7 +1682,10 @@
 				7E87756D09AD62E400A883BC /* MUProfileRegistryTests.m in Sources */,
 				7E87756E09AD62E400A883BC /* MUProfileTests.m in Sources */,
 				2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */,
+				2FE47378171339D2002C17E7 /* MUSOCKS5Authentication.m in Sources */,
+				2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */,
 				7E87757209AD62FE00A883BC /* MUSOCKS5PrimitiveTests.m in Sources */,
+				2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */,
 				7EFACED20BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m in Sources */,
 				7EF77CCB0BCC99E30047CF5D /* MUTelnetOptionTests.m in Sources */,
 				7E87757309AD630E00A883BC /* MUTelnetStateMachineTests.m in Sources */,

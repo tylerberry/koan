@@ -10,8 +10,6 @@
 		2F07053616139B6200A71314 /* NSObject+BetterHashing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6550DFF07763B72002E81FF /* NSObject+BetterHashing.m */; };
 		2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F07053A16139F4C00A71314 /* JRSwizzle.m */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
-		2F174F6D1679211C0030C9D3 /* AutoHyperlinks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */; };
-		2F174F6E16792EF90030C9D3 /* AutoHyperlinks.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */; };
 		2F174F70167AB8F10030C9D3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */; };
 		2F174F72167ABD1C0030C9D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F71167ABD1C0030C9D3 /* Security.framework */; };
 		2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */; };
@@ -30,6 +28,9 @@
 		2F1DC59E16DB3D7F00A038FE /* pcre_valid_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57016DB3A1A00A038FE /* pcre_valid_utf8.c */; };
 		2F1DC5A016DB3D7F00A038FE /* pcre_xclass.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */; };
 		2F1DC5D916DB44A400A038FE /* AGRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC5D816DB44A400A038FE /* AGRegex.m */; };
+		2F22DF28172F4BA800C50CBA /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F22DF22172F4BA800C50CBA /* AHHyperlinkScanner.m */; };
+		2F22DF29172F4BA800C50CBA /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 2F22DF24172F4BA800C50CBA /* AHLinkLexer.l */; };
+		2F22DF2A172F4BA800C50CBA /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F22DF26172F4BA800C50CBA /* AHMarkedHyperlink.m */; };
 		2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* MUMUDConnectionState.m */; };
 		2F30904A16D5E71B00266E4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904916D5E71B00266E4A /* UIKit.framework */; };
 		2F30904C16D5E71B00266E4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904B16D5E71B00266E4A /* Foundation.framework */; };
@@ -157,6 +158,8 @@
 		2FE47378171339D2002C17E7 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
 		2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */; };
 		2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */; };
+		2FE4737C1714BDAD002C17E7 /* iCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737B1714BDAD002C17E7 /* iCloud.png */; };
+		2FE4737E1714BDBA002C17E7 /* iCloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737D1714BDBA002C17E7 /* iCloud@2x.png */; };
 		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
@@ -225,20 +228,6 @@
 			remoteGlobalIDString = 06DB23A61609F5830071BDA0;
 			remoteInfo = MMTabBarView;
 		};
-		2F174F69167920CB0030C9D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = AutoHyperlinks.framework;
-		};
-		2F174F6B1679210F0030C9D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = AutoHyperlinks.framework;
-		};
 		2F1DC58616DB3A2C00A038FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -277,7 +266,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				2F8C6D2E167E69B30006F975 /* MMTabBarView.framework in Copy Frameworks */,
-				2F174F6E16792EF90030C9D3 /* AutoHyperlinks.framework in Copy Frameworks */,
 				2F8CEAE0153ACDCB00B488E7 /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -304,7 +292,6 @@
 		2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MMTabBarView.xcodeproj; path = MMTabBarView/MMTabBarView/MMTabBarView.xcodeproj; sourceTree = "<group>"; };
 		2F0B277912196B9C00AE6B62 /* MUTelnetStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachine.h; sourceTree = "<group>"; };
 		2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachine.m; sourceTree = "<group>"; };
-		2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AutoHyperlinks.framework.xcodeproj; path = AutoHyperlinks/AutoHyperlinks.framework.xcodeproj; sourceTree = "<group>"; };
 		2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2F174F71167ABD1C0030C9D3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2F17CF7916BF50A900577E46 /* MUMUDConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionController.h; sourceTree = "<group>"; };
@@ -328,6 +315,13 @@
 		2F1DC5D616DB3F0500A038FE /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
 		2F1DC5D716DB44A400A038FE /* AGRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRegex.h; sourceTree = "<group>"; };
 		2F1DC5D816DB44A400A038FE /* AGRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRegex.m; sourceTree = "<group>"; };
+		2F22DF21172F4BA800C50CBA /* AHHyperlinkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHyperlinkScanner.h; sourceTree = "<group>"; };
+		2F22DF22172F4BA800C50CBA /* AHHyperlinkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHHyperlinkScanner.m; sourceTree = "<group>"; };
+		2F22DF23172F4BA800C50CBA /* AHLinkLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHLinkLexer.h; sourceTree = "<group>"; };
+		2F22DF24172F4BA800C50CBA /* AHLinkLexer.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = AHLinkLexer.l; sourceTree = "<group>"; };
+		2F22DF25172F4BA800C50CBA /* AHMarkedHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHMarkedHyperlink.h; sourceTree = "<group>"; };
+		2F22DF26172F4BA800C50CBA /* AHMarkedHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHMarkedHyperlink.m; sourceTree = "<group>"; };
+		2F22DF27172F4BA800C50CBA /* AutoHyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoHyperlinks.h; sourceTree = "<group>"; };
 		2F2718E912141166006710C7 /* MUMUDConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionState.h; sourceTree = "<group>"; };
 		2F2718EA12141166006710C7 /* MUMUDConnectionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionState.m; sourceTree = "<group>"; };
 		2F2D76E90BBB1C8400BBB71A /* Characteristics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Characteristics.txt; sourceTree = "<group>"; };
@@ -500,6 +494,8 @@
 		2FE368010BCAD4630068A6AA /* Importer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "Importer-Info.plist"; sourceTree = "<group>"; };
 		2FE368420BCAD5DB0068A6AA /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = schema.xml; sourceTree = "<group>"; };
 		2FE369180BCAD8290068A6AA /* en */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = en; path = en.lproj/schema.strings; sourceTree = "<group>"; };
+		2FE4737B1714BDAD002C17E7 /* iCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iCloud.png; sourceTree = "<group>"; };
+		2FE4737D1714BDBA002C17E7 /* iCloud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iCloud@2x.png"; sourceTree = "<group>"; };
 		2FF41C05163142B40045D569 /* MUProtocolHandlerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUProtocolHandlerSubclass.h; sourceTree = "<group>"; };
 		2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnectionSubclass.h; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Koan-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Koan-Prefix.pch"; sourceTree = "<group>"; };
@@ -670,7 +666,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */,
-				2F174F6D1679211C0030C9D3 /* AutoHyperlinks.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				2F8CEADC153ACD7500B488E7 /* Growl.framework in Frameworks */,
 				2F8C6D2D167E69940006F975 /* MMTabBarView.framework in Frameworks */,
@@ -774,6 +769,8 @@
 				2FB1F805161C045500AFD977 /* AddTemplate.pdf */,
 				2F3DBAC9165310380056D738 /* FontsAndColors.png */,
 				2F3DBACA165310380056D738 /* FontsAndColors@2x.png */,
+				2FE4737B1714BDAD002C17E7 /* iCloud.png */,
+				2FE4737D1714BDBA002C17E7 /* iCloud@2x.png */,
 				2FDFA14E0D67E86A007F0036 /* growl-icon.png */,
 				2FA3DCDC16577A9900AE8282 /* MusicNote@2x.png */,
 				2FA3DCDD16577A9900AE8282 /* MusicNote.png */,
@@ -817,14 +814,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2F174F63167920CB0030C9D3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		2F1DC55B16DB1D2500A038FE /* PCRE */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +843,21 @@
 				2F1DC57216DB3A1A00A038FE /* pcre_xclass.c */,
 			);
 			path = "pcre-8.32";
+			sourceTree = "<group>";
+		};
+		2F22DF20172F4B8C00C50CBA /* AutoHyperlinks */ = {
+			isa = PBXGroup;
+			children = (
+				2F22DF21172F4BA800C50CBA /* AHHyperlinkScanner.h */,
+				2F22DF22172F4BA800C50CBA /* AHHyperlinkScanner.m */,
+				2F22DF23172F4BA800C50CBA /* AHLinkLexer.h */,
+				2F22DF24172F4BA800C50CBA /* AHLinkLexer.l */,
+				2F22DF25172F4BA800C50CBA /* AHMarkedHyperlink.h */,
+				2F22DF26172F4BA800C50CBA /* AHMarkedHyperlink.m */,
+				2F22DF27172F4BA800C50CBA /* AutoHyperlinks.h */,
+			);
+			name = AutoHyperlinks;
+			path = AutoHyperlinks/Source;
 			sourceTree = "<group>";
 		};
 		2F30904F16D5E71B00266E4A /* Koan for iOS */ = {
@@ -1023,8 +1027,8 @@
 		2FE366630BCAC8D40068A6AA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */,
 				2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */,
+				2F22DF20172F4B8C00C50CBA /* AutoHyperlinks */,
 				2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */,
 				2F07053816139F3300A71314 /* JRSwizzle */,
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
@@ -1446,7 +1450,6 @@
 			);
 			dependencies = (
 				2F1DC58716DB3A2C00A038FE /* PBXTargetDependency */,
-				2F174F6C1679210F0030C9D3 /* PBXTargetDependency */,
 				2F8C6D2B167E69540006F975 /* PBXTargetDependency */,
 				2FCFEF6D0BCADF680061FB6B /* PBXTargetDependency */,
 			);
@@ -1482,10 +1485,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 2F174F63167920CB0030C9D3 /* Products */;
-					ProjectRef = 2F174F62167920CB0030C9D3 /* AutoHyperlinks.framework.xcodeproj */;
-				},
-				{
 					ProductGroup = 2F07055C1613F4D700A71314 /* Products */;
 					ProjectRef = 2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */;
 				},
@@ -1507,13 +1506,6 @@
 			fileType = wrapper.framework;
 			path = MMTabBarView.framework;
 			remoteRef = 2F0705621613F4D700A71314 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		2F174F6A167920CB0030C9D3 /* AutoHyperlinks.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = AutoHyperlinks.framework;
-			remoteRef = 2F174F69167920CB0030C9D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1582,6 +1574,8 @@
 				2F940FDA169ACCE500E1CF39 /* MULoggingPreferencesView.xib in Resources */,
 				2F5DBA9916DDA49100DE627E /* MUTriggersPreferencesView.xib in Resources */,
 				2F5DBA9B16E1CE5900DE627E /* README.md in Resources */,
+				2FE4737C1714BDAD002C17E7 /* iCloud.png in Resources */,
+				2FE4737E1714BDBA002C17E7 /* iCloud@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1703,6 +1697,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F1DC5D916DB44A400A038FE /* AGRegex.m in Sources */,
+				2F22DF28172F4BA800C50CBA /* AHHyperlinkScanner.m in Sources */,
+				2F22DF29172F4BA800C50CBA /* AHLinkLexer.l in Sources */,
+				2F22DF2A172F4BA800C50CBA /* AHMarkedHyperlink.m in Sources */,
 				2F7A2E72166F393E00FEB109 /* ATImageTextCell.m in Sources */,
 				2FA2B3CE1666D686000C6F9A /* BFColorPickerPopover.m in Sources */,
 				2FA2B3D31666D686000C6F9A /* BFColorPickerPopoverView.m in Sources */,
@@ -1809,11 +1806,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2F174F6C1679210F0030C9D3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AutoHyperlinks.framework;
-			targetProxy = 2F174F6B1679210F0030C9D3 /* PBXContainerItemProxy */;
-		};
 		2F1DC58716DB3A2C00A038FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2F1DC55716DB1BA600A038FE /* PCRE Pre-build */;

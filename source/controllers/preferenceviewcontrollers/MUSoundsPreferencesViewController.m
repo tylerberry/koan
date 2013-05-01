@@ -124,7 +124,7 @@
   	for (NSString *fileName in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: soundsDirectoryPath
                                                                                    error: NULL])
     {
-      NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: [soundsDirectoryPath stringByAppendingPathComponent: fileName]];
+      NSURL *fileURL = [NSURL fileURLWithPath: [soundsDirectoryPath stringByAppendingPathComponent: fileName]];
       [systemSoundURLs addObject: fileURL];
     }
   }

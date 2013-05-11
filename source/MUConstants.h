@@ -172,6 +172,7 @@ extern NSString * const MULPreferencesLogging;
 extern NSString * const MULPreferencesProxy;
 extern NSString * const MULPreferencesSounds;
 extern NSString * const MULPreferencesChooseAnotherSound;
+extern NSString * const MULPreferencesChooseAnotherLocation;
 
 #pragma mark Alert panel localization constants.
 

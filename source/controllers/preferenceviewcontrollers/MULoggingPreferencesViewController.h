@@ -9,5 +9,8 @@
 #import "MASPreferencesViewController.h"
 
 @interface MULoggingPreferencesViewController : NSViewController <MASPreferencesViewController>
+{
+  IBOutlet NSPopUpButton *loggingLocationsPopUpButton;
+}
 
 @end

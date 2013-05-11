@@ -150,6 +150,7 @@ NSString * const MULPreferencesLogging = @"PreferencesLogging";
 NSString * const MULPreferencesProxy = @"PreferencesProxy";
 NSString * const MULPreferencesSounds = @"PreferencesSounds";
 NSString * const MULPreferencesChooseAnotherSound = @"PreferencesChooseAnotherSound";
+NSString * const MULPreferencesChooseAnotherLocation = @"PreferencesChooseAnotherLocation";
 
 #pragma mark Miscellaneous localization constants.
 

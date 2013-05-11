@@ -10,16 +10,14 @@
 
 - (void) awakeFromNib
 {
-  self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
-  self.autoresizingMask = NSViewWidthSizable;
+  self.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+  self.title = @"No Profile Selected";
 }
 
 #pragma mark - Methods
 
 - (void) removeAllSubviews
 {
-  CGFloat frameWidth = self.frame.size.width;
-  
   NSView *lastSubview = self.subviews.lastObject;
   
   if (lastSubview)
@@ -27,7 +25,8 @@
   
   self.subviews = @[];
   
-  self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, frameWidth, 1);
+  self.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+  self.frame = self.enclosingScrollView.frame;
 }
 
 #pragma mark - NSView method overrides
@@ -64,6 +63,8 @@
   
   for (NSView *subview in self.subviews)
     totalHeight += subview.frame.size.height;
+  
+  self.autoresizingMask = NSViewWidthSizable;
   
   self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, self.frame.size.width, totalHeight);
   if (totalHeight > self.enclosingScrollView.documentVisibleRect.size.height)

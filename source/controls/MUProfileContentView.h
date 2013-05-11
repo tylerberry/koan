@@ -4,7 +4,9 @@
 // Copyright (c) 2013 3James Software.
 //
 
-@interface MUProfileContentView : NSView
+#import "JUEmptyView.h"
+
+@interface MUProfileContentView : JUEmptyView
 
 - (void) removeAllSubviews;
 

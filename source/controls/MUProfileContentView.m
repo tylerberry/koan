@@ -11,7 +11,7 @@
 - (void) awakeFromNib
 {
   self.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-  self.title = @"No Profile Selected";
+  self.title = _(MULNoProfileSelected);
 }
 
 #pragma mark - Methods

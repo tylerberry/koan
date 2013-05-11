@@ -158,3 +158,5 @@ NSString * const MULConnect = @"Connect";
 NSString * const MULDisconnect = @"Disconnect";
 
 NSString * const MULConnectWithoutLogin = @"ConnectWithoutLogin";
+
+NSString * const MULNoProfileSelected = @"NoProfileSelected";

@@ -194,3 +194,5 @@ extern NSString * const MULConnect;
 extern NSString * const MULDisconnect;
 
 extern NSString * const MULConnectWithoutLogin;
+
+extern NSString * const MULNoProfileSelected;

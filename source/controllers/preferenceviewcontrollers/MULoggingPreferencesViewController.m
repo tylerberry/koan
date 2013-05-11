@@ -54,6 +54,7 @@
   openPanel.allowsMultipleSelection = NO;
   openPanel.canChooseDirectories = YES;
   openPanel.canChooseFiles = NO;
+  openPanel.canCreateDirectories = YES;
   openPanel.directoryURL = [[NSURL alloc] initFileURLWithPath: NSHomeDirectory ()];
   
   if ([openPanel runModal] == NSOKButton)

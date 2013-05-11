@@ -19,3 +19,6 @@
 [submodule "source/thirdparty/AutoHyperlinks"]
 	path = source/thirdparty/AutoHyperlinks
 	url = git@github.com:tylerberry/AutoHyperlinks.framework.git
+[submodule "source/thirdparty/JUEmptyView"]
+	path = source/thirdparty/JUEmptyView
+	url = https://github.com/tylerberry/JUEmptyView.git

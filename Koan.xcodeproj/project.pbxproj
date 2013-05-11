@@ -57,6 +57,7 @@
 		2F3DBAD8165387120056D738 /* MUProxyPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAD7165387120056D738 /* MUProxyPreferencesViewController.m */; };
 		2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */; };
 		2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D3BFB166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m */; };
+		2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4E2147173B8CA500B21859 /* JUEmptyView.m */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F57F909163E473800732868 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F57F908163E473800732868 /* MUConnectPanelController.m */; };
 		2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
@@ -363,6 +364,8 @@
 		2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConnectionWindowControllerRegistry.m; sourceTree = "<group>"; };
 		2F4D3BFB166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PLWeakCompatibilityStubs.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F4D3BFD166C0DC8002EBA99 /* PLWeakCompatibilityStubs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PLWeakCompatibilityStubs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2F4E2146173B8CA500B21859 /* JUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JUEmptyView.h; sourceTree = "<group>"; };
+		2F4E2147173B8CA500B21859 /* JUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JUEmptyView.m; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F57F907163E473800732868 /* MUConnectPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConnectPanelController.h; sourceTree = "<group>"; };
@@ -1024,6 +1027,16 @@
 			path = "Helper Classes";
 			sourceTree = "<group>";
 		};
+		2FD221DE173B83760061917E /* JUEmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				2F4E2146173B8CA500B21859 /* JUEmptyView.h */,
+				2F4E2147173B8CA500B21859 /* JUEmptyView.m */,
+			);
+			name = JUEmptyView;
+			path = JUEmptyView/Source;
+			sourceTree = "<group>";
+		};
 		2FE366630BCAC8D40068A6AA /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
@@ -1031,6 +1044,7 @@
 				2F22DF20172F4B8C00C50CBA /* AutoHyperlinks */,
 				2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */,
 				2F07053816139F3300A71314 /* JRSwizzle */,
+				2FD221DE173B83760061917E /* JUEmptyView */,
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
 				2F1DC55B16DB1D2500A038FE /* PCRE */,
 				2F4D3BFE166C1032002EBA99 /* PLWeakCompatibility */,
@@ -1800,6 +1814,7 @@
 				2F5DBA9316DD491D00DE627E /* pcre_valid_utf8.c in Sources */,
 				2F5DBA9116DD48C100DE627E /* pcre_xclass.c in Sources */,
 				2F5DBA9716DDA18300DE627E /* MURegexTestFilter.m in Sources */,
+				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

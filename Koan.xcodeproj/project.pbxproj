@@ -1721,6 +1721,7 @@
 				2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */,
 				2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */,
 				2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */,
+				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
 				2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */,
 				7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */,
 				2FDFA1560D67F630007F0036 /* MUAcknowledgementsController.m in Sources */,
@@ -1814,7 +1815,6 @@
 				2F5DBA9316DD491D00DE627E /* pcre_valid_utf8.c in Sources */,
 				2F5DBA9116DD48C100DE627E /* pcre_xclass.c in Sources */,
 				2F5DBA9716DDA18300DE627E /* MURegexTestFilter.m in Sources */,
-				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

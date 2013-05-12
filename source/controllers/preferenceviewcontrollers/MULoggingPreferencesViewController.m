@@ -129,13 +129,18 @@
   
 #if 0
   NSMenuItem *icloudMenuItem = [[NSMenuItem alloc] init];
+  NSURL *icloudURL = [NSURL URLFromString: @"https://www.icloud.com/"];
   
   icloudMenuItem.title = @"iCloud";
-  icloudMenuItem.representedObject = @"iCloud";
+  icloudMenuItem.representedObject = icloudURL;
   icloudMenuItem.image = [NSImage imageNamed: @"iCloud"];
   icloudMenuItem.image.size = NSMakeSize (16.0, 16.0);
   
   [newMenu addItem: icloudMenuItem];
+  
+  if ([currentDirectoryURL isEqual: icloudURL])
+    itemToSelect = icloudMenuItem;
+  
   [newMenu addItem: [NSMenuItem separatorItem]];
 #endif
   

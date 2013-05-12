@@ -61,7 +61,7 @@
   {
     NSURL *selectedURL = openPanel.URLs[0]; // Guaranteed to be only one since we disallowed multiples.
     
-    //[[NSUserDefaults standardUserDefaults] setObject: selectedURL.absoluteString forKey: MUPLoggingDirectory];
+    [[NSUserDefaults standardUserDefaults] setObject: selectedURL.absoluteString forKey: MUPLogDirectoryURL];
     
     if (_isUsingUserSelectedDirectory)
     {
@@ -101,6 +101,32 @@
   NSMenu *newMenu = [[NSMenu alloc] init];
   NSMenuItem *itemToSelect = nil;
   
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSURL *currentDirectoryURL = [NSURL URLWithString: [defaults stringForKey: MUPLogDirectoryURL]];
+  
+  NSString *documentsPath = @"~/Documents/Koan Logs";
+  NSURL *documentsURL = [NSURL fileURLWithPath: [documentsPath stringByExpandingTildeInPath]];
+  
+  NSString *libraryPath = @"~/Library/Logs/Koan";
+  NSURL *libraryURL = [NSURL fileURLWithPath: [libraryPath stringByExpandingTildeInPath]];
+  
+  if (![currentDirectoryURL isEqual: documentsURL]
+      && ![currentDirectoryURL isEqual: libraryURL])
+  {
+    _isUsingUserSelectedDirectory = YES;
+    
+    NSMenuItem *currentSelectionMenuItem = [[NSMenuItem alloc] init];
+    
+    currentSelectionMenuItem.title = [currentDirectoryURL.path stringByAbbreviatingWithTildeInPath];
+    currentSelectionMenuItem.representedObject = currentDirectoryURL;
+    currentSelectionMenuItem.image = [[NSWorkspace sharedWorkspace] iconForFile: currentDirectoryURL.path];
+    currentSelectionMenuItem.image.size = NSMakeSize (16.0, 16.0);
+    
+    [newMenu addItem: currentSelectionMenuItem];
+    [newMenu addItem: [NSMenuItem separatorItem]];
+    itemToSelect = currentSelectionMenuItem;
+  }
+  
 #if 0
   NSMenuItem *icloudMenuItem = [[NSMenuItem alloc] init];
   
@@ -114,10 +140,9 @@
 #endif
   
   NSMenuItem *documentsMenuItem = [[NSMenuItem alloc] init];
-  NSString *documentsPath = @"~/Documents/Koan Logs/";
   
-  documentsMenuItem.title = @"~/Documents/Koan Logs";
-  documentsMenuItem.representedObject = [NSURL fileURLWithPath: [documentsPath stringByExpandingTildeInPath]];
+  documentsMenuItem.title = documentsPath;
+  documentsMenuItem.representedObject = documentsURL;
   documentsMenuItem.target = self;
   documentsMenuItem.action = @selector (_selectLoggingLocationFromMenu:);
   
@@ -130,11 +155,13 @@
   
   [newMenu addItem: documentsMenuItem];
   
+  if ([currentDirectoryURL isEqual: documentsURL])
+    itemToSelect = documentsMenuItem;
+  
   NSMenuItem *libraryMenuItem = [[NSMenuItem alloc] init];
-  NSString *libraryPath = @"~/Library/Logs/Koan";
   
   libraryMenuItem.title = libraryPath;
-  libraryMenuItem.representedObject = [NSURL fileURLWithPath: [libraryPath stringByExpandingTildeInPath]];
+  libraryMenuItem.representedObject = libraryURL;
   libraryMenuItem.target = self;
   libraryMenuItem.action = @selector (_selectLoggingLocationFromMenu:);
   
@@ -146,6 +173,10 @@
   libraryMenuItem.image.size = NSMakeSize (16.0, 16.0);
   
   [newMenu addItem: libraryMenuItem];
+  
+  if ([currentDirectoryURL isEqual: libraryURL])
+    itemToSelect = libraryMenuItem;
+  
   [newMenu addItem: [NSMenuItem separatorItem]];
   
   NSMenuItem *chooseAnotherLocationMenuItem = [[NSMenuItem alloc] init];
@@ -171,7 +202,7 @@
   NSMenuItem *menuItem = (NSMenuItem *) sender;
   NSURL *representedURL = menuItem.representedObject;
   
-  //[[NSUserDefaults standardUserDefaults] setObject: representedURL.absoluteString forKey: MUPSoundChoice];
+  [[NSUserDefaults standardUserDefaults] setObject: representedURL.absoluteString forKey: MUPLogDirectoryURL];
   _selectedMenuItem = loggingLocationsPopUpButton.selectedItem;
   
   if (_isUsingUserSelectedDirectory) // Remove the top user-selected logging location menu item if it exists.

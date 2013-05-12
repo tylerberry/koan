@@ -67,6 +67,10 @@ NSString * const MUPANSIBrightWhiteColor = @"MUPANSIBrightWhiteColor";
 
 NSString * const MUPDisplayBrightAsBold = @"MUPDisplayBrightAsBold";
 
+// Logging.
+
+NSString * const MUPLogDirectoryURL = @"MUPLogDirectoryURL";
+
 // Proxy.
 
 NSString * const MUPProxySettings = @"MUPProxySettings";

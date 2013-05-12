@@ -67,6 +67,10 @@ extern NSString * const MUPANSIBrightWhiteColor;
 
 extern NSString * const MUPDisplayBrightAsBold;
 
+// Logging.
+
+extern NSString * const MUPLogDirectoryURL;
+
 // Proxy.
 
 extern NSString * const MUPProxySettings;

@@ -383,14 +383,42 @@
   initialValues[MUPSoundChoice] = @"file://localhost/System/Library/Sounds/Pop.aiff";
   initialValues[MUPSoundVolume] = @1.0;
   
-  initialValues[MUPUseProxy] = @0;
-  initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
-  
   [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues: initialValues];
   
   initialValues[MUPWorlds] = [NSKeyedArchiver archivedDataWithRootObject: [NSMutableArray array]];
   initialValues[MUPProfiles] = [NSKeyedArchiver archivedDataWithRootObject: [NSMutableDictionary dictionary]];
   initialValues[MUPProfilesOutlineViewState] = [NSMutableArray array];
+  
+  NSString *documentsLogPath = [@"~/Documents/Koan Logs" stringByExpandingTildeInPath];
+  BOOL fileIsDirectory = NO;
+  
+  if ([[NSFileManager defaultManager] fileExistsAtPath: documentsLogPath isDirectory: &fileIsDirectory]
+      && fileIsDirectory)
+  {
+    NSURL *documentsLogURL = [NSURL fileURLWithPath: documentsLogPath];
+    initialValues[MUPLogDirectoryURL] = documentsLogURL.absoluteString;
+  }
+  else
+  {
+    NSString *libraryLogPath = [@"~/Library/Logs/Koan" stringByExpandingTildeInPath];
+    
+    fileIsDirectory = NO;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath: libraryLogPath isDirectory: &fileIsDirectory]
+        && fileIsDirectory)
+    {
+      NSURL *libraryLogURL = [NSURL fileURLWithPath: libraryLogPath];
+      initialValues[MUPLogDirectoryURL] = libraryLogURL.absoluteString;
+    }
+    else
+    {
+      NSURL *documentsLogURL = [NSURL fileURLWithPath: documentsLogPath];
+      initialValues[MUPLogDirectoryURL] = documentsLogURL.absoluteString;
+    }
+  }
+  
+  initialValues[MUPUseProxy] = @0;
+  initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
 }

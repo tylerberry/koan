@@ -13,6 +13,7 @@
 }
 
 - (void) _chooseLoggingLocation: (id) sender;
+- (void) _moveLogsFromOldLocation: (NSURL *) oldURL toNewLocation: (NSURL *) newURL;
 - (void) _populateLoggingLocationsPopUpMenu;
 - (void) _selectLoggingLocationFromMenu: (id) sender;
 
@@ -60,8 +61,15 @@
   if ([openPanel runModal] == NSOKButton)
   {
     NSURL *selectedURL = openPanel.URLs[0]; // Guaranteed to be only one since we disallowed multiples.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSURL *oldURL = [NSURL URLWithString: [defaults objectForKey: MUPLogDirectoryURL]];
     
-    [[NSUserDefaults standardUserDefaults] setObject: selectedURL.absoluteString forKey: MUPLogDirectoryURL];
+    if ([oldURL isEqual: selectedURL])
+      return;
+    
+    [defaults setObject: selectedURL.absoluteString forKey: MUPLogDirectoryURL];
+    
+    [self _moveLogsFromOldLocation: oldURL toNewLocation: selectedURL];
     
     if (_isUsingUserSelectedDirectory)
     {
@@ -94,6 +102,36 @@
   {
     [loggingLocationsPopUpButton selectItem: _selectedMenuItem];
   }
+}
+
+- (void) _moveLogsFromOldLocation: (NSURL *) oldURL toNewLocation: (NSURL *) newURL
+{
+  NSError *error;
+  NSFileManager *manager = [NSFileManager defaultManager];
+  BOOL newURLIsDirectory;
+  
+  if (![manager fileExistsAtPath: newURL.path isDirectory: &newURLIsDirectory])
+  {
+    [manager createDirectoryAtURL: newURL
+      withIntermediateDirectories: YES
+                       attributes: nil
+                            error: &error];
+  }
+  else if (!newURLIsDirectory)
+  {
+    NSLog (@"Warning: New log URL %@ exists but is not a directory. This should generally not happen.", newURL);
+    return;
+  }
+  
+  NSArray *contents = [manager contentsOfDirectoryAtURL: oldURL
+                             includingPropertiesForKeys: nil
+                                                options: 0
+                                                  error: &error];
+  
+  for (NSURL *item in contents)
+    [manager moveItemAtURL: item toURL: [newURL URLByAppendingPathComponent: [item lastPathComponent]] error: &error];
+  
+  [manager removeItemAtURL: oldURL error: &error];
 }
 
 - (void) _populateLoggingLocationsPopUpMenu
@@ -206,8 +244,16 @@
 {
   NSMenuItem *menuItem = (NSMenuItem *) sender;
   NSURL *representedURL = menuItem.representedObject;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSURL *oldURL = [NSURL URLWithString: [defaults objectForKey: MUPLogDirectoryURL]];
   
-  [[NSUserDefaults standardUserDefaults] setObject: representedURL.absoluteString forKey: MUPLogDirectoryURL];
+  if ([oldURL isEqual: representedURL])
+    return;
+  
+  [defaults setObject: representedURL.absoluteString forKey: MUPLogDirectoryURL];
+  
+  [self _moveLogsFromOldLocation: oldURL toNewLocation: representedURL];
+  
   _selectedMenuItem = loggingLocationsPopUpButton.selectedItem;
   
   if (_isUsingUserSelectedDirectory) // Remove the top user-selected logging location menu item if it exists.

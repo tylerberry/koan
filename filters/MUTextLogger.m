@@ -13,9 +13,9 @@
   NSOutputStream *_outputStream;
 }
 
-- (void) log: (NSAttributedString *) attributedString;
-- (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers;
-- (void) writeToStream: (NSOutputStream *) stream withFormat: (NSString *) format, ...;
+- (void) _log: (NSAttributedString *) attributedString;
+- (void) _initializeFileAtURL: (NSURL *) url withHeaders: (NSDictionary *) headers;
+- (void) _writeToStream: (NSOutputStream *) stream withFormat: (NSString *) format, ...;
 
 @end
 
@@ -57,10 +57,13 @@
 - (id) initWithWorld: (MUWorld *) world player: (MUPlayer *) player
 {
   NSString *todayString = [[NSCalendarDate calendarDate] descriptionWithCalendarFormat: @"%Y-%m-%d"];
-  NSString *path = [[NSString stringWithFormat: @"~/Library/Logs/Koan/%@%@%@.koanlog",
-                     (world ? [NSString stringWithFormat: @"%@-", world.name] : @""),
-                     (player ? [NSString stringWithFormat: @"%@-", player.name] : @""),
-                     todayString] stringByExpandingTildeInPath];
+  NSString *logFileName = [NSString stringWithFormat: @"%@%@%@.koanlog",
+                           (world ? [NSString stringWithFormat: @"%@-", world.name] : @""),
+                           (player ? [NSString stringWithFormat: @"%@-", player.name] : @""),
+                           todayString];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSURL *logDirectoryURL = [NSURL URLWithString: [defaults objectForKey: MUPLogDirectoryURL]];
+  NSURL *logURL = [logDirectoryURL URLByAppendingPathComponent: logFileName];
   
   NSMutableDictionary *headers = [NSMutableDictionary dictionary];
   [headers setValue: (world ? world.name : @"") forKey: @"World"];
@@ -68,23 +71,22 @@
   [headers setValue: todayString forKey: @"Date"];
   
   BOOL isDirectory;
-  if (![[NSFileManager defaultManager] fileExistsAtPath: path isDirectory: &isDirectory])
+  if (![[NSFileManager defaultManager] fileExistsAtPath: logDirectoryURL.path isDirectory: &isDirectory])
   {
     NSError *directoryCreationError;
-    [[NSFileManager defaultManager] createDirectoryAtPath: [path stringByDeletingLastPathComponent]
-                              withIntermediateDirectories: YES
-                                               attributes: nil
-                                                    error: &directoryCreationError];
+    [[NSFileManager defaultManager] createDirectoryAtURL: logDirectoryURL
+                             withIntermediateDirectories: YES
+                                              attributes: nil
+                                                   error: &directoryCreationError];
   }
-  else
+  else if (isDirectory)
   {
-    if (isDirectory)
-      NSLog (@"Warning: file already exists at log directory path.");
+    NSLog (@"Warning: file already exists at log directory path.");
   }
   
-  [self initializeFileAtPath: path withHeaders: headers];
+  [self _initializeFileAtURL: logURL withHeaders: headers];
   
-  return [self initWithOutputStream: [NSOutputStream outputStreamToFileAtPath: path append: YES]];
+  return [self initWithOutputStream: [NSOutputStream outputStreamWithURL: logURL append: YES]];
 }
 
 - (void) dealloc
@@ -95,7 +97,7 @@
 - (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   if (attributedString.length > 0)
-    [self log: attributedString];
+    [self _log: attributedString];
   
   return attributedString;
 }
@@ -107,19 +109,19 @@
 
 #pragma mark - Private methods
 
-- (void) log: (NSAttributedString *) attributedString
+- (void) _log: (NSAttributedString *) attributedString
 {
-  [self writeToStream: _outputStream withFormat: @"%@", attributedString.string];
+  [self _writeToStream: _outputStream withFormat: @"%@", attributedString.string];
 }
 
-- (void) initializeFileAtPath: (NSString *) path withHeaders: (NSDictionary *) headers
+- (void) _initializeFileAtURL: (NSURL *) url withHeaders: (NSDictionary *) headers
 {
   NSOutputStream *stream;
   
-  if ([[NSFileManager defaultManager] fileExistsAtPath: path])
+  if ([[NSFileManager defaultManager] fileExistsAtPath: url.path])
     return;
   
-  stream = [NSOutputStream outputStreamToFileAtPath: path append: YES];
+  stream = [NSOutputStream outputStreamToFileAtPath: url.path append: YES];
   [stream open];
   
   @try
@@ -128,9 +130,9 @@
     {
       NSString *value = headers[key];
       if (value.length > 0)
-        [self writeToStream: stream withFormat: @"%@:  %@\n", key, headers[key]];
+        [self _writeToStream: stream withFormat: @"%@:  %@\n", key, headers[key]];
     }
-    [self writeToStream: stream withFormat: @"\n"];      
+    [self _writeToStream: stream withFormat: @"\n"];
   }
   @finally
   {
@@ -138,7 +140,7 @@
   }
 }
 
-- (void) writeToStream: (NSOutputStream *) stream withFormat: (NSString *) format, ...
+- (void) _writeToStream: (NSOutputStream *) stream withFormat: (NSString *) format, ...
 {
   va_list args;
   NSString *string;

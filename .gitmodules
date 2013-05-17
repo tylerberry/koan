@@ -19,3 +19,6 @@
 [submodule "source/thirdparty/JUEmptyView"]
 	path = source/thirdparty/JUEmptyView
 	url = https://github.com/tylerberry/JUEmptyView.git
+[submodule "source/thirdparty/AutoHyperlinks2"]
+	path = source/thirdparty/AutoHyperlinks2
+	url = ./source/thirdparty/AutoHyperlinks2

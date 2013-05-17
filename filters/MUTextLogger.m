@@ -79,7 +79,7 @@
                                               attributes: nil
                                                    error: &directoryCreationError];
   }
-  else if (isDirectory)
+  else if (!isDirectory)
   {
     NSLog (@"Warning: file already exists at log directory path.");
   }

@@ -860,7 +860,7 @@
 				2F22DF27172F4BA800C50CBA /* AutoHyperlinks.h */,
 			);
 			name = AutoHyperlinks;
-			path = AutoHyperlinks/Source;
+			path = AutoHyperlinks2/Source;
 			sourceTree = "<group>";
 		};
 		2F30904F16D5E71B00266E4A /* Koan for iOS */ = {

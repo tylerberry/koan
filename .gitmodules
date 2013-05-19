@@ -16,3 +16,6 @@
 [submodule "source/thirdparty/PLWeakCompatibility"]
 	path = source/thirdparty/PLWeakCompatibility
 	url = git://github.com/plausiblelabs/PLWeakCompatibility.git
+[submodule "source/thirdparty/JUEmptyView"]
+	path = source/thirdparty/JUEmptyView
+	url = git://github.com/tylerberry/JUEmptyView.git

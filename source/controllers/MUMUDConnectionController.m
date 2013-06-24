@@ -238,7 +238,8 @@ enum MUTextDisplayModes
 
   if ([defaults boolForKey: MUPAutomaticReconnect]
       && ++_reconnectCount < (NSUInteger) [defaults integerForKey: MUPAutomaticReconnectCount]
-      && ![_recentSentString isEqualToString: @"QUIT"])
+      && !([_recentSentString isEqualToString: @"QUIT"]
+           || [_recentSentString isEqualToString: @"@shutdown"]))
     [self connect];
 }
 

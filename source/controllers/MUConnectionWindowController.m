@@ -7,6 +7,7 @@
 
 #import "MUConnectionWindowController.h"
 
+#import "MUHistoryRing.h"
 #import "MULayoutManager.h"
 
 #import "NSFont+Traits.h"
@@ -641,6 +642,9 @@ enum MUAbstractANSIColors
 
 - (void) displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt
 {
+  if (attributedString.length == 0)
+    return;
+  
   BOOL needsScrollToBottom = NO;
   
   if ([self _shouldScrollDisplayViewToBottom])

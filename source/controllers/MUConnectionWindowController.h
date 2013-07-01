@@ -4,10 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUANSIFormattingFilter.h"
-#import "MUFilterQueue.h"
-#import "MUFugueEditFilter.h"
-#import "MUHistoryRing.h"
 #import "MUMUDConnectionController.h"
 #import "MUTextView.h"
 

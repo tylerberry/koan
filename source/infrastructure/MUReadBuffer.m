@@ -50,7 +50,7 @@ NSString *MUReadBufferDidProvideStringNotification = @"MUReadBufferDidProvideStr
 
 - (void) clear
 {
-  [dataBuffer setData: [NSData data]];
+  dataBuffer.data = [NSData data];
 }
 
 - (NSData *) dataByConsumingBuffer

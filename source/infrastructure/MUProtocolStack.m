@@ -61,7 +61,7 @@
   if (_parsingBuffer.length > 0)
   {
     [self.delegate displayDataAsText: [NSData dataWithData: _parsingBuffer]];
-    [_parsingBuffer setData: [NSData data]];
+    _parsingBuffer.data = [NSData data];
   }
 }
 
@@ -193,7 +193,7 @@
   if (_preprocessingBuffer.length > 0)
   {
     [self.delegate writeDataToSocket: _preprocessingBuffer];
-    [_preprocessingBuffer setData: [NSData data]];
+    _preprocessingBuffer.data = [NSData data];
   }
 }
 
@@ -202,7 +202,7 @@
   if (_parsingBuffer.length > 0)
   {
     [self.delegate displayDataAsPrompt: _parsingBuffer];
-    [_parsingBuffer setData: [NSData data]];
+    _parsingBuffer.data = [NSData data];
   }
 }
 

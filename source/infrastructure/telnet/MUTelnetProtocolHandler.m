@@ -821,8 +821,8 @@ static NSArray *offerableCharsets;
       case 1:
         readingValue = NO;
         [self logMSSPVariableData: variableData valueData: valueData];
-        [variableData setData: [NSMutableData data]];
-        [valueData setData: [NSMutableData data]];
+        variableData.data = [NSMutableData data];
+        valueData.data = [NSMutableData data];
         continue;
         
       case 2:

@@ -6,9 +6,9 @@
 
 #import "MUMUDConnectionController.h"
 
+#import "MUAutoHyperlinksFilter.h"
 #import "MUFilterQueue.h"
 #import "MUGrowlService.h"
-#import "MUNaiveURLFilter.h"
 #import "MURegexTestFilter.h"
 
 static NSUInteger _droppedLines = 0;
@@ -59,7 +59,7 @@ enum MUTextDisplayModes
   
   [_filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: _profile delegate: self]];
   [_filterQueue addFilter: [MUFugueEditFilter filterWithProfile: _profile delegate: fugueEditDelegate]];
-  [_filterQueue addFilter: [MUNaiveURLFilter filter]];
+  [_filterQueue addFilter: [MUAutoHyperlinksFilter filter]];
   [_filterQueue addFilter: [MURegexTestFilter filter]];
   [_filterQueue addFilter: [_profile createLogger]];
   

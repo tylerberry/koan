@@ -39,10 +39,18 @@ extern NSString * const MUPPlayWhenActive;
 extern NSString * const MUPSoundChoice;
 extern NSString * const MUPSoundVolume;
 
+// Fonts.
+
+extern NSString * const MUPFont;
+extern NSString * const MUPDefaultFontChangeBehavior;
+
+#define MUPDefaultFontChangeUpdateDefault @0
+#define MUPDefaultFontChangeCustomFontForProfile @1
+#define MUPDefaultFontChangeAsk @2
+
 // Colors.
 
 extern NSString * const MUPBackgroundColor;
-extern NSString * const MUPFont;
 extern NSString * const MUPLinkColor;
 extern NSString * const MUPSystemTextColor;
 extern NSString * const MUPTextColor;
@@ -75,6 +83,10 @@ extern NSString * const MUPLogDirectoryURL;
 
 extern NSString * const MUPProxySettings;
 extern NSString * const MUPUseProxy;
+
+#define MUPProxyNone @0
+#define MUPProxySystem @1
+#define MUPProxyCustom @2
 
 #pragma mark Custom string attributes.
 

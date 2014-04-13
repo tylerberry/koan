@@ -39,10 +39,14 @@ NSString * const MUPPlayWhenActive = @"MUPPlayWhenActive";
 NSString * const MUPSoundChoice = @"MUPSoundChoice";
 NSString * const MUPSoundVolume = @"MUPSoundVolume";
 
+// Fonts.
+
+NSString * const MUPFont = @"MUPFont";
+NSString * const MUPDefaultFontChangeBehavior = @"MUPDefaultFontChangeBehavior";
+
 // Colors.
 
 NSString * const MUPBackgroundColor = @"MUPBackgroundColor";
-NSString * const MUPFont = @"MUPFont";
 NSString * const MUPLinkColor = @"MUPLinkColor";
 NSString * const MUPTextColor = @"MUPTextColor";
 NSString * const MUPSystemTextColor = @"MUPSystemTextColor";

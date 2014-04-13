@@ -225,23 +225,23 @@
   
   const uint8_t unknownReply[13] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeIs, 'u', 'n', 'k', 'n', 'o', 'w', 'n', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
   [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"koan-256color"];
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
   [self assert: mockSocketData equals: [NSData dataWithBytes: koanReply length: 10] message: @"koan"];
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
   [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown"];
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
   [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown 2"];
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
   [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"wraparound"];
 }
@@ -269,7 +269,7 @@
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[11] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 11]];
   
@@ -287,7 +287,7 @@
   const uint8_t charsetRequest[13] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1'};
   const uint8_t charsetReply[16] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 13];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 16]];
   
@@ -305,7 +305,7 @@
   const uint8_t charsetRequest[10] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'N', 'V', 'A', 'L', 'I', 'D'};
   const uint8_t charsetReply[6] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetRejected, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 10];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 6]];
   
@@ -321,7 +321,7 @@
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[17] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, MUTelnetInterpretAsCommand, MUTelnetWill, MUTelnetOptionTransmitBinary, MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTransmitBinary};
   
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
   [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 17]];
   
@@ -433,7 +433,7 @@
 
 - (void) sendMockSocketData
 {
-  [mockSocketData setData: [NSData data]];
+  mockSocketData.data = [NSData data];
 }
 
 - (void) simulateDo: (uint8_t) option

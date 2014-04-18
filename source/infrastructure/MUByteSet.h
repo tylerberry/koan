@@ -17,8 +17,8 @@
 - (id) initWithFirstByte: (int) first remainingBytes: (va_list) bytes;
 
 - (void) addByte: (uint8_t) byte;
-- (void) addBytes: (uint8_t) first, ...;
-- (void) addFirstByte: (int) first remainingBytes: (va_list) bytes;
+- (void) addBytes: (uint8_t) firstByte, ...;
+- (void) addFirstByte: (uint8_t) firstByte remainingBytes: (va_list) bytes;
 - (BOOL) containsByte: (uint8_t) byte;
 - (NSData *) dataValue;
 - (MUByteSet *) inverseSet;

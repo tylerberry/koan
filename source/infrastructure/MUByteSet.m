@@ -33,19 +33,19 @@
     contains[byte] = YES;
 }
 
-- (void) addBytes: (uint8_t) first, ...
+- (void) addBytes: (uint8_t) firstByte, ...
 {
   va_list args;
-  va_start (args, first);
-  [self addFirstByte: first remainingBytes: args];
+  va_start (args, firstByte);
+  [self addFirstByte: firstByte remainingBytes: args];
   va_end (args);
 }
 
-- (void) addFirstByte: (int) first remainingBytes: (va_list) bytes
+- (void) addFirstByte: (uint8_t) firstByte remainingBytes: (va_list) bytes
 {
   int current;
 
-  [self addByte: first];
+  [self addByte: firstByte];
   while ((current = va_arg (bytes, int)) != -1)
     contains[current] = YES;  
 }
@@ -59,7 +59,7 @@
 {
   NSMutableData *result = [NSMutableData data];
   uint8_t byte[1];
-  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
+  for (uint8_t i = 0; i <= UINT8_MAX; i++)
   {
     if (contains[i])
     {

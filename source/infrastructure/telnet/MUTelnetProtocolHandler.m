@@ -298,10 +298,10 @@ static NSArray *offerableCharsets;
   
   NSMutableData *constructedData = [NSMutableData dataWithBytes: nawsSubnegotiationHeader length: 1];
   
-  uint8_t width1 = numberOfColumns / 255;
-  uint8_t width0 = numberOfColumns % 255;
-  uint8_t height1 = numberOfLines / 255;
-  uint8_t height0 = numberOfLines % 255;
+  uint8_t width1 = (uint8_t) numberOfColumns / 255;
+  uint8_t width0 = (uint8_t) numberOfColumns % 255;
+  uint8_t height1 = (uint8_t) numberOfLines / 255;
+  uint8_t height0 = (uint8_t) numberOfLines % 255;
   
   [constructedData appendBytes: &width1 length: 1];
   if (width1 == MUTelnetInterpretAsCommand)

@@ -4,9 +4,6 @@
 [submodule "source/thirdparty/MMTabBarView"]
 	path = source/thirdparty/MMTabBarView
 	url = git://github.com/tylerberry/MMTabBarView.git
-[submodule "source/thirdparty/Sparkle"]
-    path = source/thirdparty/Sparkle
-    url = git://github.com/tylerberry/Sparkle.git 
 [submodule "source/thirdparty/MASPreferences"]
 	path = source/thirdparty/MASPreferences
 	url = git://github.com/tylerberry/MASPreferences.git

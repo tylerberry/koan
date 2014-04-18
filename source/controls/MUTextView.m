@@ -39,7 +39,7 @@
   
   availableHorizontalSpace -= 2 * (self.textContainerInset.width + self.textContainer.lineFragmentPadding);
   
-  return (NSUInteger) availableHorizontalSpace / self.monospaceCharacterWidth;
+  return (NSUInteger) (availableHorizontalSpace / self.monospaceCharacterWidth);
 }
 
 - (NSUInteger) numberOfLines
@@ -53,7 +53,7 @@
   
   availableVerticalSpace -= 2 * self.textContainerInset.height;
   
-  return (NSUInteger) availableVerticalSpace / self.monospaceCharacterHeight;
+  return (NSUInteger) (availableVerticalSpace / self.monospaceCharacterHeight);
 }
 
 - (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling

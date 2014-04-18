@@ -59,7 +59,7 @@
 
 - (BOOL) hasTrait: (NSFontTraitMask) trait
 {
-  return [[NSFontManager sharedFontManager] traitsOfFont: self] & trait;
+  return (BOOL) ([[NSFontManager sharedFontManager] traitsOfFont: self] & trait);
 }
 
 - (NSFont *) italicFontWithRespectTo: (NSFont *) referenceFont

@@ -19,3 +19,6 @@
 [submodule "source/thirdparty/JUEmptyView"]
 	path = source/thirdparty/JUEmptyView
 	url = git://github.com/tylerberry/JUEmptyView.git
+[submodule "source/thirdparty/Punycode-Cocoa"]
+	path = source/thirdparty/Punycode-Cocoa
+	url = https://github.com/Wevah/Punycode-Cocoa

@@ -13,27 +13,27 @@
   return [[self alloc] init];
 }
 
-+ (id) byteSetWithBytes: (int) first, ...
++ (id) byteSetWithBytes: (const uint8_t) firstByte, ...
 {
   va_list args;
-  va_start (args, first);
-  id result = [[self alloc] initWithFirstByte: first remainingBytes: args];
+  va_start (args, firstByte);
+  id result = [[self alloc] initWithFirstByte: firstByte remainingBytes: args];
   va_end (args);
   return result;
 }
 
-+ (id) byteSetWithBytes: (const uint8_t *) bytes length: (size_t) length
++ (id) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length
 {
   return [[self alloc] initWithBytes: bytes length: length];
 }
 
-- (void) addByte: (uint8_t) byte;
+- (void) addByte: (const uint8_t) byte;
 {
   if (!contains[byte])
     contains[byte] = YES;
 }
 
-- (void) addBytes: (uint8_t) firstByte, ...
+- (void) addBytes: (const uint8_t) firstByte, ...
 {
   va_list args;
   va_start (args, firstByte);
@@ -41,7 +41,7 @@
   va_end (args);
 }
 
-- (void) addFirstByte: (uint8_t) firstByte remainingBytes: (va_list) bytes
+- (void) addFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes
 {
   int current;
 
@@ -50,7 +50,7 @@
     contains[current] = YES;  
 }
 
-- (BOOL) containsByte: (uint8_t) byte
+- (BOOL) containsByte: (const uint8_t) byte
 {
   return contains[byte];
 }
@@ -81,7 +81,7 @@
   return self;
 }
 
-- (id) initWithBytes: (const uint8_t *) bytes length: (size_t) length
+- (id) initWithBytes: (const uint8_t * const) bytes length: (size_t) length
 {
   if (![self init])
     return nil;
@@ -92,12 +92,12 @@
   return self;
 }
 
-- (id) initWithFirstByte: (int) first remainingBytes: (va_list) bytes
+- (id) initWithFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes
 {
   if (![self init])
     return nil;
 
-  [self addFirstByte: first remainingBytes: bytes];
+  [self addFirstByte: firstByte remainingBytes: bytes];
   
   return self;
 }
@@ -112,7 +112,7 @@
   return set;
 }
 
-- (void) removeByte: (uint8_t) byte
+- (void) removeByte: (const uint8_t) byte
 {
   contains[byte] = NO;
 }

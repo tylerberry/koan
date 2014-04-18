@@ -648,14 +648,14 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
       }
       else if (colorCode >= 16 && colorCode < 232)
       {
-        [self _setForegroundColor: [NSColor ANSI256ColorCubeColorForCode: colorCode]
+        [self _setForegroundColor: [NSColor ANSI256ColorCubeColorForCode: (uint8_t) colorCode]
                    customColorTag: MUANSI256FixedColorTag
                          inString: string
                      fromLocation: startLocation];
       }
       else if (colorCode >= 232 && colorCode < 256)
       {
-        [self _setForegroundColor: [NSColor ANSI256GrayscaleColorForCode: colorCode]
+        [self _setForegroundColor: [NSColor ANSI256GrayscaleColorForCode: (uint8_t) colorCode]
                    customColorTag: MUANSI256FixedColorTag
                          inString: string
                      fromLocation: startLocation];
@@ -763,14 +763,14 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
       }
       else if (colorCode >= 16 && colorCode < 232)
       {
-        [self _setBackgroundColor: [NSColor ANSI256ColorCubeColorForCode: colorCode]
+        [self _setBackgroundColor: [NSColor ANSI256ColorCubeColorForCode: (uint8_t) colorCode]
                    customColorTag: MUANSI256FixedColorTag
                          inString: string
                      fromLocation: startLocation];
       }
       else if (colorCode >= 232 && colorCode < 256)
       {
-        [self _setBackgroundColor: [NSColor ANSI256GrayscaleColorForCode: colorCode]
+        [self _setBackgroundColor: [NSColor ANSI256GrayscaleColorForCode: (uint8_t) colorCode]
                    customColorTag: MUANSI256FixedColorTag
                          inString: string
                      fromLocation: startLocation];

@@ -59,11 +59,12 @@
 {
   NSMutableData *result = [NSMutableData data];
   uint8_t byte[1];
-  for (uint8_t i = 0; i <= UINT8_MAX; i++)
+
+  for (uint16_t i = 0; i <= UINT8_MAX; i++)
   {
     if (contains[i])
     {
-      byte[0] = i;
+      byte[0] = (uint8_t) i;
       [result appendBytes: byte length: 1];
     }
   }

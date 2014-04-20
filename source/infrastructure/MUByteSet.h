@@ -10,18 +10,18 @@
 }
 
 + (id) byteSet;
-+ (id) byteSetWithBytes: (int) first, ...;
-+ (id) byteSetWithBytes: (const uint8_t *) bytes length: (size_t) length;
++ (id) byteSetWithBytes: (const uint8_t) firstByte, ...;
++ (id) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length;
 
-- (id) initWithBytes: (const uint8_t *) bytes length: (size_t) length;
-- (id) initWithFirstByte: (int) first remainingBytes: (va_list) bytes;
+- (id) initWithBytes: (const uint8_t * const) bytes length: (size_t) length;
+- (id) initWithFirstByte: (const uint8_t) first remainingBytes: (va_list) bytes;
 
-- (void) addByte: (uint8_t) byte;
-- (void) addBytes: (uint8_t) firstByte, ...;
-- (void) addFirstByte: (uint8_t) firstByte remainingBytes: (va_list) bytes;
-- (BOOL) containsByte: (uint8_t) byte;
+- (void) addByte: (const uint8_t) byte;
+- (void) addBytes: (const uint8_t) firstByte, ...;
+- (void) addFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes;
+- (BOOL) containsByte: (const uint8_t) byte;
 - (NSData *) dataValue;
 - (MUByteSet *) inverseSet;
-- (void) removeByte: (uint8_t) byte;
+- (void) removeByte: (const uint8_t) byte;
 
 @end

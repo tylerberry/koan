@@ -31,21 +31,21 @@
 
 /*
  *
- *	Options used:	noyywrap      : act as if yywrap always returns 1
- *					8bit                : always force 8-bit chars.
- *					caseless            : case insensitive lexer
- *					never-interactive   : prevents flex from including some calls to gettty() and such
- *										  -- gives a slight performace gain.
- *					prefix=...          : replace YY_whatever with prefix - avoids symbol collisions
- *					debug               : turns on debugging output (string + accepting rule)
- *										  -- only use while editing rules, and don't commit with this on
- *										     (it generates a lot of unnecessary output and kills performace.)
+ *  Options used:  noyywrap      : act as if yywrap always returns 1
+ *          8bit                : always force 8-bit chars.
+ *          caseless            : case insensitive lexer
+ *          never-interactive   : prevents flex from including some calls to gettty() and such
+ *                      -- gives a slight performace gain.
+ *          prefix=...          : replace YY_whatever with prefix - avoids symbol collisions
+ *          debug               : turns on debugging output (string + accepting rule)
+ *                      -- only use while editing rules, and don't commit with this on
+ *                         (it generates a lot of unnecessary output and kills performace.)
  *
- *	Variables used:		uint AHStringOffset : the position of the pointer, relative to the parent string
- *											  incremented by yyleng at each yylex() call.
- *	               		 int AHValidShift	: Used only in CANONICAL start state
- *											  ensures that yyleng reports whole length of the string,
- *											  without a costly call to yymore().
+ *  Variables used:    uint AHStringOffset : the position of the pointer, relative to the parent string
+ *                        incremented by yyleng at each yylex() call.
+ *                      int AHValidShift  : Used only in CANONICAL start state
+ *                        ensures that yyleng reports whole length of the string,
+ *                        without a costly call to yymore().
  */
 #include "AHLinkLexer.h"
 %}
@@ -80,7 +80,7 @@ ipv6HexPart     ({ipv6HexSeq})|(::{ipv6HexSeq})
 ipv6Address     {ipv6HexPart}({ipv4address})?
 ipv6URL         \[{ipv6Address}](:[0-9]+)?{urlPath}?
 
-userAtDomain	[^:@\/[:space:]]+\@{singleDomain}(\.{singleDomain})*
+userAtDomain    [^:@\/[:space:]]+\@{singleDomain}(\.{singleDomain})*
 mailSpec        {userAtDomain}\.{TLDs}
 
 %option noyywrap nounput noinput 8bit caseless align nodefault never-interactive reentrant warn prefix="AH"

@@ -120,8 +120,8 @@
   for (NSString *libraryPath in NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSAllDomainsMask, YES))
   {
     NSString *soundsDirectoryPath = [libraryPath stringByAppendingPathComponent: @"Sounds"];
-  	
-  	for (NSString *fileName in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: soundsDirectoryPath
+    
+    for (NSString *fileName in [[NSFileManager defaultManager] contentsOfDirectoryAtPath: soundsDirectoryPath
                                                                                    error: NULL])
     {
       NSURL *fileURL = [NSURL fileURLWithPath: [soundsDirectoryPath stringByAppendingPathComponent: fileName]];

@@ -56,7 +56,7 @@
 {
   MUPlayer *player = [MUPlayer playerWithName: @"guest"];
   [self assert: player.loginString
-  			equals: @"connect guest"];
+        equals: @"connect guest"];
 }
 
 - (void) testNoLoginStringForNilPlayerName

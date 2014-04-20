@@ -14,7 +14,7 @@
   
   [self getCharacters: characters range: NSMakeRange (0, self.length)];
   
-  for (unsigned i = 0; i < self.length; i++)
+  for (NSUInteger i = 0; i < self.length; i++)
   {
     switch (characters[i])
     {

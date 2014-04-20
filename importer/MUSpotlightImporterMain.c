@@ -19,7 +19,7 @@
 #include "GetMetadataForFile.h"
 
 #define PLUGIN_ID "7A7C8D06-11D4-48AF-B144-BDFFD271795F"
-			   
+
 // The layout for an instance of MetaDataImporterPlugIn. 
 typedef struct __MetadataImporterPluginType
 {
@@ -70,10 +70,10 @@ AllocMetadataImporterPluginType (CFUUIDRef inFactoryID)
 }
 
 // -----------------------------------------------------------------------------
-//	DeallocKoanLogImporterMDImporterPluginType
+//  DeallocKoanLogImporterMDImporterPluginType
 // -----------------------------------------------------------------------------
-//	Utility function that deallocates the instance when
-//	the refCount goes to zero.
+//  Utility function that deallocates the instance when
+//  the refCount goes to zero.
 //      In the current implementation importer interfaces are never deallocated
 //      but implement this as this might change in the future
 //
@@ -92,9 +92,9 @@ DeallocMetadataImporterPluginType (MetadataImporterPluginType *instance)
 }
 
 // -----------------------------------------------------------------------------
-//	MetadataImporterQueryInterface
+//  MetadataImporterQueryInterface
 // -----------------------------------------------------------------------------
-//	Implementation of the IUnknown QueryInterface function.
+//  Implementation of the IUnknown QueryInterface function.
 //
 
 HRESULT
@@ -136,11 +136,11 @@ MetadataImporterQueryInterface (void *thisInstance, REFIID iid, LPVOID *ppv)
 }
 
 // -----------------------------------------------------------------------------
-//	MetadataImporterPluginAddRef
+//  MetadataImporterPluginAddRef
 // -----------------------------------------------------------------------------
-//	Implementation of reference counting for this type. Whenever an interface
-//	is requested, bump the refCount for the instance. NOTE: returning the
-//	refcount is a convention but is not required so don't rely on it.
+//  Implementation of reference counting for this type. Whenever an interface
+//  is requested, bump the refCount for the instance. NOTE: returning the
+//  refcount is a convention but is not required so don't rely on it.
 
 ULONG
 MetadataImporterPluginAddRef (void *instance)
@@ -152,8 +152,8 @@ MetadataImporterPluginAddRef (void *instance)
 // -----------------------------------------------------------------------------
 // SampleCMPluginRelease
 // -----------------------------------------------------------------------------
-//	When an interface is released, decrement the refCount.
-//	If the refCount goes to zero, deallocate the instance.
+//  When an interface is released, decrement the refCount.
+//  If the refCount goes to zero, deallocate the instance.
 
 ULONG
 MetadataImporterPluginRelease (void *instance)
@@ -171,9 +171,9 @@ MetadataImporterPluginRelease (void *instance)
 }
 
 // -----------------------------------------------------------------------------
-//	KoanLogImporterMDImporterPluginFactory
+//  KoanLogImporterMDImporterPluginFactory
 // -----------------------------------------------------------------------------
-//	Implementation of the factory function for this type.
+//  Implementation of the factory function for this type.
 
 void *
 MetadataImporterPluginFactory (CFAllocatorRef allocator, CFUUIDRef typeID)

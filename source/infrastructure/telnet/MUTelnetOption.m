@@ -9,6 +9,14 @@
 #import "MUTelnetConstants.h"
 
 @interface MUTelnetOption ()
+{
+  NSObject <MUTelnetOptionDelegate> *delegate;
+  uint8_t option;
+  MUTelnetQState him;
+  MUTelnetQState us;
+  BOOL heIsAllowed;
+  BOOL weAreAllowed;
+}
 
 - (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
 - (void) receivedDisableDemandForState: (MUTelnetQState *) state
@@ -40,32 +48,32 @@
     case MUTelnetOptionEcho:
       return @"ECHO";
       
-  	case MUTelnetOptionSuppressGoAhead:
-  		return @"SUPPRESS-GO-AHEAD";
+    case MUTelnetOptionSuppressGoAhead:
+      return @"SUPPRESS-GO-AHEAD";
       
     case MUTelnetOptionStatus:
       return @"STATUS";
-  		
-  	case MUTelnetOptionTimingMark:
-  		return @"TIMING-MARK";
-  		
-  	case MUTelnetOptionTerminalType:
-  		return @"TERMINAL-TYPE";
-  		
-  	case MUTelnetOptionEndOfRecord:
-  		return @"END-OF-RECORD";
-  		
-  	case MUTelnetOptionNegotiateAboutWindowSize:
-  		return @"NEGOTIATE-ABOUT-WINDOW-SIZE";
+      
+    case MUTelnetOptionTimingMark:
+      return @"TIMING-MARK";
+      
+    case MUTelnetOptionTerminalType:
+      return @"TERMINAL-TYPE";
+      
+    case MUTelnetOptionEndOfRecord:
+      return @"END-OF-RECORD";
+      
+    case MUTelnetOptionNegotiateAboutWindowSize:
+      return @"NEGOTIATE-ABOUT-WINDOW-SIZE";
       
     case MUTelnetOptionTerminalSpeed:
       return @"TERMINAL-SPEED";
       
     case MUTelnetOptionToggleFlowControl:
       return @"TOGGLE-FLOW-CONTROL";
-  		
-  	case MUTelnetOptionLineMode:
-  		return @"LINEMODE";
+      
+    case MUTelnetOptionLineMode:
+      return @"LINEMODE";
       
     case MUTelnetOptionXDisplayLocation:
       return @"X-DISPLAY-LOCATION";
@@ -90,13 +98,13 @@
       
     case MUTelnetOptionMSSP:
       return @"MSSP";
-  		
-  	case MUTelnetOptionMCCP1:
-  		return @"MCCP1";
-  		
-  	case MUTelnetOptionMCCP2:
-  		return @"MCCP2";
-  		
+      
+    case MUTelnetOptionMCCP1:
+      return @"MCCP1";
+      
+    case MUTelnetOptionMCCP2:
+      return @"MCCP2";
+      
     case MUTelnetOptionMSP:
       return @"MSP";
       
@@ -115,8 +123,8 @@
     case MUTelnetOptionGMCP:
       return @"GMCP";
       
-  	default:
-  		return [NSString stringWithFormat: @"%u (unknown option)", (unsigned) byte];
+    default:
+      return [NSString stringWithFormat: @"%u (unknown option)", (unsigned) byte];
   }
 }
 
@@ -135,7 +143,7 @@
   return him == MUTelnetQYes;
 }
 
-- (id) initWithOption: (int) newOption delegate: (NSObject <MUTelnetOptionDelegate> *) object
+- (id) initWithOption: (uint8_t) newOption delegate: (NSObject <MUTelnetOptionDelegate> *) object
 {
   if (!(self = [super init]))
     return nil;

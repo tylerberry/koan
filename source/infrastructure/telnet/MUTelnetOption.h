@@ -19,19 +19,11 @@ typedef enum MUTelnetQ {
 
 @protocol MUTelnetOptionDelegate;
 
-@interface MUTelnetOption : NSObject 
-{
-  NSObject <MUTelnetOptionDelegate> *delegate;
-  int option;
-  MUTelnetQState him;
-  MUTelnetQState us;
-  BOOL heIsAllowed;
-  BOOL weAreAllowed;
-}
+@interface MUTelnetOption : NSObject
 
 + (NSString *) optionNameForByte: (uint8_t) byte;
 
-- (id) initWithOption: (int) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
+- (id) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
 
 // Negotiation we respond to.
 - (void) receivedDo;

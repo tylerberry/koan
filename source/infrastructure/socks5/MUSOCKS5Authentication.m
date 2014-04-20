@@ -9,6 +9,14 @@
 #import "MUByteSource.h"
 #import "MUSOCKS5Constants.h"
 
+@interface MUSOCKS5Authentication ()
+
+@property (readwrite) BOOL authenticated;
+
+@end
+
+#pragma mark -
+
 @implementation MUSOCKS5Authentication
 {
   NSString *_username;
@@ -50,7 +58,7 @@
   if (reply.length != 2)
     return;
   
-  _authenticated = ((uint8_t *) reply.bytes)[1] == 0 ? YES : NO;
+  self.authenticated = ((uint8_t *) reply.bytes)[1] == 0 ? YES : NO;
 }
 
 @end

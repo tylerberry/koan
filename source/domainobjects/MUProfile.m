@@ -72,11 +72,11 @@ static const int32_t currentProfileVersion = 4;
 - (id) initWithWorld: (MUWorld *) newWorld
               player: (MUPlayer *) newPlayer
          autoconnect: (BOOL) newAutoconnect
-  							font: (NSFont *) newFont
-  	 backgroundColor: (NSColor *) newBackgroundColor
-  				 linkColor: (NSColor *) newLinkColor
+                font: (NSFont *) newFont
+     backgroundColor: (NSColor *) newBackgroundColor
+           linkColor: (NSColor *) newLinkColor
      systemTextColor: (NSColor *) newSystemTextColor
-  				 textColor: (NSColor *) newTextColor
+           textColor: (NSColor *) newTextColor
 {
   if (!(self = [super init]))
     return nil;
@@ -98,13 +98,13 @@ static const int32_t currentProfileVersion = 4;
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [self initWithWorld: newWorld
-  										player: newPlayer
-  							 autoconnect: NO
-  											font: nil
-  					 backgroundColor: nil
-  								 linkColor: nil
+                      player: newPlayer
+                 autoconnect: NO
+                        font: nil
+             backgroundColor: nil
+                   linkColor: nil
              systemTextColor: nil
-  								 textColor: nil];
+                   textColor: nil];
 }
 
 - (id) initWithWorld: (MUWorld *) newWorld
@@ -194,55 +194,55 @@ static const int32_t currentProfileVersion = 4;
 - (NSColor *) effectiveBackgroundColor
 {
   if (self.backgroundColor)
-  	return self.backgroundColor;
+    return self.backgroundColor;
   else
   {
-  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPBackgroundColor]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPBackgroundColor]];
   }
 }
 
 - (NSFont *) effectiveFont
 {
   if (self.font)
-  	return self.font;
+    return self.font;
   else
   {
-  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPFont]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPFont]];
   }
 }
 
 - (NSColor *) effectiveLinkColor
 {
   if (self.linkColor)
-  	return self.linkColor;
+    return self.linkColor;
   else
   {
-  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPLinkColor]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPLinkColor]];
   }
 }
 
 - (NSColor *) effectiveSystemTextColor
 {
   if (self.systemTextColor)
-  	return self.systemTextColor;
+    return self.systemTextColor;
   else
   {
-  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPSystemTextColor]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPSystemTextColor]];
   }
 }
 
 - (NSColor *) effectiveTextColor
 {
   if (self.textColor)
-  	return self.textColor;
+    return self.textColor;
   else
   {
-  	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  	return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPTextColor]];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [NSUnarchiver unarchiveObjectWithData: [userDefaults dataForKey: MUPTextColor]];
   }
 }
 
@@ -337,7 +337,7 @@ static const int32_t currentProfileVersion = 4;
   }
   else
   {
-  	_font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
+    _font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
                             size: [decoder decodeFloatForKey: @"fontSize"]];
     _systemTextColor = nil;
   }

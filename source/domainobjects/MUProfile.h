@@ -45,11 +45,11 @@
 - (id) initWithWorld: (MUWorld *) newWorld
               player: (MUPlayer *) newPlayer
          autoconnect: (BOOL) newAutoconnect
-  							font: (NSFont *) newFont
-  	 backgroundColor: (NSColor *) newBackgroundColor
-  				 linkColor: (NSColor *) newLinkColor
+                font: (NSFont *) newFont
+     backgroundColor: (NSColor *) newBackgroundColor
+           linkColor: (NSColor *) newLinkColor
      systemTextColor: (NSColor *) newSystemTextColor
-  				 textColor: (NSColor *) newTextColor;
+           textColor: (NSColor *) newTextColor;
 
 - (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 - (id) initWithWorld: (MUWorld *) newWorld;

@@ -42,23 +42,23 @@ static const int32_t currentPlayerVersion = 4;
 - (NSString *) loginString
 {
   if (!self.name)
-  	return nil;
+    return nil;
   
   NSRange whitespaceRange = [self.name rangeOfCharacterFromSet: [NSCharacterSet whitespaceCharacterSet]];
   
   if (self.password && self.password.length > 0)
   {
-  	if (whitespaceRange.location == NSNotFound)
-  		return [NSString stringWithFormat: @"connect %@ %@", self.name, self.password];
-  	else
-  		return [NSString stringWithFormat: @"connect \"%@\" %@", self.name, self.password];
+    if (whitespaceRange.location == NSNotFound)
+      return [NSString stringWithFormat: @"connect %@ %@", self.name, self.password];
+    else
+      return [NSString stringWithFormat: @"connect \"%@\" %@", self.name, self.password];
   }
   else
   {
-  	if (whitespaceRange.location == NSNotFound)
-  		return [NSString stringWithFormat: @"connect %@", self.name];
-  	else
-  		return [NSString stringWithFormat: @"connect \"%@\"", self.name];
+    if (whitespaceRange.location == NSNotFound)
+      return [NSString stringWithFormat: @"connect %@", self.name];
+    else
+      return [NSString stringWithFormat: @"connect \"%@\"", self.name];
   }
 }
 
@@ -117,7 +117,7 @@ static const int32_t currentPlayerVersion = 4;
     return nil;
   }
   else
-	{
+  {
     NSString *errorString = (__bridge_transfer NSString *) SecCopyErrorMessageString (status, NULL);
     
     NSLog (@"Keychain error %u: %@", status, errorString);
@@ -126,7 +126,7 @@ static const int32_t currentPlayerVersion = 4;
       SecKeychainItemFreeContent (NULL, passwordBytes);
     
     return nil;
-	}
+  }
 }
 
 - (void) setPassword: (NSString *) password

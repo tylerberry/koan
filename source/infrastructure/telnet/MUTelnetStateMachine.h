@@ -10,13 +10,9 @@
 @class MUTelnetState;
 
 @interface MUTelnetStateMachine : NSObject
-{
-  MUTelnetState *state;
-  BOOL telnetConfirmed;
-}
 
-@property ( nonatomic) MUTelnetState *state;
-@property (assign, nonatomic) BOOL telnetConfirmed;
+@property (strong) MUTelnetState *state;
+@property (assign) BOOL telnetConfirmed;
 
 + (id) stateMachine;
 

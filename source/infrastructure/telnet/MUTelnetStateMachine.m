@@ -10,8 +10,6 @@
 
 @implementation MUTelnetStateMachine
 
-@synthesize state, telnetConfirmed;
-
 + (id) stateMachine
 {
   return [[self alloc] init];
@@ -35,7 +33,7 @@
 
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
-  self.state = [state parse: byte forStateMachine: self protocolHandler: protocolHandler];
+  self.state = [self.state parse: byte forStateMachine: self protocolHandler: protocolHandler];
 }
 
 @end

@@ -20,8 +20,8 @@
   if (!(self = [super init]))
     return nil;
   
-  self.state = [MUTelnetTextState state];
-  self.telnetConfirmed = NO;
+  _state = [MUTelnetTextState state];
+  _telnetConfirmed = NO;
   
   return self;
 }

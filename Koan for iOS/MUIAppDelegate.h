@@ -1,9 +1,7 @@
 //
-//  MUIAppDelegate.h
-//  Koan for iOS
+// MUIAppDelegate.h
 //
-//  Created by Tyler Berry on 2/20/13.
-//  Copyright (c) 2013 3James Software. All rights reserved.
+// Copyright (c) 2013 3James Software. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

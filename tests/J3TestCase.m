@@ -54,7 +54,7 @@
 
 - (void) assertFloat: (float) actual equals: (float) expected message: (NSString *) message;
 {
-  [self assertTrue: (abs (expected - actual) < 0.000001) message: message];
+  [self assertTrue: (fabsf (expected - actual) < 0.000001) message: message];
 }
 
 - (void) assertInt: (int) actual equals: (int) expected;

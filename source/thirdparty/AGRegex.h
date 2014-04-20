@@ -38,11 +38,11 @@
  @constant AGRegexMultiline Caret and dollar anchors match at newline. Equivalent to /m in Perl.
  */
 enum {
-	AGRegexCaseInsensitive = 1,
-	AGRegexDotAll = 2,
-	AGRegexExtended = 4,
-	AGRegexLazy = 8,
-	AGRegexMultiline = 16
+  AGRegexCaseInsensitive = 1,
+  AGRegexDotAll = 2,
+  AGRegexExtended = 4,
+  AGRegexLazy = 8,
+  AGRegexMultiline = 16
 };
 
 /*!
@@ -51,10 +51,10 @@ enum {
  @discussion An AGRegexMatch represents a single occurence of a regular expression within the target string. The range of each subpattern within the target string is returned by -range, -rangeAtIndex:, or -rangeNamed:. The part of the target string that matched each subpattern is returned by -group, -groupAtIndex:, or -groupNamed:.
  */
 @interface AGRegexMatch : NSObject {
-	AGRegex *regex;
-	NSString *string;
-	int *matchv;
-	NSUInteger count;
+  AGRegex *regex;
+  NSString *string;
+  int *matchv;
+  NSUInteger count;
 }
 
 /*!
@@ -160,9 +160,9 @@ enum {
  In Perl, this would return "R", undef, "p", "a", "t", undef, "r". Unfortunately, there is no convenient way to represent this in an NSArray. (NSNull could be used in place of undef, but then all members of the array couldn't be expected to be NSStrings.)
  */
 @interface AGRegex : NSObject {
-	void *regex;
-	void *extra;
-	int groupCount;
+  void *regex;
+  void *extra;
+  int groupCount;
 }
 
 /*!

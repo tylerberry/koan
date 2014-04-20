@@ -58,7 +58,7 @@
              errorDescription: (NSString **) error
 {
   if (partialString == nil || [partialString compare: @""] == NSOrderedSame)
-  	return YES;
+    return YES;
   
   NSScanner *scanner = [NSScanner scannerWithString: partialString];
   int intResult;
@@ -71,8 +71,8 @@
   
   if (intResult > 65535)
   {
-  	*newString = @"65535";
-  	return NO;
+    *newString = @"65535";
+    return NO;
   }
   
   if (intResult < 0)

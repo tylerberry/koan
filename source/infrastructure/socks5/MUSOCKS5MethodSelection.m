@@ -38,7 +38,7 @@
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {
   [buffer appendByte: MUSOCKS5Version];
-  [buffer appendByte: _methods.length];
+  [buffer appendByte: (uint8_t) _methods.length];  // Potentially loses precision.
   
   const uint8_t *bytes = _methods.bytes;
   

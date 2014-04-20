@@ -20,6 +20,11 @@ typedef enum MUTelnetQ {
 @protocol MUTelnetOptionDelegate;
 
 @interface MUTelnetOption : NSObject
+{
+  @protected
+  MUTelnetQState _him;
+  MUTelnetQState _us;
+}
 
 + (NSString *) optionNameForByte: (uint8_t) byte;
 

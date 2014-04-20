@@ -22,8 +22,8 @@
 - (void) testEmptySet
 {
   MUByteSet *byteSet = [MUByteSet byteSet];
-  for (unsigned i = 0; i <= UINT8_MAX; ++i)
-    [self assertFalse: [byteSet containsByte: i] message: [NSString stringWithFormat: @"%d should not have been included",i]];
+  for (uint16_t i = 0; i <= UINT8_MAX; ++i)
+    [self assertFalse: [byteSet containsByte: (uint8_t) i] message: [NSString stringWithFormat: @"%d should not have been included",i]];
 }
 
 - (void) testAddByte
@@ -51,12 +51,18 @@
 {
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: 42, 71, -1];
   MUByteSet *inverse = byteSet.inverseSet;
-  for (NSUInteger i = 0; i <= UINT8_MAX; ++i)
+  for (uint16_t i = 0; i <= UINT8_MAX; ++i)
   {
-    if ([byteSet containsByte: i])
-      [self assertFalse: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should not contain %lu", i]];
+    if ([byteSet containsByte: (uint8_t) i])
+    {
+      [self assertFalse: [inverse containsByte: (uint8_t) i]
+                message: [NSString stringWithFormat: @"Inverse should not contain %u", i]];
+    }
     else
-      [self assertTrue: [inverse containsByte: i] message: [NSString stringWithFormat: @"Inverse should contain %lu", i]];
+    {
+      [self assertTrue: [inverse containsByte: (uint8_t) i]
+               message: [NSString stringWithFormat: @"Inverse should contain %u", i]];
+    }
   }
 }
 

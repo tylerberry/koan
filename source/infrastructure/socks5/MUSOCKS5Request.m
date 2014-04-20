@@ -34,7 +34,7 @@
   [buffer appendByte: MUSOCKS5Connect];
   [buffer appendByte: 0]; //reserved
   [buffer appendByte: MUSOCKS5DomainName];
-  [buffer appendByte: self.hostname.length];
+  [buffer appendByte: (uint8_t) self.hostname.length];  // Potentially loses precision.
   [buffer appendString: self.hostname];
   [buffer appendByte: (0xFF00 & self.port) >> 8]; // Most significant byte of port.
   [buffer appendByte: (0x00FF & self.port)];      // Least significant byte of port.

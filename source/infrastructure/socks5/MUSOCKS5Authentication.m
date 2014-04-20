@@ -26,7 +26,7 @@
 {
   if (!(self = [super init]))
     return nil;
-  
+
   _username = [username copy];
   _password = [password copy];
   _authenticated = NO;
@@ -37,9 +37,9 @@
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer
 {
   [buffer appendByte: MUSOCKS5UsernamePasswordVersion];
-  [buffer appendByte: _username.length];
+  [buffer appendByte: (uint8_t) _username.length];      // Note that this potentially loses precision.
   [buffer appendString: _username];
-  [buffer appendByte: _password.length];
+  [buffer appendByte: (uint8_t) _password.length];      // This too.
   [buffer appendString: _password];
 }
 

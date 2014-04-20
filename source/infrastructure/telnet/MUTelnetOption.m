@@ -12,8 +12,6 @@
 {
   NSObject <MUTelnetOptionDelegate> *delegate;
   uint8_t option;
-  MUTelnetQState him;
-  MUTelnetQState us;
   BOOL heIsAllowed;
   BOOL weAreAllowed;
 }
@@ -130,17 +128,17 @@
 
 - (void) disableHim
 {
-  [self demandDisableFor: &him withSelector: @selector (sendDont)];
+  [self demandDisableFor: &_him withSelector: @selector (sendDont)];
 }
 
 - (void) disableUs
 {
-  [self demandDisableFor: &us withSelector: @selector (sendWont)];
+  [self demandDisableFor: &_us withSelector: @selector (sendWont)];
 }
 
 - (BOOL) heIsYes
 {
-  return him == MUTelnetQYes;
+  return _him == MUTelnetQYes;
 }
 
 - (id) initWithOption: (uint8_t) newOption delegate: (NSObject <MUTelnetOptionDelegate> *) object
@@ -151,14 +149,14 @@
   delegate = object;
   heIsAllowed = NO;
   weAreAllowed = NO;
-  him = MUTelnetQNo;
-  us = MUTelnetQNo;
+  _him = MUTelnetQNo;
+  _us = MUTelnetQNo;
   return self;
 }
 
 - (void) receivedDo
 {
-  [self receivedEnableRequestForState: &us 
+  [self receivedEnableRequestForState: &_us
                      shouldEnableFlag: &weAreAllowed
                              ifAccept: @selector (sendWill) 
                              ifReject: @selector (sendWont)];  
@@ -166,14 +164,14 @@
 
 - (void) receivedDont
 {
-  [self receivedDisableDemandForState: &us 
+  [self receivedDisableDemandForState: &_us
                         ifAcknowledge: @selector (sendWont) 
                               ifAllow: @selector (sendWill)];
 }
 
 - (void) receivedWill
 {
-  [self receivedEnableRequestForState: &him 
+  [self receivedEnableRequestForState: &_him
                      shouldEnableFlag: &heIsAllowed
                              ifAccept: @selector (sendDo) 
                              ifReject: @selector (sendDont)];
@@ -181,19 +179,19 @@
 
 - (void) receivedWont
 {
-  [self receivedDisableDemandForState: &him 
+  [self receivedDisableDemandForState: &_him
                         ifAcknowledge: @selector (sendDont) 
                               ifAllow: @selector (sendDo)];
 }
 
 - (void) enableHim
 {
-  [self requestEnableFor: &him withSelector: @selector (sendDo)];
+  [self requestEnableFor: &_him withSelector: @selector (sendDo)];
 }
 
 - (void) enableUs
 {
-  [self requestEnableFor: &us withSelector: @selector (sendWill)];
+  [self requestEnableFor: &_us withSelector: @selector (sendWill)];
 }
 
 - (void) heIsAllowedToUse: (BOOL) value
@@ -203,7 +201,7 @@
 
 - (BOOL) weAreYes
 {
-  return us == MUTelnetQYes;
+  return _us == MUTelnetQYes;
 }
 
 - (void) weAreAllowedToUse: (BOOL) value

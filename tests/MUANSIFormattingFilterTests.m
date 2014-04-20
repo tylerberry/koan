@@ -346,12 +346,12 @@
                message: [NSString stringWithFormat: @"%d", i]];
   }
   
-  for (unsigned i = 16; i < 232; i++)
+  for (uint16_t i = 16; i < 232; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: i];
+    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: (uint8_t) i];
     
     [self assertString: output
               hasValue: expectedColor
@@ -360,12 +360,12 @@
                message: [NSString stringWithFormat: @"%d", i]];
   }
   
-  for (unsigned i = 232; i < 256; i++)
+  for (uint16_t i = 232; i < 256; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: i];
+    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: (uint8_t) i];
     
     [self assertString: output
               hasValue: expectedColor
@@ -537,12 +537,12 @@
                message: [NSString stringWithFormat: @"%d", i]];
   }
   
-  for (unsigned i = 16; i < 232; i++)
+  for (uint16_t i = 16; i < 232; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: i];
+    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: (uint8_t) i];
     
     [self assertString: output
               hasValue: expectedColor
@@ -551,12 +551,12 @@
                message: [NSString stringWithFormat: @"%d", i]];
   }
   
-  for (unsigned i = 232; i < 256; i++)
+  for (uint16_t i = 232; i < 256; i++)
   {
     NSAttributedString *input = [self constructAttributedStringForString: [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i]];
     NSAttributedString *output = [self.queue processCompleteLine: input];
     
-    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: i];
+    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: (uint8_t) i];
     
     [self assertString: output
               hasValue: expectedColor

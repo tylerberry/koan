@@ -15,7 +15,7 @@
 
 #pragma mark -
 
-typedef int QMethodTable[QSTATES][3];
+typedef int MUQMethodTable[QSTATES][3];
 
 #pragma mark -
 
@@ -34,22 +34,22 @@ typedef int QMethodTable[QSTATES][3];
 
 - (MUTelnetQState) him
 {
-  return him;
+  return _him;
 }
 
 - (void) setHim: (MUTelnetQState) state
 {
-  him = state;
+  _him = state;
 }
 
 - (MUTelnetQState) us
 {
-  return us;
+  return _us;
 }
 
 - (void) setUs: (MUTelnetQState) state
 {
-  us = state;
+  _us = state;
 }
 
 @end
@@ -58,12 +58,12 @@ typedef int QMethodTable[QSTATES][3];
 
 @interface MUTelnetOptionTests ()
 
-- (void) assertQMethodTable: (QMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs;
+- (void) assertQMethodTable: (MUQMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs;
 - (void) assertWhenSelector: (SEL) selector
           isCalledFromState: (MUTelnetQState) startState
                  forHimOrUs: (SEL) himOrUs
         theResultingStateIs: (MUTelnetQState) endState
-                   andCalls: (char) flags;
+                   andCalls: (int) flags;
 - (void) clearFlags;
 - (NSString *) qStateName: (MUTelnetQState) state;
 
@@ -86,7 +86,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testReceivedWont
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            0},
     {MUTelnetQYes,              MUTelnetQNo,            DONT},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},
@@ -99,7 +99,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testReceivedDont
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            0},
     {MUTelnetQYes,              MUTelnetQNo,            WONT},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},
@@ -113,7 +113,7 @@ typedef int QMethodTable[QSTATES][3];
 - (void) testReceivedWillAndWeDoNotWantTo
 {
   [option heIsAllowedToUse: NO];
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            DONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},   // error
@@ -127,7 +127,7 @@ typedef int QMethodTable[QSTATES][3];
 - (void) testReceivedWillAndWeDoWantTo
 {
   [option heIsAllowedToUse: YES];
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           DO},
     {MUTelnetQYes,              MUTelnetQYes,           0},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},   // error
@@ -141,7 +141,7 @@ typedef int QMethodTable[QSTATES][3];
 - (void) testReceivedDoAndWeDoNotWantTo
 {
   [option weAreAllowedToUse: NO];
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            WONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},   // error
@@ -155,7 +155,7 @@ typedef int QMethodTable[QSTATES][3];
 - (void) testReceivedDoAndWeDoWantTo
 {
   [option weAreAllowedToUse: YES];
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           WILL},
     {MUTelnetQYes,              MUTelnetQYes,           0},
     {MUTelnetQWantNoEmpty,      MUTelnetQNo,            0},   // error
@@ -168,7 +168,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testEnableHimWithQueue
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQWantYesEmpty,    DO},
     {MUTelnetQYes,              MUTelnetQYes,             0},   // error
     {MUTelnetQWantNoEmpty,      MUTelnetQWantNoOpposite,  0},   
@@ -181,7 +181,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testEnableUsWithQueue
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQWantYesEmpty,    WILL},
     {MUTelnetQYes,              MUTelnetQYes,             0},   // error
     {MUTelnetQWantNoEmpty,      MUTelnetQWantNoOpposite,  0},   
@@ -194,7 +194,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testDisableHimWithQueue
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,              0},   // error
     {MUTelnetQYes,              MUTelnetQWantNoEmpty,     DONT},   
     {MUTelnetQWantNoEmpty,      MUTelnetQWantNoEmpty,     0},   // error
@@ -207,7 +207,7 @@ typedef int QMethodTable[QSTATES][3];
 
 - (void) testDisableUsWithQueue
 {
-  QMethodTable table = {
+  MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,              0},   // error
     {MUTelnetQYes,              MUTelnetQWantNoEmpty,     WONT},   
     {MUTelnetQWantNoEmpty,      MUTelnetQWantNoEmpty,     0},   // error
@@ -268,7 +268,7 @@ typedef int QMethodTable[QSTATES][3];
 
 #pragma mark - Private methods
 
-- (void) assertQMethodTable: (QMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs
+- (void) assertQMethodTable: (MUQMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs
 {
   for (unsigned i = 0; i < QSTATES; ++i)
   {
@@ -284,7 +284,7 @@ typedef int QMethodTable[QSTATES][3];
           isCalledFromState: (MUTelnetQState) startState
                  forHimOrUs: (SEL) himOrUs
         theResultingStateIs: (MUTelnetQState) endState
-                   andCalls: (char) expectedFlags;
+                   andCalls: (int) expectedFlags;
 {
   NSString *message = [self qStateName: startState];
   

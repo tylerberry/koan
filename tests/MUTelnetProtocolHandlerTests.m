@@ -109,11 +109,11 @@
 {
   uint8_t bytes[2] = {'\r', 0};
   
-  for (unsigned i = 1; i < UINT8_MAX; i++)
+  for (uint16_t i = 1; i < UINT8_MAX; i++)
   {
     if (i == '\n' || i == '\r')
       continue;
-    bytes[1] = i;
+    bytes[1] = (uint8_t) i;
     [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 2]];
     [protocolStack flushBufferedData];
     [self assert: parsedData equals: [NSData dataWithBytes: bytes + 1 length: 1]];

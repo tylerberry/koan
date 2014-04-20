@@ -41,8 +41,8 @@ typedef enum
 
 typedef struct _AHURLLength
 {
-	unsigned long urlLength;
-	unsigned long schemeLength;
+  unsigned long urlLength;
+  unsigned long schemeLength;
 } AHURLLength;
 
 #define YY_EXTRA_TYPE AHURLLength

@@ -44,7 +44,7 @@
               parentString: (NSString *) pInString
                   andRange: (NSRange) inRange
 {
-	return [[[self class] alloc] initWithString: inString
+  return [[[self class] alloc] initWithString: inString
                          withValidationStatus: status
                                  parentString: pInString
                                      andRange: inRange];
@@ -56,64 +56,64 @@
          parentString: (NSString *) pInString
              andRange: (NSRange) inRange
 {
-	if (!(self = [self init]))
+  if (!(self = [self init]))
     return nil;
   
   [self setURLFromString: inString];
   self.range = inRange;
   self.parentString = pInString;
   self.validationStatus = status;
-	
-	return self;
+  
+  return self;
 }
 
 - (id) init
 {
-	if (!(self = [super init]))
+  if (!(self = [super init]))
     return nil;
   
   self.range = NSMakeRange (0, 0);
   self.validationStatus = 0;
   self.parentString = nil;
   self.URL = nil;
-	
-	return self;
+  
+  return self;
 }
 
 - (void) dealloc
 {
-	self.range = NSMakeRange (0, 0);
-	self.validationStatus = 0;
-	self.parentString = nil;
-	self.URL = nil;
+  self.range = NSMakeRange (0, 0);
+  self.validationStatus = 0;
+  self.parentString = nil;
+  self.URL = nil;
 }
 
 #pragma mark Transformers
 
 - (void) setURLFromString: (NSString *) inString
 {
-	NSString *preString =
+  NSString *preString =
   (__bridge_transfer NSString *) CFURLCreateStringByReplacingPercentEscapesUsingEncoding (kCFAllocatorDefault,
                                                                                           (CFStringRef) inString,
                                                                                           CFSTR (""),
                                                                                           kCFStringEncodingUTF8);
-	
-	NSString *linkString =
+  
+  NSString *linkString =
   (__bridge_transfer NSString *) CFURLCreateStringByAddingPercentEscapes (kCFAllocatorDefault,
                                                                           preString ? (__bridge CFStringRef) preString
                                                                                     : (__bridge CFStringRef) inString,
                                                                           CFSTR ("#[]"),
                                                                           NULL,
                                                                           kCFStringEncodingUTF8);
-	
-	self.URL = [NSURL URLWithString: linkString];
+  
+  self.URL = [NSURL URLWithString: linkString];
 }
 
 #pragma mark NSCopying
 
 - (id) copyWithZone: (NSZone *) zone
 {
-	return [[[self class] allocWithZone: zone] initWithString: self.URL.absoluteString
+  return [[[self class] allocWithZone: zone] initWithString: self.URL.absoluteString
                                        withValidationStatus: self.validationStatus
                                                parentString: self.parentString
                                                    andRange: self.range];
@@ -123,46 +123,46 @@
 
 - (BOOL) doesContain: (id) object
 {
-	if ([object isKindOfClass: [NSURL class]])
-		return [(NSURL *) object isEqualTo: self.URL];
-	if ([object isKindOfClass: [NSString class]])
-		return [(NSString *) object isEqualTo: self.parentString];
-	
-	return NO;
+  if ([object isKindOfClass: [NSURL class]])
+    return [(NSURL *) object isEqualTo: self.URL];
+  if ([object isKindOfClass: [NSString class]])
+    return [(NSString *) object isEqualTo: self.parentString];
+  
+  return NO;
 }
 
 - (BOOL) isLike: (NSString *) aString
 {
-	return ([[self.parentString substringWithRange: self.range] isLike: aString]
+  return ([[self.parentString substringWithRange: self.range] isLike: aString]
           || [self.URL.absoluteString isLike: aString]);
 }
 
 - (BOOL) isCaseInsensitiveLike: (NSString *) aString
 {
-	return ([[self.parentString substringWithRange: self.range] isCaseInsensitiveLike: aString]
+  return ([[self.parentString substringWithRange: self.range] isCaseInsensitiveLike: aString]
           || [self.URL.absoluteString isCaseInsensitiveLike: aString]);
 }
 
 - (BOOL) isEqualTo: (id) object
 {
-	if ([object isKindOfClass: [AHMarkedHyperlink class]]
+  if ([object isKindOfClass: [AHMarkedHyperlink class]]
       && ((AHMarkedHyperlink *) object).validationStatus == self.validationStatus
       && ((AHMarkedHyperlink *) object).range.location == self.range.location
       && ((AHMarkedHyperlink *) object).range.length == self.range.length
       && [((AHMarkedHyperlink *) object).parentString isEqualTo: self.parentString]
       && [((AHMarkedHyperlink *) object).URL isEqualTo: self.URL])
-		return YES;
+    return YES;
   else
     return NO;
 }
 
 - (BOOL) isGreaterThan: (id) object
 {
-	if ([object isKindOfClass: [AHMarkedHyperlink class]])
+  if ([object isKindOfClass: [AHMarkedHyperlink class]])
   {
     NSRange objectRange = ((AHMarkedHyperlink *) object).range;
     NSString *objectSubstring = [((AHMarkedHyperlink *) object).parentString substringWithRange: objectRange];
-		return [objectSubstring isGreaterThan: [self.parentString substringWithRange: self.range]];
+    return [objectSubstring isGreaterThan: [self.parentString substringWithRange: self.range]];
   }
   else
     return NO;
@@ -170,20 +170,20 @@
 
 - (BOOL) isLessThan:(id)object
 {
-	if([object isKindOfClass:[NSURL class]])
-		return [(NSURL *)object isLessThan:self.URL];
-	if([object isKindOfClass:[NSString class]])
-		return [(NSString *)object isLessThan:self.parentString];
-	return NO;
+  if([object isKindOfClass:[NSURL class]])
+    return [(NSURL *)object isLessThan:self.URL];
+  if([object isKindOfClass:[NSString class]])
+    return [(NSString *)object isLessThan:self.parentString];
+  return NO;
 }
 
 - (BOOL) isGreaterThanOrEqualTo: (id) object
 {
-	return [self isGreaterThan: object] || [self isEqualTo: object];
+  return [self isGreaterThan: object] || [self isEqualTo: object];
 }
 
 - (BOOL) isLessThanOrEqualTo: (id) object
 {
-	return [self isLessThan: object] || [self isEqualTo: object];
+  return [self isLessThan: object] || [self isEqualTo: object];
 }
 @end

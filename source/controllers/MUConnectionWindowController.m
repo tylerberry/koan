@@ -995,8 +995,8 @@ enum MUAbstractANSIColors
 
   timeConnectedField.hidden = YES;
   
-  splitView.frame = NSMakeRect (splitView.frame.origin.x, 0.0,
-                                splitView.frame.size.width, splitView.frame.size.height + 22.0);
+  splitView.frame = NSMakeRect (splitView.frame.origin.x, -1.0,
+                                splitView.frame.size.width, splitView.frame.size.height + 25.0);
 }
 
 - (void) windowWillExitFullScreen: (NSNotification *) notification
@@ -1008,7 +1008,7 @@ enum MUAbstractANSIColors
   timeConnectedField.hidden = NO;
   
   splitView.frame = NSMakeRect (splitView.frame.origin.x, 22.0,
-                                splitView.frame.size.width, splitView.frame.size.height - 22.0);
+                                splitView.frame.size.width, splitView.frame.size.height - 23.0);
 }
 
 - (NSSize) windowWillResize: (NSWindow *) sender toSize: (NSSize) frameSize

@@ -1050,7 +1050,7 @@ enum MUAbstractANSIColors
 - (void) _prepareDelayedReportWindowSizeToServer
 {
   if (_windowSizeNotificationTimer)
-    return;
+    [_windowSizeNotificationTimer invalidate];
   
   _windowSizeNotificationTimer = [NSTimer scheduledTimerWithTimeInterval: 0.01
                                                                   target: self

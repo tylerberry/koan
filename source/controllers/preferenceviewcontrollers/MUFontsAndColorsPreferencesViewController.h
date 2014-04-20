@@ -7,7 +7,11 @@
 #import "MASPreferencesViewController.h"
 
 @interface MUFontsAndColorsPreferencesViewController : NSViewController <MASPreferencesViewController>
+{
+  IBOutlet NSMatrix *fontRadioButtonMatrix;
+}
 
 - (IBAction) chooseNewFont: (id) sender;
+- (IBAction) fontRadioButtonClicked: (id) sender;
 
 @end

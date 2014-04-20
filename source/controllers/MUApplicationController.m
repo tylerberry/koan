@@ -77,6 +77,8 @@
     NSLog (@"Error occurred trying to swizzle NSObject -hash to -betterHash: %@", swizzleError.description);
   
   [MUApplicationController _initializeUserDefaults];
+  
+  [[NSFontManager sharedFontManager] setAction: @selector (changeProfileFont:)];
 }
 
 - (void) awakeFromNib
@@ -325,13 +327,6 @@
   [self _openConnectionWithWindowController: [registry controllerForProfile: profile]];
 }
 
-#pragma mark - Responder chain methods
-
-- (IBAction) changeFont: (id) sender
-{
-  [_preferencesController changeFont: sender];
-}
-
 #pragma mark - Private methods
 
 @dynamic _shouldPlayNotificationSound;
@@ -352,6 +347,7 @@
   
   initialValues[MUPFont] = [NSArchiver archivedDataWithRootObject:
                             [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]]];
+  initialValues[MUPDefaultFontChangeBehavior] = MUPDefaultFontChangeAsk;
   
   initialValues[MUPBackgroundColor] = [NSArchiver archivedDataWithRootObject: [NSColor blackColor]];
   initialValues[MUPLinkColor] = [NSArchiver archivedDataWithRootObject: [NSColor blueColor]];
@@ -417,7 +413,7 @@
     }
   }
   
-  initialValues[MUPUseProxy] = @0;
+  initialValues[MUPUseProxy] = MUPProxyNone;
   initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
@@ -436,7 +432,6 @@
   controller.delegate = self;
   
   [controller showWindow: nil];
-  [controller.window makeKeyAndOrderFront: nil];
 
   if (!controller.connectionController.connection.isConnectedOrConnecting)
     [controller connect: nil];
@@ -514,9 +509,11 @@
     }
     
     [worldMenu addItem: connectItem];
-    [worldItem setTitle: world.name ? world.name : @""];
+    
+    worldItem.title = world.name ? world.name : @"";
     [worldItem bind: @"title" toObject: world withKeyPath: @"name" options: nil];
-    [worldItem setSubmenu: worldMenu];
+    worldItem.submenu = worldMenu;
+    
     [openConnectionMenu addItem: worldItem];
   }
   

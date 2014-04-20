@@ -46,4 +46,10 @@
 - (IBAction) previousCommand: (id) sender;
 - (IBAction) sendInputText: (id) sender;
 
+// Custom responder chain methods.
+
+- (void) changeProfileFont: (id) sender;
+- (void) makeProfileTextLarger: (id) sender;
+- (void) makeProfileTextSmaller: (id) sender;
+
 @end

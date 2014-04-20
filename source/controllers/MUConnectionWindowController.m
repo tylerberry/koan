@@ -1,4 +1,3 @@
-
 //
 // MUConnectionWindowController.m
 //
@@ -13,6 +12,7 @@
 #import "NSFont+Traits.h"
 
 #import <objc/objc-runtime.h>
+#include <tgmath.h>
 
 enum MUSearchDirections
 {
@@ -474,16 +474,13 @@ enum MUAbstractANSIColors
   if (menuItemAction == @selector (connectOrDisconnect:))
   {
     if (self.connectionController.connection.isConnectedOrConnecting)
-      [menuItem setTitle: _(MULDisconnect)];
+      menuItem.title = _(MULDisconnect);
     else
-      [menuItem setTitle: _(MULConnect)];
+      menuItem.title = _(MULConnect);
     return YES;
   }
-  else if (menuItemAction == @selector (clearWindow:))
-  {
-  	return YES;
-  }
-  return NO;
+  
+  return YES;
 }
 
 - (BOOL) validateToolbarItem: (NSToolbarItem *) toolbarItem
@@ -549,14 +546,12 @@ enum MUAbstractANSIColors
 
 - (IBAction) clearWindow: (id) sender
 {
-  [receivedTextView setString: @""];
+  receivedTextView.string = @"";
 }
 
 - (IBAction) connect: (id) sender
 {
   [self.connectionController connect];
-  
-  [self.window makeFirstResponder: inputView];
 }
 
 - (IBAction) connectOrDisconnect: (id) sender
@@ -597,20 +592,91 @@ enum MUAbstractANSIColors
     _currentPrompt = nil;
   }
   
-  [inputView setString: @""];
+  inputView.string = @"";
+  inputView.font = self.connectionController.profile.effectiveFont; // Sending non-ASCII text can screw up the font.
+                                                                    // Resetting it here makes sure we don't suddenly
+                                                                    // have a weird proportional font out of nowhere.
   [self.window makeFirstResponder: inputView];
 }
 
 - (IBAction) nextCommand: (id) sender
 {
   [_historyRing updateString: inputView.string];
-  [inputView setString: [_historyRing nextString]];
+  inputView.string = [_historyRing nextString];
 }
 
 - (IBAction) previousCommand: (id) sender
 {
   [_historyRing updateString: inputView.string];
-  [inputView setString: [_historyRing previousString]];
+  inputView.string = [_historyRing previousString];
+}
+
+#pragma mark - Responder chain methods
+
+- (void) changeProfileFont: (id) sender
+{
+  BOOL changeUserDefaultsFont = NO;
+  
+  if (self.connectionController.profile.font == nil)
+  {
+    // If profile.font is nil, then we don't handle this message.
+    // TODO: Should we? Should this change the application default?
+    return;
+  }
+  
+  NSFontManager *fontManager = [NSFontManager sharedFontManager];
+  NSFont *selectedFont = fontManager.selectedFont;
+  
+  if (selectedFont == nil)
+    selectedFont = [NSFont userFixedPitchFontOfSize: [NSFont smallSystemFontSize]];
+  
+  NSFont *convertedFont = [fontManager convertFont: selectedFont];
+  
+  self.connectionController.profile.font = convertedFont;
+}
+
+- (void) makeProfileTextLarger: (id) sender
+{
+  NSFont *currentFont = self.connectionController.profile.font;
+  
+  if (currentFont == nil)
+  {
+    // If profile.font is nil, then we don't handle this message.
+    // TODO: Should we? Should this change the application default?
+    return;
+  }
+  
+  CGFloat largerFontSize = floor (currentFont.pointSize) + 1.0;
+  
+  NSFont *largerFont = [[NSFontManager sharedFontManager] convertFont: currentFont toSize: largerFontSize];
+  
+  self.connectionController.profile.font = largerFont;
+  [[NSFontManager sharedFontManager] setSelectedFont: largerFont isMultiple: NO];
+}
+
+- (void) makeProfileTextSmaller: (id) sender
+{
+  NSFont *currentFont = self.connectionController.profile.font;
+  
+  if (currentFont == nil)
+  {
+    // If profile.font is nil, then we don't handle this message.
+    // TODO: Should we? Should this change the application default?
+    return;
+  }
+  
+  CGFloat smallerFontSize = floor (currentFont.pointSize) - 1.0;
+  
+  if (smallerFontSize < 1.0)
+  {
+    NSBeep ();
+    return;
+  }
+    
+  NSFont *smallerFont = [[NSFontManager sharedFontManager] convertFont: currentFont toSize: smallerFontSize];
+  
+  self.connectionController.profile.font = smallerFont;
+  [[NSFontManager sharedFontManager] setSelectedFont: smallerFont isMultiple: NO];
 }
 
 #pragma mark - Filter delegate methods
@@ -622,7 +688,7 @@ enum MUAbstractANSIColors
 
 - (void) setInputViewString: (NSString *) string
 {
-  [inputView setString: string];
+  inputView.string = string;
 }
 
 #pragma mark - MUMUDConnectionControllerDelegate protocol
@@ -872,6 +938,14 @@ enum MUAbstractANSIColors
   return proposedOptions | NSApplicationPresentationAutoHideToolbar;
 }
 
+- (void) windowDidBecomeKey: (NSNotification *) notification
+{
+  // Keep the font panel in sync with the current key window.
+  
+  if (self.connectionController.profile.font)
+    [[NSFontManager sharedFontManager] setSelectedFont: self.connectionController.profile.font isMultiple: NO];
+}
+
 - (void) windowDidEnterFullScreen: (NSNotification *) notification
 {
   if (_shouldScrollToBottomAfterFullScreenTransition)
@@ -907,9 +981,9 @@ enum MUAbstractANSIColors
 {
   if (notification.object == self.window)
   {
-  	self.window.delegate = nil;
+    self.window.delegate = nil;
     
-  	[self _postConnectionWindowControllerWillCloseNotification];
+    [self _postConnectionWindowControllerWillCloseNotification];
   }
 }
 
@@ -919,7 +993,7 @@ enum MUAbstractANSIColors
   
   [self.window setContentBorderThickness: 0.0 forEdge: NSMinYEdge];
 
-  [timeConnectedField setHidden: YES];
+  timeConnectedField.hidden = YES;
   
   splitView.frame = NSMakeRect (splitView.frame.origin.x, 0.0,
                                 splitView.frame.size.width, splitView.frame.size.height + 22.0);
@@ -931,7 +1005,7 @@ enum MUAbstractANSIColors
   
   [self.window setContentBorderThickness: 22.0 forEdge: NSMinYEdge];
   
-  [timeConnectedField setHidden: NO];
+  timeConnectedField.hidden = NO;
   
   splitView.frame = NSMakeRect (splitView.frame.origin.x, 22.0,
                                 splitView.frame.size.width, splitView.frame.size.height - 22.0);
@@ -964,7 +1038,7 @@ enum MUAbstractANSIColors
 - (void) _postConnectionWindowControllerDidReceiveTextNotification
 {
   [[NSNotificationCenter defaultCenter] postNotificationName: MUConnectionWindowControllerDidReceiveTextNotification
-  																										object: self];
+                                                      object: self];
 }
 
 - (void) _postConnectionWindowControllerWillCloseNotification
@@ -992,8 +1066,8 @@ enum MUAbstractANSIColors
 
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification
 {
-  [receivedTextView setNeedsDisplay: YES];
-  [inputView setNeedsDisplay: YES];
+  receivedTextView.needsDisplay = YES;
+  inputView.needsDisplay = YES;
 }
 
 - (BOOL) _shouldScrollDisplayViewToBottom
@@ -1264,6 +1338,8 @@ enum MUAbstractANSIColors
     index += attributeRange.length;
   }
   
+  inputView.font = self.connectionController.profile.effectiveFont;
+  
   [receivedTextView scrollRangeToVisible: NSMakeRange (visibleRange.location + visibleRange.length, 0)];
   [inputView scrollRangeToVisible: NSMakeRange (inputView.textStorage.length, 0)];
   
@@ -1294,7 +1370,7 @@ enum MUAbstractANSIColors
     
     if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUDefaultForegroundColorTag)
     {
-      [receivedTextView.textStorage addAttribute: ([attributes objectForKey: MUInverseColorsAttributeName]
+      [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName
                                                    : NSForegroundColorAttributeName)
                                            value: self.connectionController.profile.effectiveTextColor
@@ -1303,6 +1379,8 @@ enum MUAbstractANSIColors
     
     index += attributeRange.length;
   }
+  
+  inputView.textColor = self.connectionController.profile.effectiveTextColor;
   
   receivedTextView.needsDisplay = YES;
   inputView.needsDisplay = YES;

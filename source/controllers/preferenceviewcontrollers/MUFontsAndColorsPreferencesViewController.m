@@ -24,6 +24,14 @@
   return self;
 }
 
+- (void) awakeFromNib
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  NSNumber *defaultFontChangeBehaviorNumber = [userDefaults objectForKey: MUPDefaultFontChangeBehavior];
+  
+  [fontRadioButtonMatrix selectCellWithTag: defaultFontChangeBehaviorNumber.integerValue];
+}
+
 #pragma mark - IBActions
 
 - (IBAction) chooseNewFont: (id) sender
@@ -41,9 +49,16 @@
   [[NSFontManager sharedFontManager] orderFrontFontPanel: self];
 }
 
+- (IBAction) fontRadioButtonClicked: (id) sender
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  
+  [userDefaults setInteger: fontRadioButtonMatrix.selectedTag forKey: MUPDefaultFontChangeBehavior];
+}
+
 #pragma mark - Responder chain actions
 
-- (IBAction) changeFont: (id) sender
+- (IBAction) changeProfileFont: (id) sender
 {
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
   NSFont *selectedFont = fontManager.selectedFont;

@@ -316,12 +316,13 @@
 
 #pragma mark - Responder chain methods
 
-- (IBAction) changeFont: (id) sender
+- (IBAction) changeProfileFont: (id) sender
 {
   if (_profileViewController.profile.font == nil)
   {
     // If profile.font is nil, then we don't handle this message.
-    [super changeFont: sender];
+    // TODO: Is this really the behavior we want?
+    return;
   }
   
   NSFontManager *fontManager = [NSFontManager sharedFontManager];
@@ -603,7 +604,7 @@
   NSTreeNode *node = [profilesOutlineView itemAtRow: profilesOutlineView.selectedRow];
   MUTreeNode *representedObject = node.representedObject;
   
-	if ([representedObject isKindOfClass: [MUWorld class]])
+  if ([representedObject isKindOfClass: [MUWorld class]])
   {
     MUWorld *world = (MUWorld *) representedObject;
     
@@ -659,6 +660,11 @@
     _playerViewController.lastView.nextKeyView = _profileViewController.firstView;
     _profileViewController.lastView.nextKeyView = firstView;
   }
+  
+  // Sync font panel with new selection.
+  
+  if (_profileViewController.profile.font)
+    [[NSFontManager sharedFontManager] setSelectedFont: _profileViewController.profile.font isMultiple: NO];
 }
 
 #pragma mark - MUOutlineViewDelegate protocol
@@ -701,6 +707,14 @@
 
 
 #pragma mark - NSWindowDelegate protocol
+
+- (void) windowDidBecomeKey: (NSNotification *) notification
+{
+  // Keep the font panel in sync with the current key window.
+  
+  if (_profileViewController.profile.font)
+    [[NSFontManager sharedFontManager] setSelectedFont: _profileViewController.profile.font isMultiple: NO];
+}
 
 - (void) windowDidLoad
 {
@@ -835,8 +849,8 @@
 {
   @autoreleasepool
   {
-		[self _populateProfilesFromWorldRegistry];
-	}
+    [self _populateProfilesFromWorldRegistry];
+  }
 }
 
 - (void) _saveProfilesOutlineViewState

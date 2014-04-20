@@ -11,8 +11,8 @@ static BOOL _growlIsReady = NO;
 @interface MUGrowlService ()
 
 - (void) notifyWithName: (NSString *) name
-  								title: (NSString *) title
-  					description: (NSString *) description;
+                  title: (NSString *) title
+            description: (NSString *) description;
 
 @end
 
@@ -90,18 +90,18 @@ static BOOL _growlIsReady = NO;
 #pragma mark - Private methods
 
 - (void) notifyWithName: (NSString *) name
-  								title: (NSString *) title
-  					description: (NSString *) description
+                  title: (NSString *) title
+            description: (NSString *) description
 {
   if (_growlIsReady)
   {
-  	[GrowlApplicationBridge notifyWithTitle: title
-  															description: description
-  												 notificationName: name
-  																 iconData: nil
-  																 priority: 0
-  																 isSticky: NO
-  														 clickContext: nil];
+    [GrowlApplicationBridge notifyWithTitle: title
+                                description: description
+                           notificationName: name
+                                   iconData: nil
+                                   priority: 0
+                                   isSticky: NO
+                               clickContext: nil];
   }
 }
 

@@ -435,7 +435,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 {
   _lastReceivedData = nil;
   [_state reset];
-  [_telnetProtocolHandler resetOptionStates];
+  [_telnetProtocolHandler reset];
 }
 
 - (void) _unregisterObjectForNotifications: (id) object

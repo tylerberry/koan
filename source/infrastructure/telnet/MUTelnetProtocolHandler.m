@@ -368,7 +368,7 @@ static NSArray *_offerableTerminalTypes;
   
   if (_telnetStateMachine.telnetConfirmed)
   {
-    if (OSAtomicTestAndSetBarrier (1, &_sentOptionRequest))
+    if (OSAtomicTestAndSetBarrier (1, &_sentOptionRequest) == 0)
     {
       [self _negotiateOptions];
     }
@@ -392,8 +392,14 @@ static NSArray *_offerableTerminalTypes;
     [footerData appendBytes: &endOfRecordBytes length: 2];
   }
   
-  if (_telnetStateMachine.telnetConfirmed && ![self optionEnabledForUs: MUTelnetOptionSuppressGoAhead])
+  if (_telnetStateMachine.telnetConfirmed
+      && ![self optionEnabledForUs: MUTelnetOptionSuppressGoAhead]
+      && !(_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
+           || _connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyEvennia))
   {
+    // Note the codebase-specific hacks here - some codebases react extremely poorly to IAC GA and either don't support
+    // or refuse to negotiate SUPPRESS-GO-AHEAD.
+    
     uint8_t goAheadBytes[] = {MUTelnetInterpretAsCommand, MUTelnetGoAhead};
     [footerData appendBytes: &goAheadBytes length: 2];
   } 

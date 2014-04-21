@@ -12,6 +12,7 @@ typedef enum MUCodebase
   MUCodebaseStickyMUSH,
   MUCodebaseTinyBitMUSH,
   MUCodebaseRhostMUSH,
+  MUCodebaseEvennia,
   MUCodebaseLPMUD,
   MUCodebaseLPMUDWithDGD,
   MUCodebaseUnknown
@@ -21,6 +22,7 @@ typedef enum MUCodebaseFamily
 {
   MUCodebaseFamilyTinyMUSH,
   MUCodebaseFamilyPennMUSH,
+  MUCodebaseFamilyEvennia,
   MUCodebaseFamilyMUD,
   MUCodebaseFamilyUnknown
 } MUCodebaseFamily;

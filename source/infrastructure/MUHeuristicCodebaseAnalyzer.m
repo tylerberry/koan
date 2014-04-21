@@ -7,9 +7,6 @@
 #import "MUHeuristicCodebaseAnalyzer.h"
 
 @interface MUHeuristicCodebaseAnalyzer ()
-{
-  BOOL _definitiveCodebaseFound;
-}
 
 - (void) log: (NSString *) message, ...;
 
@@ -18,6 +15,9 @@
 #pragma mark -
 
 @implementation MUHeuristicCodebaseAnalyzer
+{
+  BOOL _definitiveCodebaseFound;
+}
 
 - (id) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate
 {
@@ -65,6 +65,14 @@
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
       [self log: @"Analyzer: MSSP identifies as PennMUSH."];
+    }
+    else if ([valueString rangeOfString: @"Evennia"].location != NSNotFound)
+    {
+      _definitiveCodebaseFound = YES;
+      _codebase = MUCodebaseEvennia;
+      _codebaseFamily = MUCodebaseFamilyEvennia;
+
+      [self log: @"Analyzer: MSSP identifies as Evennia."];
     }
   }
 }
@@ -118,6 +126,13 @@
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
       [self log: @"Analyzer: Guessing StickyMUSH from received text."];
+    }
+    else if ([textString.lowercaseString rangeOfString: @"evennia"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseEvennia;
+      _codebaseFamily = MUCodebaseFamilyEvennia;
+
+      [self log: @"Analyzer: Guessing Evennia from received text."];
     }
     else if ([textString.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
     {

@@ -122,7 +122,7 @@ static NSString * const MUKoanLogPlayerIdentifier = @"com_3james_koan_log_player
 
 #pragma mark - Private property implementation
 
-- (NSString *) spotlightDisplayName
+- (NSString *) _spotlightDisplayName
 {
   // This string should be of the format "Player on Date" unless there is no player header
   // in which case it should be "World on Date" unless there is none, and then it should be

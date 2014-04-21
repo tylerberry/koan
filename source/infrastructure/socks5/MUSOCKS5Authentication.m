@@ -11,7 +11,7 @@
 
 @interface MUSOCKS5Authentication ()
 
-@property (readwrite) BOOL authenticated;
+@property (assign) BOOL authenticated;
 
 @end
 

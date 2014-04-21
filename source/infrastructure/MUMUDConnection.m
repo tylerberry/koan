@@ -9,8 +9,6 @@
 
 #import "NSString+CodePage437.h"
 
-static NSUInteger _droppedSpamCount = 0;
-
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
 NSString *MUMUDConnectionIsConnectingNotification = @"MUMUDConnectionIsConnectingNotification";
 NSString *MUMUDConnectionWasClosedByClientNotification = @"MUMUDConnectionWasClosedByClientNotification";
@@ -29,8 +27,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   MUProtocolStack *_protocolStack;
   MUTelnetProtocolHandler *_telnetProtocolHandler;
   MUSocketFactory *_socketFactory;
-  
-  NSData *_lastReceivedData;
   
   MUWorld *_world;
   NSTimer *_pollTimer;
@@ -133,9 +129,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   NSString *lineWithLineEnding = [NSString stringWithFormat: @"%@\r\n", line];
   NSData *encodedData = [lineWithLineEnding dataUsingEncoding: self.state.stringEncoding allowLossyConversion: YES];
   [self _writeDataWithPreprocessing: encodedData];
-  
-  _lastReceivedData = nil;  // If we send data, that should reset packet-level flood detection, so if we send 'who'
-                            // twice and get identical replies (for example) we don't mysteriously get no response.
 }
 
 #pragma mark - MUAbstractConnection overrides
@@ -283,24 +276,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
         else
         {
           NSData *receivedData = [NSData dataWithBytesNoCopy: bytes length: readLength freeWhenDone: YES];
-
-          if (!_state.needsSingleByteSocketReads
-              && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDropDuplicatePackets])
-          {
-            if (![receivedData isEqualToData: _lastReceivedData])
-            {
-              _lastReceivedData = [receivedData copy];
-              [_protocolStack parseInputData: receivedData];
-            }
-            else
-            {
-              NSLog (@"Dropped spam packets: %lu", ++_droppedSpamCount);
-            }
-          }
-          else
-          {
-            [_protocolStack parseInputData: receivedData];
-          }
+          
+          [_protocolStack parseInputData: receivedData];
         }
         
         if (!_inputStream.hasBytesAvailable)
@@ -433,7 +410,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) _resetState
 {
-  _lastReceivedData = nil;
   [_state reset];
   [_telnetProtocolHandler reset];
 }

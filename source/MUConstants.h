@@ -30,7 +30,6 @@ extern NSString * const MUPLimitAutomaticReconnect;
 extern NSString * const MUPAutomaticReconnectCount;
 extern NSString * const MUPDropDuplicateLines;
 extern NSString * const MUPDropDuplicateLinesCount;
-extern NSString * const MUPDropDuplicatePackets;
 
 // Sounds.
 

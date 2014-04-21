@@ -304,8 +304,10 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
     resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\016\u266b"];
   }
   else
-    resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTfhlmnsuz"];
-  
+  {
+    // These are valid codes that we don't handle. Some of them are vt100.
+    resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTcfhlmnsuz"];
+  }
   NSString *charactersFromThisScan;
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];
   

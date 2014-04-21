@@ -1102,7 +1102,7 @@
 
 - (void) testIgnoresUnhandledButValidCodes
 {
-  NSString *nonHandledCodes = @"\007ABCDEFGHKSTfhlnsuz";
+  NSString *nonHandledCodes = @"\007ABCDEFGHKSTcfhlnsuz"; // Some of the unhandled codes are vt100, technically.
   
   for (NSUInteger i = 0; i < nonHandledCodes.length; i++)
   {

@@ -172,18 +172,19 @@
 - (void) testDoSuppressGoAhead
 {
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
-  [self assertTrue: [protocolHandler optionYesForUs: MUTelnetOptionSuppressGoAhead]];
+  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionSuppressGoAhead]];
 }
 
 - (void) testWillSuppressGoAhead
 {
   [self simulateWill: MUTelnetOptionSuppressGoAhead];
-  [self assertTrue: [protocolHandler optionYesForHim: MUTelnetOptionSuppressGoAhead]];
+  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionSuppressGoAhead]];
 }
 
 - (void) testGoAhead
 {
   [self confirmTelnetWithDontEcho];
+  mockSocketData.data = [NSData data]; // Discard initial option negotiation.
   
   [protocolStack preprocessOutputData: [NSData data]];
   
@@ -204,13 +205,13 @@
 - (void) testDoTerminalType
 {
   [self simulateDo: MUTelnetOptionTerminalType];
-  [self assertTrue: [protocolHandler optionYesForUs: MUTelnetOptionTerminalType]];
+  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionTerminalType]];
 }
 
 - (void) testRefuseWillTerminalType
 {
   [self simulateWill: MUTelnetOptionTerminalType];
-  [self assertFalse: [protocolHandler optionYesForHim: MUTelnetOptionTerminalType]];
+  [self assertFalse: [protocolHandler optionEnabledForHim: MUTelnetOptionTerminalType]];
 }
 
 - (void) testTerminalType
@@ -249,13 +250,13 @@
 - (void) testDoCharset
 {
   [self simulateDo: MUTelnetOptionCharset];
-  [self assertTrue: [protocolHandler optionYesForUs: MUTelnetOptionCharset]];
+  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionCharset]];
 }
 
 - (void) testWillCharset
 {
   [self simulateWill: MUTelnetOptionCharset];
-  [self assertTrue: [protocolHandler optionYesForHim: MUTelnetOptionCharset]];
+  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionCharset]];
 }
 
 - (void) testCharsetUTF8Accepted
@@ -331,13 +332,13 @@
 - (void) testDoEndOfRecord
 {
   [self simulateDo: MUTelnetOptionEndOfRecord];
-  [self assertTrue: [protocolHandler optionYesForUs: MUTelnetOptionEndOfRecord]];
+  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionEndOfRecord]];
 }
 
 - (void) testWillEndOfRecord
 {
   [self simulateWill: MUTelnetOptionEndOfRecord];
-  [self assertTrue: [protocolHandler optionYesForHim: MUTelnetOptionEndOfRecord]];
+  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionEndOfRecord]];
 }
 
 - (void) testEndOfRecord
@@ -427,8 +428,8 @@
   
   [protocolStack addProtocolHandler: protocolHandler];
   
-  parsedData = [[NSMutableData alloc] initWithCapacity: 64];
-  mockSocketData = [[NSMutableData alloc] initWithCapacity: 64];
+  parsedData = [NSMutableData new];
+  mockSocketData = [NSMutableData new];
 }
 
 - (void) sendMockSocketData

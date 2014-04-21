@@ -42,6 +42,7 @@
     case MUTelnetAreYouThere:
     case MUTelnetEraseCharacter:
     case MUTelnetEraseLine:
+      [protocolHandler log: @"  Telnet: IAC %u (unhandled).", byte];
       [stateMachine confirmTelnet];
       return [MUTelnetTextState state];
       

@@ -17,7 +17,16 @@ typedef enum MUTelnetQ {
   MUTelnetQWantYesOpposite
 } MUTelnetQState;
 
-@protocol MUTelnetOptionDelegate;
+@protocol MUTelnetOptionDelegate
+
+- (void) do: (uint8_t) option;
+- (void) dont: (uint8_t) option;
+- (void) will: (uint8_t) option;
+- (void) wont: (uint8_t) option;
+
+@end
+
+#pragma mark -
 
 @interface MUTelnetOption : NSObject
 {
@@ -26,7 +35,12 @@ typedef enum MUTelnetQ {
   MUTelnetQState _us;
 }
 
-+ (NSString *) optionNameForByte: (uint8_t) byte;
+@property (readonly) BOOL enabledForHim;
+@property (readonly) BOOL enabledForUs;
+@property (assign) BOOL permittedForHim;
+@property (assign) BOOL permittedForUs;
+
++ (NSString *) optionNameForByte: (uint8_t) option;
 
 - (id) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
 
@@ -41,20 +55,5 @@ typedef enum MUTelnetQ {
 - (void) disableUs;
 - (void) enableHim;
 - (void) enableUs;
-
-// Determining if options should be or are enabled.
-- (BOOL) heIsYes;
-- (void) heIsAllowedToUse: (BOOL) value;
-- (BOOL) weAreYes;
-- (void) weAreAllowedToUse: (BOOL) value;
-
-@end
-
-@protocol MUTelnetOptionDelegate
-
-- (void) do: (uint8_t) option;
-- (void) dont: (uint8_t) option;
-- (void) will: (uint8_t) option;
-- (void) wont: (uint8_t) option;
 
 @end

@@ -12,7 +12,7 @@
 @interface MUTelnetStateMachine : NSObject
 
 @property (strong) MUTelnetState *state;
-@property (assign) BOOL telnetConfirmed;
+@property (readonly) BOOL telnetConfirmed;
 
 + (id) stateMachine;
 

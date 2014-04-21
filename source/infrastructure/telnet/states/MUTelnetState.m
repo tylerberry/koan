@@ -15,17 +15,19 @@ static NSMutableDictionary *states;
 + (id) state
 {
   MUTelnetState *result;
+
+  // Todo: This is probably not thread-safe.
   
   if (!states)
     states = [[NSMutableDictionary alloc] init];
   
-  if (!states[[self description]])
+  if (!states[self.description])
   {
     result = [[self alloc] init];
-    states[[self description]] = result;
+    states[self.description] = result;
   }
   else
-    result = states[[self description]];
+    result = states[self.description];
   
   return result;
 }

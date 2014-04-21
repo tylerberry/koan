@@ -48,15 +48,6 @@
 #pragma mark -
 
 @interface MUTelnetProtocolHandler : MUProtocolHandler <MUTelnetProtocolHandler, MUTelnetOptionDelegate>
-{
-  MUTelnetStateMachine *stateMachine;
-  
-  NSMutableData *subnegotiationBuffer;
-  
-  MUTelnetOption *options[TELNET_OPTION_MAX + 1];
-  BOOL receivedCR;
-  BOOL optionRequestSent;
-}
 
 @property (weak) NSObject <MUTelnetProtocolHandlerDelegate> *delegate;
 
@@ -65,14 +56,13 @@
 
 // Option negotation.
 
-- (void) resetOptionStates;
+- (void) reset;
 
 - (void) disableOptionForHim: (uint8_t) option;
 - (void) disableOptionForUs: (uint8_t) option;
 - (void) enableOptionForHim: (uint8_t) option;
 - (void) enableOptionForUs: (uint8_t) option;
-- (BOOL) optionYesForHim: (uint8_t) option;
-- (BOOL) optionYesForUs: (uint8_t) option;- (void) shouldAllowDo: (BOOL) value forOption: (uint8_t) option;
-- (void) shouldAllowWill: (BOOL) value forOption: (uint8_t) option;
+- (BOOL) optionEnabledForHim: (uint8_t) option;
+- (BOOL) optionEnabledForUs: (uint8_t) option;
 
 @end

@@ -9,36 +9,37 @@
 #import "MUTelnetConstants.h"
 
 @interface MUTelnetOption ()
-{
-  NSObject <MUTelnetOptionDelegate> *delegate;
-  uint8_t option;
-  BOOL heIsAllowed;
-  BOOL weAreAllowed;
-}
 
-- (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
-- (void) receivedDisableDemandForState: (MUTelnetQState *) state
-                         ifAcknowledge: (SEL) acknowledge
-                               ifAllow: (SEL) allow;
-- (void) receivedEnableRequestForState: (MUTelnetQState *) state
-                      shouldEnableFlag: (BOOL *) flag
-                              ifAccept: (SEL) accept
-                              ifReject: (SEL) reject;
+@property (weak) NSObject <MUTelnetOptionDelegate> *delegate;
+
+- (void) _demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
+- (void) _receivedDisableDemandForState: (MUTelnetQState *) state
+                          ifAcknowledge: (SEL) acknowledge
+                                ifAllow: (SEL) allow;
+- (void) _receivedEnableRequestForState: (MUTelnetQState *) state
+                       shouldEnableFlag: (BOOL) flag
+                               ifAccept: (SEL) accept
+                               ifReject: (SEL) reject;
 - (void) requestEnableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
-- (void) sendDo;
-- (void) sendDont;
-- (void) sendWill;
-- (void) sendWont;
+- (void) _sendDo;
+- (void) _sendDont;
+- (void) _sendWill;
+- (void) _sendWont;
 
 @end
 
 #pragma mark -
 
 @implementation MUTelnetOption
-
-+ (NSString *) optionNameForByte: (uint8_t) byte
 {
-  switch (byte)
+  uint8_t _option;
+}
+
+@dynamic enabledForHim, enabledForUs;
+
++ (NSString *) optionNameForByte: (uint8_t) option
+{
+  switch (option)
   {
     case MUTelnetOptionTransmitBinary:
       return @"TRANSMIT-BINARY";
@@ -122,91 +123,81 @@
       return @"GMCP";
       
     default:
-      return [NSString stringWithFormat: @"%u (unknown option)", (unsigned) byte];
+      return [NSString stringWithFormat: @"%u (unknown option)", (unsigned) option];
   }
 }
 
-- (void) disableHim
-{
-  [self demandDisableFor: &_him withSelector: @selector (sendDont)];
-}
-
-- (void) disableUs
-{
-  [self demandDisableFor: &_us withSelector: @selector (sendWont)];
-}
-
-- (BOOL) heIsYes
-{
-  return _him == MUTelnetQYes;
-}
-
-- (id) initWithOption: (uint8_t) newOption delegate: (NSObject <MUTelnetOptionDelegate> *) object
+- (id) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object
 {
   if (!(self = [super init]))
     return nil;
-  option = newOption;
-  delegate = object;
-  heIsAllowed = NO;
-  weAreAllowed = NO;
+  _option = option;
+  _delegate = object;
+  _permittedForHim = NO;
+  _permittedForUs = NO;
   _him = MUTelnetQNo;
   _us = MUTelnetQNo;
   return self;
 }
 
-- (void) receivedDo
+- (void) disableHim
 {
-  [self receivedEnableRequestForState: &_us
-                     shouldEnableFlag: &weAreAllowed
-                             ifAccept: @selector (sendWill) 
-                             ifReject: @selector (sendWont)];  
+  [self _demandDisableFor: &_him withSelector: @selector (_sendDont)];
 }
 
-- (void) receivedDont
+- (void) disableUs
 {
-  [self receivedDisableDemandForState: &_us
-                        ifAcknowledge: @selector (sendWont) 
-                              ifAllow: @selector (sendWill)];
-}
-
-- (void) receivedWill
-{
-  [self receivedEnableRequestForState: &_him
-                     shouldEnableFlag: &heIsAllowed
-                             ifAccept: @selector (sendDo) 
-                             ifReject: @selector (sendDont)];
-}
-
-- (void) receivedWont
-{
-  [self receivedDisableDemandForState: &_him
-                        ifAcknowledge: @selector (sendDont) 
-                              ifAllow: @selector (sendDo)];
+  [self _demandDisableFor: &_us withSelector: @selector (_sendWont)];
 }
 
 - (void) enableHim
 {
-  [self requestEnableFor: &_him withSelector: @selector (sendDo)];
+  [self requestEnableFor: &_him withSelector: @selector (_sendDo)];
 }
 
 - (void) enableUs
 {
-  [self requestEnableFor: &_us withSelector: @selector (sendWill)];
+  [self requestEnableFor: &_us withSelector: @selector (_sendWill)];
 }
 
-- (void) heIsAllowedToUse: (BOOL) value
+- (BOOL) enabledForHim
 {
-  heIsAllowed = value;
+  return _him == MUTelnetQYes;
 }
 
-- (BOOL) weAreYes
+- (BOOL) enabledForUs
 {
   return _us == MUTelnetQYes;
 }
 
-- (void) weAreAllowedToUse: (BOOL) value
+- (void) receivedDo
 {
-  weAreAllowed = value;
+  [self _receivedEnableRequestForState: &_us
+                      shouldEnableFlag: self.permittedForUs
+                              ifAccept: @selector (_sendWill)
+                              ifReject: @selector (_sendWont)];
+}
+
+- (void) receivedDont
+{
+  [self _receivedDisableDemandForState: &_us
+                         ifAcknowledge: @selector (_sendWont)
+                               ifAllow: @selector (_sendWill)];
+}
+
+- (void) receivedWill
+{
+  [self _receivedEnableRequestForState: &_him
+                      shouldEnableFlag: self.permittedForHim
+                              ifAccept: @selector (_sendDo)
+                              ifReject: @selector (_sendDont)];
+}
+
+- (void) receivedWont
+{
+  [self _receivedDisableDemandForState: &_him
+                         ifAcknowledge: @selector (_sendDont)
+                               ifAllow: @selector (_sendDo)];
 }
 
 #pragma mark - Private methods
@@ -214,7 +205,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
-- (void) demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector
+- (void) _demandDisableFor: (MUTelnetQState *) state withSelector: (SEL) selector
 {
   switch (*state)
   {
@@ -238,9 +229,9 @@
   }   
 }
 
-- (void) receivedDisableDemandForState: (MUTelnetQState *) state
-                         ifAcknowledge: (SEL) acknowledge
-                               ifAllow: (SEL) allow
+- (void) _receivedDisableDemandForState: (MUTelnetQState *) state
+                          ifAcknowledge: (SEL) acknowledge
+                                ifAllow: (SEL) allow
 {
   switch (*state)
   {
@@ -265,15 +256,15 @@
   }  
 }
 
-- (void) receivedEnableRequestForState: (MUTelnetQState *) state
-                      shouldEnableFlag: (BOOL *) flag
-                              ifAccept: (SEL) accept
-                              ifReject: (SEL) reject
+- (void) _receivedEnableRequestForState: (MUTelnetQState *) state
+                       shouldEnableFlag: (BOOL) shouldEnableOption
+                               ifAccept: (SEL) accept
+                               ifReject: (SEL) reject
 {
   switch (*state)
   {
     case MUTelnetQNo:
-      if (*flag)
+      if (shouldEnableOption)
       {
         *state = MUTelnetQYes;
         [self performSelector: accept];
@@ -327,24 +318,24 @@
 
 #pragma clang diagnostic pop
 
-- (void) sendDo
+- (void) _sendDo
 {
-  [delegate do: option];
+  [self.delegate do: _option];
 }
 
-- (void) sendDont
+- (void) _sendDont
 {
-  [delegate dont: option];
+  [self.delegate dont: _option];
 }
 
-- (void) sendWill
+- (void) _sendWill
 {
-  [delegate will: option];
+  [self.delegate will: _option];
 }
 
-- (void) sendWont
+- (void) _sendWont
 {
-  [delegate wont: option];
+  [self.delegate wont: _option];
 }
 
 @end

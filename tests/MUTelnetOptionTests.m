@@ -112,7 +112,7 @@ typedef int MUQMethodTable[QSTATES][3];
 
 - (void) testReceivedWillAndWeDoNotWantTo
 {
-  [option heIsAllowedToUse: NO];
+  option.permittedForHim = NO;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            DONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -126,7 +126,7 @@ typedef int MUQMethodTable[QSTATES][3];
 
 - (void) testReceivedWillAndWeDoWantTo
 {
-  [option heIsAllowedToUse: YES];
+  option.permittedForHim = YES;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           DO},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -140,7 +140,7 @@ typedef int MUQMethodTable[QSTATES][3];
 
 - (void) testReceivedDoAndWeDoNotWantTo
 {
-  [option weAreAllowedToUse: NO];
+  option.permittedForUs = NO;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            WONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -154,7 +154,7 @@ typedef int MUQMethodTable[QSTATES][3];
 
 - (void) testReceivedDoAndWeDoWantTo
 {
-  [option weAreAllowedToUse: YES];
+  option.permittedForUs = YES;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           WILL},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -225,10 +225,10 @@ typedef int MUQMethodTable[QSTATES][3];
   for (unsigned i = 0; i < 5; ++i)
   {
     [option setHim: noStates[i]];
-    [self assertFalse: [option heIsYes]  message: [self qStateName: noStates[i]]];
+    [self assertFalse: option.enabledForHim message: [self qStateName: noStates[i]]];
   }
   [option setHim: MUTelnetQYes];
-  [self assertTrue: [option heIsYes]];
+  [self assertTrue: option.enabledForHim];
 }
 
 - (void) testWeAreEnabled
@@ -238,10 +238,10 @@ typedef int MUQMethodTable[QSTATES][3];
   for (unsigned i = 0; i < 5; ++i)
   {
     [option setUs: noStates[i]];
-    [self assertFalse: [option weAreYes] message: [self qStateName: noStates[i]]];
+    [self assertFalse: option.enabledForUs message: [self qStateName: noStates[i]]];
   }
   [option setUs: MUTelnetQYes];
-  [self assertTrue: [option weAreYes]];
+  [self assertTrue: option.enabledForUs];
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol

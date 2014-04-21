@@ -8,6 +8,14 @@
 
 #import "MUTelnetTextState.h"
 
+@interface MUTelnetStateMachine ()
+
+@property (assign) BOOL telnetConfirmed;
+
+@end
+
+#pragma mark -
+
 @implementation MUTelnetStateMachine
 
 + (id) stateMachine

@@ -297,12 +297,13 @@ enum MUTextDisplayModes
 
 - (void) _sendPeriodicPing: (NSTimer *) timer
 {
-  return;
   if (_connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
       || _connection.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
     [_connection writeLine: @"IDLE"];
   else if (_connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH)
     [_connection writeLine: @"@@"];
+  else if (_connection.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyEvennia)
+    [_connection writeLine: @"idle"];
 }
 
 @end

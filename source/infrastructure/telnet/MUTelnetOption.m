@@ -20,7 +20,7 @@
                        shouldEnableFlag: (BOOL) flag
                                ifAccept: (SEL) accept
                                ifReject: (SEL) reject;
-- (void) requestEnableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
+- (void) _requestEnableFor: (MUTelnetQState *) state withSelector: (SEL) selector;
 - (void) _sendDo;
 - (void) _sendDont;
 - (void) _sendWill;
@@ -131,12 +131,14 @@
 {
   if (!(self = [super init]))
     return nil;
+
   _option = option;
   _delegate = object;
   _permittedForHim = NO;
   _permittedForUs = NO;
   _him = MUTelnetQNo;
   _us = MUTelnetQNo;
+
   return self;
 }
 
@@ -152,12 +154,12 @@
 
 - (void) enableHim
 {
-  [self requestEnableFor: &_him withSelector: @selector (_sendDo)];
+  [self _requestEnableFor: &_him withSelector: @selector (_sendDo)];
 }
 
 - (void) enableUs
 {
-  [self requestEnableFor: &_us withSelector: @selector (_sendWill)];
+  [self _requestEnableFor: &_us withSelector: @selector (_sendWill)];
 }
 
 - (BOOL) enabledForHim
@@ -292,7 +294,7 @@
   }
 }
 
-- (void) requestEnableFor: (MUTelnetQState *) state withSelector: (SEL) selector
+- (void) _requestEnableFor: (MUTelnetQState *) state withSelector: (SEL) selector
 {
   switch (*state)
   {

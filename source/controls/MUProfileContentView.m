@@ -67,6 +67,7 @@
   self.autoresizingMask = NSViewWidthSizable;
   
   self.frame = NSMakeRect (self.frame.origin.x, self.frame.origin.y, self.frame.size.width, totalHeight);
+  
   if (totalHeight > self.enclosingScrollView.documentVisibleRect.size.height)
     [self.enclosingScrollView flashScrollers];
 }

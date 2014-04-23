@@ -8,7 +8,6 @@
 
 @implementation MUTextView
 
-@synthesize pasteDelegate;
 @dynamic monospaceCharacterHeight, monospaceCharacterSize, monospaceCharacterWidth, numberOfColumns, numberOfLines;
 
 #pragma mark - Properties

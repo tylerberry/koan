@@ -140,27 +140,6 @@ enum MUAbstractANSIColors
   [receivedTextView.textContainer replaceLayoutManager: [[MULayoutManager alloc] init]];
   receivedTextView.layoutManager.allowsNonContiguousLayout = YES;
   
-  // On 10.7 and up we can set scroller knob colors.
-  
-  if ([receivedTextView.enclosingScrollView respondsToSelector: @selector (setScrollerKnobStyle:)])
-    [receivedTextView.enclosingScrollView setScrollerKnobStyle: NSScrollerKnobStyleLight];
-  
-  if ([inputView.enclosingScrollView respondsToSelector: @selector (setScrollerKnobStyle:)])
-    [inputView.enclosingScrollView setScrollerKnobStyle: NSScrollerKnobStyleLight];
-  
-  // And we can also enable fullscreen.
-  
-  if ([self.window respondsToSelector: @selector (setCollectionBehavior:)])
-    [self.window setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
-  
-  // And we can use the find bar and incremental searching.
-  
-  if ([receivedTextView respondsToSelector: @selector (setUsesFindBar:)])
-    [receivedTextView setUsesFindBar: YES];
-  
-  if ([receivedTextView respondsToSelector: @selector (setIncrementalSearchingEnabled:)])
-    [receivedTextView setIncrementalSearchingEnabled: YES];
-  
   // Set the initial link text color.
   
   [self _updateLinkTextColor];

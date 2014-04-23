@@ -14,6 +14,8 @@
 		2F0A7124190789A800DB9145 /* MUConnectPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0A711D190789A800DB9145 /* MUConnectPanelController.m */; };
 		2F0A7125190789A800DB9145 /* MULogBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0A711F190789A800DB9145 /* MULogBrowserWindowController.m */; };
 		2F0A7126190789A800DB9145 /* MUProfilesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0A7121190789A800DB9145 /* MUProfilesWindowController.m */; };
+		2F0A712B19079CCE00DB9145 /* MUFontConfirmationSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0A712919079CCE00DB9145 /* MUFontConfirmationSheetController.m */; };
+		2F0A712C19079CCE00DB9145 /* MUFontConfirmationSheetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F0A712A19079CCE00DB9145 /* MUFontConfirmationSheetController.xib */; };
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
 		2F174F70167AB8F10030C9D3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */; };
 		2F174F72167ABD1C0030C9D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F71167ABD1C0030C9D3 /* Security.framework */; };
@@ -302,6 +304,9 @@
 		2F0A711F190789A800DB9145 /* MULogBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULogBrowserWindowController.m; sourceTree = "<group>"; };
 		2F0A7120190789A800DB9145 /* MUProfilesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfilesWindowController.h; sourceTree = "<group>"; };
 		2F0A7121190789A800DB9145 /* MUProfilesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfilesWindowController.m; sourceTree = "<group>"; };
+		2F0A712819079CCE00DB9145 /* MUFontConfirmationSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFontConfirmationSheetController.h; sourceTree = "<group>"; };
+		2F0A712919079CCE00DB9145 /* MUFontConfirmationSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFontConfirmationSheetController.m; sourceTree = "<group>"; };
+		2F0A712A19079CCE00DB9145 /* MUFontConfirmationSheetController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MUFontConfirmationSheetController.xib; path = "../../source/controllers/window-controllers/MUFontConfirmationSheetController.xib"; sourceTree = "<group>"; };
 		2F0B277912196B9C00AE6B62 /* MUTelnetStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachine.h; sourceTree = "<group>"; };
 		2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachine.m; sourceTree = "<group>"; };
 		2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -833,6 +838,8 @@
 				2F0A711F190789A800DB9145 /* MULogBrowserWindowController.m */,
 				2F0A7120190789A800DB9145 /* MUProfilesWindowController.h */,
 				2F0A7121190789A800DB9145 /* MUProfilesWindowController.m */,
+				2F0A712819079CCE00DB9145 /* MUFontConfirmationSheetController.h */,
+				2F0A712919079CCE00DB9145 /* MUFontConfirmationSheetController.m */,
 			);
 			name = "Window Controllers";
 			path = "window-controllers";
@@ -1210,6 +1217,7 @@
 				2F6757731671D2700067BFC4 /* MUEditPlayerView.xib */,
 				2F6757701671D26C0067BFC4 /* MUEditProfileView.xib */,
 				2F67576D1671D2680067BFC4 /* MUEditWorldView.xib */,
+				2F0A712A19079CCE00DB9145 /* MUFontConfirmationSheetController.xib */,
 				2F67576A1671D2640067BFC4 /* MUFontsAndColorsPreferencesView.xib */,
 				2F6757671671D25D0067BFC4 /* MUGeneralPreferencesView.xib */,
 				2F6BE97D167250A7008CA6E6 /* MULogBrowser.xib */,
@@ -1586,6 +1594,7 @@
 				2F6BE984167250A7008CA6E6 /* MUMainMenu.xib in Resources */,
 				2F6BE985167250A7008CA6E6 /* MUProfilesWindow.xib in Resources */,
 				2F67575F1671D2420067BFC4 /* MUProxyPreferencesView.xib in Resources */,
+				2F0A712C19079CCE00DB9145 /* MUFontConfirmationSheetController.xib in Resources */,
 				2F6757621671D2480067BFC4 /* MUSoundsPreferencesView.xib in Resources */,
 				E65CE072075438F9003A796A /* Koan.icns in Resources */,
 				2F6C72AA0BB46BD000709320 /* Koan.sdef in Resources */,
@@ -1749,6 +1758,7 @@
 				7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */,
 				7E43C1C20ACB1A4000A8E677 /* MUANSIFormattingFilter.m in Sources */,
 				E62C905D07422595005662BC /* MUApplicationController.m in Sources */,
+				2F0A712B19079CCE00DB9145 /* MUFontConfirmationSheetController.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
 				E622A553074231A60069335B /* MUConstants.m in Sources */,
@@ -2303,7 +2313,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -2337,7 +2347,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 			};
 			name = Release;
 		};

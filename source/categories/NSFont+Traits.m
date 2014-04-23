@@ -28,33 +28,14 @@
 
 @implementation NSFont (Traits)
 
-@dynamic isBold, isItalic;
-
-#pragma mark - Properties
-
-- (BOOL) isBold
-{
-  return [self hasTrait: NSBoldFontMask];
-}
-
-- (BOOL) isItalic
-{
-  return [self hasTrait: NSItalicFontMask];
-}
-
 #pragma mark - Methods
 
 - (NSFont *) boldFontWithRespectTo: (NSFont *) referenceFont
 {
-  if (referenceFont.isBold)
-    return [self fontWithTrait: NSUnboldFontMask];
+  if ([referenceFont hasTrait: NSBoldFontMask])
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSUnboldFontMask];
   else
-    return [self fontWithTrait: NSBoldFontMask];
-}
-
-- (NSFont *) fontWithTrait: (NSFontTraitMask) trait
-{
-  return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: trait];
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSBoldFontMask];
 }
 
 - (BOOL) hasTrait: (NSFontTraitMask) trait
@@ -64,26 +45,26 @@
 
 - (NSFont *) italicFontWithRespectTo: (NSFont *) referenceFont
 {
-  if (referenceFont.isItalic)
-    return [self fontWithTrait: NSUnitalicFontMask];
+  if ([referenceFont hasTrait: NSItalicFontMask])
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSUnitalicFontMask];
   else
-    return [self fontWithTrait: NSItalicFontMask];
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSItalicFontMask];
 }
 
 - (NSFont *) unboldFontWithRespectTo: (NSFont *) referenceFont
 {
-  if (referenceFont.isBold)
-    return [self fontWithTrait: NSBoldFontMask];
+  if ([referenceFont hasTrait: NSBoldFontMask])
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSBoldFontMask];
   else
-    return [self fontWithTrait: NSUnboldFontMask];
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSUnboldFontMask];
 }
 
 - (NSFont *) unitalicFontWithRespectTo: (NSFont *) referenceFont
 {
-  if (referenceFont.isItalic)
-    return [self fontWithTrait: NSItalicFontMask];
+  if ([referenceFont hasTrait: NSItalicFontMask])
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSItalicFontMask];
   else
-    return [self fontWithTrait: NSUnitalicFontMask];
+    return [[NSFontManager sharedFontManager] convertFont: self toHaveTrait: NSUnitalicFontMask];
 }
 
 @end

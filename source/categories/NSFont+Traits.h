@@ -26,13 +26,8 @@
 
 @interface NSFont (Traits)
 
-@property (unsafe_unretained, readonly) BOOL isBold;
-@property (unsafe_unretained, readonly) BOOL isItalic;
-
 - (NSFont *) boldFontWithRespectTo: (NSFont *) referenceFont;
-- (NSFont *) fontWithTrait: (NSFontTraitMask) trait;
 - (NSFont *) italicFontWithRespectTo: (NSFont *) referenceFont;
-- (BOOL) hasTrait: (NSFontTraitMask) trait;
 - (NSFont *) unboldFontWithRespectTo: (NSFont *) referenceFont;
 - (NSFont *) unitalicFontWithRespectTo: (NSFont *) referenceFont;
 

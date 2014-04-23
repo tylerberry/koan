@@ -15,7 +15,7 @@
 #import "MUProxyPreferencesViewController.h"
 #import "MUSoundsPreferencesViewController.h"
 
-#import "MUAcknowledgementsController.h"
+#import "MUAcknowledgementsWindowController.h"
 #import "MUConnectPanelController.h"
 #import "MUConnectionWindowController.h"
 #import "MUConnectionWindowControllerRegistry.h"
@@ -36,7 +36,7 @@
   
   NSSound *_cachedSound;
   
-  MUAcknowledgementsController *_acknowledgementsController;
+  MUAcknowledgementsWindowController *_acknowledgementsController;
   MUConnectPanelController *_connectPanelController;
   MASPreferencesWindowController *_preferencesController;
   MUProfilesWindowController *_profilesController;
@@ -173,7 +173,7 @@
 {
   static dispatch_once_t predicate;
   
-  dispatch_once (&predicate, ^{ _acknowledgementsController = [[MUAcknowledgementsController alloc] init]; });
+  dispatch_once (&predicate, ^{ _acknowledgementsController = [[MUAcknowledgementsWindowController alloc] init]; });
   
   [_acknowledgementsController showWindow: sender];
 }

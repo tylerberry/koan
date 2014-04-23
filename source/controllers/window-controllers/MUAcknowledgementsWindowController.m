@@ -1,16 +1,16 @@
 //
-// MUAcknowledgementsController.m
+// MUAcknowledgementsWindowController.m
 //
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUAcknowledgementsController.h"
+#import "MUAcknowledgementsWindowController.h"
 
-@implementation MUAcknowledgementsController
+@implementation MUAcknowledgementsWindowController
 
 - (id) init
 {
-  if (!(self = [super initWithWindowNibName: @"MUAcknowledgements" owner: self]))
+  if (!(self = [super initWithWindowNibName: @"MUAcknowledgementsWindow" owner: self]))
     return nil;
 
   return self;

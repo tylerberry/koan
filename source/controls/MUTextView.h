@@ -16,7 +16,6 @@
 @property (readonly) NSUInteger numberOfColumns;
 @property (readonly) NSUInteger numberOfLines;
 
-
 - (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling;
 
 @end

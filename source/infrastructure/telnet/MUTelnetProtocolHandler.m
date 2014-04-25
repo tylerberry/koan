@@ -7,6 +7,7 @@
 #import "MUTelnetProtocolHandler.h"
 #import "MUProtocolHandlerSubclass.h"
 
+#import "MUProtocolStack.h"
 #import "MUTelnetStateMachine.h"
 #import "MUWriteBuffer.h"
 
@@ -18,6 +19,7 @@ static NSArray *_offerableTerminalTypes;
 
 @interface MUTelnetProtocolHandler ()
 
+- (void) _deleteLastBufferedCharacter;
 - (void) _negotiateOptions;
 - (void) _permitDoForOption: (uint8_t) option;
 - (void) _permitWillForOption: (uint8_t) option;
@@ -201,9 +203,22 @@ static NSArray *_offerableTerminalTypes;
       PASS_ON_PARSED_BYTE (byte);
   } 
   else if (byte == '\r')
+  {
     _receivedCarriageReturn = YES;
+  }
+  else if (byte == 0x08) // ASCII Backspace
+  {
+    [self deleteLastBufferedCharacter];
+  }
   else
+  {
     PASS_ON_PARSED_BYTE (byte);
+  }
+}
+
+- (void) deleteLastBufferedCharacter
+{
+  [self.protocolStack deleteLastBufferedCharacter];
 }
 
 - (void) handleBufferedSubnegotiation

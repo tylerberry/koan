@@ -56,6 +56,18 @@
 
 #pragma mark - Methods
 
+- (void) deleteLastBufferedCharacter
+{
+  // At present, this is a destructive implementation of backspace and/or IAC EC.
+
+  if (_parsingBuffer.length > 0)
+  {
+    [_parsingBuffer replaceBytesInRange: NSMakeRange (_parsingBuffer.length - 1, 1)
+                              withBytes: NULL
+                                 length: 0];
+  }
+}
+
 - (void) flushBufferedData
 {
   if (_parsingBuffer.length > 0)

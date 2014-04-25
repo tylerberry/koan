@@ -151,6 +151,12 @@
   lastByteInput = byte;
 }
 
+- (void) deleteLastBufferedCharacter
+{
+  if (output.length > 0)
+    [output replaceBytesInRange: NSMakeRange (output.length - 1, 1) withBytes: NULL length: 0];
+}
+
 - (void) handleBufferedSubnegotiation
 {
   return;

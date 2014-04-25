@@ -21,6 +21,7 @@
 - (void) handleBufferedSubnegotiation;
 
 - (void) bufferTextByte: (uint8_t) byte;
+- (void) deleteLastBufferedCharacter;
 - (void) useBufferedDataAsPrompt;
 
 - (void) sendNAWSSubnegotiationWithNumberOfLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;

@@ -148,6 +148,35 @@
   [self assertData: parsedData hasBytesWithZeroTerminator: "\n\r"];
 }
 
+- (void) testNVTEraseCharacter
+{
+  uint8_t bytes[4] = {'a', MUTelnetInterpretAsCommand, MUTelnetEraseCharacter, 'b'};
+
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
+  [protocolStack flushBufferedData];
+  [self assertData: parsedData hasBytesWithZeroTerminator: "b"];
+}
+
+- (void) testASCIIBackspace
+{
+  uint8_t bytes[3] = {'a', 0x08, 'b'};
+
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 3]];
+  [protocolStack flushBufferedData];
+  [self assertData: parsedData hasBytesWithZeroTerminator: "b"];
+}
+
+- (void) testBothNVTEraseCharacterAndASCIIBackspace
+{
+  // This is pretty pathological. I hope no server really ever does this.
+
+  uint8_t bytes[7] = {'a', 'b', 'c', 0x08, MUTelnetInterpretAsCommand, MUTelnetEraseCharacter, 'd'};
+
+  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 7]];
+  [protocolStack flushBufferedData];
+  [self assertData: parsedData hasBytesWithZeroTerminator: "ad"];
+}
+
 - (void) testSubnegotiationPutsNothingInReadBuffer
 {
   uint8_t bytes[9] = {MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};

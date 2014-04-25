@@ -40,10 +40,14 @@
     case MUTelnetInterruptProcess:
     case MUTelnetAbortOutput:
     case MUTelnetAreYouThere:
-    case MUTelnetEraseCharacter:
     case MUTelnetEraseLine:
       [protocolHandler log: @"  Telnet: IAC %u (unhandled).", byte];
       [stateMachine confirmTelnet];
+      return [MUTelnetTextState state];
+
+    case MUTelnetEraseCharacter:
+      [stateMachine confirmTelnet];
+      [protocolHandler deleteLastBufferedCharacter];
       return [MUTelnetTextState state];
       
     case MUTelnetGoAhead:

@@ -8,7 +8,7 @@
 
 #import "MUTerminalConstants.h"
 #import "MUTerminalControlStringState.h"
-#import "MUTerminalCSIState.h"
+#import "MUTerminalCSIFirstByteState.h"
 #import "MUTerminalTextState.h"
 
 @implementation MUTerminalEscapeState
@@ -52,9 +52,9 @@
       [protocolHandler bufferTextByte: byte];
       return [MUTerminalTextState state];
 
-    case 0x5b:
+    case 0x5b: // Control Sequence Introducer.
       [protocolHandler bufferTextByte: byte];
-      return [MUTerminalCSIState state];
+      return [MUTerminalCSIFirstByteState state];
 
     case 0x5d:
       [protocolHandler bufferTextByte: byte];

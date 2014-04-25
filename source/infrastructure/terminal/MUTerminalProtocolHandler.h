@@ -7,11 +7,16 @@
 #import "MUProtocolHandler.h"
 
 #import "MUMUDConnectionState.h"
+#import "MUTerminalConstants.h"
 
 @protocol MUTerminalProtocolHandler
 
 - (void) bufferCommandByte: (uint8_t) byte;
 - (void) bufferTextByte: (uint8_t) byte;
+
+- (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType;
+- (void) processCSIWithFinalByte: (uint8_t) finalByte;
+- (void) processPseudoANSIMusic;
 
 @end
 

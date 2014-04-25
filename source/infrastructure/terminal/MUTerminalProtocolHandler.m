@@ -42,6 +42,21 @@
   PASS_ON_PARSED_BYTE (byte);
 }
 
+- (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType
+{
+  return;
+}
+
+- (void) processCSIWithFinalByte: (uint8_t) finalByte
+{
+  return;
+}
+
+- (void) processPseudoANSIMusic
+{
+  return;
+}
+
 #pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte

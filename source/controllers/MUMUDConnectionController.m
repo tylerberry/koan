@@ -132,7 +132,8 @@ enum MUTextDisplayModes
     while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
       [_recentReceivedStrings removeObjectAtIndex: 0];
     
-    if ([_recentReceivedStrings containsObject: string])
+    if ([_recentReceivedStrings containsObject: string]
+        && ![string isEqualToString: @""])
     {
       if ([defaults boolForKey: MUPDropDuplicateLines])
       {

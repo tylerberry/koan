@@ -850,7 +850,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         
       case MUANSIHiddenTextOn:
         [self _setAttribute: MUHiddenTextAttributeName
-                    toValue: @1
+                    toValue: @YES
                    inString: string
                fromLocation: startLocation];
         break;

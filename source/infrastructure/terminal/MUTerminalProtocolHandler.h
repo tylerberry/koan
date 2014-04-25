@@ -14,6 +14,8 @@
 - (void) bufferCommandByte: (uint8_t) byte;
 - (void) bufferTextByte: (uint8_t) byte;
 
+- (void) log: (NSString *) message, ...;
+
 - (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType;
 - (void) processCSIWithFinalByte: (uint8_t) finalByte;
 - (void) processPseudoANSIMusic;
@@ -22,7 +24,17 @@
 
 #pragma mark -
 
+@protocol MUTerminalProtocolHandlerDelegate
+
+- (void) log: (NSString *) message arguments: (va_list) args;
+
+@end
+
+#pragma mark -
+
 @interface MUTerminalProtocolHandler : MUProtocolHandler <MUTerminalProtocolHandler>
+
+@property (weak) NSObject <MUTerminalProtocolHandlerDelegate> *delegate;
 
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 - (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;

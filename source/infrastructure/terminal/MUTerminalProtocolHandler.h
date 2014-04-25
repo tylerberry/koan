@@ -8,7 +8,15 @@
 
 #import "MUMUDConnectionState.h"
 
-@interface MUTerminalProtocolHandler : MUProtocolHandler
+@protocol MUTerminalProtocolHandler
+
+- (void) bufferTextByte: (uint8_t) byte;
+
+@end
+
+#pragma mark -
+
+@interface MUTerminalProtocolHandler : MUProtocolHandler <MUTerminalProtocolHandler>
 
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 - (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;

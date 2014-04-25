@@ -7,9 +7,12 @@
 #import "MUTerminalProtocolHandler.h"
 #import "MUProtocolHandlerSubclass.h"
 
+#import "MUTerminalStateMachine.h"
+
 @implementation MUTerminalProtocolHandler
 {
   MUMUDConnectionState *_connectionState;
+  MUTerminalStateMachine *_terminalStateMachine;
 }
 
 + (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
@@ -22,16 +25,23 @@
   if (!(self = [super init]))
     return nil;
 
+  _terminalStateMachine = [MUTerminalStateMachine stateMachine];
+
   return self;
+}
+
+#pragma mark - MUTerminalProtocolHandler protocol
+
+- (void) bufferTextByte: (uint8_t) byte
+{
+  PASS_ON_PARSED_BYTE (byte);
 }
 
 #pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte
 {
-  //[_telnetStateMachine parse: byte forProtocolHandler: self];
-  
-  PASS_ON_PARSED_BYTE (byte);
+  [_terminalStateMachine parse: byte forProtocolHandler: self];
 }
 
 - (void) preprocessByte: (uint8_t) byte

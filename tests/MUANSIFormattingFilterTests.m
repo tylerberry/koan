@@ -934,7 +934,7 @@
   [self.queue clearFilters];
   
   MUProfile *testingProfile = [MUProfile profileForTestingANSI];
-  testingProfile.font = [testingProfile.font fontWithTrait: NSBoldFontMask];
+  testingProfile.font = [[NSFontManager sharedFontManager] convertFont: testingProfile.font toHaveTrait: NSBoldFontMask];
   [self.queue addFilter: [MUANSIFormattingFilter filterWithProfile: testingProfile delegate: nil]];
 
   output = [self.queue processCompleteLine: input];
@@ -1142,7 +1142,7 @@
 {
   NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
   
-  [self assertTrue: [font hasTrait: trait] message: message];
+  [self assertTrue: (BOOL) ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait) message: message];
 }
 
 - (void) assertString: (NSAttributedString *) string
@@ -1152,7 +1152,7 @@
 {
   NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
   
-  [self assertFalse: [font hasTrait: trait] message: message];
+  [self assertFalse: (BOOL) ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait) message: message];
 }
 
 @end

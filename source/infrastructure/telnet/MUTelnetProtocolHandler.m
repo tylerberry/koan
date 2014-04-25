@@ -19,7 +19,6 @@ static NSArray *_offerableTerminalTypes;
 
 @interface MUTelnetProtocolHandler ()
 
-- (void) _deleteLastBufferedCharacter;
 - (void) _negotiateOptions;
 - (void) _permitDoForOption: (uint8_t) option;
 - (void) _permitWillForOption: (uint8_t) option;

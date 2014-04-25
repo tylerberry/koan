@@ -10,15 +10,16 @@
 
 + (id) state
 {
-  return [MUTerminalState new];
+  return [[self alloc] init];
 }
 
 - (MUTerminalState *) parse: (uint8_t) byte
             forStateMachine: (MUTerminalStateMachine *) stateMachine
             protocolHandler: (NSObject <MUTerminalProtocolHandler> *) protocolHandler
 {
-  [protocolHandler bufferTextByte: byte];
-  return self;
+  @throw [NSException exceptionWithName: @"SubclassResponsibility"
+                                 reason: @"Subclass failed to implement -parse:forStateMachine:protocol:."
+                               userInfo: nil];
 }
 
 @end

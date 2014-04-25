@@ -10,6 +10,7 @@
 
 @protocol MUTerminalProtocolHandler
 
+- (void) bufferCommandByte: (uint8_t) byte;
 - (void) bufferTextByte: (uint8_t) byte;
 
 @end

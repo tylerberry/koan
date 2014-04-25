@@ -8,7 +8,7 @@
 
 #import "MUTerminalStateMachine.h"
 
-#import "MUTerminalState.h"
+#import "MUTerminalTextState.h"
 
 @implementation MUTerminalStateMachine
 
@@ -22,7 +22,7 @@
   if (!(self = [super init]))
     return nil;
 
-  _state = [MUTerminalState state];
+  _state = [MUTerminalTextState state];
 
   return self;
 }

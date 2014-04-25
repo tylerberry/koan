@@ -32,6 +32,11 @@
 
 #pragma mark - MUTerminalProtocolHandler protocol
 
+- (void) bufferCommandByte: (uint8_t) byte
+{
+  return;
+}
+
 - (void) bufferTextByte: (uint8_t) byte
 {
   PASS_ON_PARSED_BYTE (byte);

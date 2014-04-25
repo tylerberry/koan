@@ -56,6 +56,9 @@
 		2F37FAC0190A12D2008EE58E /* MUTerminalProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FABF190A12D2008EE58E /* MUTerminalProtocolHandler.m */; };
 		2F37FAC3190A1DB2008EE58E /* MUTerminalStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC2190A1DB2008EE58E /* MUTerminalStateMachine.m */; };
 		2F37FAC7190A21DA008EE58E /* MUTerminalState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC6190A21DA008EE58E /* MUTerminalState.m */; };
+		2F37FACA190A316C008EE58E /* MUTerminalTextState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC9190A316C008EE58E /* MUTerminalTextState.m */; };
+		2F37FACD190A31DB008EE58E /* MUTerminalEscapeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */; };
+		2F37FAD0190A33A0008EE58E /* MUTerminalCSIState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */; };
 		2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */; };
 		2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBABC1652FF910056D738 /* MASPreferencesWindowController.m */; };
 		2F3DBAC6165309750056D738 /* MUFontsAndColorsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAC5165309750056D738 /* MUFontsAndColorsPreferencesViewController.m */; };
@@ -370,6 +373,12 @@
 		2F37FAC2190A1DB2008EE58E /* MUTerminalStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalStateMachine.m; sourceTree = "<group>"; };
 		2F37FAC5190A21DA008EE58E /* MUTerminalState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalState.h; sourceTree = "<group>"; };
 		2F37FAC6190A21DA008EE58E /* MUTerminalState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalState.m; sourceTree = "<group>"; };
+		2F37FAC8190A316C008EE58E /* MUTerminalTextState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalTextState.h; sourceTree = "<group>"; };
+		2F37FAC9190A316C008EE58E /* MUTerminalTextState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalTextState.m; sourceTree = "<group>"; };
+		2F37FACB190A31DB008EE58E /* MUTerminalEscapeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalEscapeState.h; sourceTree = "<group>"; };
+		2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalEscapeState.m; sourceTree = "<group>"; };
+		2F37FACE190A33A0008EE58E /* MUTerminalCSIState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalCSIState.h; sourceTree = "<group>"; };
+		2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalCSIState.m; sourceTree = "<group>"; };
 		2F3DBAB91652FF910056D738 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
 		2F3DBABB1652FF910056D738 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -946,8 +955,14 @@
 		2F37FAC4190A1EE6008EE58E /* States */ = {
 			isa = PBXGroup;
 			children = (
+				2F37FACE190A33A0008EE58E /* MUTerminalCSIState.h */,
+				2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */,
+				2F37FACB190A31DB008EE58E /* MUTerminalEscapeState.h */,
+				2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */,
 				2F37FAC5190A21DA008EE58E /* MUTerminalState.h */,
 				2F37FAC6190A21DA008EE58E /* MUTerminalState.m */,
+				2F37FAC8190A316C008EE58E /* MUTerminalTextState.h */,
+				2F37FAC9190A316C008EE58E /* MUTerminalTextState.m */,
 			);
 			name = States;
 			path = states;
@@ -1776,7 +1791,9 @@
 			files = (
 				2F1DC5D916DB44A400A038FE /* AGRegex.m in Sources */,
 				2F22DF28172F4BA800C50CBA /* AHHyperlinkScanner.m in Sources */,
+				2F37FACD190A31DB008EE58E /* MUTerminalEscapeState.m in Sources */,
 				2F22DF29172F4BA800C50CBA /* AHLinkLexer.l in Sources */,
+				2F37FAD0190A33A0008EE58E /* MUTerminalCSIState.m in Sources */,
 				2F22DF2A172F4BA800C50CBA /* AHMarkedHyperlink.m in Sources */,
 				2F7A2E72166F393E00FEB109 /* ATImageTextCell.m in Sources */,
 				2FA2B3CE1666D686000C6F9A /* BFColorPickerPopover.m in Sources */,
@@ -1787,6 +1804,7 @@
 				2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */,
 				2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */,
 				2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */,
+				2F37FACA190A316C008EE58E /* MUTerminalTextState.m in Sources */,
 				2F37FAC7190A21DA008EE58E /* MUTerminalState.m in Sources */,
 				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
 				2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */,

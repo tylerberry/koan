@@ -60,7 +60,7 @@ static NSMutableDictionary *states;
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocol
 {
   @throw [NSException exceptionWithName: @"SubclassResponsibility"
-                                 reason: @"Subclass failed to implement -[parse:forStateMachine:protocol]"
+                                 reason: @"Subclass failed to implement -parse:forStateMachine:protocol:."
                                userInfo: nil];
 }
 

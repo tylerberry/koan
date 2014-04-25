@@ -308,6 +308,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
     // These are valid codes that we don't handle. Some of them are vt100.
     resumeSet = [NSCharacterSet characterSetWithCharactersInString: @"\007ABCDEFGHJKSTcfhlmnsuz"];
   }
+
   NSString *charactersFromThisScan;
   [scanner scanUpToCharactersFromSet: resumeSet intoString: &charactersFromThisScan];
   
@@ -815,14 +816,14 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         
       case MUANSISlowBlinkOn:
         [self _setAttribute: MUBlinkingTextAttributeName
-                    toValue: @(MUSlowBlink)
+                    toValue: MUSlowBlink
                    inString: string
                fromLocation: startLocation];
         break;
         
       case MUANSIRapidBlinkOn:
         [self _setAttribute: MUBlinkingTextAttributeName
-                    toValue: @(MURapidBlink)
+                    toValue: MURapidBlink
                    inString: string
                fromLocation: startLocation];
         break;
@@ -883,6 +884,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         
       case MUANSIBlinkOff:
         [self _resetBlinkInString: string fromLocation: startLocation];
+        break;
         
       case MUANSIInverseOff:
         [self _resetInverseInString: string fromLocation: startLocation];
@@ -890,9 +892,11 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         
       case MUANSIHiddenTextOff:
         [self _resetHiddenTextInString: string fromLocation: startLocation];
+        break;
         
       case MUANSIStrikethroughOff:
         [self _resetStrikethroughInString: string fromLocation: startLocation];
+        break;
         
       case MUANSIForegroundBlack:
       {

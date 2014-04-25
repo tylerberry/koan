@@ -983,7 +983,7 @@
              message: @"a"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 1
              message: @"b"];
@@ -995,7 +995,7 @@
              message: @"c"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 3
              message: @"d"];
@@ -1007,7 +1007,7 @@
              message: @"e"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 5
              message: @"f"];
@@ -1079,7 +1079,7 @@
              message: @"a"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSStrikethroughStyleAttributeName
              atIndex: 1
              message: @"b"];
@@ -1091,7 +1091,7 @@
              message: @"c"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSStrikethroughStyleAttributeName
              atIndex: 3
              message: @"d"];
@@ -1103,7 +1103,7 @@
              message: @"e"];
   
   [self assertString: output
-            hasValue: @(NSSingleUnderlineStyle)
+            hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSStrikethroughStyleAttributeName
              atIndex: 5
              message: @"f"];
@@ -1123,7 +1123,7 @@
   
   NSAttributedString *output = [self.queue processCompleteLine: input2];
    
-  [self assertString: output hasValue: @(NSSingleUnderlineStyle)
+  [self assertString: output hasValue: @(NSUnderlineStyleSingle)
         forAttribute: NSUnderlineStyleAttributeName
              atIndex: 0
              message: @"b"];

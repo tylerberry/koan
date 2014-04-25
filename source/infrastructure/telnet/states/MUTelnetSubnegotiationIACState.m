@@ -10,6 +10,9 @@
 #import "MUTelnetTextState.h"
 
 @implementation MUTelnetSubnegotiationIACState
+{
+  Class _returnState;
+}
 
 + (id) stateWithReturnState: (Class) state
 {
@@ -21,7 +24,7 @@
   if (!(self = [super init]))
     return nil;
   
-  returnState = state;
+  _returnState = state;
   
   return self;
 }
@@ -38,11 +41,11 @@
 
     case MUTelnetInterpretAsCommand:
       [protocolHandler bufferSubnegotiationByte: byte];
-      return [returnState state];
+      return [_returnState state];
 
     default:
       [protocolHandler log: @"  Telnet: IAC %u while in subnegotiation.", byte];
-      return [returnState state];
+      return [_returnState state];
   }
 }
 

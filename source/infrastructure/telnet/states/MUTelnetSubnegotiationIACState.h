@@ -7,9 +7,6 @@
 #import "MUTelnetState.h"
 
 @interface MUTelnetSubnegotiationIACState : MUTelnetState
-{
-  Class returnState;
-}
 
 + (id) stateWithReturnState: (Class) state;
 

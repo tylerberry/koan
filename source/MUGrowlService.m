@@ -8,9 +8,9 @@
 
 @interface MUGrowlService ()
 
-- (void) notifyWithName: (NSString *) name
-                  title: (NSString *) title
-            description: (NSString *) description;
+- (void) _notifyWithName: (NSString *) name
+                   title: (NSString *) title
+             description: (NSString *) description;
 
 @end
 
@@ -45,23 +45,23 @@
 
 + (void) connectionOpenedForTitle: (NSString *) title
 {
-  [[MUGrowlService defaultGrowlService] notifyWithName: @"Connection opened"
-                                                 title: title
-                                           description: _(MUGConnectionOpened)];
+  [[MUGrowlService defaultGrowlService] _notifyWithName: @"Connection opened"
+                                                  title: title
+                                            description: _(MUGConnectionOpened)];
 }
 
 + (void) connectionClosedForTitle: (NSString *) title
 {
-  [[MUGrowlService defaultGrowlService] notifyWithName: @"Connection closed"
-                                                 title: title
-                                           description: _(MUGConnectionClosed)];
+  [[MUGrowlService defaultGrowlService] _notifyWithName: @"Connection closed"
+                                                  title: title
+                                            description: _(MUGConnectionClosed)];
 }
 
 + (void) connectionClosedByServerForTitle: (NSString *) title
 {
-  [[MUGrowlService defaultGrowlService] notifyWithName: @"Connection closed by server"
-                                                 title: title
-                                           description: _(MUGConnectionClosedByServer)];
+  [[MUGrowlService defaultGrowlService] _notifyWithName: @"Connection closed by server"
+                                                  title: title
+                                            description: _(MUGConnectionClosedByServer)];
 }
 
 + (void) connectionClosedByErrorForTitle: (NSString *) title error: (NSError *) error
@@ -73,9 +73,9 @@
   else
     description = [NSString stringWithFormat: _(MUGConnectionClosedByError), _(MULConnectionNoErrorAvailable)];
   
-  [[MUGrowlService defaultGrowlService] notifyWithName: @"Connection closed by error"
-                                                 title: title
-                                           description: description];
+  [[MUGrowlService defaultGrowlService] _notifyWithName: @"Connection closed by error"
+                                                  title: title
+                                            description: description];
 }
 
 #pragma mark - GrowlApplicationBridge delegate
@@ -92,10 +92,12 @@
 
 #pragma mark - Private methods
 
-- (void) notifyWithName: (NSString *) name
-                  title: (NSString *) title
-            description: (NSString *) description
+- (void) _notifyWithName: (NSString *) name
+                   title: (NSString *) title
+             description: (NSString *) description
 {
+  if (_growlIsReady)
+  {
     [GrowlApplicationBridge notifyWithTitle: title
                                 description: description
                            notificationName: name
@@ -103,6 +105,7 @@
                                    priority: 0
                                    isSticky: NO
                                clickContext: nil];
+  }
 }
 
 @end

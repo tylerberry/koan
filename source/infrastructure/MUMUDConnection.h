@@ -12,6 +12,7 @@
 #import "MUMUDConnectionState.h"
 #import "MUProtocolStack.h"
 #import "MUTelnetProtocolHandler.h"
+#import "MUTerminalProtocolHandler.h"
 #import "MUWorld.h"
 #import "MUWriteBuffer.h"
 

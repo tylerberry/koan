@@ -83,6 +83,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: _state];
   _telnetProtocolHandler.delegate = self;
   [_protocolStack addProtocolHandler: _telnetProtocolHandler];
+
+  MUTerminalProtocolHandler *terminalProtocolHandler = [MUTerminalProtocolHandler protocolHandlerWithConnectionState: _state];
+  [_protocolStack addProtocolHandler: terminalProtocolHandler];
   
   MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: _state];
   mccpProtocolHandler.delegate = self;

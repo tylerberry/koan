@@ -53,6 +53,7 @@
 		2F30906916D5E71B00266E4A /* MUIMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906816D5E71B00266E4A /* MUIMasterViewController.m */; };
 		2F30906C16D5E71B00266E4A /* MUIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */; };
 		2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* MUReadBuffer.m */; };
+		2F37FAC0190A12D2008EE58E /* MUTerminalProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FABF190A12D2008EE58E /* MUTerminalProtocolHandler.m */; };
 		2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */; };
 		2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBABC1652FF910056D738 /* MASPreferencesWindowController.m */; };
 		2F3DBAC6165309750056D738 /* MUFontsAndColorsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAC5165309750056D738 /* MUFontsAndColorsPreferencesViewController.m */; };
@@ -361,6 +362,8 @@
 		2F30906816D5E71B00266E4A /* MUIMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIMasterViewController.m; sourceTree = "<group>"; };
 		2F30906A16D5E71B00266E4A /* MUIDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUIDetailViewController.h; sourceTree = "<group>"; };
 		2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIDetailViewController.m; sourceTree = "<group>"; };
+		2F37FABE190A12D2008EE58E /* MUTerminalProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalProtocolHandler.h; sourceTree = "<group>"; };
+		2F37FABF190A12D2008EE58E /* MUTerminalProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalProtocolHandler.m; sourceTree = "<group>"; };
 		2F3DBAB91652FF910056D738 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
 		2F3DBABB1652FF910056D738 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -921,6 +924,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		2F37FABD190A10C0008EE58E /* Terminal */ = {
+			isa = PBXGroup;
+			children = (
+				2F37FABE190A12D2008EE58E /* MUTerminalProtocolHandler.h */,
+				2F37FABF190A12D2008EE58E /* MUTerminalProtocolHandler.m */,
+			);
+			name = Terminal;
+			path = terminal;
+			sourceTree = "<group>";
+		};
 		2F3DBAB71652FF910056D738 /* MASPreferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -1349,6 +1362,7 @@
 				2F7094031223BB1B00E0D178 /* MCP */,
 				7E0709EF09339A1E000A36CF /* SOCKS5 */,
 				7E68DC33092AC2FB004554BD /* Telnet */,
+				2F37FABD190A10C0008EE58E /* Terminal */,
 				7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */,
 				2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */,
 				7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */,
@@ -1841,6 +1855,7 @@
 				2F5DBA8F16DD487700DE627E /* pcre_fullinfo.c in Sources */,
 				2F5DBA8C16DD310F00DE627E /* pcre_get.c in Sources */,
 				2F5DBA8E16DD486700DE627E /* pcre_globals.c in Sources */,
+				2F37FAC0190A12D2008EE58E /* MUTerminalProtocolHandler.m in Sources */,
 				2F5DBA8D16DD483400DE627E /* pcre_newline.c in Sources */,
 				2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */,
 				2F5DBA9016DD489D00DE627E /* pcre_tables.c in Sources */,

@@ -128,12 +128,9 @@ enum MUTextDisplayModes
   if (string && string.length > 0)
   {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
-      [_recentReceivedStrings removeObjectAtIndex: 0];
     
     if ([_recentReceivedStrings containsObject: string]
-        && ![string isEqualToString: @""])
+        && ![string isEqualToString: @"\n"])             // Exclude blank lines from filtering.
     {
       if ([defaults boolForKey: MUPDropDuplicateLines])
       {
@@ -143,7 +140,12 @@ enum MUTextDisplayModes
       }
     }
     else
+    {
+      while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
+        [_recentReceivedStrings removeObjectAtIndex: 0];
+
       [_recentReceivedStrings addObject: [string copy]];
+    }
     
     if (_clearRecentReceivedStringTimer.isValid)
       [_clearRecentReceivedStringTimer invalidate];

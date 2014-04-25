@@ -572,8 +572,8 @@
         characters[i] = 0x03a6;
         break;
         
-      case 0x00e9:
-        characters[i] = 0x0398;
+      case 0x00e9:                // Also theoretically the single-character version of terminal CSI. In practice, it
+        characters[i] = 0x0398;   // doesn't seem to actually be used.
         break;
         
       case 0x00ea:

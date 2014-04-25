@@ -6,8 +6,6 @@
 
 #import "MUGrowlService.h"
 
-static BOOL _growlIsReady = NO;
-
 @interface MUGrowlService ()
 
 - (void) notifyWithName: (NSString *) name
@@ -19,6 +17,9 @@ static BOOL _growlIsReady = NO;
 #pragma mark -
 
 @implementation MUGrowlService
+{
+  BOOL  _growlIsReady;
+}
 
 + (MUGrowlService *) defaultGrowlService
 {
@@ -36,6 +37,8 @@ static BOOL _growlIsReady = NO;
     return nil;
   
   [GrowlApplicationBridge setGrowlDelegate: self];
+
+  _growlIsReady = [GrowlApplicationBridge isGrowlRunning];
   
   return self;
 }
@@ -93,8 +96,6 @@ static BOOL _growlIsReady = NO;
                   title: (NSString *) title
             description: (NSString *) description
 {
-  if (_growlIsReady)
-  {
     [GrowlApplicationBridge notifyWithTitle: title
                                 description: description
                            notificationName: name
@@ -102,7 +103,6 @@ static BOOL _growlIsReady = NO;
                                    priority: 0
                                    isSticky: NO
                                clickContext: nil];
-  }
 }
 
 @end

@@ -1019,6 +1019,54 @@
              message: @"g"];
 }
 
+- (void) testDoubleUnderline
+{
+  NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[21mb\x1B[24mc\x1B[21md\x1B[0me\x1B[21mf\x1B[mg"];
+  NSAttributedString *output = [self.queue processCompleteLine: input];
+
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 0
+             message: @"a"];
+
+  [self assertString: output
+            hasValue: @(NSUnderlineStyleDouble)
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 1
+             message: @"b"];
+
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 2
+             message: @"c"];
+
+  [self assertString: output
+            hasValue: @(NSUnderlineStyleDouble)
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 3
+             message: @"d"];
+
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 4
+             message: @"e"];
+
+  [self assertString: output
+            hasValue: @(NSUnderlineStyleDouble)
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 5
+             message: @"f"];
+
+  [self assertString: output
+            hasValue: nil
+        forAttribute: NSUnderlineStyleAttributeName
+             atIndex: 6
+             message: @"g"];
+}
+
 - (void) testStrikethrough
 {
   NSAttributedString *input = [self constructAttributedStringForString: @"a\x1B[9mb\x1B[29mc\x1B[9md\x1B[0me\x1B[9mf\x1B[mg"];

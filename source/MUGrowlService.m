@@ -18,7 +18,7 @@
 
 @implementation MUGrowlService
 {
-  BOOL  _growlIsReady;
+  BOOL _growlIsReady;
 }
 
 + (MUGrowlService *) defaultGrowlService

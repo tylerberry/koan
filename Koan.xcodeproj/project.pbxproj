@@ -59,6 +59,7 @@
 		2F37FACA190A316C008EE58E /* MUTerminalTextState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC9190A316C008EE58E /* MUTerminalTextState.m */; };
 		2F37FACD190A31DB008EE58E /* MUTerminalEscapeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */; };
 		2F37FAD0190A33A0008EE58E /* MUTerminalCSIState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */; };
+		2F37FAD3190A41E8008EE58E /* MUTerminalControlStringState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAD2190A41E8008EE58E /* MUTerminalControlStringState.m */; };
 		2F3DBABF1652FF910056D738 /* MASPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */; };
 		2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBABC1652FF910056D738 /* MASPreferencesWindowController.m */; };
 		2F3DBAC6165309750056D738 /* MUFontsAndColorsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DBAC5165309750056D738 /* MUFontsAndColorsPreferencesViewController.m */; };
@@ -71,6 +72,8 @@
 		2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4C3A3F168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m */; };
 		2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4D3BFB166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m */; };
 		2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4E2147173B8CA500B21859 /* JUEmptyView.m */; };
+		2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */; };
+		2F558BCA190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
 		2F5DBA8B16DD30B200DE627E /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
@@ -379,6 +382,9 @@
 		2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalEscapeState.m; sourceTree = "<group>"; };
 		2F37FACE190A33A0008EE58E /* MUTerminalCSIState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalCSIState.h; sourceTree = "<group>"; };
 		2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalCSIState.m; sourceTree = "<group>"; };
+		2F37FAD1190A41E8008EE58E /* MUTerminalControlStringState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalControlStringState.h; sourceTree = "<group>"; };
+		2F37FAD2190A41E8008EE58E /* MUTerminalControlStringState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalControlStringState.m; sourceTree = "<group>"; };
+		2F37FAD4190ADB7C008EE58E /* MUTerminalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUTerminalConstants.h; sourceTree = "<group>"; };
 		2F3DBAB91652FF910056D738 /* MASPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesViewController.h; sourceTree = "<group>"; };
 		2F3DBABA1652FF910056D738 /* MASPreferencesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MASPreferencesWindow.xib; sourceTree = "<group>"; };
 		2F3DBABB1652FF910056D738 /* MASPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -400,6 +406,10 @@
 		2F4D3BFD166C0DC8002EBA99 /* PLWeakCompatibilityStubs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PLWeakCompatibilityStubs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2F4E2146173B8CA500B21859 /* JUEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JUEmptyView.h; sourceTree = "<group>"; };
 		2F4E2147173B8CA500B21859 /* JUEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JUEmptyView.m; sourceTree = "<group>"; };
+		2F558BC5190B06DA003DF275 /* MUTerminalCSIFirstByteState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalCSIFirstByteState.h; sourceTree = "<group>"; };
+		2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalCSIFirstByteState.m; sourceTree = "<group>"; };
+		2F558BC8190B077E003DF275 /* MUTerminalPseudoANSIMusicState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalPseudoANSIMusicState.h; sourceTree = "<group>"; };
+		2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalPseudoANSIMusicState.m; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F5DBA9516DDA18300DE627E /* MURegexTestFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MURegexTestFilter.h; sourceTree = "<group>"; };
@@ -955,10 +965,17 @@
 		2F37FAC4190A1EE6008EE58E /* States */ = {
 			isa = PBXGroup;
 			children = (
+				2F37FAD4190ADB7C008EE58E /* MUTerminalConstants.h */,
+				2F37FAD1190A41E8008EE58E /* MUTerminalControlStringState.h */,
+				2F37FAD2190A41E8008EE58E /* MUTerminalControlStringState.m */,
+				2F558BC5190B06DA003DF275 /* MUTerminalCSIFirstByteState.h */,
+				2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */,
 				2F37FACE190A33A0008EE58E /* MUTerminalCSIState.h */,
 				2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */,
 				2F37FACB190A31DB008EE58E /* MUTerminalEscapeState.h */,
 				2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */,
+				2F558BC8190B077E003DF275 /* MUTerminalPseudoANSIMusicState.h */,
+				2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */,
 				2F37FAC5190A21DA008EE58E /* MUTerminalState.h */,
 				2F37FAC6190A21DA008EE58E /* MUTerminalState.m */,
 				2F37FAC8190A316C008EE58E /* MUTerminalTextState.h */,
@@ -1831,11 +1848,13 @@
 				2F7CDB76121EFC22001B4879 /* MUMCCPProtocolHandler.m in Sources */,
 				2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */,
 				7EC3030A092B978B00AFA5C7 /* MUMUDConnection.m in Sources */,
+				2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */,
 				2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */,
 				2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */,
 				E6C9D607077C2DC6007BB2C1 /* MUAutoHyperlinksFilter.m in Sources */,
 				2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */,
 				E677D2110778041F00B417D2 /* MUPlayer.m in Sources */,
+				2F558BCA190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m in Sources */,
 				2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */,
 				E64C9634076BF95E00D0D7C0 /* MUPortFormatter.m in Sources */,
 				7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */,
@@ -1886,6 +1905,7 @@
 				2F07053616139B6200A71314 /* NSObject+BetterHashing.m in Sources */,
 				2F6264A01663384D008DDBF2 /* NSString+CodePage437.m in Sources */,
 				2F93A80618CEAAEA0076363C /* NSStringPunycodeAdditions.m in Sources */,
+				2F37FAD3190A41E8008EE58E /* MUTerminalControlStringState.m in Sources */,
 				2F946F3A16AECC6400661918 /* NSTreeController+IndexPaths.m in Sources */,
 				2F4D3BFC166C0D2C002EBA99 /* PLWeakCompatibilityStubs.m in Sources */,
 				2F5DBA9416DD493900DE627E /* pcre_chartables.c in Sources */,

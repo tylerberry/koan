@@ -48,12 +48,12 @@ typedef enum MUCodebaseFamily
 - (id) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 
 - (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value;
-- (void) notePrompt: (NSString *) promptString;
+- (void) notePrompt: (NSAttributedString *) promptString;
 - (void) noteTelnetDo: (uint8_t) byte;
 - (void) noteTelnetDont: (uint8_t) byte;
 - (void) noteTelnetWill: (uint8_t) byte;
 - (void) noteTelnetWont: (uint8_t) byte;
-- (void) noteTextLine: (NSString *) textString;
+- (void) noteTextString: (NSAttributedString *) attributedString;
 
 - (void) reset;
 

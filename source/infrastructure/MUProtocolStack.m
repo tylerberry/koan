@@ -6,40 +6,42 @@
 
 #import "MUProtocolStack.h"
 
+#import "NSString+CodePage437.h"
 #import "MUProtocolHandler.h"
 
 @interface MUProtocolStack ()
-{
-  MUMUDConnectionState *_connectionState;
-  
-  NSMutableArray *_mutableProtocolHandlers;
-  NSMutableData *_parsingBuffer;
-  NSMutableData *_preprocessingBuffer;
-  NSMutableArray *_preprocessingBufferStack;
-}
 
-- (void) sendPreprocessedDataToSocket;
-- (void) useBufferedDataAsPrompt;
+- (void) _sendCompleteLineToDelegate;
+- (void) _sendPreprocessedDataToSocket;
+- (void) _useBufferedDataAsPrompt;
 
 @end
 
 #pragma mark -
 
 @implementation MUProtocolStack
+{
+  MUMUDConnectionState *_connectionState;
+
+  NSMutableArray *_mutableProtocolHandlers;
+  NSMutableData *_parsedInputBuffer;
+  NSMutableData *_preprocessedOutputBuffer;
+  NSMutableAttributedString *_lineBuffer;
+}
 
 @dynamic protocolHandlers;
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState
+- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
   
-  _connectionState = newConnectionState;
+  _connectionState = connectionState;
   
   _mutableProtocolHandlers = [[NSMutableArray alloc] init];
-  _parsingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
-  _preprocessingBuffer = [[NSMutableData alloc] initWithCapacity: 2048];
-  _preprocessingBufferStack = [[NSMutableArray alloc] init];
+  _parsedInputBuffer = [[NSMutableData alloc] init];
+  _preprocessedOutputBuffer = [[NSMutableData alloc] init];
+  _lineBuffer = [[NSMutableAttributedString alloc] init];
   
   return self;
 }
@@ -60,20 +62,28 @@
 {
   // At present, this is a destructive implementation of backspace and/or IAC EC.
 
-  if (_parsingBuffer.length > 0)
+  if (_parsedInputBuffer.length > 0)
   {
-    [_parsingBuffer replaceBytesInRange: NSMakeRange (_parsingBuffer.length - 1, 1)
-                              withBytes: NULL
-                                 length: 0];
+    [_parsedInputBuffer replaceBytesInRange: NSMakeRange (_parsedInputBuffer.length - 1, 1)
+                                  withBytes: NULL
+                                     length: 0];
   }
 }
 
 - (void) flushBufferedData
 {
-  if (_parsingBuffer.length > 0)
+  if (_parsedInputBuffer.length > 0)
   {
-    [self.delegate displayDataAsText: [NSData dataWithData: _parsingBuffer]];
-    _parsingBuffer.data = [NSData data];
+    NSString *string = [[NSString alloc] initWithData: _parsedInputBuffer encoding: _connectionState.stringEncoding];
+
+    // This is a pseudo-encoding: if we are using ASCII, substitute in CP437 characters.
+    if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+      string = [string stringWithCodePage437Substitutions];
+
+    [_lineBuffer appendAttributedString: [[NSAttributedString alloc] initWithString: string
+                                                                             attributes: nil]];
+
+    _parsedInputBuffer.data = [NSData data];
   }
 }
 
@@ -82,8 +92,8 @@
   if (_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
     return;                                                                         // PennMUSH does, though.
   
-  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsingBuffer.bytes
-                                                       length: _parsingBuffer.length
+  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsedInputBuffer.bytes
+                                                       length: _parsedInputBuffer.length
                                                      encoding: _connectionState.stringEncoding];
   
   // This is a heuristic. I've made it as tight as I can to avoid false positives.
@@ -91,10 +101,11 @@
   if ([promptCandidate hasSuffix: @" "])
   {
     promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
-    
-    if ([[NSCharacterSet characterSetWithCharactersInString: @">?|:)]"] characterIsMember:
-         [promptCandidate characterAtIndex: promptCandidate.length - 1]])
-      [self useBufferedDataAsPrompt];
+
+    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
+
+    if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
+      [self _useBufferedDataAsPrompt];
   }
 }
 
@@ -125,7 +136,7 @@
   
   [firstProtocolHandler preprocessFooterData: [NSData data]];
   
-  [self sendPreprocessedDataToSocket];
+  [self _sendPreprocessedDataToSocket];
 }
 
 #pragma mark - Methods - managing protocol handlers
@@ -172,49 +183,60 @@
 
 - (void) notePromptMarker
 {
-  [self useBufferedDataAsPrompt];
+  [self _useBufferedDataAsPrompt];
 }
 
 - (void) parseByte: (uint8_t) byte
 {
-  [_parsingBuffer appendBytes: &byte length: 1];
+  [_parsedInputBuffer appendBytes: &byte length: 1];
     
   if (byte == '\n')
-    [self flushBufferedData];
+    [self _sendCompleteLineToDelegate];
 }
 
 - (void) preprocessByte: (uint8_t) byte
 {
-  [_preprocessingBuffer appendBytes: &byte length: 1];
+  [_preprocessedOutputBuffer appendBytes: &byte length: 1];
 }
 
 - (void) preprocessFooterData: (NSData *) data
 {
-  [_preprocessingBuffer appendData: data];
+  [_preprocessedOutputBuffer appendData: data];
 }
 
 - (void) sendPreprocessedData
 {
-  [self sendPreprocessedDataToSocket];
+  [self _sendPreprocessedDataToSocket];
 }
 
 #pragma mark - Private methods
 
-- (void) sendPreprocessedDataToSocket
+- (void) _sendCompleteLineToDelegate
 {
-  if (_preprocessingBuffer.length > 0)
+  [self flushBufferedData];
+
+  if (_lineBuffer.length > 0)
   {
-    [self.delegate writeDataToSocket: _preprocessingBuffer];
-    _preprocessingBuffer.data = [NSData data];
+    [self.delegate displayAttributedStringAsText: _lineBuffer];
+    [_lineBuffer deleteCharactersInRange: NSMakeRange (0, _lineBuffer.length)];
   }
 }
 
-- (void) useBufferedDataAsPrompt
+- (void) _sendPreprocessedDataToSocket
 {
-  if (_parsingBuffer.length > 0)
+  if (_preprocessedOutputBuffer.length > 0)
   {
-    [self.delegate displayDataAsPrompt: _parsingBuffer];
-    _parsingBuffer.data = [NSData data];
+    [self.delegate writeDataToSocket: _preprocessedOutputBuffer];
+    _preprocessedOutputBuffer.data = [NSData data];
+  }
+}
+
+- (void) _useBufferedDataAsPrompt
+{
+  if (_lineBuffer.length > 0)
+  {
+    [self.delegate displayAttributedStringAsPrompt: _lineBuffer];
+    [_lineBuffer deleteCharactersInRange: NSMakeRange (0, _lineBuffer.length)];
   }
 }
 

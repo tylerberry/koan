@@ -28,8 +28,8 @@ extern NSString *MUMUDConnectionErrorKey;
 @protocol MUMUDConnectionDelegate
 
 @required
-- (void) displayPrompt: (NSString *) promptString;
-- (void) displayString: (NSString *) string;
+- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString;
+- (void) displayAttributedString: (NSAttributedString *) attributedString;
 - (void) reportWindowSizeToServer;
 
 @optional

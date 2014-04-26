@@ -7,8 +7,6 @@
 #import "MUMUDConnection.h"
 #import "MUAbstractConnectionSubclass.h"
 
-#import "NSString+CodePage437.h"
-
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
 NSString *MUMUDConnectionIsConnectingNotification = @"MUMUDConnectionIsConnectingNotification";
 NSString *MUMUDConnectionWasClosedByClientNotification = @"MUMUDConnectionWasClosedByClientNotification";
@@ -33,7 +31,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 }
 
 - (void) _cleanUpStreams;
-- (void) _displayAndLogString: (NSString *) string;
 - (void) _registerObjectForNotifications: (id) object;
 - (void) _resetState;
 - (void) _unregisterObjectForNotifications: (id) object;
@@ -303,34 +300,18 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 #pragma mark - MUProtocolStackDelegate
 
-- (void) displayDataAsText: (NSData *) parsedData
+- (void) displayAttributedStringAsText: (NSAttributedString *) attributedString
 {
-  NSString *parsedString = [[NSString alloc] initWithBytes: parsedData.bytes
-                                                    length: parsedData.length
-                                                  encoding: self.state.stringEncoding];
+  [self.state.codebaseAnalyzer noteTextString: attributedString];
   
-  // This is a pseudo-encoding: if we are using ASCII, substitute in CP437 characters. 8BitMUSH for life!
-  
-  if (self.state.stringEncoding == NSASCIIStringEncoding)
-    parsedString = [parsedString stringWithCodePage437Substitutions];
-  
-  [self.state.codebaseAnalyzer noteTextLine: parsedString];
-  
-  [self.delegate displayString: parsedString];
+  [self.delegate displayAttributedString: attributedString];
 }
 
-- (void) displayDataAsPrompt: (NSData *) parsedData
+- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
 {
-  NSString *parsedPromptString = [[NSString alloc] initWithBytes: parsedData.bytes
-                                                          length: parsedData.length
-                                                        encoding: self.state.stringEncoding];
+  [self.state.codebaseAnalyzer notePrompt: attributedString];
   
-  if (self.state.stringEncoding == NSASCIIStringEncoding)
-    parsedPromptString = [parsedPromptString stringWithCodePage437Substitutions];
-  
-  [self.state.codebaseAnalyzer notePrompt: parsedPromptString];
-  
-  [self.delegate displayPrompt: parsedPromptString];
+  [self.delegate displayAttributedStringAsPrompt: attributedString];
 }
 
 - (void) writeDataToSocket: (NSData *) data
@@ -378,12 +359,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   _inputStream = nil;
   _outputStream = nil;
-}
-
-- (void) _displayAndLogString: (NSString *) string
-{
-  [self.delegate displayString: [NSString stringWithFormat: @"%@\n", string]];
-  [self log: @"%@", string];
 }
 
 - (void) _registerObjectForNotifications: (id) object

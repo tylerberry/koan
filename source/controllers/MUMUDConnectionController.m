@@ -22,21 +22,13 @@ enum MUTextDisplayModes
 };
 
 @interface MUMUDConnectionController ()
-{  
-  MUFilterQueue *_filterQueue;
-  
-  NSAttributedString *_currentRawPrompt;
-  NSString *_recentSentString;
-  NSMutableArray *_recentReceivedStrings;
-  NSTimer *_clearRecentReceivedStringTimer;
-  NSUInteger _reconnectCount;
-  
-  NSTimer *_pingTimer;
-}
 
 - (void) _attemptReconnect;
 - (void) _cleanUpPingTimer;
 - (void) _clearRecentReceivedStrings: (NSTimer *) timer;
+- (void) _displayAttributedString: (NSAttributedString *) string
+                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
+- (void) _displaySystemMessage: (NSString *) string;
 - (void) _resetRecentStrings;
 - (void) _sendPeriodicPing: (NSTimer *) timer;
 
@@ -45,6 +37,17 @@ enum MUTextDisplayModes
 #pragma mark -
 
 @implementation MUMUDConnectionController
+{
+  MUFilterQueue *_filterQueue;
+
+  NSAttributedString *_currentRawPrompt;
+  NSString *_recentSentString;
+  NSMutableArray *_recentReceivedStrings;
+  NSTimer *_clearRecentReceivedStringTimer;
+  NSUInteger _reconnectCount;
+
+  NSTimer *_pingTimer;
+}
 
 - (id) initWithProfile: (MUProfile *) newProfile
      fugueEditDelegate: (NSObject <MUFugueEditFilterDelegate> *) fugueEditDelegate
@@ -95,9 +98,9 @@ enum MUTextDisplayModes
   [_connection close];
 }
 
-- (void) echoString: (NSString *) string
+- (void) echoString: (NSAttributedString *) attributedString
 {
-  [self _displayString: string textDisplayMode: MUEchoedTextDisplayMode];
+  [self _displayAttributedString: attributedString textDisplayMode: MUEchoedTextDisplayMode];
 }
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
@@ -113,24 +116,14 @@ enum MUTextDisplayModes
 
 #pragma mark - MUMUDConnectionDelegate protocol
 
-- (void) displayPrompt: (NSString *) promptString
+- (void) displayAttributedString: (NSAttributedString *) attributedString
 {
-  if (promptString && promptString.length > 0)
-  {
-    [self _displayString: promptString textDisplayMode: MUPromptTextDisplayMode];
-  }
-  else
-    [self.delegate clearPrompt];
-}
-
-- (void) displayString: (NSString *) string
-{
-  if (string && string.length > 0)
+  if (attributedString && attributedString.length > 0)
   {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if ([_recentReceivedStrings containsObject: string]
-        && ![string isEqualToString: @"\n"])             // Exclude blank lines from filtering.
+
+    if ([_recentReceivedStrings containsObject: attributedString.string]
+        && ![attributedString.string isEqualToString: @"\n"])             // Exclude blank lines from filtering.
     {
       if ([defaults boolForKey: MUPDropDuplicateLines])
       {
@@ -144,20 +137,30 @@ enum MUTextDisplayModes
       while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
         [_recentReceivedStrings removeObjectAtIndex: 0];
 
-      [_recentReceivedStrings addObject: [string copy]];
+      [_recentReceivedStrings addObject: [attributedString.string copy]];
     }
-    
+
     if (_clearRecentReceivedStringTimer.isValid)
       [_clearRecentReceivedStringTimer invalidate];
-    
+
     _clearRecentReceivedStringTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                                        target: self
                                                                      selector: @selector (_clearRecentReceivedStrings:)
                                                                      userInfo: nil
                                                                       repeats: NO];
-    
-    [self _displayString: string textDisplayMode: MUNormalTextDisplayMode];
+
+    [self _displayAttributedString: attributedString textDisplayMode: MUNormalTextDisplayMode];
   }
+}
+
+- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
+{
+  if (attributedString && attributedString.length > 0)
+  {
+    [self _displayAttributedString: attributedString textDisplayMode: MUPromptTextDisplayMode];
+  }
+  else
+    [self.delegate clearPrompt];
 }
 
 - (void) reportWindowSizeToServer
@@ -169,8 +172,7 @@ enum MUTextDisplayModes
 {
   _reconnectCount = 0;
   
-  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpen)]
-       textDisplayMode: MUSystemTextDisplayMode];
+  [self _displaySystemMessage: _(MULConnectionOpen)];
   [MUGrowlService connectionOpenedForTitle: self.profile.windowTitle];
   
   [self.delegate startDisplayingTimeConnected];
@@ -181,8 +183,7 @@ enum MUTextDisplayModes
 
 - (void) MUDConnectionIsConnecting: (NSNotification *) notification
 {
-  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionOpening)]
-       textDisplayMode: MUSystemTextDisplayMode];
+  [self _displaySystemMessage: _(MULConnectionOpening)];
 }
 
 - (void) MUDConnectionWasClosedByClient: (NSNotification *) notification
@@ -190,8 +191,7 @@ enum MUTextDisplayModes
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
   [self _resetRecentStrings];
-  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosed)]
-       textDisplayMode: MUSystemTextDisplayMode];
+  [self _displaySystemMessage: _(MULConnectionClosed)];
   [MUGrowlService connectionClosedForTitle: self.profile.windowTitle];
 }
 
@@ -200,8 +200,7 @@ enum MUTextDisplayModes
   [self _cleanUpPingTimer];
   [self.delegate stopDisplayingTimeConnected];
   [self _resetRecentStrings];
-  [self _displayString: [NSString stringWithFormat: @"%@\n", _(MULConnectionClosedByServer)]
-       textDisplayMode: MUSystemTextDisplayMode];
+  [self _displaySystemMessage: _(MULConnectionClosedByServer)];
   [MUGrowlService connectionClosedByServerForTitle: self.profile.windowTitle];
   
   [self _attemptReconnect];
@@ -219,15 +218,11 @@ enum MUTextDisplayModes
   
   if (error)
   {
-    [self _displayString: [NSString stringWithFormat: @"%@\n",
-                           [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]]
-         textDisplayMode: MUSystemTextDisplayMode];
+    [self _displaySystemMessage: [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]];
   }
   else
   {
-    [self _displayString: [NSString stringWithFormat: @"%@\n",
-                           [NSString stringWithFormat: _(MULConnectionClosedByError), _(MULConnectionNoErrorAvailable)]]
-         textDisplayMode: MUSystemTextDisplayMode];
+    [self _displaySystemMessage: [NSString stringWithFormat: _(MULConnectionClosedByError), _(MULConnectionNoErrorAvailable)]];
   }
   
   [self _attemptReconnect];
@@ -257,10 +252,9 @@ enum MUTextDisplayModes
   _recentReceivedStrings = [NSMutableArray array];
 }
 
-- (void) _displayString: (NSString *) string textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
-{  
-  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string];
-  
+- (void) _displayAttributedString: (NSAttributedString *) attributedString
+                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
+{
   switch (textDisplayMode)
   {
     case MUSystemTextDisplayMode:
@@ -291,6 +285,14 @@ enum MUTextDisplayModes
       break;
     }
   }
+}
+
+- (void) _displaySystemMessage: (NSString *) string
+{
+  NSString *stringWithNewline = [NSString stringWithFormat: @"%@\n", string];
+
+  [self _displayAttributedString: [[NSAttributedString alloc] initWithString: stringWithNewline attributes: nil]
+                 textDisplayMode: MUSystemTextDisplayMode];
 }
 
 - (void) _resetRecentStrings

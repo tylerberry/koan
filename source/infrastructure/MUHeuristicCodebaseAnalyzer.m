@@ -77,9 +77,9 @@
   }
 }
 
-- (void) notePrompt: (NSString *) promptString
+- (void) notePrompt: (NSAttributedString *) promptString
 {
-  [self noteTextLine: promptString];
+  [self noteTextString: promptString];
 }
 
 - (void) noteTelnetDo: (uint8_t) byte
@@ -106,91 +106,93 @@
     return;
 }
 
-- (void) noteTextLine: (NSString *) textString
+- (void) noteTextString: (NSAttributedString *) attributedString
 {
   // TODO: Make this use regex instead, it's probably faster. Note we can't use NSRegularExpression because we run on
   // 10.6.
   
   if (_definitiveCodebaseFound)
     return;
-  
+
+  NSString *lowercaseString = attributedString.string.lowercaseString;
+
   if (self.codebaseFamily == MUCodebaseFamilyUnknown)
   {
     // It's easy for people to talk about other codebases in chat, and we don't want to reset the heuristic every time
     // somebody does because that would be awful. Therefore if we have any guess at all as to what we're running on, we
     // shouldn't do textual matching anymore. We're hoping this is sent early, in the connect banner for example.
     
-    if ([textString.lowercaseString rangeOfString: @"stickymush"].location != NSNotFound)
+    if ([lowercaseString rangeOfString: @"stickymush"].location != NSNotFound)
     {
       _codebase = MUCodebaseStickyMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
       [self log: @"Analyzer: Guessing StickyMUSH from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"evennia"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"evennia"].location != NSNotFound)
     {
       _codebase = MUCodebaseEvennia;
       _codebaseFamily = MUCodebaseFamilyEvennia;
 
       [self log: @"Analyzer: Guessing Evennia from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
     {
       _codebase = MUCodebasePennMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
       [self log: @"Analyzer: Guessing PennMUSH from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"rhost"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"rhost"].location != NSNotFound)
     {
       _codebase = MUCodebaseRhostMUSH;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
       [self log: @"Analyzer: Guessing RhostMUSH from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"mux"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"mux"].location != NSNotFound)
     {
       _codebase = MUCodebaseTinyMUX;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
       [self log: @"Analyzer: Guessing TinyMUX from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"tinybit"].location != NSNotFound
-             || [textString.lowercaseString rangeOfString: @"8bit"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"tinybit"].location != NSNotFound
+             || [lowercaseString rangeOfString: @"8bit"].location != NSNotFound)
     {
       _codebase = MUCodebaseTinyBitMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
       [self log: @"Analyzer: Guessing TinyBit MUSH from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"tinymush"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"tinymush"].location != NSNotFound)
     {
       _codebase = MUCodebaseTinyMUSH;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
       [self log: @"Analyzer: Guessing TinyMUSH from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUDWithDGD;
       _codebaseFamily = MUCodebaseFamilyMUD;
       
       [self log: @"Analyzer: Guessing LPMUD with DGD from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUD;
       _codebaseFamily = MUCodebaseFamilyMUD;
       
       [self log: @"Analyzer: Guessing LPMUD from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"mud"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"mud"].location != NSNotFound)
     {
       _codebaseFamily = MUCodebaseFamilyMUD;
       
       [self log: @"Analyzer: Guessing generic MUD from received text."];
     }
-    else if ([textString.lowercaseString rangeOfString: @"mush"].location != NSNotFound)
+    else if ([lowercaseString rangeOfString: @"mush"].location != NSNotFound)
     {
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       

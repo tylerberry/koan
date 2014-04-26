@@ -15,20 +15,6 @@ NSString *MUMUDConnectionWasClosedWithErrorNotification = @"MUMUDConnectionWasCl
 NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 @interface MUMUDConnection ()
-{
-  NSInputStream *_inputStream;
-  NSOutputStream *_outputStream;
-  BOOL _outputStreamHasSpaceAvailable;
-  
-  NSMutableData *_outgoingDataBuffer;
-  
-  MUProtocolStack *_protocolStack;
-  MUTelnetProtocolHandler *_telnetProtocolHandler;
-  MUSocketFactory *_socketFactory;
-  
-  MUWorld *_world;
-  NSTimer *_pollTimer;
-}
 
 - (void) _cleanUpStreams;
 - (void) _registerObjectForNotifications: (id) object;
@@ -42,6 +28,20 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 #pragma mark -
 
 @implementation MUMUDConnection
+{
+  NSInputStream *_inputStream;
+  NSOutputStream *_outputStream;
+  BOOL _outputStreamHasSpaceAvailable;
+
+  NSMutableData *_outgoingDataBuffer;
+
+  MUProtocolStack *_protocolStack;
+  MUTelnetProtocolHandler *_telnetProtocolHandler;
+  MUSocketFactory *_socketFactory;
+
+  MUWorld *_world;
+  NSTimer *_pollTimer;
+}
 
 + (id) connectionWithWorld: (MUWorld *) world
                   delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
@@ -76,14 +76,14 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   MUMCPProtocolHandler *mcpProtocolHandler = [MUMCPProtocolHandler protocolHandlerWithConnectionState: _state];
   mcpProtocolHandler.delegate = self;
   [_protocolStack addProtocolHandler: mcpProtocolHandler];
-  
-  _telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: _state];
-  _telnetProtocolHandler.delegate = self;
-  [_protocolStack addProtocolHandler: _telnetProtocolHandler];
 
   MUTerminalProtocolHandler *terminalProtocolHandler = [MUTerminalProtocolHandler protocolHandlerWithConnectionState: _state];
   terminalProtocolHandler.delegate = self;
   [_protocolStack addProtocolHandler: terminalProtocolHandler];
+  
+  _telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: _state];
+  _telnetProtocolHandler.delegate = self;
+  [_protocolStack addProtocolHandler: _telnetProtocolHandler];
   
   MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: _state];
   mccpProtocolHandler.delegate = self;
@@ -260,8 +260,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     case NSStreamEventHasBytesAvailable:
       if (stream == _inputStream)
       {
-        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1024;
-        uint8_t *bytes = malloc (numberOfBytesToRead * sizeof (uint8_t));
+        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1;
+        uint8_t *bytes = calloc (numberOfBytesToRead, sizeof (uint8_t));
         NSInteger readLength = [_inputStream read: bytes maxLength: numberOfBytesToRead];
         
         if (readLength == 0)

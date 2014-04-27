@@ -205,10 +205,6 @@ static NSArray *_offerableTerminalTypes;
   {
     _receivedCarriageReturn = YES;
   }
-  else if (byte == 0x08) // ASCII Backspace
-  {
-    [self deleteLastBufferedCharacter];
-  }
   else
   {
     PASS_ON_PARSED_BYTE (byte);

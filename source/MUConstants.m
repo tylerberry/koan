@@ -81,7 +81,7 @@ NSString * const MUPUseProxy = @"MUPUseProxy";
 
 #pragma mark Custom string attributes.
 
-NSString * const MUBoldFontAttributeName = @"MUBoldFont";
+NSString * const MUBrightColorAttributeName = @"MUBoldFont";
 NSString * const MUItalicFontAttributeName = @"MUItalicFont";
 NSString * const MUInverseColorsAttributeName = @"MUInverseColors";
 

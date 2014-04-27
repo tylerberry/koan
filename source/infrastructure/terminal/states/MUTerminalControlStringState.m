@@ -37,13 +37,10 @@
     case 0x08 ... 0x0d:
     case 0x20 ... 0x7e:
       [protocolHandler bufferCommandByte: byte];
-      [protocolHandler bufferTextByte: byte];
       return self;
 
     case 0x9c: // String Terminator, ends a valid OSC command.
-      [protocolHandler bufferTextByte: byte];
       [protocolHandler processCommandStringWithType: _controlStringType];
-      NSLog (@"Terminal: Valid OSC sequence");
       return [MUTerminalTextState state];
 
     default:

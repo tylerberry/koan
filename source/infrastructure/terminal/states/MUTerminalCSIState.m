@@ -19,11 +19,9 @@
     case 0x20 ... 0x2f: // Intermediate bytes.
     case 0x30 ... 0x3f: // Parameter bytes.
       [protocolHandler bufferCommandByte: byte];
-      [protocolHandler bufferTextByte: byte];
       return self;
 
     case 0x40 ... 0x7f: // Final bytes.
-      [protocolHandler bufferTextByte: byte];
       [protocolHandler processCSIWithFinalByte: byte];
       return [MUTerminalTextState state];
 

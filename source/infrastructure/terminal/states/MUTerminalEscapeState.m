@@ -49,28 +49,23 @@
     case 0x59: // Single Graphic Character Introducer
     case 0x5a: // Single Character Introducer <-- makes next character printed
     case 0x5c: // String Terminator
-      [protocolHandler bufferTextByte: byte];
+      [protocolHandler log: @"Terminal: Unimplemented C1 %02u/%02u", byte / 16, byte % 16];
       return [MUTerminalTextState state];
 
     case 0x5b: // Control Sequence Introducer.
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalCSIFirstByteState state];
 
     case 0x5d:
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypeOperatingSystemCommand];
 
     case 0x5e:
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypePrivacyMessage];
 
     case 0x5f:
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypeApplicationProgram];
 
     default:
-      NSLog (@"Terminal: Unrecognized C1 code: ESC %x", byte);
-      [protocolHandler bufferTextByte: byte];
+      [protocolHandler log: @"Terminal: Unrecognized C1 code: ESC %02u/%02u", byte / 16, byte % 16];
       return [MUTerminalTextState state];
   }
 }

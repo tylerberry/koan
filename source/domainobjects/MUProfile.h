@@ -7,7 +7,8 @@
 #import "MUWorld.h"
 #import "MUPlayer.h"
 #import "MUFilter.h"
-#import "MUMUDConnection.h"
+
+@class MUMUDConnection;
 
 @interface MUProfile : NSObject <NSCoding>
 
@@ -56,6 +57,6 @@
 
 // Actions.
 - (MUFilter *) createLogger;
-- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
+- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
 @end

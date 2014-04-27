@@ -6,7 +6,6 @@
 
 #import "MUTreeNode.h"
 
-@class MUMUDConnection;
 @class MUPlayer;
 @protocol MUMUDConnectionDelegate;
 
@@ -40,8 +39,5 @@
 - (id) initWithHostname: (NSString *) hostname
                    port: (NSNumber *) port
                forceTLS: (BOOL) forceTLS;
-
-// Actions.
-- (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
 
 @end

@@ -8,6 +8,8 @@
 #import "NSColor+ANSI.h"
 #import "NSFont+Traits.h"
 
+#import "MUTerminalConstants.h"
+
 static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 @interface MUANSIFormattingFilter ()
@@ -333,7 +335,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 {
   NSFont *newEffectiveFont;
   
-  if (_currentAttributes[MUBoldFontAttributeName]
+  if (_currentAttributes[MUBrightColorAttributeName]
       && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDisplayBrightAsBold])
   {
     newEffectiveFont = [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont];
@@ -390,9 +392,9 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 
 - (void) _resetBoldInString: (NSMutableAttributedString *) string fromLocation: (NSUInteger) startLocation
 {
-  if (_currentAttributes[MUBoldFontAttributeName])
+  if (_currentAttributes[MUBrightColorAttributeName])
   {
-    [self _removeAttribute: MUBoldFontAttributeName inString: string fromLocation: startLocation];
+    [self _removeAttribute: MUBrightColorAttributeName inString: string fromLocation: startLocation];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -816,14 +818,14 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         
       case MUANSISlowBlinkOn:
         [self _setAttribute: MUBlinkingTextAttributeName
-                    toValue: MUSlowBlink
+                    toValue: @(MUSlowBlink)
                    inString: string
                fromLocation: startLocation];
         break;
         
       case MUANSIRapidBlinkOn:
         [self _setAttribute: MUBlinkingTextAttributeName
-                    toValue: MURapidBlink
+                    toValue: @(MURapidBlink)
                    inString: string
                fromLocation: startLocation];
         break;
@@ -903,7 +905,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlackColor]];
@@ -920,7 +922,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIRedColor]];
@@ -937,7 +939,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIGreenColor]];
@@ -954,7 +956,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIYellowColor]];
@@ -971,7 +973,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlueColor]];
@@ -988,7 +990,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIMagentaColor]];
@@ -1005,7 +1007,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSICyanColor]];
@@ -1022,7 +1024,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
         NSColor *targetColor;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        if (_currentAttributes[MUBoldFontAttributeName])
+        if (_currentAttributes[MUBrightColorAttributeName])
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
         else
           targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIWhiteColor]];
@@ -1157,7 +1159,7 @@ static NSString * const MUANSIResetAttributeName = @"MUANSIResetAttributeName";
 - (void) _setBoldInString: (NSMutableAttributedString *) string
              fromLocation: (NSUInteger) startLocation
 {
-  [self _setAttribute: MUBoldFontAttributeName toValue: @YES inString: string fromLocation: startLocation];
+  [self _setAttribute: MUBrightColorAttributeName toValue: @YES inString: string fromLocation: startLocation];
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   

@@ -25,12 +25,10 @@
     case ' ':
     case '.':
     case '0' ... '9':
-      [protocolHandler bufferCommandByte: byte];
       [protocolHandler bufferTextByte: byte];
       return self;
 
     case 0x0e: // Defined terminator for pseudo-ANSI music.
-      [protocolHandler bufferTextByte: byte];
       [protocolHandler processPseudoANSIMusic];
       return [MUTerminalTextState state];
 

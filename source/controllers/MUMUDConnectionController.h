@@ -23,7 +23,7 @@
 
 #pragma mark -
 
-@interface MUMUDConnectionController : NSObject <MUANSIFormattingFilterDelegate, MUMUDConnectionDelegate>
+@interface MUMUDConnectionController : NSObject <MUMUDConnectionDelegate>
 
 @property (weak) NSObject <MUMUDConnectionControllerDelegate> *delegate;
 @property (strong, readonly) MUMUDConnection *connection;

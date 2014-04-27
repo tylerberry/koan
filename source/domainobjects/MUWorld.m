@@ -81,13 +81,6 @@ static const int32_t currentWorldVersion = 9;
                    children: nil];
 }
 
-#pragma mark - Actions
-
-- (MUMUDConnection *) newTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
-{
-  return [MUMUDConnection connectionWithWorld: self delegate: delegate];
-}
-
 #pragma mark - Property method implementations
 
 - (NSImage *) icon

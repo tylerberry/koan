@@ -56,11 +56,11 @@ enum MUTextDisplayModes
     return nil;
   
   _profile = newProfile;
-  _connection = [_profile createNewTelnetConnectionWithDelegate: self];
+  _connection = [_profile createNewMUDConnectionWithDelegate: self];
   
   _filterQueue = [MUFilterQueue filterQueue];
   
-  [_filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: _profile delegate: self]];
+  //[_filterQueue addFilter: [MUANSIFormattingFilter filterWithProfile: _profile delegate: self]];
   [_filterQueue addFilter: [MUFugueEditFilter filterWithProfile: _profile delegate: fugueEditDelegate]];
   [_filterQueue addFilter: [MUAutoHyperlinksFilter filter]];
   [_filterQueue addFilter: [MURegexTestFilter filter]];
@@ -98,8 +98,11 @@ enum MUTextDisplayModes
   [_connection close];
 }
 
-- (void) echoString: (NSAttributedString *) attributedString
+- (void) echoString: (NSString *) string
 {
+  NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor redColor]};
+  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
+                                                                         attributes: attributes];
   [self _displayAttributedString: attributedString textDisplayMode: MUEchoedTextDisplayMode];
 }
 

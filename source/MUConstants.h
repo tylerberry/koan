@@ -89,15 +89,15 @@ extern NSString * const MUPUseProxy;
 
 #pragma mark Custom string attributes.
 
-extern NSString * const MUBoldFontAttributeName;
+extern NSString * const MUBrightColorAttributeName;
 extern NSString * const MUItalicFontAttributeName;
 extern NSString * const MUInverseColorsAttributeName;
 
 extern NSString * const MUBlinkingTextAttributeName;
 extern NSString * const MUHiddenTextAttributeName;
 
-#define MUSlowBlink @1
-#define MURapidBlink @2
+#define MUSlowBlink 1
+#define MURapidBlink 2
 
 extern NSString * const MUCustomForegroundColorAttributeName;
 extern NSString * const MUCustomBackgroundColorAttributeName;
@@ -106,33 +106,33 @@ extern NSString * const MUCustomBackgroundColorAttributeName;
 
 enum MUCustomColorTags
 {
-  MUDefaultForegroundColorTag,
-  MUDefaultBackgroundColorTag,
-  MUANSIBlackColorTag,
-  MUANSIRedColorTag,
-  MUANSIGreenColorTag,
-  MUANSIYellowColorTag,
-  MUANSIBlueColorTag,
-  MUANSICyanColorTag,
-  MUANSIMagentaColorTag,
-  MUANSIWhiteColorTag,
-  MUANSI256BlackColorTag,
-  MUANSI256RedColorTag,
-  MUANSI256GreenColorTag,
-  MUANSI256YellowColorTag,
-  MUANSI256BlueColorTag,
-  MUANSI256CyanColorTag,
-  MUANSI256MagentaColorTag,
-  MUANSI256WhiteColorTag,
-  MUANSI256BrightBlackColorTag,
-  MUANSI256BrightRedColorTag,
-  MUANSI256BrightGreenColorTag,
-  MUANSI256BrightYellowColorTag,
-  MUANSI256BrightBlueColorTag,
-  MUANSI256BrightCyanColorTag,
-  MUANSI256BrightMagentaColorTag,
-  MUANSI256BrightWhiteColorTag,
-  MUANSI256FixedColorTag
+  MUDefaultForegroundColorTag = 0,
+  MUDefaultBackgroundColorTag = 1,
+  MUANSIBlackColorTag = 2,
+  MUANSIRedColorTag = 3,
+  MUANSIGreenColorTag = 4,
+  MUANSIYellowColorTag = 5,
+  MUANSIBlueColorTag = 6,
+  MUANSICyanColorTag = 7,
+  MUANSIMagentaColorTag = 8,
+  MUANSIWhiteColorTag = 9,
+  MUANSI256BlackColorTag = 10,
+  MUANSI256RedColorTag = 11,
+  MUANSI256GreenColorTag = 12,
+  MUANSI256YellowColorTag = 13,
+  MUANSI256BlueColorTag = 14,
+  MUANSI256CyanColorTag = 15,
+  MUANSI256MagentaColorTag = 16,
+  MUANSI256WhiteColorTag = 17,
+  MUANSI256BrightBlackColorTag = 18,
+  MUANSI256BrightRedColorTag = 19,
+  MUANSI256BrightGreenColorTag = 20,
+  MUANSI256BrightYellowColorTag = 21,
+  MUANSI256BrightBlueColorTag = 22,
+  MUANSI256BrightCyanColorTag = 23,
+  MUANSI256BrightMagentaColorTag = 24,
+  MUANSI256BrightWhiteColorTag = 25,
+  MUANSI256FixedColorTag = 26
 };
 
 #pragma mark Pasteboard type constants.

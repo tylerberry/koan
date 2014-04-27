@@ -7,6 +7,7 @@
 #import "MUProtocolHandler.h"
 
 #import "MUMUDConnectionState.h"
+#import "MUProfile.h"
 #import "MUTerminalConstants.h"
 
 @protocol MUTerminalProtocolHandler
@@ -35,8 +36,11 @@
 @interface MUTerminalProtocolHandler : MUProtocolHandler <MUTerminalProtocolHandler>
 
 @property (weak) NSObject <MUTerminalProtocolHandlerDelegate> *delegate;
+@property (readonly) NSDictionary *textAttributes;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (id) protocolHandlerWithProfile: (MUProfile *) profile
+                  connectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (id) initWithProfile: (MUProfile *) profile
+       connectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 @end

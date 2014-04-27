@@ -12,8 +12,10 @@
 @protocol MUProtocolStackDelegate
 
 @required
-- (void) displayAttributedStringAsText: (NSAttributedString *) attributedString;
-- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString;
+- (void) appendStringToLineBuffer: (NSString *) string;
+- (void) displayBufferedStringAsText;
+- (void) displayBufferedStringAsPrompt;
+- (void) maybeDisplayBufferedStringAsPrompt;
 - (void) writeDataToSocket: (NSData *) preprocessedData;
 
 @end

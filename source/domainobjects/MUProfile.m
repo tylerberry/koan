@@ -5,8 +5,9 @@
 //
 
 #import "MUProfile.h"
-#import "MUTextLogger.h"
 
+#import "MUMUDConnection.h"
+#import "MUTextLogger.h"
 #import "MUWorldRegistry.h"
 
 static const int32_t currentProfileVersion = 4;
@@ -176,9 +177,9 @@ static const int32_t currentProfileVersion = 4;
 
 #pragma mark - Actions
 
-- (MUMUDConnection *) createNewTelnetConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
+- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [self.world newTelnetConnectionWithDelegate: delegate];
+  return [MUMUDConnection connectionWithProfile: self delegate: delegate];
 }
 
 - (MUFilter *) createLogger

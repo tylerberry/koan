@@ -13,7 +13,6 @@
 
 - (void) _sendCompleteLineToDelegate;
 - (void) _sendPreprocessedDataToSocket;
-- (void) _useBufferedDataAsPrompt;
 
 @end
 
@@ -26,7 +25,6 @@
   NSMutableArray *_mutableProtocolHandlers;
   NSMutableData *_parsedInputBuffer;
   NSMutableData *_preprocessedOutputBuffer;
-  NSMutableAttributedString *_lineBuffer;
 }
 
 @dynamic protocolHandlers;
@@ -41,7 +39,6 @@
   _mutableProtocolHandlers = [[NSMutableArray alloc] init];
   _parsedInputBuffer = [[NSMutableData alloc] init];
   _preprocessedOutputBuffer = [[NSMutableData alloc] init];
-  _lineBuffer = [[NSMutableAttributedString alloc] init];
   
   return self;
 }
@@ -80,8 +77,7 @@
     if (_connectionState.stringEncoding == NSASCIIStringEncoding)
       string = [string stringWithCodePage437Substitutions];
 
-    [_lineBuffer appendAttributedString: [[NSAttributedString alloc] initWithString: string
-                                                                             attributes: nil]];
+    [self.delegate appendStringToLineBuffer: string];
 
     _parsedInputBuffer.data = [NSData data];
   }
@@ -89,24 +85,8 @@
 
 - (void) maybeUseBufferedDataAsPrompt
 {
-  if (_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
-    return;                                                                         // PennMUSH does, though.
-  
-  NSString *promptCandidate = [[NSString alloc] initWithBytes: _parsedInputBuffer.bytes
-                                                       length: _parsedInputBuffer.length
-                                                     encoding: _connectionState.stringEncoding];
-  
-  // This is a heuristic. I've made it as tight as I can to avoid false positives.
-  
-  if ([promptCandidate hasSuffix: @" "])
-  {
-    promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
-
-    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
-
-    if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
-      [self _useBufferedDataAsPrompt];
-  }
+  [self flushBufferedData];
+  [self.delegate maybeDisplayBufferedStringAsPrompt];
 }
 
 - (void) parseInputData: (NSData *) data
@@ -183,7 +163,8 @@
 
 - (void) notePromptMarker
 {
-  [self _useBufferedDataAsPrompt];
+  [self flushBufferedData];
+  [self.delegate displayBufferedStringAsPrompt];
 }
 
 - (void) parseByte: (uint8_t) byte
@@ -214,12 +195,7 @@
 - (void) _sendCompleteLineToDelegate
 {
   [self flushBufferedData];
-
-  if (_lineBuffer.length > 0)
-  {
-    [self.delegate displayAttributedStringAsText: _lineBuffer];
-    [_lineBuffer deleteCharactersInRange: NSMakeRange (0, _lineBuffer.length)];
-  }
+  [self.delegate displayBufferedStringAsText];
 }
 
 - (void) _sendPreprocessedDataToSocket
@@ -228,15 +204,6 @@
   {
     [self.delegate writeDataToSocket: _preprocessedOutputBuffer];
     _preprocessedOutputBuffer.data = [NSData data];
-  }
-}
-
-- (void) _useBufferedDataAsPrompt
-{
-  if (_lineBuffer.length > 0)
-  {
-    [self.delegate displayAttributedStringAsPrompt: _lineBuffer];
-    [_lineBuffer deleteCharactersInRange: NSMakeRange (0, _lineBuffer.length)];
   }
 }
 

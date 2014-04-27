@@ -7,6 +7,8 @@
 #import "MUMUDConnection.h"
 #import "MUAbstractConnectionSubclass.h"
 
+#import "NSFont+Traits.h"
+
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
 NSString *MUMUDConnectionIsConnectingNotification = @"MUMUDConnectionIsConnectingNotification";
 NSString *MUMUDConnectionWasClosedByClientNotification = @"MUMUDConnectionWasClosedByClientNotification";
@@ -37,20 +39,22 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
   MUProtocolStack *_protocolStack;
   MUTelnetProtocolHandler *_telnetProtocolHandler;
-  MUSocketFactory *_socketFactory;
+  MUTerminalProtocolHandler *_terminalProtocolHandler;
 
-  MUWorld *_world;
+  MUProfile *_profile;
   NSTimer *_pollTimer;
+
+  NSMutableAttributedString *_attributedLineBuffer;
 }
 
-+ (id) connectionWithWorld: (MUWorld *) world
-                  delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
++ (id) connectionWithProfile: (MUProfile *) profile
+                    delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
 {
-  return [[self alloc] initWithWorld: world delegate: delegate];
+  return [[self alloc] initWithProfile: profile delegate: delegate];
 }
 
-- (id) initWithWorld: (MUWorld *) world
-            delegate: (NSObject <MUMUDConnectionDelegate> *) newDelegate;
+- (id) initWithProfile: (MUProfile *) profile
+              delegate: (NSObject <MUMUDConnectionDelegate> *) newDelegate;
 {
   if (!(self = [super init]))
     return nil;
@@ -63,8 +67,10 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: self];
   _dateConnected = nil;
-  _world = world;
+  _profile = profile;
   _pollTimer = nil;
+
+  _attributedLineBuffer = [[NSMutableAttributedString alloc] init];
   
   _protocolStack = [[MUProtocolStack alloc] initWithConnectionState: _state];
   [_protocolStack setDelegate: self];
@@ -77,9 +83,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   mcpProtocolHandler.delegate = self;
   [_protocolStack addProtocolHandler: mcpProtocolHandler];
 
-  MUTerminalProtocolHandler *terminalProtocolHandler = [MUTerminalProtocolHandler protocolHandlerWithConnectionState: _state];
-  terminalProtocolHandler.delegate = self;
-  [_protocolStack addProtocolHandler: terminalProtocolHandler];
+  _terminalProtocolHandler = [MUTerminalProtocolHandler protocolHandlerWithProfile: _profile connectionState: _state];
+  _terminalProtocolHandler.delegate = self;
+  [_protocolStack addProtocolHandler: _terminalProtocolHandler];
   
   _telnetProtocolHandler = [MUTelnetProtocolHandler protocolHandlerWithConnectionState: _state];
   _telnetProtocolHandler.delegate = self;
@@ -98,10 +104,10 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) dealloc
 {
+  [self close];
+
   [self _unregisterObjectForNotifications: _delegate];
   _delegate = nil;
-  
-  [self close];
 }
 
 - (void) setDelegate: (NSObject <MUMUDConnectionDelegate> *) object
@@ -149,8 +155,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   CFWriteStreamRef writeStream;
   
   CFStreamCreatePairWithSocketToHost (NULL,
-                                      (__bridge CFStringRef) _world.hostname,
-                                      (UInt32) _world.port.integerValue,
+                                      (__bridge CFStringRef) _profile.world.hostname,
+                                      (UInt32) _profile.world.port.integerValue,
                                       &readStream,
                                       &writeStream);
   
@@ -160,7 +166,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _inputStream.delegate = self;
   _outputStream.delegate = self;
   
-  if (_world.forceTLS)
+  if (_profile.world.forceTLS)
     [self enableTLS];
   
   [_inputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
@@ -223,14 +229,14 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                                                     userInfo: @{MUMUDConnectionErrorKey: error}];
 }
 
-#pragma mark - Various delegates
+#pragma mark - Various protocols for delegates
 
 - (void) log: (NSString *) message arguments: (va_list) args
 {
-  NSLog (@"[%@:%@] %@", _world.hostname, _world.port, [[NSString alloc] initWithFormat: message arguments: args]);
+  NSLog (@"[%@:%@] %@", _profile.world.hostname, _profile.world.port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
-#pragma mark - NSStreamDelegate
+#pragma mark - NSStreamDelegate protocol
 
 - (void) stream: (NSStream *) stream handleEvent: (NSStreamEvent) eventCode
 {
@@ -260,7 +266,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     case NSStreamEventHasBytesAvailable:
       if (stream == _inputStream)
       {
-        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1;
+        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1024;
         uint8_t *bytes = calloc (numberOfBytesToRead, sizeof (uint8_t));
         NSInteger readLength = [_inputStream read: bytes maxLength: numberOfBytesToRead];
         
@@ -298,20 +304,45 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   }
 }
 
-#pragma mark - MUProtocolStackDelegate
+#pragma mark - MUProtocolStackDelegate protocol
 
-- (void) displayAttributedStringAsText: (NSAttributedString *) attributedString
+- (void) appendStringToLineBuffer: (NSString *) string
 {
-  [self.state.codebaseAnalyzer noteTextString: attributedString];
-  
-  [self.delegate displayAttributedString: attributedString];
+  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
+                                                                         attributes: _terminalProtocolHandler.textAttributes];
+  [_attributedLineBuffer appendAttributedString: attributedString];
 }
 
-- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
+- (void) displayBufferedStringAsText
 {
-  [self.state.codebaseAnalyzer notePrompt: attributedString];
-  
-  [self.delegate displayAttributedStringAsPrompt: attributedString];
+  [self.state.codebaseAnalyzer noteTextString: _attributedLineBuffer];
+  [self.delegate displayAttributedString: _attributedLineBuffer];
+  [_attributedLineBuffer deleteCharactersInRange: NSMakeRange (0, _attributedLineBuffer.length)];
+}
+
+- (void) displayBufferedStringAsPrompt
+{
+  [self.state.codebaseAnalyzer notePrompt: _attributedLineBuffer];
+  [self.delegate displayAttributedStringAsPrompt: _attributedLineBuffer];
+  [_attributedLineBuffer deleteCharactersInRange: NSMakeRange (0, _attributedLineBuffer.length)];
+}
+
+- (void) maybeDisplayBufferedStringAsPrompt
+{
+  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
+    return;                                                                         // PennMUSH does, though.
+
+  // This is a heuristic. I've made it as tight as I can to avoid false positives.
+
+  if ([_attributedLineBuffer.string hasSuffix: @" "])
+  {
+    NSString *promptCandidate = [_attributedLineBuffer.string substringToIndex: _attributedLineBuffer.length - 1];
+
+    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
+
+    if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
+      [self displayBufferedStringAsPrompt];
+  }
 }
 
 - (void) writeDataToSocket: (NSData *) data
@@ -322,7 +353,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     [self _writeBufferedDataToOutputStream];
 }
 
-#pragma mark - MUTelnetProtocolHandlerDelegate
+#pragma mark - MUTelnetProtocolHandlerDelegate protocol
 
 - (void) enableTLS
 {
@@ -330,7 +361,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                                 (NSString *) kCFStreamSSLAllowsExpiredRoots: @YES,
                                 (NSString *) kCFStreamSSLAllowsAnyRoot: @YES,
                                 (NSString *) kCFStreamSSLValidatesCertificateChain: @NO,
-                                (NSString *) kCFStreamSSLPeerName: _world.hostname,
+                                (NSString *) kCFStreamSSLPeerName: _profile.world.hostname,
                                 (NSString *) kCFStreamSSLLevel: (NSString *) kCFStreamSocketSecurityLevelNegotiatedSSL};
   
   CFReadStreamSetProperty ((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);

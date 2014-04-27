@@ -17,18 +17,12 @@
   switch (byte)
   {
     case 0x00: // Null.
-      [protocolHandler bufferTextByte: byte];
-      return self;
-
     case 0x01: // Start Of Heading.
     case 0x02: // Start Of Text.
     case 0x03: // End Of Text.
     case 0x04: // End Of Transmission.
     case 0x05: // Enquiry.
     case 0x06: // Acknowledge.
-      [protocolHandler bufferTextByte: byte];
-      return self;
-
     case 0x07: // Bell.
     case 0x08: // Backspace.
     case 0x09: // Horizontal Tabulation.
@@ -51,11 +45,10 @@
     case 0x1d: // Group Separator.
     case 0x1e: // Record Separator.
     case 0x1f: // Unit Separator.
-      [protocolHandler bufferTextByte: byte];
+      [protocolHandler log: @"Terminal: Unimplemented C0 %02u/%02u", byte / 16, byte % 16];
       return self;
 
     case 0x1b: // Escape.
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalEscapeState state];
 
     case 0x0a: // Line Feed.

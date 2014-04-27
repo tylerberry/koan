@@ -44,6 +44,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   MUProfile *_profile;
   NSTimer *_pollTimer;
 
+  NSUInteger _lastWindowColumns;
+  NSUInteger _lastWindowLines;
+
   NSMutableAttributedString *_attributedLineBuffer;
 }
 
@@ -69,6 +72,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _dateConnected = nil;
   _profile = profile;
   _pollTimer = nil;
+
+  _lastWindowColumns = 0;
+  _lastWindowLines = 0;
 
   _attributedLineBuffer = [[NSMutableAttributedString alloc] init];
   
@@ -375,6 +381,12 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
 {
+  if (_lastWindowLines == numberOfLines && _lastWindowColumns == numberOfColumns)
+    return;
+
+  _lastWindowColumns = numberOfColumns;
+  _lastWindowLines = numberOfLines;
+
   [_telnetProtocolHandler sendNAWSSubnegotiationWithNumberOfLines: numberOfLines columns: numberOfColumns];
 }
 

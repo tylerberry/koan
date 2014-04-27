@@ -60,8 +60,8 @@ enum MUTelnetOptions
   MUTelnetOptionMSSP = 70,
   
   // MUD Client Compression Protocol.
-  // The MCCP extension was defined at <http://mccp.smaugmuds.org/>. The page
-  // seems to be gone now. Try the Internet Archive. :)
+  // The MCCP extension was defined at <http://mccp.smaugmuds.org/>. The page seems to be gone now. Try the Internet
+  // Archive. :)
   MUTelnetOptionMCCP1 = 85,
   MUTelnetOptionMCCP2 = 86,
   
@@ -71,7 +71,8 @@ enum MUTelnetOptions
   MUTelnetOptionMXP = 91,
   
   // Zenith MUD Protocol, an out-of-band communication protocol.
-  // The ZMP protocol is defined at <http://zmp.sourcemud.org/spec.shtml>.
+  // The ZMP protocol used to be defined at <http://zmp.sourcemud.org/spec.shtml>.
+  // For now try looking at <http://discworld.starturtle.net/external/protocols/zmp.html>.
   MUTelnetOptionZMP = 93,
   
   // Aardwolf informal out-of-band protocol.

@@ -493,56 +493,56 @@
 
     case MUANSIBrightBlackColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
-      colorTagForANSI256 = MUANSI256BrightBlackColorTag;
+      colorTagForANSI256 = MUANSIBrightBlackColorTag;
       colorTagForANSI16 = MUANSIBlackColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightRedColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
-      colorTagForANSI256 = MUANSI256BrightRedColorTag;
+      colorTagForANSI256 = MUANSIBrightRedColorTag;
       colorTagForANSI16 = MUANSIRedColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightGreenColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
-      colorTagForANSI256 = MUANSI256BrightGreenColorTag;
+      colorTagForANSI256 = MUANSIBrightGreenColorTag;
       colorTagForANSI16 = MUANSIGreenColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightYellowColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
-      colorTagForANSI256 = MUANSI256BrightYellowColorTag;
+      colorTagForANSI256 = MUANSIBrightYellowColorTag;
       colorTagForANSI16 = MUANSIYellowColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightBlueColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
-      colorTagForANSI256 = MUANSI256BrightBlueColorTag;
+      colorTagForANSI256 = MUANSIBrightBlueColorTag;
       colorTagForANSI16 = MUANSIBlueColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightMagentaColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
-      colorTagForANSI256 = MUANSI256BrightMagentaColorTag;
+      colorTagForANSI256 = MUANSIBrightMagentaColorTag;
       colorTagForANSI16 = MUANSIMagentaColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightCyanColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
-      colorTagForANSI256 = MUANSI256BrightCyanColorTag;
+      colorTagForANSI256 = MUANSIBrightCyanColorTag;
       colorTagForANSI16 = MUANSICyanColorTag;
       changeIfBright = YES;
       break;
 
     case MUANSIBrightWhiteColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
-      colorTagForANSI256 = MUANSI256BrightWhiteColorTag;
+      colorTagForANSI256 = MUANSIBrightWhiteColorTag;
       colorTagForANSI16 = MUANSIWhiteColorTag;
       changeIfBright = YES;
       break;
@@ -598,14 +598,14 @@
 
   if (_textAttributes[MUBrightColorAttributeName]
       || ([[NSUserDefaults standardUserDefaults] boolForKey: MUPDisplayBrightAsBold]
-          && ([_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightBlackColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightBlueColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightCyanColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightGreenColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightMagentaColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightRedColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightWhiteColorTag
-              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSI256BrightYellowColorTag)))
+          && ([_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightBlackColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightBlueColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightCyanColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightGreenColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightMagentaColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightRedColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightWhiteColorTag
+              || [_textAttributes[MUCustomForegroundColorAttributeName] intValue] == MUANSIBrightYellowColorTag)))
   {
     newEffectiveFont = [_profile.effectiveFont boldFontWithRespectTo: _profile.effectiveFont];
   }
@@ -658,7 +658,7 @@
 
           case MUANSI256BrightBlack:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
-            customColorTag = MUANSI256BrightBlackColorTag;
+            customColorTag = MUANSIBrightBlackColorTag;
             break;
 
           case MUANSI256Red:
@@ -668,7 +668,7 @@
 
           case MUANSI256BrightRed:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
-            customColorTag = MUANSI256BrightRedColorTag;
+            customColorTag = MUANSIBrightRedColorTag;
             break;
 
           case MUANSI256Green:
@@ -678,7 +678,7 @@
 
           case MUANSI256BrightGreen:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
-            customColorTag = MUANSI256BrightGreenColorTag;
+            customColorTag = MUANSIBrightGreenColorTag;
             break;
 
           case MUANSI256Yellow:
@@ -688,7 +688,7 @@
 
           case MUANSI256BrightYellow:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
-            customColorTag = MUANSI256BrightYellowColorTag;
+            customColorTag = MUANSIBrightYellowColorTag;
             break;
 
           case MUANSI256Blue:
@@ -698,7 +698,7 @@
 
           case MUANSI256BrightBlue:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
-            customColorTag = MUANSI256BrightBlueColorTag;
+            customColorTag = MUANSIBrightBlueColorTag;
             break;
 
           case MUANSI256Magenta:
@@ -708,7 +708,7 @@
 
           case MUANSI256BrightMagenta:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
-            customColorTag = MUANSI256BrightMagentaColorTag;
+            customColorTag = MUANSIBrightMagentaColorTag;
             break;
 
           case MUANSI256Cyan:
@@ -718,7 +718,7 @@
 
           case MUANSI256BrightCyan:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
-            customColorTag = MUANSI256BrightCyanColorTag;
+            customColorTag = MUANSIBrightCyanColorTag;
             break;
 
           case MUANSI256White:
@@ -728,7 +728,7 @@
 
           case MUANSI256BrightWhite:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
-            customColorTag = MUANSI256BrightWhiteColorTag;
+            customColorTag = MUANSIBrightWhiteColorTag;
             break;
         }
 
@@ -766,7 +766,7 @@
 
           case MUANSI256BrightBlack:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
-            customColorTag = MUANSI256BrightBlackColorTag;
+            customColorTag = MUANSIBrightBlackColorTag;
             break;
 
           case MUANSI256Red:
@@ -776,7 +776,7 @@
 
           case MUANSI256BrightRed:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
-            customColorTag = MUANSI256BrightRedColorTag;
+            customColorTag = MUANSIBrightRedColorTag;
             break;
 
           case MUANSI256Green:
@@ -786,7 +786,7 @@
 
           case MUANSI256BrightGreen:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
-            customColorTag = MUANSI256BrightGreenColorTag;
+            customColorTag = MUANSIBrightGreenColorTag;
             break;
 
           case MUANSI256Yellow:
@@ -796,7 +796,7 @@
 
           case MUANSI256BrightYellow:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
-            customColorTag = MUANSI256BrightYellowColorTag;
+            customColorTag = MUANSIBrightYellowColorTag;
             break;
 
           case MUANSI256Blue:
@@ -806,7 +806,7 @@
 
           case MUANSI256BrightBlue:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
-            customColorTag = MUANSI256BrightBlueColorTag;
+            customColorTag = MUANSIBrightBlueColorTag;
             break;
 
           case MUANSI256Magenta:
@@ -816,7 +816,7 @@
 
           case MUANSI256BrightMagenta:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
-            customColorTag = MUANSI256BrightMagentaColorTag;
+            customColorTag = MUANSIBrightMagentaColorTag;
             break;
 
           case MUANSI256Cyan:
@@ -826,7 +826,7 @@
 
           case MUANSI256BrightCyan:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
-            customColorTag = MUANSI256BrightCyanColorTag;
+            customColorTag = MUANSIBrightCyanColorTag;
             break;
 
           case MUANSI256White:
@@ -836,7 +836,7 @@
 
           case MUANSI256BrightWhite:
             targetColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
-            customColorTag = MUANSI256BrightWhiteColorTag;
+            customColorTag = MUANSIBrightWhiteColorTag;
             break;
         }
 
@@ -1138,10 +1138,154 @@
         [self _setBackgroundColor: color customColorTag: MUANSIWhiteColorTag];
         break;
       }
-
+        
       case MUANSIBackgroundDefault:
         [self _unsetBackgroundColor];
         break;
+
+      case MUANSIForegroundBrightBlack:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightBlackColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightRed:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightRedColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightGreen:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightGreenColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightYellow:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightYellowColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightBlue:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightBlueColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightMagenta:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightMagentaColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightCyan:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightCyanColorTag];
+        break;
+      }
+
+      case MUANSIForegroundBrightWhite:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
+
+        [self _setForegroundColor: color customColorTag: MUANSIBrightWhiteColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightBlack:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightBlackColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightRed:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightRedColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightGreen:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightGreenColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightYellow:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightYellowColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightBlue:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightBlueColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightMagenta:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightMagentaColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightCyan:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
+
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightCyanColorTag];
+        break;
+      }
+
+      case MUANSIBackgroundBrightWhite:
+      {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSColor *color = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
+        
+        [self _setBackgroundColor: color customColorTag: MUANSIBrightWhiteColorTag];
+        break;
+      }
 
       default:
         [self log: @"Terminal: Unhandled ANSI SGR Code: %@.", code];

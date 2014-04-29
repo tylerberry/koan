@@ -117,22 +117,22 @@ enum MUCustomColorTags
   MUANSICyanColorTag,
   MUANSIMagentaColorTag,
   MUANSIWhiteColorTag,
-  MUANSI256BlackColorTag,
-  MUANSI256RedColorTag,
-  MUANSI256GreenColorTag,
+  MUANSIBrightBlackColorTag,
+  MUANSIBrightRedColorTag,
+  MUANSIBrightGreenColorTag,
+  MUANSIBrightYellowColorTag,
+  MUANSIBrightBlueColorTag,
+  MUANSIBrightCyanColorTag,
+  MUANSIBrightMagentaColorTag,
+  MUANSIBrightWhiteColorTag,
+  MUANSI256BlackColorTag,      // ANSI-256 colors are distinct from ANSI-16 colors in that they're not affected by the
+  MUANSI256RedColorTag,        // bright conversion. If ANSI-256 is used to specify a non-bright color, that color stays
+  MUANSI256GreenColorTag,      // non-bright regardless of other ANSI attributes.
   MUANSI256YellowColorTag,
   MUANSI256BlueColorTag,
   MUANSI256CyanColorTag,
   MUANSI256MagentaColorTag,
   MUANSI256WhiteColorTag,
-  MUANSI256BrightBlackColorTag,
-  MUANSI256BrightRedColorTag,
-  MUANSI256BrightGreenColorTag,
-  MUANSI256BrightYellowColorTag,
-  MUANSI256BrightBlueColorTag,
-  MUANSI256BrightCyanColorTag,
-  MUANSI256BrightMagentaColorTag,
-  MUANSI256BrightWhiteColorTag,
   MUANSI256FixedColorTag
 };
 

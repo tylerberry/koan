@@ -116,7 +116,7 @@
                                                 object: controller];
   
   [_controllers removeObject: controller];
-  [_controllersByProfileUniqueIdentifier removeObjectForKey: controller.connectionController.profile.uniqueIdentifier];
+  [_controllersByProfileUniqueIdentifier removeObjectForKey: controller.connection.profile.uniqueIdentifier];
 }
 
 - (void) _registerForNotifications

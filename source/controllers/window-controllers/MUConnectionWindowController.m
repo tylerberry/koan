@@ -1239,56 +1239,56 @@ enum MUTextDisplayModes
       
     case MUANSIBrightBlackColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
-      colorTagForANSI256 = MUANSI256BrightBlackColorTag;
+      colorTagForANSI256 = MUANSIBrightBlackColorTag;
       colorTagForANSI16 = MUANSIBlackColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightRedColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
-      colorTagForANSI256 = MUANSI256BrightRedColorTag;
+      colorTagForANSI256 = MUANSIBrightRedColorTag;
       colorTagForANSI16 = MUANSIRedColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightGreenColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
-      colorTagForANSI256 = MUANSI256BrightGreenColorTag;
+      colorTagForANSI256 = MUANSIBrightGreenColorTag;
       colorTagForANSI16 = MUANSIGreenColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightYellowColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
-      colorTagForANSI256 = MUANSI256BrightYellowColorTag;
+      colorTagForANSI256 = MUANSIBrightYellowColorTag;
       colorTagForANSI16 = MUANSIYellowColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightBlueColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
-      colorTagForANSI256 = MUANSI256BrightBlueColorTag;
+      colorTagForANSI256 = MUANSIBrightBlueColorTag;
       colorTagForANSI16 = MUANSIBlueColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightMagentaColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
-      colorTagForANSI256 = MUANSI256BrightMagentaColorTag;
+      colorTagForANSI256 = MUANSIBrightMagentaColorTag;
       colorTagForANSI16 = MUANSIMagentaColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightCyanColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
-      colorTagForANSI256 = MUANSI256BrightCyanColorTag;
+      colorTagForANSI256 = MUANSIBrightCyanColorTag;
       colorTagForANSI16 = MUANSICyanColorTag;
       changeIfBright = YES;
       break;
       
     case MUANSIBrightWhiteColor:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
-      colorTagForANSI256 = MUANSI256BrightWhiteColorTag;
+      colorTagForANSI256 = MUANSIBrightWhiteColorTag;
       colorTagForANSI16 = MUANSIWhiteColorTag;
       changeIfBright = YES;
       break;

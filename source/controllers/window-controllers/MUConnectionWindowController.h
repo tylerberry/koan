@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUMUDConnectionController.h"
+#import "MUMUDConnection.h"
 #import "MUTextView.h"
 
 @protocol MUConnectionWindowControllerDelegate

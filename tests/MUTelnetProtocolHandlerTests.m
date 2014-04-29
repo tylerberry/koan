@@ -11,13 +11,6 @@
 #import "MUTelnetConstants.h"
 
 @interface MUTelnetProtocolHandlerTests ()
-{
-  MUMUDConnectionState *connectionState;
-  MUProtocolStack *protocolStack;
-  MUTelnetProtocolHandler *protocolHandler;
-  NSMutableData *mockSocketData;
-  NSMutableData *parsedData;
-}
 
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes;
 - (void) sendMockSocketData;
@@ -34,6 +27,13 @@
 #pragma mark -
 
 @implementation MUTelnetProtocolHandlerTests
+{
+  MUMUDConnectionState *connectionState;
+  MUProtocolStack *protocolStack;
+  MUTelnetProtocolHandler *protocolHandler;
+  NSMutableData *mockSocketData;
+  NSMutableAttributedString *parsedString;
+}
 
 - (void) setUp
 {
@@ -69,40 +69,40 @@
 - (void) testParsePlainText
 {
   [self parseCString: "foo"];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "foo"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "foo"];
 }
 
 - (void) testParseCRIACIAC
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetInterpretAsCommand, 0};
   [self parseCString: (const char *) bytes];
-  [self assertData: parsedData hasBytesWithZeroTerminator: (const char *) bytes + 2];
+  [self assertData: parsedString hasBytesWithZeroTerminator: (const char *) bytes + 2];
 }
 
 - (void) testParseCRCRLF
 {
   [self parseCString: "\r\r\n"];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\n"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
 }
 
 - (void) testParseCRCRNUL
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\r\r\0" length: 3]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
 }
 
 - (void) testParseCRLF
 {
   [self parseCString: "\r\n"];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\n"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
 }
 
 - (void) testParseCRNUL
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\r\0" length: 2]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
 }
 
 - (void) testParseCRSomethingElse
@@ -116,7 +116,7 @@
     bytes[1] = (uint8_t) i;
     [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 2]];
     [protocolStack flushBufferedData];
-    [self assert: parsedData equals: [NSData dataWithBytes: bytes + 1 length: 1]];
+    [self assert: parsedString equals: [NSData dataWithBytes: bytes + 1 length: 1]];
     [self resetTest];
   }
 }
@@ -126,26 +126,26 @@
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetNoOperation, 0};
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\r"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
 }
 
 - (void) testParseLF
 {
   [self parseCString: "\n"];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\n"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
 }
 
 - (void) testParseLFCRLFCR
 {
   [self parseCString: "\n\r\n\r"];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\n\n"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\n\n"];
 }
 
 - (void) testParseLFCRNUL
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\n\r\0" length: 3]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "\n\r"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "\n\r"];
 }
 
 - (void) testNVTEraseCharacter
@@ -154,7 +154,7 @@
 
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "b"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "b"];
 }
 
 - (void) testASCIIBackspace
@@ -163,7 +163,7 @@
 
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 3]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "b"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "b"];
 }
 
 - (void) testBothNVTEraseCharacterAndASCIIBackspace
@@ -174,7 +174,7 @@
 
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 7]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedData hasBytesWithZeroTerminator: "ad"];
+  [self assertData: parsedString hasBytesWithZeroTerminator: "ad"];
 }
 
 - (void) testSubnegotiationPutsNothingInReadBuffer
@@ -182,7 +182,7 @@
   uint8_t bytes[9] = {MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 9]];
-  [self assertUInteger: [parsedData length] equals: 0];
+  [self assertUInteger: [parsedString length] equals: 0];
 }
 
 - (void) testSubnegotiationStrippedFromText
@@ -193,7 +193,7 @@
   [protocolStack flushBufferedData];
   
   uint8_t expectedBytes[4] = {'a', 'b', 'c', 'd'};
-  [self assert: parsedData equals: [NSData dataWithBytes: expectedBytes length: 4]];
+  [self assert: parsedString equals: [NSData dataWithBytes: expectedBytes length: 4]];
 }
 
 #pragma mark - Telnet options

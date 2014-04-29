@@ -49,7 +49,23 @@ typedef enum MUANSICode
   MUANSIBackgroundCyan = 46,
   MUANSIBackgroundWhite = 47,
   MUANSIBackground256 = 48,
-  MUANSIBackgroundDefault = 49
+  MUANSIBackgroundDefault = 49,
+  MUANSIForegroundBrightBlack = 90,
+  MUANSIForegroundBrightRed = 91,
+  MUANSIForegroundBrightGreen = 92,
+  MUANSIForegroundBrightYellow = 93,
+  MUANSIForegroundBrightBlue = 94,
+  MUANSIForegroundBrightMagenta = 95,
+  MUANSIForegroundBrightCyan = 96,
+  MUANSIForegroundBrightWhite = 97,
+  MUANSIBackgroundBrightBlack = 100,
+  MUANSIBackgroundBrightRed = 101,
+  MUANSIBackgroundBrightGreen = 102,
+  MUANSIBackgroundBrightYellow = 103,
+  MUANSIBackgroundBrightBlue = 104,
+  MUANSIBackgroundBrightMagenta = 105,
+  MUANSIBackgroundBrightCyan = 106,
+  MUANSIBackgroundBrightWhite = 107
 } MUANSICode;
 
 enum MUAbstractANSIColors

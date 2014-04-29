@@ -49,7 +49,7 @@
     case 0x59: // Single Graphic Character Introducer
     case 0x5a: // Single Character Introducer <-- makes next character printed
     case 0x5c: // String Terminator
-      [protocolHandler log: @"Terminal: Unimplemented C1 %02u/%02u", byte / 16, byte % 16];
+      [protocolHandler log: @"Terminal: Unimplemented C1: ESC %02u/%02u.", byte / 16, byte % 16];
       return [MUTerminalTextState state];
 
     case 0x5b: // Control Sequence Introducer.

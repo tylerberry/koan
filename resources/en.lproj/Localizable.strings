@@ -1,7 +1,7 @@
 // Connection status messages.
 
 "ConnectionOpening" = "Trying to open connection..."; // Use periods, not an ellipsis.
-"ConnectionOpen" = "Connection open.";
+"ConnectionOpen" = "Connection open.\n"; // Keep the newline on this one.
 "ConnectionClosed" = "Connection closed.";
 "ConnectionClosedByServer" = "Connection closed by server.";
 "ConnectionClosedByError" = "Connection closed with error: %@";

@@ -17,7 +17,7 @@
 
 #pragma mark -
 
-@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionControllerDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
+@interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
 {
   IBOutlet MUTextView *receivedTextView;
   IBOutlet MUTextView *inputView;
@@ -27,7 +27,7 @@
 }
 
 @property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;
-@property (readonly) MUMUDConnectionController *connectionController;
+@property (readonly) MUMUDConnection *connection;
 
 // Designated initializer.
 - (id) initWithProfile: (MUProfile *) newProfile;

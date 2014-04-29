@@ -19,7 +19,6 @@
 		2F0B277B12196B9C00AE6B62 /* MUTelnetStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */; };
 		2F174F70167AB8F10030C9D3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */; };
 		2F174F72167ABD1C0030C9D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F174F71167ABD1C0030C9D3 /* Security.framework */; };
-		2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */; };
 		2F1C1798122854B90079F1E1 /* MUFilterQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C1797122854B90079F1E1 /* MUFilterQueue.m */; };
 		2F1DC57716DB3A1A00A038FE /* pcre_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56416DB3A1A00A038FE /* pcre_exec.c */; };
 		2F1DC58D16DB3D7F00A038FE /* pcre_chartables.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56016DB3A1A00A038FE /* pcre_chartables.c */; };
@@ -182,7 +181,6 @@
 		7E26CB1E0BD808A500FC3843 /* MUByteSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */; };
 		7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */; };
 		7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E39EF9C0783938F0042A17A /* MUProfile.m */; };
-		7E43C1C20ACB1A4000A8E677 /* MUANSIFormattingFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C1C00ACB1A4000A8E677 /* MUANSIFormattingFilter.m */; };
 		7E43C1EE0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C1ED0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m */; };
 		7E4FB2790BCC877B007BC40F /* MUTelnetDontState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2650BCC877B007BC40F /* MUTelnetDontState.m */; };
 		7E4FB27B0BCC877B007BC40F /* MUTelnetDoState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2670BCC877B007BC40F /* MUTelnetDoState.m */; };
@@ -320,8 +318,6 @@
 		2F0B277A12196B9C00AE6B62 /* MUTelnetStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachine.m; sourceTree = "<group>"; };
 		2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2F174F71167ABD1C0030C9D3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		2F17CF7916BF50A900577E46 /* MUMUDConnectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnectionController.h; sourceTree = "<group>"; };
-		2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionController.m; sourceTree = "<group>"; };
 		2F1C1796122854B90079F1E1 /* MUFilterQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterQueue.h; sourceTree = "<group>"; };
 		2F1C1797122854B90079F1E1 /* MUFilterQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterQueue.m; sourceTree = "<group>"; };
 		2F1DC55C16DB1D3F00A038FE /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Makefile; sourceTree = "<group>"; usesTabs = 1; };
@@ -561,8 +557,6 @@
 		7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteSet.m; sourceTree = "<group>"; };
 		7E39EF9B0783938F0042A17A /* MUProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfile.h; sourceTree = "<group>"; };
 		7E39EF9C0783938F0042A17A /* MUProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfile.m; sourceTree = "<group>"; };
-		7E43C1BF0ACB1A4000A8E677 /* MUANSIFormattingFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUANSIFormattingFilter.h; sourceTree = "<group>"; };
-		7E43C1C00ACB1A4000A8E677 /* MUANSIFormattingFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = MUANSIFormattingFilter.m; sourceTree = "<group>"; };
 		7E43C1EC0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUANSIFormattingFilterTests.h; sourceTree = "<group>"; };
 		7E43C1ED0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUANSIFormattingFilterTests.m; sourceTree = "<group>"; };
 		7E4FB2640BCC877B007BC40F /* MUTelnetDontState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetDontState.h; sourceTree = "<group>"; };
@@ -1264,8 +1258,6 @@
 				E62C905B07422595005662BC /* MUApplicationController.m */,
 				2F7B4FB60BCAC1FD00C1586D /* MUDocumentController.h */,
 				2F7B4FB70BCAC1FD00C1586D /* MUDocumentController.m */,
-				2F17CF7916BF50A900577E46 /* MUMUDConnectionController.h */,
-				2F17CF7A16BF50A900577E46 /* MUMUDConnectionController.m */,
 			);
 			name = Controllers;
 			path = controllers;
@@ -1362,8 +1354,6 @@
 		E6D0A56C0745518A002DA041 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
-				7E43C1BF0ACB1A4000A8E677 /* MUANSIFormattingFilter.h */,
-				7E43C1C00ACB1A4000A8E677 /* MUANSIFormattingFilter.m */,
 				E6C9D604077C2DC6007BB2C1 /* MUAutoHyperlinksFilter.h */,
 				E6C9D605077C2DC6007BB2C1 /* MUAutoHyperlinksFilter.m */,
 				7EFE43820749C7CE002C7D48 /* MUFilter.h */,
@@ -1826,7 +1816,6 @@
 				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
 				2F3DBAC01652FF910056D738 /* MASPreferencesWindowController.m in Sources */,
 				7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */,
-				7E43C1C20ACB1A4000A8E677 /* MUANSIFormattingFilter.m in Sources */,
 				E62C905D07422595005662BC /* MUApplicationController.m in Sources */,
 				2F0A712B19079CCE00DB9145 /* MUFontConfirmationSheetController.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
@@ -1849,7 +1838,6 @@
 				2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */,
 				7EC3030A092B978B00AFA5C7 /* MUMUDConnection.m in Sources */,
 				2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */,
-				2F17CF7B16BF50A900577E46 /* MUMUDConnectionController.m in Sources */,
 				2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */,
 				E6C9D607077C2DC6007BB2C1 /* MUAutoHyperlinksFilter.m in Sources */,
 				2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */,

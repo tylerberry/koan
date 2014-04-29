@@ -7,6 +7,7 @@
 #import "MUTerminalProtocolHandler.h"
 #import "MUProtocolHandlerSubclass.h"
 
+#import "MUApplicationController.h"
 #import "MUProtocolStack.h"
 #import "MUTerminalStateMachine.h"
 #import "NSColor+ANSI.h"
@@ -15,6 +16,8 @@
 @interface MUTerminalProtocolHandler ()
 
 - (void) _setUpInitialTextAttributes;
+- (void) _updateColorsForANSIColor: (enum MUAbstractANSIColors) color;
+- (void) _updateDisplayBrightAsBold;
 - (void) _updateTextAttributesFromProfileBackgroundColor;
 - (void) _updateTextAttributesFromProfileFont;
 - (void) _updateTextAttributesFromProfileTextColor;
@@ -74,6 +77,93 @@
   [_profile addObserver: self forKeyPath: @"effectiveFont" options: NSKeyValueObservingOptionNew context: NULL];
   [_profile addObserver: self forKeyPath: @"effectiveTextColor" options: NSKeyValueObservingOptionNew context: NULL];
 
+  NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBlackColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIRedColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIGreenColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIYellowColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBlueColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIMagentaColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSICyanColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIWhiteColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightBlackColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightRedColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightGreenColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightYellowColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightBlueColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightMagentaColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightCyanColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightWhiteColor]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
+  [sharedDefaultsController addObserver: self
+                             forKeyPath: [MUApplicationController keyPathForDisplayBrightAsBold]
+                                options: NSKeyValueObservingOptionNew
+                                context: nil];
+
   return self;
 }
 
@@ -82,6 +172,28 @@
   [_profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
   [_profile removeObserver: self forKeyPath: @"effectiveFont"];
   [_profile removeObserver: self forKeyPath: @"effectiveTextColor"];
+
+  NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBlackColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIRedColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIGreenColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIYellowColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBlueColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIMagentaColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSICyanColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIWhiteColor]];
+
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightBlackColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightRedColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightGreenColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightYellowColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightBlueColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightMagentaColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightCyanColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightWhiteColor]];
+
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForDisplayBrightAsBold]];
 }
 
 - (void) observeValueForKeyPath: (NSString *) keyPath
@@ -104,6 +216,94 @@
     else if ([keyPath isEqualToString: @"effectiveTextColor"])
     {
       [self _updateTextAttributesFromProfileTextColor];
+      return;
+    }
+  }
+  else if (object == [NSUserDefaultsController sharedUserDefaultsController])
+  {
+    if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlackColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBlackColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIRedColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIRedColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIGreenColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIGreenColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIYellowColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIYellowColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlueColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBlueColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIMagentaColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIMagentaColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSICyanColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSICyanColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIWhiteColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIWhiteColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlackColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightBlackColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightRedColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightRedColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightGreenColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightGreenColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightYellowColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightYellowColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlueColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightBlueColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightMagentaColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightMagentaColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightCyanColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightCyanColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightWhiteColor]])
+    {
+      [self _updateColorsForANSIColor: MUANSIBrightWhiteColor];
+      return;
+    }
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForDisplayBrightAsBold]])
+    {
+      [self _updateDisplayBrightAsBold];
       return;
     }
   }
@@ -143,22 +343,25 @@
   switch (commandStringType)
   {
     case MUTerminalControlStringTypeOperatingSystemCommand:
-#ifdef DEBUG_LOG_TERMINAL
-      [self log: @"Terminal: OSC %@", _commandBuffer];
-#endif
+    {
+      NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+      [self log: @"Terminal: Unhandled OSC %@.", commandString];
       break;
+    }
 
     case MUTerminalControlStringTypePrivacyMessage:
-#ifdef DEBUG_LOG_TERMINAL
-      [self log: @"Terminal: PM %@", _commandBuffer];
-#endif
+    {
+      NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+      [self log: @"Terminal: Unhandled PM %@.", commandString];
       break;
+    }
 
     case MUTerminalControlStringTypeApplicationProgram:
-#ifdef DEBUG_LOG_TERMINAL
-      [self log: @"Terminal: AP %@", _commandBuffer];
-#endif
+    {
+      NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+      [self log: @"Terminal: Unhandled AP %@.", commandString];
       break;
+    }
 
   }
   _commandBuffer.data = [NSData data];
@@ -166,19 +369,18 @@
 
 - (void) processCSIWithFinalByte: (uint8_t) finalByte
 {
-#ifdef DEBUG_LOG_TERMINAL
-  uint8_t bytes[_commandBuffer.length + 1];
-
-  [_commandBuffer getBytes: bytes];
-  bytes[_commandBuffer.length] = 0x00;
-
-  [self log: @"Terminal: CSI %s%c [%02u/%02u]", bytes, finalByte, finalByte / 16, finalByte % 16];
-#endif
-
   switch (finalByte)
   {
     case 'm':
       [self _handleANSISelectGraphicRendition];
+      break;
+
+    default:
+    {
+      NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+
+      [self log: @"Terminal: Unhandled CSI %@%c [%02u/%02u].", commandString, finalByte, finalByte / 16, finalByte % 16];
+    }
   }
 
   _commandBuffer.data = [NSData data];
@@ -186,8 +388,9 @@
 
 - (void) processPseudoANSIMusic
 {
-#ifdef DEBUG_LOG_TERMINAL
-  [self log: @"Terminal: Pseudo-ANSI Music %@", _commandBuffer];
+#ifdef DEBUG_LOG_PSEUDO_ANSI_MUSIC
+  NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+  [self log: @"Terminal: Pseudo-ANSI Music %@.", commandString];
 #endif
 
   _commandBuffer.data = [NSData data];
@@ -219,6 +422,165 @@
   _textAttributes[NSForegroundColorAttributeName] = _profile.effectiveTextColor;
   _textAttributes[MUCustomForegroundColorAttributeName] = @(MUDefaultForegroundColorTag);
   _textAttributes[MUCustomBackgroundColorAttributeName] = @(MUDefaultBackgroundColorTag);
+}
+
+- (void) _updateColorsForANSIColor: (enum MUAbstractANSIColors) color
+{
+  NSColor *specifiedColor;
+  enum MUCustomColorTags colorTagForANSI256;
+  enum MUCustomColorTags colorTagForANSI16;
+  BOOL changeIfBright;
+
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  switch (color)
+  {
+    case MUANSIBlackColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlackColor]];
+      colorTagForANSI256 = MUANSI256BlackColorTag;
+      colorTagForANSI16 = MUANSIBlackColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIRedColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIRedColor]];
+      colorTagForANSI256 = MUANSI256RedColorTag;
+      colorTagForANSI16 = MUANSIRedColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIGreenColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIGreenColor]];
+      colorTagForANSI256 = MUANSI256GreenColorTag;
+      colorTagForANSI16 = MUANSIGreenColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIYellowColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIYellowColor]];
+      colorTagForANSI256 = MUANSI256YellowColorTag;
+      colorTagForANSI16 = MUANSIYellowColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIBlueColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlueColor]];
+      colorTagForANSI256 = MUANSI256BlueColorTag;
+      colorTagForANSI16 = MUANSIBlueColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIMagentaColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIMagentaColor]];
+      colorTagForANSI256 = MUANSI256MagentaColorTag;
+      colorTagForANSI16 = MUANSIMagentaColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSICyanColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSICyanColor]];
+      colorTagForANSI256 = MUANSI256CyanColorTag;
+      colorTagForANSI16 = MUANSICyanColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIWhiteColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIWhiteColor]];
+      colorTagForANSI256 = MUANSI256WhiteColorTag;
+      colorTagForANSI16 = MUANSIWhiteColorTag;
+      changeIfBright = NO;
+      break;
+
+    case MUANSIBrightBlackColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
+      colorTagForANSI256 = MUANSI256BrightBlackColorTag;
+      colorTagForANSI16 = MUANSIBlackColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightRedColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
+      colorTagForANSI256 = MUANSI256BrightRedColorTag;
+      colorTagForANSI16 = MUANSIRedColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightGreenColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
+      colorTagForANSI256 = MUANSI256BrightGreenColorTag;
+      colorTagForANSI16 = MUANSIGreenColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightYellowColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
+      colorTagForANSI256 = MUANSI256BrightYellowColorTag;
+      colorTagForANSI16 = MUANSIYellowColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightBlueColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
+      colorTagForANSI256 = MUANSI256BrightBlueColorTag;
+      colorTagForANSI16 = MUANSIBlueColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightMagentaColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
+      colorTagForANSI256 = MUANSI256BrightMagentaColorTag;
+      colorTagForANSI16 = MUANSIMagentaColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightCyanColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
+      colorTagForANSI256 = MUANSI256BrightCyanColorTag;
+      colorTagForANSI16 = MUANSICyanColorTag;
+      changeIfBright = YES;
+      break;
+
+    case MUANSIBrightWhiteColor:
+      specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
+      colorTagForANSI256 = MUANSI256BrightWhiteColorTag;
+      colorTagForANSI16 = MUANSIWhiteColorTag;
+      changeIfBright = YES;
+      break;
+
+    default:
+      return;
+  }
+
+  if ([_textAttributes[MUCustomForegroundColorAttributeName] intValue] == colorTagForANSI256
+      || ([_textAttributes[MUCustomForegroundColorAttributeName] intValue] == colorTagForANSI16
+          && ((changeIfBright && _textAttributes[MUBrightColorAttributeName])
+              || (!changeIfBright && !_textAttributes[MUBrightColorAttributeName]))))
+  {
+    if (_textAttributes[MUInverseColorsAttributeName])
+      _textAttributes[NSBackgroundColorAttributeName] = specifiedColor;
+    else
+      _textAttributes[NSForegroundColorAttributeName] = specifiedColor;
+  }
+
+  if ([_textAttributes[MUCustomBackgroundColorAttributeName] intValue] == colorTagForANSI256
+      || ([_textAttributes[MUCustomBackgroundColorAttributeName] intValue] == colorTagForANSI16
+          && (!changeIfBright && !_textAttributes[MUBrightColorAttributeName])))
+  {
+    if (_textAttributes[MUInverseColorsAttributeName])
+      _textAttributes[NSForegroundColorAttributeName] = specifiedColor;
+    else
+      _textAttributes[NSBackgroundColorAttributeName] = specifiedColor;
+  }
+}
+
+- (void) _updateDisplayBrightAsBold
+{
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  if (_textAttributes[MUBrightColorAttributeName] && [defaults boolForKey: MUPDisplayBrightAsBold])
+    _textAttributes[NSFontAttributeName] = [_textAttributes[NSFontAttributeName] boldFontWithRespectTo: _profile.effectiveFont];
+  else
+    _textAttributes[NSFontAttributeName] = [_textAttributes[NSFontAttributeName] unboldFontWithRespectTo: _profile.effectiveFont];
 }
 
 - (void) _updateTextAttributesFromProfileBackgroundColor
@@ -511,7 +873,7 @@
         [self _unsetBlink];
         break;
 
-      case MUANSIBoldOn:
+      case MUANSIBrightOn:
         [self _setBright];
         break;
 
@@ -543,7 +905,7 @@
             _textAttributes[NSForegroundColorAttributeName] = _textAttributes[NSBackgroundColorAttributeName];
           else
             _textAttributes[NSForegroundColorAttributeName] = _profile.effectiveBackgroundColor;
-          
+
           _textAttributes[NSBackgroundColorAttributeName ] = savedForegroundColor;
         }
 
@@ -562,7 +924,7 @@
         _textAttributes[MUHiddenTextAttributeName] = @(NSUnderlinePatternSolid | NSUnderlineStyleDouble);
         break;
 
-      case MUANSIBoldOff:
+      case MUANSIBrightOff:
         [self _unsetBright];
         break;
 
@@ -782,7 +1144,7 @@
         break;
 
       default:
-        [self log: @"Terminal: Unhandled ANSI SGR code: %@", code];
+        [self log: @"Terminal: Unhandled ANSI SGR Code: %@.", code];
         break;
     }
   }

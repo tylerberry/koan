@@ -6,6 +6,8 @@
 
 #import "MUConnectionWindowController.h"
 
+#import "MUApplicationController.h"
+#import "MUGrowlService.h"
 #import "MUHistoryRing.h"
 #import "MULayoutManager.h"
 
@@ -20,24 +22,11 @@ enum MUSearchDirections
   MUForwardSearch
 };
 
-enum MUAbstractANSIColors
+enum MUTextDisplayModes
 {
-  MUANSIBlackColor,
-  MUANSIRedColor,
-  MUANSIGreenColor,
-  MUANSIYellowColor,
-  MUANSIBlueColor,
-  MUANSIMagentaColor,
-  MUANSICyanColor,
-  MUANSIWhiteColor,
-  MUANSIBrightBlackColor,
-  MUANSIBrightRedColor,
-  MUANSIBrightGreenColor,
-  MUANSIBrightYellowColor,
-  MUANSIBrightBlueColor,
-  MUANSIBrightMagentaColor,
-  MUANSIBrightCyanColor,
-  MUANSIBrightWhiteColor
+  MUNormalTextDisplayMode,
+  MUPromptTextDisplayMode,
+  MUEchoedTextDisplayMode
 };
 
 @interface MUConnectionWindowController ()
@@ -56,7 +45,12 @@ enum MUAbstractANSIColors
   NSTimer *_windowSizeNotificationTimer;
 }
 
+- (void) _clearPrompt;
 - (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+- (void) _displayAttributedString: (NSAttributedString *) attributedString
+                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
+- (void) _displaySystemMessage: (NSString *) string;
+- (void) _echoString: (NSString *) string;
 - (void) _endCompletion;
 - (void) _postConnectionWindowControllerDidReceiveTextNotification;
 - (void) _postConnectionWindowControllerWillCloseNotification;
@@ -65,37 +59,18 @@ enum MUAbstractANSIColors
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification;
 - (BOOL) _shouldScrollDisplayViewToBottom;
 - (NSString *) _splitViewAutosaveName;
+- (void) _startDisplayingTimeConnected;
+- (void) _stopDisplayingTimeConnected;
 - (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction;
 - (void) _triggerDelayedReportWindowSizeToServer: (NSTimer *) timer;
 - (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color;
 - (void) _updateBackgroundColor;
 - (void) _updateFonts;
 - (void) _updateLinkTextColor;
+- (void) _updateSystemTextColor;
 - (void) _updateTextColor;
 - (void) _updateTimeConnectedField: (NSTimer *) timer;
 - (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
-
-#pragma mark - User defaults key path string methods
-
-- (NSString *) _keyPathForANSIBlackColor;
-- (NSString *) _keyPathForANSIRedColor;
-- (NSString *) _keyPathForANSIGreenColor;
-- (NSString *) _keyPathForANSIYellowColor;
-- (NSString *) _keyPathForANSIBlueColor;
-- (NSString *) _keyPathForANSIMagentaColor;
-- (NSString *) _keyPathForANSICyanColor;
-- (NSString *) _keyPathForANSIWhiteColor;
-
-- (NSString *) _keyPathForANSIBrightBlackColor;
-- (NSString *) _keyPathForANSIBrightRedColor;
-- (NSString *) _keyPathForANSIBrightGreenColor;
-- (NSString *) _keyPathForANSIBrightYellowColor;
-- (NSString *) _keyPathForANSIBrightBlueColor;
-- (NSString *) _keyPathForANSIBrightMagentaColor;
-- (NSString *) _keyPathForANSIBrightCyanColor;
-- (NSString *) _keyPathForANSIBrightWhiteColor;
-
-- (NSString *) _keyPathForDisplayBrightAsBold;
 
 @end
 
@@ -108,9 +83,8 @@ enum MUAbstractANSIColors
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
     return nil;
   
-  _connectionController = [[MUMUDConnectionController alloc] initWithProfile: newProfile
-                                                           fugueEditDelegate: self];
-  _connectionController.delegate = self;
+  _connection = [[MUMUDConnection alloc] initWithProfile: newProfile
+                                                delegate: self];
   
   _historyRing = [MUHistoryRing historyRing];
   
@@ -146,9 +120,9 @@ enum MUAbstractANSIColors
   
   // Restore window and split view title, size, and position.
   
-  self.window.title = self.connectionController.profile.windowTitle;
-  self.window.frameAutosaveName = self.connectionController.profile.uniqueIdentifier;
-  self.window.frameUsingName = self.connectionController.profile.uniqueIdentifier;
+  self.window.title = self.connection.profile.windowTitle;
+  self.window.frameAutosaveName = self.connection.profile.uniqueIdentifier;
+  self.window.frameUsingName = self.connection.profile.uniqueIdentifier;
   
   splitView.autosaveName = [self _splitViewAutosaveName];
   [splitView adjustSubviews];
@@ -156,167 +130,167 @@ enum MUAbstractANSIColors
   // Bindings and notifications.
   
   [receivedTextView bind: @"backgroundColor"
-                toObject: self.connectionController.profile
+                toObject: self.connection.profile
              withKeyPath: @"effectiveBackgroundColor"
                  options: nil];
   
   [inputView bind: @"font"
-         toObject: self.connectionController.profile
+         toObject: self.connection.profile
       withKeyPath: @"effectiveFont"
           options: nil];
   [inputView bind: @"textColor"
-         toObject: self.connectionController.profile
+         toObject: self.connection.profile
       withKeyPath: @"effectiveTextColor"
           options: nil];
   [inputView bind: @"insertionPointColor"
-         toObject: self.connectionController.profile
+         toObject: self.connection.profile
       withKeyPath: @"effectiveTextColor"
           options: nil];
   [inputView bind: @"backgroundColor"
-         toObject: self.connectionController.profile
+         toObject: self.connection.profile
       withKeyPath: @"effectiveBackgroundColor"
           options: nil];
   
-  [self.connectionController.profile addObserver: self
-                                      forKeyPath: @"effectiveBackgroundColor"
-                                         options: NSKeyValueObservingOptionNew
-                                         context: nil];
-  [self.connectionController.profile addObserver: self
-                                      forKeyPath: @"effectiveFont"
-                                         options: NSKeyValueObservingOptionNew
-                                         context: nil];
-  [self.connectionController.profile addObserver: self
-                                      forKeyPath: @"effectiveLinkColor"
-                                         options: NSKeyValueObservingOptionNew
-                                         context: nil];
-  [self.connectionController.profile addObserver: self
-                                      forKeyPath: @"effectiveSystemTextColor"
-                                         options: NSKeyValueObservingOptionNew
-                                         context: nil];
-  [self.connectionController.profile addObserver: self
-                                      forKeyPath: @"effectiveTextColor"
-                                         options: NSKeyValueObservingOptionNew
-                                         context: nil];
+  [self.connection.profile addObserver: self
+                            forKeyPath: @"effectiveBackgroundColor"
+                               options: NSKeyValueObservingOptionNew
+                               context: nil];
+  [self.connection.profile addObserver: self
+                            forKeyPath: @"effectiveFont"
+                               options: NSKeyValueObservingOptionNew
+                               context: nil];
+  [self.connection.profile addObserver: self
+                            forKeyPath: @"effectiveLinkColor"
+                               options: NSKeyValueObservingOptionNew
+                               context: nil];
+  [self.connection.profile addObserver: self
+                            forKeyPath: @"effectiveSystemTextColor"
+                               options: NSKeyValueObservingOptionNew
+                               context: nil];
+  [self.connection.profile addObserver: self
+                            forKeyPath: @"effectiveTextColor"
+                               options: NSKeyValueObservingOptionNew
+                               context: nil];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBlackColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBlackColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIRedColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIRedColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIGreenColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIGreenColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIYellowColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIYellowColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBlueColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBlueColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIMagentaColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIMagentaColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSICyanColor]
+                             forKeyPath: [MUApplicationController keyPathForANSICyanColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIWhiteColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIWhiteColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightBlackColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightBlackColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightRedColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightRedColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightGreenColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightGreenColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightYellowColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightYellowColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightBlueColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightBlueColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightMagentaColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightMagentaColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightCyanColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightCyanColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForANSIBrightWhiteColor]
+                             forKeyPath: [MUApplicationController keyPathForANSIBrightWhiteColor]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
   
   [sharedDefaultsController addObserver: self
-                             forKeyPath: [self _keyPathForDisplayBrightAsBold]
+                             forKeyPath: [MUApplicationController keyPathForDisplayBrightAsBold]
                                 options: NSKeyValueObservingOptionNew
                                 context: nil];
 }
 
 - (void) dealloc
 {
-  [self.connectionController disconnect];
+  [self.connection close];
   
-  [self.connectionController.profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
-  [self.connectionController.profile removeObserver: self forKeyPath: @"effectiveFont"];
-  [self.connectionController.profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
-  [self.connectionController.profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
-  [self.connectionController.profile removeObserver: self forKeyPath: @"effectiveTextColor"];
+  [self.connection.profile removeObserver: self forKeyPath: @"effectiveBackgroundColor"];
+  [self.connection.profile removeObserver: self forKeyPath: @"effectiveFont"];
+  [self.connection.profile removeObserver: self forKeyPath: @"effectiveLinkColor"];
+  [self.connection.profile removeObserver: self forKeyPath: @"effectiveSystemTextColor"];
+  [self.connection.profile removeObserver: self forKeyPath: @"effectiveTextColor"];
   
   NSUserDefaultsController *sharedDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBlackColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIRedColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIGreenColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIYellowColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBlueColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIMagentaColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSICyanColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIWhiteColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBlackColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIRedColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIGreenColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIYellowColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBlueColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIMagentaColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSICyanColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIWhiteColor]];
   
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightBlackColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightRedColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightGreenColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightYellowColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightBlueColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightMagentaColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightCyanColor]];
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForANSIBrightWhiteColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightBlackColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightRedColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightGreenColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightYellowColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightBlueColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightMagentaColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightCyanColor]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForANSIBrightWhiteColor]];
   
-  [sharedDefaultsController removeObserver: self forKeyPath: [self _keyPathForDisplayBrightAsBold]];
+  [sharedDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForDisplayBrightAsBold]];
   
   [[NSNotificationCenter defaultCenter] removeObserver: self name: nil object: nil];
   [[NSNotificationCenter defaultCenter] removeObserver: nil name: nil object: self];
@@ -327,7 +301,7 @@ enum MUAbstractANSIColors
                          change: (NSDictionary *) changeDictionary
                         context: (void *) context
 {
-  if (object == self.connectionController.profile)
+  if (object == self.connection.profile)
   {
     if ([keyPath isEqualToString: @"effectiveBackgroundColor"])
     {
@@ -346,7 +320,7 @@ enum MUAbstractANSIColors
     }
     else if ([keyPath isEqualToString: @"effectiveSystemTextColor"])
     {
-      //[self updateSystemTextColor];
+      [self _updateSystemTextColor];
       return;
     }
     else if ([keyPath isEqualToString: @"effectiveTextColor"])
@@ -357,87 +331,87 @@ enum MUAbstractANSIColors
   }
   else if (object == [NSUserDefaultsController sharedUserDefaultsController])
   {
-    if ([keyPath isEqualToString: [self _keyPathForANSIBlackColor]])
+    if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlackColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBlackColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIRedColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIRedColor]])
     {
       [self _updateANSIColorsForColor: MUANSIRedColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIGreenColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIGreenColor]])
     {
       [self _updateANSIColorsForColor: MUANSIGreenColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIYellowColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIYellowColor]])
     {
       [self _updateANSIColorsForColor: MUANSIYellowColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBlueColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlueColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBlueColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIMagentaColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIMagentaColor]])
     {
       [self _updateANSIColorsForColor: MUANSIMagentaColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSICyanColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSICyanColor]])
     {
       [self _updateANSIColorsForColor: MUANSICyanColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIWhiteColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIWhiteColor]])
     {
       [self _updateANSIColorsForColor: MUANSIWhiteColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightBlackColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlackColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightBlackColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightRedColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightRedColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightRedColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightGreenColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightGreenColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightGreenColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightYellowColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightYellowColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightYellowColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightBlueColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlueColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightBlueColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightMagentaColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightMagentaColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightMagentaColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightCyanColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightCyanColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightCyanColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForANSIBrightWhiteColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightWhiteColor]])
     {
       [self _updateANSIColorsForColor: MUANSIBrightWhiteColor];
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForDisplayBrightAsBold]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForDisplayBrightAsBold]])
     {
       [self _updateFonts];
       return;
@@ -452,7 +426,7 @@ enum MUAbstractANSIColors
   
   if (menuItemAction == @selector (connectOrDisconnect:))
   {
-    if (self.connectionController.connection.isConnectedOrConnecting)
+    if (self.connection.isConnectedOrConnecting)
       menuItem.title = _(MULDisconnect);
     else
       menuItem.title = _(MULConnect);
@@ -468,7 +442,7 @@ enum MUAbstractANSIColors
   
   if (toolbarItemAction == @selector (goToWorldURL:))
   {
-    NSString *url = self.connectionController.profile.world.url;
+    NSString *url = self.connection.profile.world.url;
     
     return (url && ![url isEqualToString: @""]);
   }
@@ -510,7 +484,7 @@ enum MUAbstractANSIColors
 {
   [self.window makeKeyAndOrderFront: nil];
   
-  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), self.connectionController.profile.windowTitle],
+  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), self.connection.profile.windowTitle],
                      _(MULOK),
                      _(MULCancel),
                      nil,
@@ -520,7 +494,7 @@ enum MUAbstractANSIColors
                      @selector (_didEndCloseSheet:returnCode:contextInfo:),
                      (void *) callback,
                      _(MULConfirmCloseMessage),
-                     self.connectionController.profile.hostname);
+                     self.connection.profile.hostname);
 }
 
 - (IBAction) clearWindow: (id) sender
@@ -530,12 +504,12 @@ enum MUAbstractANSIColors
 
 - (IBAction) connect: (id) sender
 {
-  [self.connectionController connect];
+  [self.connection open];
 }
 
 - (IBAction) connectOrDisconnect: (id) sender
 {
-  if (self.connectionController.connection.isConnectedOrConnecting)
+  if (self.connection.isConnectedOrConnecting)
     [self disconnect: sender];
   else
     [self connect: sender];
@@ -543,38 +517,38 @@ enum MUAbstractANSIColors
 
 - (IBAction) disconnect: (id) sender
 {
-  [self.connectionController disconnect];
+  [self.connection close];
 }
 
 - (IBAction) goToWorldURL: (id) sender
 {
-  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: self.connectionController.profile.world.url]];
+  [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: self.connection.profile.world.url]];
 }
 
 - (IBAction) sendInputText: (id) sender
 {
-  [self.connectionController sendString: inputView.string];
+  [self.connection writeLine: inputView.string];
   
-  if (!self.connectionController.connection.state.serverWillEcho)
+  if (!self.connection.state.serverWillEcho)
   {
     [_historyRing saveString: inputView.string];
   
     if (_currentPrompt)
     {
-      [self.connectionController echoString: [NSString stringWithFormat: @"%@\n", inputView.string]];
+      [self _echoString: [NSString stringWithFormat: @"%@\n", inputView.string]];
       _currentPrompt = nil;
     }
   }
   else if (_currentPrompt)
   {
-    [self.connectionController echoString: @"\n"];
+    [self _echoString: @"\n"];
     _currentPrompt = nil;
   }
   
   inputView.string = @"";
-  inputView.font = self.connectionController.profile.effectiveFont; // Sending non-ASCII text can screw up the font.
-                                                                    // Resetting it here makes sure we don't suddenly
-                                                                    // have a weird proportional font out of nowhere.
+  inputView.font = self.connection.profile.effectiveFont; // Sending non-ASCII text can screw up the font. Resetting it
+                                                          // here makes sure we don't suddenly have a weird proportional
+                                                          // font out of nowhere.
   [self.window makeFirstResponder: inputView];
 }
 
@@ -596,7 +570,7 @@ enum MUAbstractANSIColors
 {
   BOOL changeUserDefaultsFont = NO;
   
-  if (self.connectionController.profile.font == nil)
+  if (self.connection.profile.font == nil)
   {
     // If profile.font is nil, then we don't handle this message.
     // TODO: Should we? Should this change the application default?
@@ -611,12 +585,12 @@ enum MUAbstractANSIColors
   
   NSFont *convertedFont = [fontManager convertFont: selectedFont];
   
-  self.connectionController.profile.font = convertedFont;
+  self.connection.profile.font = convertedFont;
 }
 
 - (void) makeProfileTextLarger: (id) sender
 {
-  NSFont *currentFont = self.connectionController.profile.font;
+  NSFont *currentFont = self.connection.profile.font;
   
   if (currentFont == nil)
   {
@@ -629,13 +603,13 @@ enum MUAbstractANSIColors
   
   NSFont *largerFont = [[NSFontManager sharedFontManager] convertFont: currentFont toSize: largerFontSize];
   
-  self.connectionController.profile.font = largerFont;
+  self.connection.profile.font = largerFont;
   [[NSFontManager sharedFontManager] setSelectedFont: largerFont isMultiple: NO];
 }
 
 - (void) makeProfileTextSmaller: (id) sender
 {
-  NSFont *currentFont = self.connectionController.profile.font;
+  NSFont *currentFont = self.connection.profile.font;
   
   if (currentFont == nil)
   {
@@ -654,100 +628,85 @@ enum MUAbstractANSIColors
     
   NSFont *smallerFont = [[NSFontManager sharedFontManager] convertFont: currentFont toSize: smallerFontSize];
   
-  self.connectionController.profile.font = smallerFont;
+  self.connection.profile.font = smallerFont;
   [[NSFontManager sharedFontManager] setSelectedFont: smallerFont isMultiple: NO];
 }
 
 #pragma mark - Filter delegate methods
-
-- (void) clearScreen
-{
-  [self clearWindow: nil];
-}
 
 - (void) setInputViewString: (NSString *) string
 {
   inputView.string = string;
 }
 
-#pragma mark - MUMUDConnectionControllerDelegate protocol
+#pragma mark - MUMUDConnectionDelegate protocol
 
-- (void) clearPrompt
+- (void) displayAttributedString: (NSAttributedString *) attributedString
 {
-  if (_currentPrompt)
-  {
-    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
-                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
-    
-    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
-    _currentPrompt = nil;
-    return;
-  }
+  if (attributedString && attributedString.length > 0)
+    [self _displayAttributedString: attributedString textDisplayMode: MUNormalTextDisplayMode];
 }
 
-- (void) displayAttributedString: (NSAttributedString *) attributedString asPrompt: (BOOL) prompt
+- (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
 {
-  if (attributedString.length == 0)
-    return;
-  
-  BOOL needsScrollToBottom = NO;
-  
-  if ([self _shouldScrollDisplayViewToBottom])
-    needsScrollToBottom = YES;
-  
-  if (prompt)
-    _currentPrompt = [attributedString copy];
-  
-  if (_currentPrompt)
-  {
-    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
-                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
-    
-    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
-  }
-  
-  [receivedTextView.textStorage beginEditing];
-  [receivedTextView.textStorage appendAttributedString: attributedString];
-  [receivedTextView.textStorage endEditing];
-  
-  if (!prompt)
-  {
-    _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
-    
-    if (_currentPrompt)
-      [receivedTextView.textStorage appendAttributedString: _currentPrompt];
-  }
-  
-  [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
-  
-  if (needsScrollToBottom)
-    [self _scrollDisplayViewToBottom];
-  
-  [self _postConnectionWindowControllerDidReceiveTextNotification];
-
+  if (attributedString && attributedString.length > 0)
+    [self _displayAttributedString: attributedString textDisplayMode: MUPromptTextDisplayMode];
+  else
+    [self _clearPrompt];
 }
 
 - (void) reportWindowSizeToServer
 {
-  [self.connectionController sendNumberOfWindowLines: receivedTextView.numberOfLines
-                                             columns: receivedTextView.numberOfColumns];
+  [self.connection sendNumberOfWindowLines: receivedTextView.numberOfLines
+                                   columns: receivedTextView.numberOfColumns];
 }
 
-- (void) startDisplayingTimeConnected
+- (void) MUDConnectionDidConnect: (NSNotification *) notification
 {
-  _timeConnectedFieldTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1
-                                                              target: self
-                                                            selector: @selector (_updateTimeConnectedField:)
-                                                            userInfo: nil
-                                                             repeats: YES];
+  [self _displaySystemMessage: _(MULConnectionOpen)];
+  [MUGrowlService connectionOpenedForTitle: self.connection.profile.windowTitle];
+
+  [self _startDisplayingTimeConnected];
+
+  if (self.connection.profile.hasLoginInformation)
+    [_connection writeLine: self.connection.profile.loginString];
 }
 
-- (void) stopDisplayingTimeConnected
+- (void) MUDConnectionIsConnecting: (NSNotification *) notification
 {
-  [_timeConnectedFieldTimer invalidate];
-  _timeConnectedFieldTimer = nil;
-  
-  timeConnectedField.stringValue = @"Disconnected";
+  [self _displaySystemMessage: _(MULConnectionOpening)];
+}
+
+- (void) MUDConnectionWasClosedByClient: (NSNotification *) notification
+{
+  [self _stopDisplayingTimeConnected];
+  [self _displaySystemMessage: _(MULConnectionClosed)];
+  [MUGrowlService connectionClosedForTitle: self.connection.profile.windowTitle];
+}
+
+- (void) MUDConnectionWasClosedByServer: (NSNotification *) notification
+{
+  [self _stopDisplayingTimeConnected];
+  [self _displaySystemMessage: _(MULConnectionClosedByServer)];
+  [MUGrowlService connectionClosedByServerForTitle: self.connection.profile.windowTitle];
+}
+
+- (void) MUDConnectionWasClosedWithError: (NSNotification *) notification
+{
+  [self _stopDisplayingTimeConnected];
+
+  NSError *error = notification.userInfo[MUMUDConnectionErrorKey];
+
+  [MUGrowlService connectionClosedByErrorForTitle: self.connection.profile.windowTitle error: error];
+
+  if (error)
+  {
+    [self _displaySystemMessage: [NSString stringWithFormat: _(MULConnectionClosedByError), error.localizedDescription]];
+  }
+  else
+  {
+    [self _displaySystemMessage: [NSString stringWithFormat: _(MULConnectionClosedByError), _(MULConnectionNoErrorAvailable)]];
+  }
 }
 
 #pragma mark - MUTextViewPasteDelegate protocol
@@ -921,8 +880,8 @@ enum MUAbstractANSIColors
 {
   // Keep the font panel in sync with the current key window.
   
-  if (self.connectionController.profile.font)
-    [[NSFontManager sharedFontManager] setSelectedFont: self.connectionController.profile.font isMultiple: NO];
+  if (self.connection.profile.font)
+    [[NSFontManager sharedFontManager] setSelectedFont: self.connection.profile.font isMultiple: NO];
 }
 
 - (void) windowDidEnterFullScreen: (NSNotification *) notification
@@ -947,7 +906,7 @@ enum MUAbstractANSIColors
 
 - (BOOL) windowShouldClose: (id) sender
 {
-  if (self.connectionController.connection.isConnectedOrConnecting)
+  if (self.connection.isConnectedOrConnecting)
   {
     [self confirmClose: NULL];
     return NO;
@@ -998,6 +957,116 @@ enum MUAbstractANSIColors
 }
 
 #pragma mark - Private methods
+
+- (void) _clearPrompt
+{
+  if (_currentPrompt)
+  {
+    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
+                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
+
+    [receivedTextView.textStorage beginEditing];
+    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
+    [receivedTextView.textStorage endEditing];
+
+    [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
+
+    _currentPrompt = nil;
+    return;
+  }
+}
+
+- (void) _displayAttributedString: (NSAttributedString *) attributedString
+                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
+{
+  if (attributedString.length == 0)
+    return;
+
+  BOOL needsScrollToBottom = NO;
+
+  if ([self _shouldScrollDisplayViewToBottom])
+    needsScrollToBottom = YES;
+
+  if (textDisplayMode == MUPromptTextDisplayMode)
+    _currentPrompt = [attributedString copy];
+
+  [receivedTextView.textStorage beginEditing];
+
+  if (_currentPrompt && textDisplayMode != MUEchoedTextDisplayMode)
+  {
+    NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
+                                       receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
+
+    [receivedTextView.textStorage deleteCharactersInRange: promptRange];
+  }
+
+  [receivedTextView.textStorage appendAttributedString: attributedString];
+
+  if (textDisplayMode != MUPromptTextDisplayMode)
+  {
+    _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
+
+    if (_currentPrompt && textDisplayMode == MUNormalTextDisplayMode)
+      [receivedTextView.textStorage appendAttributedString: _currentPrompt];
+  }
+
+  [receivedTextView.textStorage endEditing];
+
+  [receivedTextView.window invalidateCursorRectsForView: receivedTextView];
+
+  if (needsScrollToBottom)
+    [self _scrollDisplayViewToBottom];
+
+  [self _postConnectionWindowControllerDidReceiveTextNotification];
+}
+
+- (void) _displaySystemMessage: (NSString *) string
+{
+  NSString *stringWithNewline = [NSString stringWithFormat: @"%@\n", string];
+
+  NSMutableDictionary *attributes = [_connection.textAttributes mutableCopy];
+
+  if (attributes[MUInverseColorsAttributeName])
+    attributes[MUCustomBackgroundColorAttributeName] = @(MUSystemTextColorTag);
+  else
+    attributes[MUCustomForegroundColorAttributeName] = @(MUSystemTextColorTag);
+  attributes[NSForegroundColorAttributeName] = self.connection.profile.effectiveSystemTextColor;
+
+  [self _displayAttributedString: [[NSAttributedString alloc] initWithString: stringWithNewline attributes: attributes]
+                 textDisplayMode: MUNormalTextDisplayMode];
+}
+
+- (void) _echoString: (NSString *) string
+{
+  NSMutableDictionary *attributes = [_connection.textAttributes mutableCopy];
+
+  if (attributes[MUInverseColorsAttributeName])
+    attributes[MUCustomBackgroundColorAttributeName] = @(MUSystemTextColorTag);
+  else
+    attributes[MUCustomForegroundColorAttributeName] = @(MUSystemTextColorTag);
+  attributes[NSForegroundColorAttributeName] = self.connection.profile.effectiveSystemTextColor;
+
+  NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
+                                                                         attributes: attributes];
+  [self _displayAttributedString: attributedString textDisplayMode: MUEchoedTextDisplayMode];
+}
+
+- (void) _startDisplayingTimeConnected
+{
+  _timeConnectedFieldTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1
+                                                              target: self
+                                                            selector: @selector (_updateTimeConnectedField:)
+                                                            userInfo: nil
+                                                             repeats: YES];
+}
+
+- (void) _stopDisplayingTimeConnected
+{
+  [_timeConnectedFieldTimer invalidate];
+  _timeConnectedFieldTimer = nil;
+
+  timeConnectedField.stringValue = @"Disconnected";
+}
 
 - (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
 {
@@ -1057,7 +1126,7 @@ enum MUAbstractANSIColors
 
 - (NSString *) _splitViewAutosaveName
 {
-  return [NSString stringWithFormat: @"%@.split", self.connectionController.profile.uniqueIdentifier];
+  return [NSString stringWithFormat: @"%@.split", self.connection.profile.uniqueIdentifier];
 }
 
 - (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction
@@ -1098,7 +1167,7 @@ enum MUAbstractANSIColors
 {
   [_windowSizeNotificationTimer invalidate];
   _windowSizeNotificationTimer = nil;
-  [self.connectionController reportWindowSizeToServer];
+  [self.connection reportWindowSizeToServer];
 }
 
 - (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color
@@ -1278,7 +1347,7 @@ enum MUAbstractANSIColors
         && [attributes[MUCustomBackgroundColorAttributeName] intValue] == MUDefaultBackgroundColorTag)
     {
       [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
-                                           value: self.connectionController.profile.effectiveBackgroundColor
+                                           value: self.connection.profile.effectiveBackgroundColor
                                            range: attributeRange];
     }
     
@@ -1304,7 +1373,7 @@ enum MUAbstractANSIColors
     if (attributes[MUBrightColorAttributeName]
         && [[NSUserDefaults standardUserDefaults] boolForKey: MUPDisplayBrightAsBold])
     {
-      NSFont *effectiveFont = self.connectionController.profile.effectiveFont;
+      NSFont *effectiveFont = self.connection.profile.effectiveFont;
       
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
                                            value: [effectiveFont boldFontWithRespectTo: effectiveFont]
@@ -1313,19 +1382,19 @@ enum MUAbstractANSIColors
     else
     {
       [receivedTextView.textStorage addAttribute: NSFontAttributeName
-                                           value: self.connectionController.profile.effectiveFont
+                                           value: self.connection.profile.effectiveFont
                                            range: attributeRange];
     }
     
     index += attributeRange.length;
   }
   
-  inputView.font = self.connectionController.profile.effectiveFont;
+  inputView.font = self.connection.profile.effectiveFont;
   
   [receivedTextView scrollRangeToVisible: NSMakeRange (visibleRange.location + visibleRange.length, 0)];
   [inputView scrollRangeToVisible: NSMakeRange (inputView.textStorage.length, 0)];
   
-  [self.connectionController reportWindowSizeToServer];
+  [self.connection reportWindowSizeToServer];
   
   receivedTextView.needsDisplay = YES;
   inputView.needsDisplay = YES;
@@ -1335,9 +1404,46 @@ enum MUAbstractANSIColors
 {
   NSMutableDictionary *linkTextAttributes = [receivedTextView.linkTextAttributes mutableCopy];
   
-  linkTextAttributes[NSForegroundColorAttributeName] = self.connectionController.profile.effectiveLinkColor;
+  linkTextAttributes[NSForegroundColorAttributeName] = self.connection.profile.effectiveLinkColor;
   
   receivedTextView.linkTextAttributes = linkTextAttributes;
+  receivedTextView.needsDisplay = YES;
+}
+
+- (void) _updateSystemTextColor
+{
+  NSUInteger index = 0;
+
+  while (index < receivedTextView.textStorage.length)
+  {
+    NSRange attributeRange;
+    NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
+
+    // Presently we don't have a way for backgrounds to ever actually be set to the system text color, but if we do, this
+    // implementation should be resilient to it. This does correctly handle system text written when we're in inverse
+    // text mode, which also shouldn't really happen.
+
+    if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUSystemTextColorTag)
+    {
+      [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
+                                                   ? NSBackgroundColorAttributeName
+                                                   : NSForegroundColorAttributeName)
+                                           value: self.connection.profile.effectiveSystemTextColor
+                                           range: attributeRange];
+    }
+    
+    if ([attributes[MUCustomBackgroundColorAttributeName] intValue] == MUSystemTextColorTag)
+    {
+      [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
+                                                   ? NSForegroundColorAttributeName
+                                                   : NSBackgroundColorAttributeName)
+                                           value: self.connection.profile.effectiveSystemTextColor
+                                           range: attributeRange];
+    }
+    
+    index += attributeRange.length;
+  }
+
   receivedTextView.needsDisplay = YES;
 }
 
@@ -1355,14 +1461,14 @@ enum MUAbstractANSIColors
       [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName
                                                    : NSForegroundColorAttributeName)
-                                           value: self.connectionController.profile.effectiveTextColor
+                                           value: self.connection.profile.effectiveTextColor
                                            range: attributeRange];
     }
     
     index += attributeRange.length;
   }
   
-  inputView.textColor = self.connectionController.profile.effectiveTextColor;
+  inputView.textColor = self.connection.profile.effectiveTextColor;
   
   receivedTextView.needsDisplay = YES;
   inputView.needsDisplay = YES;
@@ -1373,7 +1479,7 @@ enum MUAbstractANSIColors
   NSDate *dateNow = [NSDate date];
   
   NSUInteger componentUnits = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-  NSDate *dateConnected = self.connectionController.connection.dateConnected;
+  NSDate *dateConnected = self.connection.dateConnected;
   NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components: componentUnits
                                                                      fromDate: dateConnected
                                                                        toDate: dateNow
@@ -1395,186 +1501,14 @@ enum MUAbstractANSIColors
 {
   if (returnCode == NSAlertDefaultReturn) /* Close. */
   {
-    if (self.connectionController.connection.isConnectedOrConnecting)
-      [self.connectionController disconnect];
+    if (self.connection.isConnectedOrConnecting)
+      [self.connection close];
     
     [self.window close];
 
     if (contextInfo)
       ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, YES);
   }
-}
-
-#pragma mark - User defaults key path string methods
-
-- (NSString *) _keyPathForANSIBlackColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBlackColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIRedColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIRedColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIGreenColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIGreenColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIYellowColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIYellowColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBlueColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBlueColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIMagentaColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIMagentaColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSICyanColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSICyanColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIWhiteColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIWhiteColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightBlackColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightBlackColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightRedColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightRedColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightGreenColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightGreenColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightYellowColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightYellowColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightBlueColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightBlueColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightMagentaColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightMagentaColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightCyanColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightCyanColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForANSIBrightWhiteColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightWhiteColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForDisplayBrightAsBold
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPDisplayBrightAsBold]; });
-  
-  return keyPath;
 }
 
 @end

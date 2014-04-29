@@ -7,6 +7,8 @@
 #import "MUMUDConnection.h"
 #import "MUAbstractConnectionSubclass.h"
 
+#import "MUAutoHyperlinksFilter.h"
+#import "MUFilterQueue.h"
 #import "NSFont+Traits.h"
 
 NSString *MUMUDConnectionDidConnectNotification = @"MUMUDConnectionDidConnectNotification";
@@ -18,9 +20,13 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 @interface MUMUDConnection ()
 
+- (void) _attemptReconnect;
+- (void) _cleanUpPingTimer;
 - (void) _cleanUpStreams;
 - (void) _registerObjectForNotifications: (id) object;
+- (void) _resetRecentStrings;
 - (void) _resetState;
+- (void) _sendPeriodicPing: (NSTimer *) pingTimer;
 - (void) _unregisterObjectForNotifications: (id) object;
 - (void) _writeBufferedDataToOutputStream;
 - (void) _writeDataWithPreprocessing: (NSData *) data;
@@ -36,28 +42,36 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   BOOL _outputStreamHasSpaceAvailable;
 
   NSMutableData *_outgoingDataBuffer;
+  NSMutableAttributedString *_incomingLineBuffer;
 
   MUProtocolStack *_protocolStack;
   MUTelnetProtocolHandler *_telnetProtocolHandler;
   MUTerminalProtocolHandler *_terminalProtocolHandler;
+  MUFilterQueue *_filterQueue;
 
-  MUProfile *_profile;
-  NSTimer *_pollTimer;
+  NSString *_lastSentLine;
+  NSUInteger _lastNumberOfColumns;
+  NSUInteger _lastNumberOfLines;
 
-  NSUInteger _lastWindowColumns;
-  NSUInteger _lastWindowLines;
+  NSUInteger _droppedLines;
+  NSMutableArray *_recentReceivedStrings;
+  NSTimer *_clearRecentReceivedStringTimer;
 
-  NSMutableAttributedString *_attributedLineBuffer;
+  NSUInteger _reconnectCount;
+
+  NSTimer *_pingTimer;
 }
 
+@dynamic textAttributes;
+
 + (id) connectionWithProfile: (MUProfile *) profile
-                    delegate: (NSObject <MUMUDConnectionDelegate> *) delegate
+                    delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate
 {
   return [[self alloc] initWithProfile: profile delegate: delegate];
 }
 
 - (id) initWithProfile: (MUProfile *) profile
-              delegate: (NSObject <MUMUDConnectionDelegate> *) newDelegate;
+              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) newDelegate
 {
   if (!(self = [super init]))
     return nil;
@@ -67,19 +81,24 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _outputStreamHasSpaceAvailable = NO;
   
   _outgoingDataBuffer = [NSMutableData dataWithCapacity: 2048];
+  _incomingLineBuffer = [[NSMutableAttributedString alloc] init];
   
   _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: self];
   _dateConnected = nil;
   _profile = profile;
-  _pollTimer = nil;
 
-  _lastWindowColumns = 0;
-  _lastWindowLines = 0;
+  _lastSentLine = nil;
+  _lastNumberOfColumns = 0;
+  _lastNumberOfLines = 0;
 
-  _attributedLineBuffer = [[NSMutableAttributedString alloc] init];
+  _droppedLines = 0;
+  _recentReceivedStrings = [NSMutableArray array];
+  _clearRecentReceivedStringTimer = nil;
+
+  _reconnectCount = 0;
   
   _protocolStack = [[MUProtocolStack alloc] initWithConnectionState: _state];
-  [_protocolStack setDelegate: self];
+  _protocolStack.delegate = self;
   
   // Ordering is important for byte protocol handlers: they should be added in
   // order with respect to outgoing data, and reverse order with respect to
@@ -100,6 +119,12 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   MUMCCPProtocolHandler *mccpProtocolHandler = [MUMCCPProtocolHandler protocolHandlerWithConnectionState: _state];
   mccpProtocolHandler.delegate = self;
   [_protocolStack addProtocolHandler: mccpProtocolHandler];
+
+  _filterQueue = [MUFilterQueue filterQueue];
+
+  [_filterQueue addFilter: [MUFugueEditFilter filterWithProfile: _profile delegate: newDelegate]];
+  [_filterQueue addFilter: [MUAutoHyperlinksFilter filter]];
+  [_filterQueue addFilter: [_profile createLogger]];
   
   _delegate = newDelegate;
   if (_delegate)
@@ -110,6 +135,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) dealloc
 {
+  [self _cleanUpPingTimer];
   [self close];
 
   [self _unregisterObjectForNotifications: _delegate];
@@ -127,6 +153,11 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _delegate = object;
 }
 
+- (NSDictionary *) textAttributes
+{
+  return _terminalProtocolHandler.textAttributes;
+}
+
 - (void) log: (NSString *) message, ...
 {
   va_list args;
@@ -139,6 +170,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) writeLine: (NSString *) line
 {
+  _lastSentLine = [line copy];
   NSString *lineWithLineEnding = [NSString stringWithFormat: @"%@\r\n", line];
   NSData *encodedData = [lineWithLineEnding dataUsingEncoding: self.state.stringEncoding allowLossyConversion: YES];
   [self _writeDataWithPreprocessing: encodedData];
@@ -189,6 +221,13 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusConnected];
   
   _dateConnected = [NSDate date];
+  _reconnectCount = 0;
+
+  _pingTimer = [NSTimer scheduledTimerWithTimeInterval: 60.0
+                                                target: self
+                                              selector: @selector (_sendPeriodicPing:)
+                                              userInfo: nil
+                                               repeats: YES];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionDidConnectNotification
                                                       object: self];
@@ -206,6 +245,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedByClient];
   
   _dateConnected = nil;
+
+  [self _cleanUpPingTimer];
+  [self _resetRecentStrings];
   [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
@@ -217,10 +259,15 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedByServer];
   
   _dateConnected = nil;
+  [self _cleanUpPingTimer];
+  [self _cleanUpStreams];
+  [self _resetRecentStrings];
   [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                       object: self];
+
+  [self _attemptReconnect];
 }
 
 - (void) setStatusClosedWithError: (NSError *) error
@@ -228,11 +275,15 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [super setStatusClosedWithError: error];
   
   _dateConnected = nil;
+  [self _cleanUpPingTimer];
+  [self _cleanUpStreams];
+  [self _resetRecentStrings];
   [self _resetState];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
                                                     userInfo: @{MUMUDConnectionErrorKey: error}];
+  [self _attemptReconnect];
 }
 
 #pragma mark - Various protocols for delegates
@@ -316,21 +367,55 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 {
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
                                                                          attributes: _terminalProtocolHandler.textAttributes];
-  [_attributedLineBuffer appendAttributedString: attributedString];
+  [_incomingLineBuffer appendAttributedString: attributedString];
 }
 
 - (void) displayBufferedStringAsText
 {
-  [self.state.codebaseAnalyzer noteTextString: _attributedLineBuffer];
-  [self.delegate displayAttributedString: _attributedLineBuffer];
-  [_attributedLineBuffer deleteCharactersInRange: NSMakeRange (0, _attributedLineBuffer.length)];
+  if (_incomingLineBuffer && _incomingLineBuffer.length > 0)
+  {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if ([_recentReceivedStrings containsObject: _incomingLineBuffer.string]
+        && ![_incomingLineBuffer.string isEqualToString: @"\n"])             // Exclude blank lines from filtering.
+    {
+      if ([defaults boolForKey: MUPDropDuplicateLines])
+      {
+        ++_droppedLines;
+        // NSLog (@"Dropped lines: %lu", ++_droppedLines);
+        return;
+      }
+    }
+    else
+    {
+      while (_recentReceivedStrings.count >= (NSUInteger) [defaults integerForKey: MUPDropDuplicateLinesCount])
+        [_recentReceivedStrings removeObjectAtIndex: 0];
+      
+      [_recentReceivedStrings addObject: [_incomingLineBuffer.string copy]];
+    }
+    
+    if (_clearRecentReceivedStringTimer.isValid)
+      [_clearRecentReceivedStringTimer invalidate];
+    
+    _clearRecentReceivedStringTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                                       target: self
+                                                                     selector: @selector (_clearRecentReceivedStrings:)
+                                                                     userInfo: nil
+                                                                      repeats: NO];
+    
+    [self.state.codebaseAnalyzer noteTextString: _incomingLineBuffer];
+
+    [self.delegate displayAttributedString: [_filterQueue processCompleteLine: _incomingLineBuffer]];
+    [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
+  }
 }
 
 - (void) displayBufferedStringAsPrompt
 {
-  [self.state.codebaseAnalyzer notePrompt: _attributedLineBuffer];
-  [self.delegate displayAttributedStringAsPrompt: _attributedLineBuffer];
-  [_attributedLineBuffer deleteCharactersInRange: NSMakeRange (0, _attributedLineBuffer.length)];
+  [self.state.codebaseAnalyzer notePrompt: _incomingLineBuffer];
+
+  [self.delegate displayAttributedStringAsPrompt: [_filterQueue processPartialLine: _incomingLineBuffer]];
+  [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
 }
 
 - (void) maybeDisplayBufferedStringAsPrompt
@@ -340,9 +425,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
   // This is a heuristic. I've made it as tight as I can to avoid false positives.
 
-  if ([_attributedLineBuffer.string hasSuffix: @" "])
+  if ([_incomingLineBuffer.string hasSuffix: @" "])
   {
-    NSString *promptCandidate = [_attributedLineBuffer.string substringToIndex: _attributedLineBuffer.length - 1];
+    NSString *promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
 
@@ -381,16 +466,33 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns
 {
-  if (_lastWindowLines == numberOfLines && _lastWindowColumns == numberOfColumns)
+  if (_lastNumberOfLines == numberOfLines && _lastNumberOfColumns == numberOfColumns)
     return;
 
-  _lastWindowColumns = numberOfColumns;
-  _lastWindowLines = numberOfLines;
+  _lastNumberOfColumns = numberOfColumns;
+  _lastNumberOfLines = numberOfLines;
 
   [_telnetProtocolHandler sendNAWSSubnegotiationWithNumberOfLines: numberOfLines columns: numberOfColumns];
 }
 
 #pragma mark - Private methods
+
+- (void) _attemptReconnect
+{
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  if ([defaults boolForKey: MUPAutomaticReconnect]
+      && ++_reconnectCount < (NSUInteger) [defaults integerForKey: MUPAutomaticReconnectCount]
+      && !([_lastSentLine isEqualToString: @"QUIT"]
+           || [_lastSentLine isEqualToString: @"@shutdown"]))
+    [self open];
+}
+
+- (void) _cleanUpPingTimer
+{
+  [_pingTimer invalidate];
+  _pingTimer = nil;
+}
 
 - (void) _cleanUpStreams
 {
@@ -402,6 +504,11 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   _inputStream = nil;
   _outputStream = nil;
+}
+
+- (void) _clearRecentReceivedStrings: (NSTimer *) timer
+{
+  _recentReceivedStrings = [NSMutableArray array];
 }
 
 - (void) _registerObjectForNotifications: (id) object
@@ -430,10 +537,26 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                            object: self];
 }
 
+- (void) _resetRecentStrings
+{
+  _recentReceivedStrings = [NSMutableArray array];
+}
+
 - (void) _resetState
 {
   [_state reset];
   [_telnetProtocolHandler reset];
+}
+
+- (void) _sendPeriodicPing: (NSTimer *) pingTimer
+{
+  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
+      || self.state.codebaseAnalyzer.codebase == MUCodebaseRhostMUSH)
+    [self writeLine: @"IDLE"];
+  else if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH)
+    [self writeLine: @"@@"];
+  else if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyEvennia)
+    [self writeLine: @"idle"];
 }
 
 - (void) _unregisterObjectForNotifications: (id) object

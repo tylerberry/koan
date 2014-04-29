@@ -55,11 +55,6 @@
 - (void) _updateCachedSound;
 - (void) _worldsDidChange: (NSNotification *) notification;
 
-#pragma mark - User defaults key path string methods
-
-- (NSString *) _keyPathForSoundChoice;
-- (NSString *) _keyPathForSoundVolume;
-
 @end
 
 #pragma mark -
@@ -95,12 +90,12 @@
   NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
   [userDefaultsController addObserver: self
-                           forKeyPath: [self _keyPathForSoundChoice]
+                           forKeyPath: [MUApplicationController keyPathForSoundChoice]
                               options: NSKeyValueObservingOptionNew
                               context: NULL];
   
   [userDefaultsController addObserver: self
-                           forKeyPath: [self _keyPathForSoundVolume]
+                           forKeyPath: [MUApplicationController keyPathForSoundVolume]
                               options: NSKeyValueObservingOptionNew
                               context: NULL];
 }
@@ -111,8 +106,8 @@
   
   NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
-  [userDefaultsController removeObserver: self forKeyPath: [self _keyPathForSoundChoice]];
-  [userDefaultsController removeObserver: self forKeyPath: [self _keyPathForSoundVolume]];
+  [userDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForSoundChoice]];
+  [userDefaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForSoundVolume]];
 }
 
 - (void) observeValueForKeyPath: (NSString *) keyPath
@@ -122,8 +117,8 @@
 {
   if (object == [NSUserDefaultsController sharedUserDefaultsController])
   {
-    if ([keyPath isEqualToString: [self _keyPathForSoundChoice]]
-        || [keyPath isEqualToString: [self _keyPathForSoundVolume]])
+    if ([keyPath isEqualToString: [MUApplicationController keyPathForSoundChoice]]
+        || [keyPath isEqualToString: [MUApplicationController keyPathForSoundVolume]])
     {
       [self _updateCachedSound];
       return;
@@ -432,7 +427,7 @@
   
   [controller showWindow: nil];
 
-  if (!controller.connectionController.connection.isConnectedOrConnecting)
+  if (!controller.connection.isConnectedOrConnecting)
     [controller connect: nil];
 }
 
@@ -526,7 +521,7 @@
   {
     for (MUConnectionWindowController *controller in [MUConnectionWindowControllerRegistry defaultRegistry].controllers)
     {
-      if (controller.connectionController.connection.isConnectedOrConnecting)
+      if (controller.connection.isConnectedOrConnecting)
       {
         [controller confirmClose: @selector (_recursivelyConfirmClose:)];
         return;
@@ -570,7 +565,227 @@
 
 #pragma mark - User defaults key path string methods
 
-- (NSString *) _keyPathForSoundChoice
++ (NSString *) keyPathForBackgroundColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPBackgroundColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForFont
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPFont]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForLinkColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPLinkColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForSystemTextColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPSystemTextColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForTextColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPTextColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBlackColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBlackColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIRedColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIRedColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIGreenColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIGreenColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIYellowColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIYellowColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBlueColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBlueColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIMagentaColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIMagentaColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSICyanColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSICyanColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIWhiteColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIWhiteColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightBlackColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightBlackColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightRedColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightRedColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightGreenColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightGreenColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightYellowColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightYellowColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightBlueColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightBlueColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightMagentaColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightMagentaColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightCyanColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightCyanColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForANSIBrightWhiteColor
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPANSIBrightWhiteColor]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForDisplayBrightAsBold
+{
+  static NSString *keyPath = nil;
+  static dispatch_once_t predicate;
+
+  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPDisplayBrightAsBold]; });
+
+  return keyPath;
+}
+
++ (NSString *) keyPathForSoundChoice
 {
   static NSString *keyPath = nil;
   static dispatch_once_t predicate;
@@ -580,7 +795,7 @@
   return keyPath;
 }
 
-- (NSString *) _keyPathForSoundVolume
++ (NSString *) keyPathForSoundVolume
 {
   static NSString *keyPath = nil;
   static dispatch_once_t predicate;

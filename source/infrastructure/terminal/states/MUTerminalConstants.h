@@ -6,15 +6,15 @@
 
 enum MUTerminalControlStringTypes
 {
-  MUTerminalControlStringTypeOperatingSystemCommand = 0,
-  MUTerminalControlStringTypePrivacyMessage = 1,
-  MUTerminalControlStringTypeApplicationProgram = 2
+  MUTerminalControlStringTypeOperatingSystemCommand = 0x9d,
+  MUTerminalControlStringTypePrivacyMessage = 0x9e,
+  MUTerminalControlStringTypeApplicationProgram = 0x9f
 };
 
 typedef enum MUANSICode
 {
   MUANSIReset = 0,
-  MUANSIBoldOn = 1,
+  MUANSIBrightOn = 1,
   MUANSIItalicsOn = 3,
   MUANSIUnderlineOn = 4,
   MUANSISlowBlinkOn = 5,
@@ -23,7 +23,7 @@ typedef enum MUANSICode
   MUANSIHiddenTextOn = 8,
   MUANSIStrikethroughOn = 9,
   MUANSIDoubleUnderlineOn = 21,
-  MUANSIBoldOff = 22,
+  MUANSIBrightOff = 22,
   MUANSIItalicsOff = 23,
   MUANSIUnderlineOff = 24,
   MUANSIBlinkOff = 25,
@@ -51,6 +51,26 @@ typedef enum MUANSICode
   MUANSIBackground256 = 48,
   MUANSIBackgroundDefault = 49
 } MUANSICode;
+
+enum MUAbstractANSIColors
+{
+  MUANSIBlackColor,
+  MUANSIRedColor,
+  MUANSIGreenColor,
+  MUANSIYellowColor,
+  MUANSIBlueColor,
+  MUANSIMagentaColor,
+  MUANSICyanColor,
+  MUANSIWhiteColor,
+  MUANSIBrightBlackColor,
+  MUANSIBrightRedColor,
+  MUANSIBrightGreenColor,
+  MUANSIBrightYellowColor,
+  MUANSIBrightBlueColor,
+  MUANSIBrightMagentaColor,
+  MUANSIBrightCyanColor,
+  MUANSIBrightWhiteColor
+};
 
 typedef enum MUANSI256ColorCode
 {

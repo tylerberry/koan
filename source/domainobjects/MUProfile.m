@@ -6,6 +6,7 @@
 
 #import "MUProfile.h"
 
+#import "MUApplicationController.h"
 #import "MUMUDConnection.h"
 #import "MUTextLogger.h"
 #import "MUWorldRegistry.h"
@@ -13,11 +14,6 @@
 static const int32_t currentProfileVersion = 4;
 
 @interface MUProfile ()
-
-- (NSString *) _keyPathForBackgroundColor;
-- (NSString *) _keyPathForFont;
-- (NSString *) _keyPathForLinkColor;
-- (NSString *) _keyPathForTextColor;
 
 - (void) _startObservingUserDefaultsController;
 - (void) _stopObservingUserDefaultsController;
@@ -125,7 +121,7 @@ static const int32_t currentProfileVersion = 4;
 {
   if (object == [NSUserDefaultsController sharedUserDefaultsController])
   {
-    if ([keyPath isEqualToString: [self _keyPathForBackgroundColor]])
+    if ([keyPath isEqualToString: [MUApplicationController keyPathForBackgroundColor]])
     {
       if (!self.backgroundColor)
       {
@@ -134,7 +130,7 @@ static const int32_t currentProfileVersion = 4;
       }
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForFont]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForFont]])
     {
       if (!self.font)
       {
@@ -143,7 +139,7 @@ static const int32_t currentProfileVersion = 4;
       }
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForLinkColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForLinkColor]])
     {
       if (!self.linkColor)
       {
@@ -152,7 +148,7 @@ static const int32_t currentProfileVersion = 4;
       }
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForSystemTextColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForSystemTextColor]])
     {
       if (!self.systemTextColor)
       {
@@ -161,7 +157,7 @@ static const int32_t currentProfileVersion = 4;
       }
       return;
     }
-    else if ([keyPath isEqualToString: [self _keyPathForTextColor]])
+    else if ([keyPath isEqualToString: [MUApplicationController keyPathForTextColor]])
     {
       if (!self.textColor)
       {
@@ -177,7 +173,7 @@ static const int32_t currentProfileVersion = 4;
 
 #pragma mark - Actions
 
-- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate
+- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate
 {
   return [MUMUDConnection connectionWithProfile: self delegate: delegate];
 }
@@ -348,84 +344,32 @@ static const int32_t currentProfileVersion = 4;
   return self;
 }
 
-#pragma mark - Private methods
-
-- (NSString *) _keyPathForBackgroundColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPBackgroundColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForFont
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPFont]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForLinkColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPLinkColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForSystemTextColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPSystemTextColor]; });
-  
-  return keyPath;
-}
-
-- (NSString *) _keyPathForTextColor
-{
-  static NSString *keyPath = nil;
-  static dispatch_once_t predicate;
-  
-  dispatch_once (&predicate, ^{ keyPath = [@"values." stringByAppendingString: MUPTextColor]; });
-  
-  return keyPath;
-}
-
 - (void) _startObservingUserDefaultsController
 {
   NSUserDefaultsController *defaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
   [defaultsController addObserver: self
-                       forKeyPath: [self _keyPathForBackgroundColor]
+                       forKeyPath: [MUApplicationController keyPathForBackgroundColor]
                           options: NSKeyValueObservingOptionNew
                           context: NULL];
   
   [defaultsController addObserver: self
-                       forKeyPath: [self _keyPathForFont]
+                       forKeyPath: [MUApplicationController keyPathForFont]
                           options: NSKeyValueObservingOptionNew
                           context: NULL];
   
   [defaultsController addObserver: self
-                       forKeyPath: [self _keyPathForLinkColor]
+                       forKeyPath: [MUApplicationController keyPathForLinkColor]
                           options: NSKeyValueObservingOptionNew
                           context: NULL];
   
   [defaultsController addObserver: self
-                       forKeyPath: [self _keyPathForSystemTextColor]
+                       forKeyPath: [MUApplicationController keyPathForSystemTextColor]
                           options: NSKeyValueObservingOptionNew
                           context: NULL];
   
   [defaultsController addObserver: self
-                       forKeyPath: [self _keyPathForTextColor]
+                       forKeyPath: [MUApplicationController keyPathForTextColor]
                           options: NSKeyValueObservingOptionNew
                           context: NULL];
 }
@@ -434,11 +378,11 @@ static const int32_t currentProfileVersion = 4;
 {
   NSUserDefaultsController *defaultsController = [NSUserDefaultsController sharedUserDefaultsController];
   
-  [defaultsController removeObserver: self forKeyPath: [self _keyPathForBackgroundColor]];
-  [defaultsController removeObserver: self forKeyPath: [self _keyPathForFont]];
-  [defaultsController removeObserver: self forKeyPath: [self _keyPathForLinkColor]];
-  [defaultsController removeObserver: self forKeyPath: [self _keyPathForSystemTextColor]];
-  [defaultsController removeObserver: self forKeyPath: [self _keyPathForTextColor]];
+  [defaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForBackgroundColor]];
+  [defaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForFont]];
+  [defaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForLinkColor]];
+  [defaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForSystemTextColor]];
+  [defaultsController removeObserver: self forKeyPath: [MUApplicationController keyPathForTextColor]];
 }
 
 @end

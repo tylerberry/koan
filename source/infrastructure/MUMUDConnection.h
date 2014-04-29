@@ -7,6 +7,7 @@
 #import "MUAbstractConnection.h"
 #import "MUByteDestination.h"
 #import "MUByteSource.h"
+#import "MUFugueEditFilter.h"
 #import "MUMCPProtocolHandler.h"
 #import "MUMCCPProtocolHandler.h"
 #import "MUMUDConnectionState.h"
@@ -45,16 +46,18 @@ extern NSString *MUMUDConnectionErrorKey;
 
 @interface MUMUDConnection : MUAbstractConnection <NSStreamDelegate, MUHeuristicCodebaseAnalyzerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate, MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate, MUTelnetProtocolHandlerDelegate>
 
-@property (weak, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
+@property (readonly) MUProfile *profile;
 @property (strong, nonatomic) MUMUDConnectionState *state;
+@property (readonly) NSDictionary *textAttributes;
+@property (weak, nonatomic) NSObject <MUMUDConnectionDelegate> *delegate;
 
 @property (readonly) NSDate *dateConnected;
 
 + (id) connectionWithProfile: (MUProfile *) profile
-                    delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
+                    delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
 - (id) initWithProfile: (MUProfile *) profile
-              delegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
+              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
 - (void) writeLine: (NSString *) line;

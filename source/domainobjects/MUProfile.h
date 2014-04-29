@@ -9,6 +9,7 @@
 #import "MUFilter.h"
 
 @class MUMUDConnection;
+@protocol MUFugueEditFilterDelegate;
 
 @interface MUProfile : NSObject <NSCoding>
 
@@ -57,6 +58,6 @@
 
 // Actions.
 - (MUFilter *) createLogger;
-- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate> *) delegate;
+- (MUMUDConnection *) createNewMUDConnectionWithDelegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
 @end

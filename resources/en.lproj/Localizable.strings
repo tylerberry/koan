@@ -4,8 +4,8 @@
 "ConnectionOpen" = "Connection open.\n"; // Keep the newline on this one.
 "ConnectionClosed" = "Connection closed.";
 "ConnectionClosedByServer" = "Connection closed by server.";
-"ConnectionClosedByError" = "Connection closed with error: %@";
-"ConnectionNoErrorAvailable" = "No error available";
+"ConnectionClosedByError" = "Connection closed with error: %@.";
+"ConnectionNoErrorAvailable" = "No error available.";
 
 // Toolbar item titles.
 
@@ -39,20 +39,6 @@
 "ConfirmQuitTitleSingular" = "You have %d open connection.";
 "ConfirmQuitTitlePlural" = "You have %d open connections.";
 "ConfirmQuitMessage" = "Do you want to confirm closing each connection individually, quit immediately, or cancel?";
-
-"ErrorCheckingForUpdatesTitle" = "An error occured while checking for updates.";
-
-"NewVersionAvailableTitle" = "Version %@ of %@ is now available.";
-"NewVersionAvailableMessage" = "Would you like to download the new version?";
-
-"HasMostRecentVersionTitle" = "You are using the most recent version of %@.";
-"HasMostRecentVersionMessage" = "There is no need to update at this time.";
-
-"HasUnreleasedVersionTitle" = "You are using a prerelease version of %@.";
-"HasUnreleasedVersionMessage" = "There is no need to update at this time.";
-
-"ShouldCheckAutomaticallyForUpdatesTitle" = "Should %@ automatically check for updated versions?";
-"ShouldCheckAutomaticallyForUpdatesMessage" = "By default, a check will be performed once each time %@ is launched; this behavior can be customized in the Updates tab of the Preferences panel.";
 
 // Growl messages.
 

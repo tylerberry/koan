@@ -82,13 +82,11 @@ void
 DeallocMetadataImporterPluginType (MetadataImporterPluginType *instance)
 {
   CFUUIDRef factoryID = instance->factoryID;
-  
-  free (instance);
+
   if (factoryID)
-  {
     CFPlugInRemoveInstanceForFactory ((CFUUIDRef) instance);
-    CFRelease (instance);
-  }
+
+  CFRelease (instance);
 }
 
 // -----------------------------------------------------------------------------

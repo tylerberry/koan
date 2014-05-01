@@ -223,7 +223,7 @@ static NSArray *_offerableTerminalTypes;
       break;
   }
   
-  _subnegotiationBuffer.data = [NSData data];
+  [_subnegotiationBuffer replaceBytesInRange: NSMakeRange (0, _subnegotiationBuffer.length) withBytes: NULL length: 0];
 }
 
 - (void) log: (NSString *) message, ...

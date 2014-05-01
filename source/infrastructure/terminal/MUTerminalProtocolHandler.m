@@ -365,7 +365,8 @@
     }
 
   }
-  _commandBuffer.data = [NSData data];
+
+  [_commandBuffer replaceBytesInRange: NSMakeRange (0, _commandBuffer.length) withBytes: NULL length: 0];
 }
 
 - (void) processCSIWithFinalByte: (uint8_t) finalByte
@@ -388,7 +389,7 @@
     }
   }
 
-  _commandBuffer.data = [NSData data];
+  [_commandBuffer replaceBytesInRange: NSMakeRange (0, _commandBuffer.length) withBytes: NULL length: 0];
 }
 
 - (void) processPseudoANSIMusic
@@ -398,7 +399,7 @@
   [self log: @"Terminal: Pseudo-ANSI Music %@.", commandString];
 #endif
 
-  _commandBuffer.data = [NSData data];
+  [_commandBuffer replaceBytesInRange: NSMakeRange (0, _commandBuffer.length) withBytes: NULL length: 0];
 }
 
 - (void) reset

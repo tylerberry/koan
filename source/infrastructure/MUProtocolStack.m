@@ -79,7 +79,7 @@
 
     [self.delegate appendStringToLineBuffer: string];
 
-    _parsedInputBuffer.data = [NSData data];
+    [_parsedInputBuffer replaceBytesInRange: NSMakeRange (0, _parsedInputBuffer.length) withBytes: NULL length: 0];
   }
 }
 
@@ -211,7 +211,9 @@
   if (_preprocessedOutputBuffer.length > 0)
   {
     [self.delegate writeDataToSocket: _preprocessedOutputBuffer];
-    _preprocessedOutputBuffer.data = [NSData data];
+    [_preprocessedOutputBuffer replaceBytesInRange: NSMakeRange (0, _preprocessedOutputBuffer.length)
+                                         withBytes: NULL
+                                            length: 0];
   }
 }
 

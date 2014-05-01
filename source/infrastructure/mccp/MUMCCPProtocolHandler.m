@@ -67,8 +67,14 @@
 - (void) dealloc
 {
   [self _cleanUpStream];
-  if (_inbuf) free (_inbuf);
-  if (_outbuf) free (_outbuf);
+
+  if (_inbuf)
+    free (_inbuf);
+  _inbuf = NULL;
+
+  if (_outbuf)
+    free (_outbuf);
+  _outbuf = NULL;
 }
 
 #pragma mark - MUProtocolHandler overrides

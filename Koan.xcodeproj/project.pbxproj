@@ -38,9 +38,6 @@
 		2F22DF29172F4BA800C50CBA /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 2F22DF24172F4BA800C50CBA /* AHLinkLexer.l */; };
 		2F22DF2A172F4BA800C50CBA /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F22DF26172F4BA800C50CBA /* AHMarkedHyperlink.m */; };
 		2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2718EA12141166006710C7 /* MUMUDConnectionState.m */; };
-		2F30904A16D5E71B00266E4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904916D5E71B00266E4A /* UIKit.framework */; };
-		2F30904C16D5E71B00266E4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904B16D5E71B00266E4A /* Foundation.framework */; };
-		2F30904E16D5E71B00266E4A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F30904D16D5E71B00266E4A /* CoreGraphics.framework */; };
 		2F30905416D5E71B00266E4A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2F30905216D5E71B00266E4A /* InfoPlist.strings */; };
 		2F30905616D5E71B00266E4A /* MUIKoanMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30905516D5E71B00266E4A /* MUIKoanMain.m */; };
 		2F30905A16D5E71B00266E4A /* MUIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30905916D5E71B00266E4A /* MUIAppDelegate.m */; };
@@ -74,6 +71,8 @@
 		2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */; };
 		2F558BCA190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */; };
 		2F558BCE19121787003DF275 /* MUNewlineTextAttributeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */; };
+		2F558BE51912FF63003DF275 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F558BE41912FF63003DF275 /* XCTest.framework */; };
+		2F558BE9191300D8003DF275 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F558BE8191300D8003DF275 /* Cocoa.framework */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
 		2F5DBA8B16DD30B200DE627E /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
@@ -173,7 +172,6 @@
 		2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */; };
 		2FE4737C1714BDAD002C17E7 /* iCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737B1714BDAD002C17E7 /* iCloud.png */; };
 		2FE4737E1714BDBA002C17E7 /* iCloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737D1714BDBA002C17E7 /* iCloud@2x.png */; };
-		2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
 		7E13BA1D09AE950600508460 /* MUProxySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13BA1B09AE950600508460 /* MUProxySettings.m */; };
 		7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */; };
@@ -347,9 +345,6 @@
 		2F2718EA12141166006710C7 /* MUMUDConnectionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnectionState.m; sourceTree = "<group>"; };
 		2F2D76E90BBB1C8400BBB71A /* Characteristics.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Characteristics.txt; sourceTree = "<group>"; };
 		2F30904816D5E71B00266E4A /* Koan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koan.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F30904916D5E71B00266E4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		2F30904B16D5E71B00266E4A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		2F30904D16D5E71B00266E4A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		2F30905116D5E71B00266E4A /* Koan for iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Koan for iOS-Info.plist"; sourceTree = "<group>"; };
 		2F30905316D5E71B00266E4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2F30905516D5E71B00266E4A /* MUIKoanMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUIKoanMain.m; sourceTree = "<group>"; };
@@ -407,6 +402,8 @@
 		2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalPseudoANSIMusicState.m; sourceTree = "<group>"; };
 		2F558BCC19121787003DF275 /* MUNewlineTextAttributeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUNewlineTextAttributeFilter.h; sourceTree = "<group>"; };
 		2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNewlineTextAttributeFilter.m; sourceTree = "<group>"; };
+		2F558BE41912FF63003DF275 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		2F558BE8191300D8003DF275 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F5DBA9516DDA18300DE627E /* MURegexTestFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MURegexTestFilter.h; sourceTree = "<group>"; };
@@ -669,9 +666,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F30904A16D5E71B00266E4A /* UIKit.framework in Frameworks */,
-				2F30904C16D5E71B00266E4A /* Foundation.framework in Frameworks */,
-				2F30904E16D5E71B00266E4A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -687,7 +681,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FF41C04162F6F8E0045D569 /* Cocoa.framework in Frameworks */,
+				2F558BE9191300D8003DF275 /* Cocoa.framework in Frameworks */,
+				2F558BE51912FF63003DF275 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,11 +715,9 @@
 			children = (
 				2FA24AD11623639A00A9D92B /* libz.dylib */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				2F30904D16D5E71B00266E4A /* CoreGraphics.framework */,
-				2F30904B16D5E71B00266E4A /* Foundation.framework */,
 				2F174F71167ABD1C0030C9D3 /* Security.framework */,
 				2F174F6F167AB8F10030C9D3 /* SystemConfiguration.framework */,
-				2F30904916D5E71B00266E4A /* UIKit.framework */,
+				2F558BE41912FF63003DF275 /* XCTest.framework */,
 			);
 			name = "OS Frameworks";
 			sourceTree = "<group>";
@@ -819,6 +812,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2F558BE8191300D8003DF275 /* Cocoa.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Bundled Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* OS Frameworks */,
 			);
@@ -1516,7 +1510,6 @@
 			buildPhases = (
 				7E87751409AD558700A883BC /* Sources */,
 				7E87751509AD558700A883BC /* Frameworks */,
-				7E87751609AD558700A883BC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1705,19 +1698,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "mkdir -p \"${DERIVED_FILE_DIR}\"\ncd \"${SRCROOT}/frameworks/\"\nFRAMEWORKS=\"Growl\"\nfor name in $FRAMEWORKS; do\n  if [ ! -e \"${SRCROOT}/frameworks/${name}.framework\" -o \"${SRCROOT}/frameworks/${name}.framework.tar.gz\" -nt ${DERIVED_FILE_DIR}/framework-timestamp ] ; then\n    rm -rf \"${SRCROOT}/frameworks/${name}.framework\"\n    tar zxvf \"${SRCROOT}/frameworks/${name}.framework.tar.gz\"\n  fi\ndone\ntouch ${DERIVED_FILE_DIR}/framework-timestamp\n";
-		};
-		7E87751609AD558700A883BC /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2137,7 +2117,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "Koan for iOS/Koan for iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Koan;
 				SDKROOT = iphoneos;
@@ -2171,7 +2150,6 @@
 					"NS_BLOCK_ASSERTIONS=1",
 				);
 				INFOPLIST_FILE = "Koan for iOS/Koan for iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = Koan;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2218,21 +2196,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Koan.app/Contents/MacOS/Koan";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DYLD_FRAMEWORK_PATH = "$(DYLD_FRAMEWORK_PATH):$(PROJECT_DIR)/build";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(BUILD_ROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"$(inherited)",
 				);
-				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "tests/Tests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					./source,
 					./filters,
@@ -2240,7 +2211,6 @@
 					./tests,
 				);
 				INFOPLIST_FILE = "tests/Tests-Info.plist";
-				LIBRARY_STYLE = BUNDLE;
 				PRODUCT_NAME = KoanTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -2250,19 +2220,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Koan.app/Contents/MacOS/Koan";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = YES;
-				DYLD_FRAMEWORK_PATH = "$(DYLD_FRAMEWORK_PATH):$(PROJECT_DIR)/build";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(BUILD_ROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"$(inherited)",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "tests/Tests-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					./source,
 					./filters,
@@ -2270,8 +2235,7 @@
 					./tests,
 				);
 				INFOPLIST_FILE = "tests/Tests-Info.plist";
-				LIBRARY_STYLE = BUNDLE;
-				PRODUCT_NAME = "Unit Tests";
+				PRODUCT_NAME = KoanTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -2370,7 +2334,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -2404,7 +2368,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 			};
 			name = Release;

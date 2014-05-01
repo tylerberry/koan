@@ -74,6 +74,14 @@
 
       [self log: @"Analyzer: MSSP identifies as Evennia."];
     }
+    else if ([valueString rangeOfString: @"Diku"].location != NSNotFound)
+    {
+      _definitiveCodebaseFound = YES;
+      _codebase = MUCodebaseDikuMUD;
+      _codebaseFamily = MUCodebaseFamilyGenericMUD;
+
+      [self log: @"Analyzer: MSSP identifies as DikuMUD."];
+    }
   }
 }
 
@@ -175,20 +183,27 @@
     else if ([lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUDWithDGD;
-      _codebaseFamily = MUCodebaseFamilyMUD;
+      _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
       [self log: @"Analyzer: Guessing LPMUD with DGD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUD;
-      _codebaseFamily = MUCodebaseFamilyMUD;
+      _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
       [self log: @"Analyzer: Guessing LPMUD from received text."];
     }
+    else if ([lowercaseString rangeOfString: @"diku"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseDikuMUD;
+      _codebaseFamily = MUCodebaseFamilyGenericMUD;
+
+      [self log: @"Analyzer: Guessing DikuMUD from received text."];
+    }
     else if ([lowercaseString rangeOfString: @"mud"].location != NSNotFound)
     {
-      _codebaseFamily = MUCodebaseFamilyMUD;
+      _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
       [self log: @"Analyzer: Guessing generic MUD from received text."];
     }

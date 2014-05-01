@@ -340,7 +340,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
         else
         {
           NSData *receivedData = [NSData dataWithBytesNoCopy: bytes length: readLength freeWhenDone: YES];
-          
+
           [_protocolStack parseInputData: receivedData];
         }
         
@@ -365,6 +365,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) appendStringToLineBuffer: (NSString *) string
 {
+  if (!string || string.length == 0)
+    return;
+  
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
                                                                          attributes: _terminalProtocolHandler.textAttributes];
   [_incomingLineBuffer appendAttributedString: attributedString];
@@ -420,14 +423,40 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) maybeDisplayBufferedStringAsPrompt
 {
-  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
-    return;                                                                         // PennMUSH does, though.
+  if (!_incomingLineBuffer || _incomingLineBuffer.length == 0
+      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
+    return;                                                                      // PennMUSH does, though.
 
-  // This is a heuristic. I've made it as tight as I can to avoid false positives.
+  // This is a heuristic. I've made it fairly tight to avoid false positives.
 
-  if ([_incomingLineBuffer.string hasSuffix: @" "])
+  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
   {
-    NSString *promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
+    // MUDs are held to a less-tight restriction - they don't need a space for their prompts. (We will add the space if
+    // the MUD leaves it out.)
+    //
+    // Also, MUD prompts can end in '!' or '.' as well as promptier characters.
+
+    NSString *promptCandidate = _incomingLineBuffer.string;
+
+    while ([_incomingLineBuffer.string hasSuffix: @" "])
+      promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
+
+    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]."];
+
+    if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
+    {
+      if (![_incomingLineBuffer.string hasSuffix: @" "])
+        [self appendStringToLineBuffer: @" "];
+
+      [self displayBufferedStringAsPrompt];
+    }
+  }
+  else if ([_incomingLineBuffer.string hasSuffix: @" "])
+  {
+    NSString *promptCandidate = _incomingLineBuffer.string;
+
+    while ([_incomingLineBuffer.string hasSuffix: @" "])
+      promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
 

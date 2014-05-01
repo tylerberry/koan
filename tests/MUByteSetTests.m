@@ -22,8 +22,11 @@
 - (void) testEmptySet
 {
   MUByteSet *byteSet = [MUByteSet byteSet];
+
   for (uint16_t i = 0; i <= UINT8_MAX; ++i)
-    [self assertFalse: [byteSet containsByte: (uint8_t) i] message: [NSString stringWithFormat: @"%d should not have been included",i]];
+  {
+    XCTAssertFalse ([byteSet containsByte: (uint8_t) i], @"%d should not have been included", i);
+  }
 }
 
 - (void) testAddByte
@@ -31,20 +34,22 @@
   MUByteSet *byteSet = [MUByteSet byteSet];
   [byteSet addByte: 42];
   [byteSet addByte: 31];
-  [self assertTrue: [byteSet containsByte: 42] message: @"Expected to contain 42"];
-  [self assertTrue: [byteSet containsByte: 31] message: @"Expected to contain 31"];
+
+  XCTAssertTrue ([byteSet containsByte: 42], @"Expected to contain 42");
+  XCTAssertTrue ([byteSet containsByte: 31], @"Expected to contain 31");
 }
 
 - (void) testAddBytes
 {
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: 0, 42, 27, -1];
   [byteSet addBytes: 3, 4, 5, -1];
-  [self assertTrue: [byteSet containsByte: 0] message: @"Expected to contain 0"];
-  [self assertTrue: [byteSet containsByte: 42] message: @"Expected to contain 42"];
-  [self assertTrue: [byteSet containsByte: 27] message: @"Expected to contain 27"];
-  [self assertTrue: [byteSet containsByte: 3] message: @"Expected to contain 3"];
-  [self assertTrue: [byteSet containsByte: 4] message: @"Expected to contain 4"];
-  [self assertTrue: [byteSet containsByte: 5] message: @"Expected to contain 5"];
+
+  XCTAssertTrue ([byteSet containsByte: 0], @"Expected to contain 0");
+  XCTAssertTrue ([byteSet containsByte: 42], @"Expected to contain 42");
+  XCTAssertTrue ([byteSet containsByte: 27], @"Expected to contain 27");
+  XCTAssertTrue ([byteSet containsByte: 3], @"Expected to contain 3");
+  XCTAssertTrue ([byteSet containsByte: 4], @"Expected to contain 4");
+  XCTAssertTrue ([byteSet containsByte: 5], @"Expected to contain 5");
 }
 
 - (void) testInverseSet
@@ -55,13 +60,11 @@
   {
     if ([byteSet containsByte: (uint8_t) i])
     {
-      [self assertFalse: [inverse containsByte: (uint8_t) i]
-                message: [NSString stringWithFormat: @"Inverse should not contain %u", i]];
+      XCTAssertFalse ([inverse containsByte: (uint8_t) i], @"Inverse should not contain %u", i);
     }
     else
     {
-      [self assertTrue: [inverse containsByte: (uint8_t) i]
-               message: [NSString stringWithFormat: @"Inverse should contain %u", i]];
+      XCTAssertTrue ([inverse containsByte: (uint8_t) i], @"Inverse should contain %u", i);
     }
   }
 }
@@ -70,15 +73,15 @@
 {
   uint8_t bytes[] = {31, 47, 73};
   MUByteSet *byteSet = [MUByteSet byteSetWithBytes: bytes length: 3];
-  [self assert: byteSet.dataValue equals: [NSData dataWithBytes: bytes length: 3]];
+  XCTAssertEqualObjects (byteSet.dataValue, [NSData dataWithBytes: bytes length: 3]);
 }
 
 - (void) testRemoveByte
 {
   MUByteSet *bytes = [MUByteSet byteSetWithBytes: 42, 53, -1];
   [bytes removeByte: 42];
-  [self assertTrue: [bytes containsByte: 53] message: @"53 was removed"];
-  [self assertFalse: [bytes containsByte: 42] message: @"42 was not removed"];
+  XCTAssertTrue ([bytes containsByte: 53], @"53 was removed");
+  XCTAssertFalse ([bytes containsByte: 42], @"42 was not removed");
 }
 
 @end

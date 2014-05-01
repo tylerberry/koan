@@ -10,9 +10,6 @@
 #import "MUTreeNode.h"
 
 @interface MUTreeNodeTests ()
-{
-  MUTreeNode *_node;
-}
 
 - (MUTreeNode *) testingNode;
 
@@ -21,6 +18,9 @@
 #pragma mark -
 
 @implementation MUTreeNodeTests
+{
+  MUTreeNode *_node;
+}
 
 - (void) setUp
 {
@@ -37,7 +37,7 @@
   MUTreeNode *child = [self testingNode];
   [_node insertValue: child inPropertyWithKey: @"children"];
   
-  [self assert: _node.children[0] equals: child];
+  XCTAssertEqualObjects (_node.children[0], child);
 }
 
 - (void) testContainsChild
@@ -45,7 +45,7 @@
   MUTreeNode *child = [self testingNode];
   [_node insertValue: child inPropertyWithKey: @"children"];
   
-  [self assertTrue: [_node.children containsObject: child]];
+  XCTAssertTrue ([_node.children containsObject: child]);
 }
 
 - (void) testCopyHasDifferentUniqueIdentifier
@@ -53,7 +53,7 @@
   MUTreeNode *child = [self testingNode];
   MUTreeNode *copy = [child copy];
   
-  [self assertFalse: ([child.uniqueIdentifier isEqualToString: copy.uniqueIdentifier])];
+  XCTAssertNotEqualObjects (child.uniqueIdentifier, copy.uniqueIdentifier);
 }
 
 - (void) testRemoveChild
@@ -62,8 +62,8 @@
   [_node insertValue: child inPropertyWithKey: @"children"];
   [_node removeValueAtIndex: [_node.children indexOfObject: child] fromPropertyWithKey: @"children"];
   
-  [self assertFalse: [_node.children containsObject: child]];
-  [self assertNil: child.parent];
+  XCTAssertFalse ([_node.children containsObject: child]);
+  XCTAssertNil (child.parent);
 }
 
 - (void) testReplaceChild
@@ -73,17 +73,17 @@
   
   [_node insertValue: child inPropertyWithKey: @"children"];
   
-  [self assertTrue: [_node.children containsObject: child]];
-  [self assert: child.parent equals: _node];
+  XCTAssertTrue ([_node.children containsObject: child]);
+  XCTAssertEqualObjects (child.parent, _node);
   
   [_node replaceValueAtIndex: [_node.children indexOfObject: child]
            inPropertyWithKey: @"children"
                    withValue: otherChild];
     
-  [self assertFalse: [_node.children containsObject: child]];
-  [self assertNil: child.parent];
-  [self assertTrue: [_node.children containsObject: otherChild]];
-  [self assert: otherChild.parent equals: _node];
+  XCTAssertFalse ([_node.children containsObject: child]);
+  XCTAssertNil (child.parent);
+  XCTAssertTrue ([_node.children containsObject: otherChild]);
+  XCTAssertEqualObjects (otherChild.parent, _node);
 }
 
 - (void) testNilChildren
@@ -93,7 +93,7 @@
   @try
   {
     [thisNode insertValue: child inPropertyWithKey: @"children"];
-    [self assertUInteger: thisNode.children.count equals: 1];
+    XCTAssertEqual (thisNode.children.count, (NSUInteger) 1);
   }
   @finally
   {

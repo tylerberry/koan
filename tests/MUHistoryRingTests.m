@@ -224,14 +224,14 @@ NSString *Third = @"Third";
 {
   [ring saveString: @"Dog"];
   
-  [self assertNil: [ring searchForwardForStringPrefix: @"Cat"]];
+  XCTAssertNil ([ring searchForwardForStringPrefix: @"Cat"]);
 }
 
 - (void) testPerfectMatchFindsNothing
 {
   [ring saveString: @"Cat"];
   
-  [self assertNil: [ring searchForwardForStringPrefix: @"Cat"]];
+  XCTAssertNil ([ring searchForwardForStringPrefix: @"Cat"]);
 }
 
 - (void) testSearchForward
@@ -240,8 +240,8 @@ NSString *Third = @"Third";
   [ring saveString: @"Dog"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testWraparoundSearchForward
@@ -250,10 +250,10 @@ NSString *Third = @"Third";
   [ring saveString: @"Dog"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testMoveForwardThenSearchForward
@@ -264,8 +264,8 @@ NSString *Third = @"Third";
   
   [self assertNext: @"Catastrophic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testMoveBackwardThenSearchForward
@@ -276,13 +276,13 @@ NSString *Third = @"Third";
   
   [self assertPrevious: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
   
   [self assertPrevious: @"Dog"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testSearchForwardWithInterspersedResets
@@ -291,14 +291,18 @@ NSString *Third = @"Third";
   [ring saveString: @"Catalogue"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+
   [ring resetSearchCursor];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
+
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+
   [ring resetSearchCursor];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchBackward
@@ -307,8 +311,8 @@ NSString *Third = @"Third";
   [ring saveString: @"Dog"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testMoveForwardThenSearchBackward
@@ -319,13 +323,13 @@ NSString *Third = @"Third";
   
   [self assertNext: @"Catastrophic"];
   
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
   
   [self assertNext: @"Dog"];
   
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
   
 }
 
@@ -337,8 +341,8 @@ NSString *Third = @"Third";
   
   [self assertPrevious: @"Catatonic"];
   
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchBackwardWithInterspersedResets
@@ -347,14 +351,18 @@ NSString *Third = @"Third";
   [ring saveString: @"Catalogue"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+
   [ring resetSearchCursor];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
+
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+
   [ring resetSearchCursor];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
+
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testSearchForwardAndBackward
@@ -363,13 +371,13 @@ NSString *Third = @"Third";
   [ring saveString: @"Catalogue"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
-  [self assert: [ring searchBackwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchHonorsUpdates
@@ -378,70 +386,65 @@ NSString *Third = @"Third";
   [ring saveString: @"Dog"];
   [ring saveString: @"Catatonic"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
   
   [self assertNext: @"Catastrophic"];
   [self assertNext: @"Dog"];
   
   [ring updateString: @"Catalogue"];
   
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catatonic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catastrophic"];
-  [self assert: [ring searchForwardForStringPrefix: @"Cat"] equals: @"Catalogue"];
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
 }
 
 - (void) testSearchForEmptyString
 {
   [ring saveString: @"Pixel"];
   
-  [self assertNil: [ring searchForwardForStringPrefix: @""]];
-  [self assertNil: [ring searchBackwardForStringPrefix: @""]];
+  XCTAssertNil ([ring searchForwardForStringPrefix: @""]);
+  XCTAssertNil ([ring searchBackwardForStringPrefix: @""]);
 }
 
 - (void) testNumberOfUniqueMatches
 {
   [ring saveString: @"Dog"];
   
-  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-                equals: 0];
+  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
   
   [ring saveString: @"Cat"];
   
-  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-                equals: 0];
+  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
   
   [ring saveString: @"Catatonic"];
   
-  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-                equals: 1];
+  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 1);
   
   [ring saveString: @"Catastrophic"];
   
-  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-                equals: 2];
+  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
   
   [ring saveString: @"Catastrophic"];
   
-  [self assertUInteger: [ring numberOfUniqueMatchesForStringPrefix: @"Cat"]
-                equals: 2];
+  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
 }
 
 #pragma mark - Private methods
 
 - (void) assertCurrent: (NSString *) expected
 {
-  [self assert: [ring currentString] equals: expected];
+  XCTAssertEqualObjects ([ring currentString], expected);
 }
 
 - (void) assertPrevious: (NSString *) expected
 {
-  [self assert: [ring previousString] equals: expected];
+  XCTAssertEqualObjects ([ring previousString], expected);
 }
 
 - (void) assertNext: (NSString *) expected
 {
-  [self assert: [ring nextString] equals: expected];
+  XCTAssertEqualObjects ([ring nextString], expected);
 }
 
 - (void) saveOne

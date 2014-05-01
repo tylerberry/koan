@@ -96,9 +96,9 @@
 {
   [_buffer appendString: @"foo"];
   [_buffer writeDataWithPriority: [NSData dataWithBytes: (uint8_t *) "ab" length: 2]];
-  [self assert: [self _outputString] equals: @"ab"];
+  XCTAssertEqualObjects ([self _outputString], @"ab");
   [_buffer flush];
-  [self assert: [self _outputString] equals: @"abfoo"];
+  XCTAssertEqualObjects ([self _outputString], @"abfoo");
 }
 
 #pragma mark - MUByteDestination protocol
@@ -113,7 +113,7 @@
 - (void) _assertOutputAfterFlushIsString: (NSString *) string
 {
   [_buffer flush];
-  [self assert: [self _outputString] equals: string];
+  XCTAssertEqualObjects ([self _outputString], string);
 }
 
 - (NSString *) _outputString

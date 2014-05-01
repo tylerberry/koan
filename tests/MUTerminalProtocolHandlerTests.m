@@ -6,6 +6,7 @@
 
 #import "MUTerminalProtocolHandlerTests.h"
 
+#import "MUConstants.h"
 #import "MUMUDConnectionState.h"
 #import "MUProfile.h"
 #import "NSColor+ANSI.h"
@@ -1264,7 +1265,7 @@
 {
   [self _parseString: inputString];
 
-  [self assert: _outputBuffer.string equals: _outputString message: message];
+  XCTAssertEqualObjects (_outputBuffer.string, _outputString, @"%@", message);
 
   [self _clearOutputBuffer];
 }
@@ -1277,7 +1278,7 @@
 {
   NSDictionary *attributes = [string attributesAtIndex: characterIndex effectiveRange: NULL];
 
-  [self assert: [attributes valueForKey: attribute] equals: value message: message];
+  XCTAssertEqualObjects ([attributes valueForKey: attribute], value, @"%@", message);
 }
 
 - (void) _assertString: (NSAttributedString *) string
@@ -1287,7 +1288,7 @@
 {
   NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
   
-  [self assertTrue: (BOOL) ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait) message: message];
+  XCTAssertTrue ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait, @"%@", message);
 }
 
 - (void) _assertString: (NSAttributedString *) string
@@ -1296,8 +1297,8 @@
                message: (NSString *) message
 {
   NSFont *font = [string attribute: NSFontAttributeName atIndex: characterIndex effectiveRange: NULL];
-  
-  [self assertFalse: (BOOL) ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait) message: message];
+
+  XCTAssertFalse ([[NSFontManager sharedFontManager] traitsOfFont: font] & trait, @"%@", message);
 }
 
 - (void) _clearOutputBuffer

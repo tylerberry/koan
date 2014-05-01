@@ -94,15 +94,19 @@
   
   NSString *output = buffer.stringValue;
   for (unsigned i = 0; i < buffer.length; i++)
-    [self assertInt: (int) [output characterAtIndex: i] equals: expected1[i]];
-   
+  {
+    XCTAssertEqual ([output characterAtIndex: i], expected1[i]);
+  }
+
   [selection addMethod: MUSOCKS5UsernamePassword];
 
   [buffer clear];
   [selection appendToBuffer: buffer];
   output = buffer.stringValue;
   for (unsigned j = 0; j < buffer.length; j++)
-    [self assertInt: (int) [output characterAtIndex: j] equals: expected2[j]];
+  {
+    XCTAssertEqual ([output characterAtIndex: j], expected2[j]);
+  }
 }
 
 - (void) testSelectMethod
@@ -111,10 +115,11 @@
   MUMockByteSource *source = [MUMockByteSource mockByteSource];
   
   [selection addMethod: MUSOCKS5UsernamePassword];
-  [self assertInt: selection.selectedMethod equals: MUSOCKS5NoAuthentication];
+  XCTAssertEqual (selection.selectedMethod, MUSOCKS5NoAuthentication);
+
   [source appendBytes: (uint8_t *) "\x05\x02" length: 2];
   [selection parseResponseFromByteSource: source];
-  [self assertInt: selection.selectedMethod equals: MUSOCKS5UsernamePassword];
+  XCTAssertEqual (selection.selectedMethod, MUSOCKS5UsernamePassword);
 }
 
 - (void) testRequest
@@ -126,9 +131,11 @@
   [request appendToBuffer: buffer];
   
   NSData *data = buffer.dataValue;
-  [self assertUInteger: data.length equals: 18]; // same as expected length above
+  XCTAssertEqual (data.length, (NSUInteger) 18); // same as expected length above
   for (unsigned i = 0; i < 18; i++)
-    [self assertInt: ((uint8_t *) data.bytes)[i] equals: expected[i]];
+  {
+    XCTAssertEqual (((uint8_t *) data.bytes)[i], expected[i]);
+  }
 }
 
 - (void) testReplyWithDomainName
@@ -137,14 +144,14 @@
   MUMockByteSource *source = [MUMockByteSource mockByteSource];
   uint8_t reply[18] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5DomainName, 11, 'e', 'x', 'a', 'm', 'p', 'l', 'e', '.', 'c', 'o', 'm', 0xAB, 0xCD};
   
-  [self assertInt: request.reply equals: MUSOCKS5NoReply];
+  XCTAssertEqual (request.reply, MUSOCKS5NoReply);
   [source appendBytes: reply length: 18];
   [source appendBytes: (uint8_t *) "foo" length: 3];
   [request parseReplyFromByteSource: source];
   
   NSString *readString = source.ASCIIStringByConsumingBuffer;
-  [self assert: readString equals: @"foo"];
-  [self assertInt: request.reply equals: MUSOCKS5ConnectionNotAllowed];
+  XCTAssertEqualObjects (readString, @"foo");
+  XCTAssertEqual (request.reply, MUSOCKS5ConnectionNotAllowed);
 }
 
 - (void) testReplyWithIPV4
@@ -153,14 +160,14 @@
   MUMockByteSource *source = [MUMockByteSource mockByteSource];
   uint8_t reply[10] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5IPv4, 10, 1, 2, 3, 0xAB, 0xCD};
   
-  [self assertInt: request.reply equals: MUSOCKS5NoReply];
+  XCTAssertEqual (request.reply, MUSOCKS5NoReply);
   [source appendBytes: reply length: 10];
   [source appendBytes: (uint8_t *) "foo" length: 3];
   [request parseReplyFromByteSource: source];
   
   NSString *readString = source.ASCIIStringByConsumingBuffer;
-  [self assert: readString equals: @"foo"];
-  [self assertInt: request.reply equals: MUSOCKS5ConnectionNotAllowed];
+  XCTAssertEqualObjects (readString, @"foo");
+  XCTAssertEqual (request.reply, MUSOCKS5ConnectionNotAllowed);
 }
 
 - (void) testReplyWithIPV6
@@ -170,14 +177,14 @@
   uint8_t reply[22] = {MUSOCKS5Version, MUSOCKS5ConnectionNotAllowed, 0, MUSOCKS5IPv6, 0xFE, 0xC0, 0x03, 0x04, 0x05,
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0xAB, 0xCD};
   
-  [self assertInt: request.reply equals: MUSOCKS5NoReply];
+  XCTAssertEqual (request.reply, MUSOCKS5NoReply);
   [source appendBytes: reply length: 22];
   [source appendBytes: (uint8_t *) "foo" length: 3];
   [request parseReplyFromByteSource: source];
   
   NSString *readString = source.ASCIIStringByConsumingBuffer;
-  [self assert: readString equals: @"foo"];
-  [self assertInt: request.reply equals: MUSOCKS5ConnectionNotAllowed];
+  XCTAssertEqualObjects (readString, @"foo");
+  XCTAssertEqual (request.reply, MUSOCKS5ConnectionNotAllowed);
 }
 
 - (void) testAuthentication
@@ -189,9 +196,11 @@
   [auth appendToBuffer: buffer];
   
   NSData *data = buffer.dataValue;
-  [self assertUInteger: data.length equals: 12]; // same as expected length above
+  XCTAssertEqual (data.length, (NSUInteger) 12); // same as expected length above
   for (unsigned i = 0; i < 12; i++)
-    [self assertInt: ((uint8_t *) data.bytes)[i] equals: expected[i]];
+  {
+    XCTAssertEqual (((uint8_t *) data.bytes)[i], expected[i]);
+  }
 }
 
 - (void) testAuthenticationReply
@@ -199,15 +208,15 @@
   MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: @"bob" password: @"barfoo"];
   MUMockByteSource *source = [MUMockByteSource mockByteSource];
   
-  [self assertFalse: auth.authenticated];
+  XCTAssertFalse (auth.authenticated);
   [source appendByte: 1];
   [source appendByte: 0];
   [auth parseReplyFromSource: source];
-  [self assertTrue: auth.authenticated];
+  XCTAssertTrue (auth.authenticated);
   [source appendByte: 1];
   [source appendByte: 11]; // non-zero
-  [auth parseReplyFromSource: source];  
-  [self assertFalse: auth.authenticated];
+  [auth parseReplyFromSource: source];
+  XCTAssertFalse (auth.authenticated);
 }
 
 #pragma mark - Private methods
@@ -216,7 +225,7 @@
 {
   [buffer clear];
   [object appendToBuffer: buffer];
-  [self assert: buffer.stringValue equals: output];
+  XCTAssertEqualObjects (buffer.stringValue, output);
 }
 
 @end

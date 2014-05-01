@@ -74,13 +74,14 @@
 - (void) testIgnoresNormalInput
 {
   [self assertInput: @"Just a normal line of text.\n" hasOutput: @"Just a normal line of text.\n"];
-  [self assertNil: _editString]; 
+  XCTAssertNil (_editString);
 }
 
 - (void) testElidesFugueEdit
 {
   [self assertInput: @"FugueEdit > &test me=Test\n" hasOutput: @""];
-  [self assert: _editString equals: @"&test me=Test"];
+  XCTAssertNotNil (_editString);
+  XCTAssertEqualObjects (_editString, @"&test me=Test");
 }
 
 @end

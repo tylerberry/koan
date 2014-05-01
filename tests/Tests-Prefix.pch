@@ -5,9 +5,7 @@
 //
 
 #ifdef __OBJC__
-#import <Cocoa/Cocoa.h>
+#  import <Cocoa/Cocoa.h>
 #endif
 
-#import "J3TestCase.h"
-#import "categories/NSAttributedString (Allocating).h"
-#import "MUConstants.h"
+#import <XCTest/XCTest.h>

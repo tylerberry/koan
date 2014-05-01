@@ -64,13 +64,13 @@
   [protocolHandler enableOptionForHim: 0];
   [protocolHandler disableOptionForUs: 0];
   [protocolHandler disableOptionForHim: 0];
-  [self assert: mockSocketData equals: [NSData data] message: @"telnet was written"];
+  XCTAssertEqualObjects (mockSocketData, [NSData data], @"telnet was written");
 }
 
 - (void) testParsePlainText
 {
   [self parseString: @"foo"];
-  [self assert: parsedString.string equals: @"foo"];
+  XCTAssertEqualObjects (parsedString.string, @"foo");
 }
 
 - (void) testParseCRIACIAC
@@ -78,43 +78,43 @@
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetInterpretAsCommand, 0};
 
   [self parseCString: (const char *) bytes];
-  [self assert: parsedString.string equals: [NSString stringWithCString: "\xff" encoding: NSASCIIStringEncoding]];
+  XCTAssertEqualObjects (parsedString.string, [NSString stringWithCString: "\xff" encoding: NSASCIIStringEncoding]);
 }
 
 - (void) testParseCRCRLF
 {
   [self parseString: @"\r\r\n"];
-  [self assert: parsedString.string equals: @"\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n");
 }
 
 - (void) testParseCRCRNUL
 {
   [self parseData: [NSData dataWithBytes: "\r\r\0" length: 3]];
-  [self assert: parsedString.string equals: @""];
+  XCTAssertEqualObjects (parsedString.string, @"");
 }
 
 - (void) testParseCRLF
 {
   [self parseString: @"\r\n"];
-  [self assert: parsedString.string equals: @"\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n");
 }
 
 - (void) testParseLFCR
 {
   [self parseString: @"\n\r"];
-  [self assert: parsedString.string equals: @"\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n");
 }
 
 - (void) testParseCRNUL
 {
   [self parseData: [NSData dataWithBytes: "\r\0" length: 2]];
-  [self assert: parsedString.string equals: @""];
+  XCTAssertEqualObjects (parsedString.string, @"");
 }
 
 - (void) testCRNULOverwritesCharacters
 {
   [self parseData: [NSData dataWithBytes: "abcdefg\r\0pq" length: 11]];
-  [self assert: parsedString.string equals: @"pqcdefg"];
+  XCTAssertEqualObjects (parsedString.string, @"pqcdefg");
 }
 
 - (void) testParseCRSomethingElse
@@ -129,8 +129,9 @@
     bytes[1] = (uint8_t) i;
     [self parseData: [NSData dataWithBytes: bytes length: 2]];
 
-    [self assert: parsedString.string equals: [[NSString alloc] initWithData: [NSData dataWithBytes: bytes + 1 length: 1]
-                                                                    encoding: NSASCIIStringEncoding]];
+    XCTAssertEqualObjects (parsedString.string,
+                           [[NSString alloc] initWithData: [NSData dataWithBytes: bytes + 1 length: 1]
+                                                 encoding: NSASCIIStringEncoding]);
     [self resetTest];
   }
 }
@@ -139,26 +140,26 @@
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetNoOperation, 0};
   [self parseData: [NSData dataWithBytes: bytes length: 4]];
-  [self assert: parsedString.string equals: @""];
+  XCTAssertEqualObjects (parsedString.string, @"");
 }
 
 - (void) testParseLF
 {
   [self parseString: @"\n"];
-  [self assert: parsedString.string equals: @"\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n");
 }
 
 - (void) testParseLFCRLFCR
 {
   [self parseString: @"\n\r\n\r"];
-  [self assert: parsedString.string equals: @"\n\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n\n");
 }
 
 - (void) testParseLFCRNUL
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\n\r\0" length: 3]];
   [protocolStack flushBufferedData];
-  [self assert: parsedString.string equals: @"\n"];
+  XCTAssertEqualObjects (parsedString.string, @"\n");
 }
 
 - (void) testNVTEraseCharacter
@@ -167,7 +168,7 @@
 
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
   [protocolStack flushBufferedData];
-  [self assert: parsedString.string equals: @"b"];
+  XCTAssertEqualObjects (parsedString.string, @"b");
 }
 
 - (void) testSubnegotiationPutsNothingInReadBuffer
@@ -175,7 +176,7 @@
   uint8_t bytes[9] = {MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 9]];
-  [self assertUInteger: parsedString.length equals: 0];
+  XCTAssertEqual (parsedString.length, (NSUInteger) 0);
 }
 
 - (void) testSubnegotiationStrippedFromText
@@ -184,7 +185,7 @@
   
   [self parseData: [NSData dataWithBytes: bytes length: 13]];
 
-  [self assert: parsedString.string equals: @"abcd"];
+  XCTAssertEqualObjects (parsedString.string, @"abcd");
 }
 
 #pragma mark - Telnet options
@@ -192,13 +193,13 @@
 - (void) testDoSuppressGoAhead
 {
   [self simulateDo: MUTelnetOptionSuppressGoAhead];
-  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionSuppressGoAhead]];
+  XCTAssertTrue ([protocolHandler optionEnabledForUs: MUTelnetOptionSuppressGoAhead]);
 }
 
 - (void) testWillSuppressGoAhead
 {
   [self simulateWill: MUTelnetOptionSuppressGoAhead];
-  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionSuppressGoAhead]];
+  XCTAssertTrue ([protocolHandler optionEnabledForHim: MUTelnetOptionSuppressGoAhead]);
 }
 
 - (void) testGoAhead
@@ -219,19 +220,19 @@
   [self sendMockSocketData];
   
   [protocolStack preprocessOutputData: [NSData data]];
-  [self assertUInteger: mockSocketData.length equals: 0];
+  XCTAssertEqual (mockSocketData.length, (NSUInteger) 0);
 }
 
 - (void) testDoTerminalType
 {
   [self simulateDo: MUTelnetOptionTerminalType];
-  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionTerminalType]];
+  XCTAssertTrue ([protocolHandler optionEnabledForUs: MUTelnetOptionTerminalType]);
 }
 
 - (void) testRefuseWillTerminalType
 {
   [self simulateWill: MUTelnetOptionTerminalType];
-  [self assertFalse: [protocolHandler optionEnabledForHim: MUTelnetOptionTerminalType]];
+  XCTAssertFalse ([protocolHandler optionEnabledForHim: MUTelnetOptionTerminalType]);
 }
 
 - (void) testTerminalType
@@ -248,35 +249,35 @@
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"koan-256color"];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: koan256Reply length: 19], @"koan-256color");
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: koanReply length: 10] message: @"koan"];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: koanReply length: 10], @"koan");
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown"];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: unknownReply length: 13], @"unknown");
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: unknownReply length: 13] message: @"unknown 2"];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: unknownReply length: 13], @"unknown 2");
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: terminalTypeRequest length: 2];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: koan256Reply length: 19] message: @"wraparound"];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: koan256Reply length: 19], @"wraparound");
 }
 
 - (void) testDoCharset
 {
   [self simulateDo: MUTelnetOptionCharset];
-  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionCharset]];
+  XCTAssertTrue ([protocolHandler optionEnabledForUs: MUTelnetOptionCharset]);
 }
 
 - (void) testWillCharset
 {
   [self simulateWill: MUTelnetOptionCharset];
-  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionCharset]];
+  XCTAssertTrue ([protocolHandler optionEnabledForHim: MUTelnetOptionCharset]);
 }
 
 - (void) testCharsetUTF8Accepted
@@ -285,16 +286,16 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSASCIIStringEncoding);
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[11] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 11]];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: charsetReply length: 11]);
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSUTF8StringEncoding);
 }
 
 - (void) testCharsetLatin1Accepted
@@ -303,16 +304,16 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSASCIIStringEncoding);
   
   const uint8_t charsetRequest[13] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1'};
   const uint8_t charsetReply[16] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'I', 'S', 'O', '-', '8', '8', '5', '9', '-', '1', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 13];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 16]];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: charsetReply length: 16]);
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSISOLatin1StringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSISOLatin1StringEncoding);
 }
 
 - (void) testCharsetRejected
@@ -321,44 +322,44 @@
   [self simulateDo: MUTelnetOptionTransmitBinary];
   [self simulateWill: MUTelnetOptionCharset];
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSASCIIStringEncoding);
   
   const uint8_t charsetRequest[10] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'I', 'N', 'V', 'A', 'L', 'I', 'D'};
   const uint8_t charsetReply[6] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetRejected, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 10];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 6]];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: charsetReply length: 6]);
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSASCIIStringEncoding);
 }
 
 - (void) testCharsetNonStandardBehavior
 {
   [self simulateDo: MUTelnetOptionCharset];
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSASCIIStringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSASCIIStringEncoding);
   
   const uint8_t charsetRequest[8] = {MUTelnetOptionCharset, MUTelnetCharsetRequest, ';', 'U', 'T', 'F', '-', '8'};
   const uint8_t charsetReply[17] = {MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionCharset, MUTelnetCharsetAccepted, 'U', 'T', 'F', '-', '8', MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, MUTelnetInterpretAsCommand, MUTelnetWill, MUTelnetOptionTransmitBinary, MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTransmitBinary};
   
   mockSocketData.data = [NSData data];
   [self simulateIncomingSubnegotation: charsetRequest length: 8];
-  [self assert: mockSocketData equals: [NSData dataWithBytes: charsetReply length: 17]];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: charsetReply length: 17]);
   
-  [self assertUInteger: connectionState.stringEncoding equals: NSUTF8StringEncoding];
+  XCTAssertEqual (connectionState.stringEncoding, (NSStringEncoding) NSUTF8StringEncoding);
 }
 
 - (void) testDoEndOfRecord
 {
   [self simulateDo: MUTelnetOptionEndOfRecord];
-  [self assertTrue: [protocolHandler optionEnabledForUs: MUTelnetOptionEndOfRecord]];
+  XCTAssertTrue ([protocolHandler optionEnabledForUs: MUTelnetOptionEndOfRecord]);
 }
 
 - (void) testWillEndOfRecord
 {
   [self simulateWill: MUTelnetOptionEndOfRecord];
-  [self assertTrue: [protocolHandler optionEnabledForHim: MUTelnetOptionEndOfRecord]];
+  XCTAssertTrue ([protocolHandler optionEnabledForHim: MUTelnetOptionEndOfRecord]);
 }
 
 - (void) testEndOfRecord
@@ -367,7 +368,7 @@
   [self sendMockSocketData];
   
   [protocolStack preprocessOutputData: [NSData data]];
-  [self assertUInteger: mockSocketData.length equals: 0];
+  XCTAssertEqual (mockSocketData.length, (NSUInteger) 0);
   
   [self simulateDo: MUTelnetOptionEndOfRecord];
   [self sendMockSocketData];
@@ -375,7 +376,7 @@
   [protocolStack preprocessOutputData: [NSData data]];
   
   uint8_t expectedBytes[2] = {MUTelnetInterpretAsCommand, MUTelnetEndOfRecord};
-  [self assert: mockSocketData equals: [NSData dataWithBytes: expectedBytes length: 2]];
+  XCTAssertEqualObjects (mockSocketData, [NSData dataWithBytes: expectedBytes length: 2]);
 }
 
 #pragma mark - MUProtocolStackDelegate protocol
@@ -426,7 +427,7 @@
 
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes
 {
-  [self assert: data equals: [NSData dataWithBytes: bytes length: strlen (bytes)]];
+  XCTAssertEqualObjects (data, [NSData dataWithBytes: bytes length: strlen (bytes)]);
 }
 
 - (void) confirmTelnetWithDontEcho

@@ -41,7 +41,8 @@
   
   NSAttributedString *input = [[NSAttributedString alloc] initWithString: @"Foo"];
   NSAttributedString *output = [queue processCompleteLine: input];
-  [self assert: output equals: input];
+
+  XCTAssertEqualObjects (input, output);
 }
 
 - (void) testQueue
@@ -54,7 +55,8 @@
   NSString *uppercaseString = baseString.uppercaseString;
   NSAttributedString *input = [[NSAttributedString alloc] initWithString: baseString];
   NSAttributedString *output = [queue processCompleteLine: input];
-  [self assert: output.string equals: uppercaseString];
+
+  XCTAssertEqualObjects (output.string, uppercaseString);
 }
 
 @end

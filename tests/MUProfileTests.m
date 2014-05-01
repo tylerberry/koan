@@ -24,13 +24,13 @@
   MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   
   MUProfile *profile = [MUProfile profileWithWorld: world];
-  [self assert: profile.uniqueIdentifier equals: world.uniqueIdentifier];
+  XCTAssertEqualObjects (profile.uniqueIdentifier, world.uniqueIdentifier);
   
   MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;
   
   profile = [MUProfile profileWithWorld: world player: player];
-  [self assert: profile.uniqueIdentifier equals: player.uniqueIdentifier];
+  XCTAssertEqualObjects (profile.uniqueIdentifier, player.uniqueIdentifier);
 }
 
 - (void) testHasLoginInformation
@@ -38,13 +38,13 @@
   MUWorld *world = [MUWorld worldWithHostname: @"example.com" port: @4201 forceTLS: NO];
   MUProfile *profile = [MUProfile profileWithWorld: world];
                     
-  [self assertFalse: profile.hasLoginInformation message: @"no login info"];
+  XCTAssertFalse (profile.hasLoginInformation, @"no login info");
                     
   MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;
   profile.player = player;
                     
-  [self assertTrue: profile.hasLoginInformation message: @"has login info"];
+  XCTAssertTrue (profile.hasLoginInformation, @"has login info");
 }
 
 @end

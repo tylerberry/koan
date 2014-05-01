@@ -208,7 +208,7 @@
 {
   [self resetStateMachine];
   [[MUTelnetIACState state] parse: byte forStateMachine: stateMachine protocolHandler: nil];
-  [self assertTrue: stateMachine.telnetConfirmed message: [NSString stringWithFormat: @"%d did not confirm telnet", byte]];
+  XCTAssertTrue (stateMachine.telnetConfirmed, @"%d did not confirm telnet", byte);
   [output setLength: 0];
 }
 
@@ -217,7 +217,7 @@
   [self resetStateMachine];
   uint8_t bytes[] = {MUTelnetInterpretAsCommand, byte};
   [self assertState: C(MUTelnetIACState) givenByte: byte producesState: C(MUTelnetNotTelnetState)];
-  [self assert: output equals: [NSData dataWithBytes: bytes length: 2]];
+  XCTAssertEqualObjects (output, [NSData dataWithBytes: bytes length: 2]);
   [output setLength: 0];
 }
 
@@ -247,7 +247,7 @@ givenAnyByteProducesState: (Class) nextStateClass
           inputsByte: (uint8_t) inputsByte
 {
   [self giveStateClass: stateClass byte: givenByte];
-  [self assertInt: lastByteInput equals: inputsByte];
+  XCTAssertEqual (lastByteInput, inputsByte);
 }
 
 - (void) assertStateObject: (MUTelnetState *) state
@@ -264,7 +264,7 @@ givenAnyByteProducesState: (Class) nextStateClass
              producesState: (Class) nextStateClass
 {
   MUTelnetState *nextState = [state parse: byte forStateMachine: stateMachine protocolHandler: self];
-  [self assert: [nextState class] equals: nextStateClass message: [NSString stringWithFormat: @"Byte was 0x%x (%d)", byte, byte]];  
+  XCTAssertEqualObjects ([nextState class], nextStateClass, @"Byte was 0x%x (%d)", byte, byte);
 }
 
 - (void) giveStateClass: (Class) stateClass byte: (uint8_t) byte

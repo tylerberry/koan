@@ -4,11 +4,13 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "J3TestCase.h"
+
+
 #import "MUTelnetProtocolHandler.h"
 #import "MUTelnetStateMachine.h"
 
-@interface MUTelnetStateMachineTests : J3TestCase <MUTelnetProtocolHandler>
+@interface MUTelnetStateMachineTests : XCTestCase
+ <MUTelnetProtocolHandler>
 {
   MUTelnetStateMachine *stateMachine;
   int lastByteInput;

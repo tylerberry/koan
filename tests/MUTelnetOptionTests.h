@@ -4,11 +4,13 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "J3TestCase.h"
+
+
 #import "MUTelnetOption.h"
 #import "MUTelnetProtocolHandler.h"
 
-@interface MUTelnetOptionTests : J3TestCase <MUTelnetOptionDelegate>
+@interface MUTelnetOptionTests : XCTestCase
+ <MUTelnetOptionDelegate>
 {
   MUTelnetOption *option;
   char flags;

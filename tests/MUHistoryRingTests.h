@@ -4,11 +4,12 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "J3TestCase.h"
+
+
 
 #import "MUHistoryRing.h"
 
-@interface MUHistoryRingTests : J3TestCase
+@interface MUHistoryRingTests : XCTestCase
 {
   MUHistoryRing *ring;
 }

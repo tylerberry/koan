@@ -117,7 +117,7 @@
 
 - (void) assertFilter: (id) object
 {
-  [self assert: [_textLogger filterCompleteLine: object] equals: object message: nil];
+  XCTAssertEqualObjects ([_textLogger filterCompleteLine: object], object);
 }
 
 - (void) assertFilterString: (NSString *) string
@@ -129,7 +129,7 @@
 {
   NSString *outputString = @((const char *) _outputBuffer);
   
-  [self assert: outputString equals: string];
+  XCTAssertEqualObjects (outputString, string);
 }
 
 @end

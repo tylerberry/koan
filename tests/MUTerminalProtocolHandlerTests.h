@@ -9,6 +9,7 @@
 #import "MUProtocolStack.h"
 #import "MUTerminalProtocolHandler.h"
 
-@interface MUTerminalProtocolHandlerTests : J3TestCase <MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate>
+@interface MUTerminalProtocolHandlerTests : XCTestCase
+ <MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate>
 
 @end

@@ -26,11 +26,9 @@
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output message: (NSString *) message
 {
   NSAttributedString *attributedInput = [self constructAttributedStringForString: input];
-  NSAttributedString *attributedExpectedOutput = [[NSAttributedString alloc] initWithString: output];
-  NSMutableAttributedString *actualOutput = [[NSMutableAttributedString alloc] initWithAttributedString: [self.queue processCompleteLine: attributedInput]];
-  
-  [actualOutput setAttributes: @{} range: NSMakeRange (0, actualOutput.length)];
-  [self assert: actualOutput equals: attributedExpectedOutput message: message];  
+  NSAttributedString *actualOutput = [self.queue processCompleteLine: attributedInput];
+
+  XCTAssertEqualObjects (actualOutput.string, output, @"%@", message);
 }
 
 - (NSMutableAttributedString *) constructAttributedStringForString: (NSString *) string

@@ -33,7 +33,7 @@
   NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject: _world];
   MUWorld *unarchivedWorld = [NSKeyedUnarchiver unarchiveObjectWithData: archivedData];
   
-  [self assert: _world.uniqueIdentifier equals: unarchivedWorld.uniqueIdentifier];
+  XCTAssertEqualObjects (_world.uniqueIdentifier, unarchivedWorld.uniqueIdentifier);
 }
 
 @end

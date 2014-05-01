@@ -4,11 +4,9 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "J3TestCase.h"
-
 #import "MUFilterQueue.h"
 
-@interface MUFilterTestCase : J3TestCase
+@interface MUFilterTestCase : XCTestCase
 
 @property (strong) MUFilterQueue *queue;
 

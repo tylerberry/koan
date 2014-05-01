@@ -11,9 +11,7 @@
 
 @interface MUProfileRegistryTests ()
 
-- (void) assertProfile: (MUProfile *) profile
-                 world: (MUWorld *) world
-                player: (MUPlayer *) player;
+- (void) assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player;
 
 - (MUWorld *) testWorld;
 - (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world;
@@ -39,10 +37,10 @@
   MUProfileRegistry *registryOne, *registryTwo;
   
   registryOne = [MUProfileRegistry defaultRegistry];
-  [self assertNotNil: registryOne];
+  XCTAssertNotNil (registryOne);
   
   registryTwo = [MUProfileRegistry defaultRegistry];
-  [self assert: registryOne equals: registryTwo];
+  XCTAssertEqualObjects (registryOne, registryTwo);
 }
 
 - (void) testProfileWithWorld
@@ -55,11 +53,10 @@
   [self assertProfile: profileOne world: world player: nil];
   
   profileTwo = [registry profileForUniqueIdentifier: world.uniqueIdentifier];
-  [self assert: profileTwo equals: profileOne message: @"First"];
+  XCTAssertEqualObjects (profileTwo, profileOne, @"First");
   
   profileOne = [registry profileForWorld: world];
-  [self assert: profileOne equals: profileTwo message: @"Second"];
-  
+  XCTAssertEqualObjects (profileOne, profileTwo, @"Second");
 }
 
 - (void) testProfileWithWorldAndPlayer
@@ -72,10 +69,10 @@
   [self assertProfile: profileOne world: world player: player];
   
   profileTwo = [registry profileForUniqueIdentifier: player.uniqueIdentifier];
-  [self assert: profileTwo equals: profileOne message: @"First"];
+  XCTAssertEqualObjects (profileTwo, profileOne, @"First");
   
   profileOne = [registry profileForWorld: world player: player];
-  [self assert: profileOne equals: profileTwo message: @"Second"];
+  XCTAssertEqualObjects (profileOne, profileTwo, @"Second");
 }
 
 - (void) testContains
@@ -83,13 +80,11 @@
   MUWorld *world = [self testWorld];
   MUPlayer *player = [self testPlayerWithParentWorld: world];
   
-  [self assertFalse: [registry containsProfileForWorld: world player: player]
-            message: @"Before adding"];
+  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"Before adding");
   
   [registry profileForWorld: world player: player];
   
-  [self assertTrue: [registry containsProfileForWorld: world player: player]
-           message: @"After adding"];
+  XCTAssertTrue ([registry containsProfileForWorld: world player: player], @"After adding");
 }
 
 - (void) testRemove
@@ -98,12 +93,10 @@
   MUPlayer *player = [self testPlayerWithParentWorld: world];
 
   [registry profileForWorld: world player: player];
-  [self assertTrue: [registry containsProfileForWorld: world player: player]
-           message: @"Before removing"];  
+  XCTAssertTrue ([registry containsProfileForWorld: world player: player], @"Before removing");
   
   [registry removeProfileForWorld: world player: player];  
-  [self assertFalse: [registry containsProfileForWorld: world player: player]
-            message: @"After removing"];
+  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"After removing");
 
 }
 
@@ -116,22 +109,18 @@
   [registry profileForWorld: world];
   [registry profileForWorld: world player: player];
   [registry removeAllProfilesForWorld: world];
-  [self assertFalse: [registry containsProfileForWorld: world]
-            message: @"World only"];
-  [self assertFalse: [registry containsProfileForWorld: world
-                                                player: player]
-            message: @"World and player"];
+  
+  XCTAssertFalse ([registry containsProfileForWorld: world], @"World only");
+  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"World and player");
 }
 
 #pragma mark - Private methods
 
-- (void) assertProfile: (MUProfile *) profile
-                 world: (MUWorld *) world
-                player: (MUPlayer *) player
+- (void) assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player
 {
-  [self assertNotNil: profile];
-  [self assert: profile.world equals: world message: @"World mismatch"];
-  [self assert: profile.player equals: player message: @"Player mismatch"];
+  XCTAssertNotNil (profile);
+  XCTAssertEqualObjects (profile.world, world, @"World mismatch");
+  XCTAssertEqualObjects (profile.player, player, @"Player mismatch");
 }
 
 - (MUWorld *) testWorld

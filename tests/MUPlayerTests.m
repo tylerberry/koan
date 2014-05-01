@@ -26,13 +26,11 @@
   testPlayer.parent = testWorld;
   testPlayer.password = @"password";
   
-  [self assert: testPlayer.loginString
-        equals: @"connect \"My User\" password"];
+  XCTAssertEqualObjects (testPlayer.loginString, @"connect \"My User\" password");
   
   // Clean up after ourselves.
   testPlayer.password = nil;
-  [self assert: testPlayer.loginString
-        equals: @"connect \"My User\""];
+  XCTAssertEqualObjects (testPlayer.loginString, @"connect \"My User\"");
   
 }
 
@@ -43,26 +41,23 @@
   testPlayer.parent = testWorld;
   testPlayer.password = @"drowssap";
   
-  [self assert: testPlayer.loginString
-        equals: @"connect Bob drowssap"];
+  XCTAssertEqualObjects (testPlayer.loginString, @"connect Bob drowssap");
   
   // Clean up after ourselves.
   testPlayer.password = nil;
-  [self assert: testPlayer.loginString
-        equals: @"connect Bob"];
+  XCTAssertEqualObjects (testPlayer.loginString, @"connect Bob");
 }
 
 - (void) testLoginStringWithNoPassword
 {
   MUPlayer *player = [MUPlayer playerWithName: @"guest"];
-  [self assert: player.loginString
-        equals: @"connect guest"];
+  XCTAssertEqualObjects (player.loginString, @"connect guest");
 }
 
 - (void) testNoLoginStringForNilPlayerName
 {
   MUPlayer *playerOne = [MUPlayer playerWithName: nil];
-  [self assertNil: playerOne.loginString];
+  XCTAssertNil (playerOne.loginString);
 }
 
 @end

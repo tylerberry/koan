@@ -138,7 +138,7 @@
   NSURL *foundURL;
   NSRange foundRange;
   
-  [self assert: [attributedInput string] equals: attributedOutput.string message: @"Strings not equal."];
+  XCTAssertEqualObjects (attributedInput.string, attributedOutput.string, @"Strings not equal.");
   
   if (range.location != 0)
   {
@@ -147,8 +147,7 @@
                      longestEffectiveRange: &foundRange
                                    inRange: NSMakeRange (0, input.length)];
     
-    [self assertFalse: [foundURL isEqual: url]
-              message: @"Preceding character matches url and shouldn't."];
+    XCTAssertNotEqualObjects (foundURL, url, @"Preceding character matches url and shouldn't.");
   }
   
   if (NSMaxRange (range) < [input length])
@@ -157,9 +156,8 @@
                                    atIndex: NSMaxRange (range)
                      longestEffectiveRange: &foundRange
                                    inRange: NSMakeRange (0, input.length)];
-    
-    [self assertFalse: [foundURL isEqual: url]
-              message: @"Following character matches url and shouldn't."];
+
+    XCTAssertNotEqualObjects (foundURL, url, @"Following character matches url and shouldn't.");
   }
   
   foundURL = [attributedOutput attribute: NSLinkAttributeName
@@ -167,17 +165,12 @@
                    longestEffectiveRange: &foundRange
                                  inRange: NSMakeRange (0, input.length)];
   
-  [self assert: foundURL equals: url message: @"Links don't match."];
+  XCTAssertEqualObjects (foundURL, url, @"Links don't match.");
   
   if (foundURL)
   {
-    [self assertUInteger: foundRange.location
-                  equals: range.location
-                 message: @"Range locations don't match."];
-    
-    [self assertUInteger: foundRange.length
-                  equals: range.length
-                 message: @"Range lengths don't match."];
+    XCTAssertEqual (foundRange.location, range.location, @"Range locations don't match.");
+    XCTAssertEqual (foundRange.length, range.length, @"Range lengths don't match.");
   }
 }
 

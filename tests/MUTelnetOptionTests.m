@@ -225,10 +225,10 @@ typedef int MUQMethodTable[QSTATES][3];
   for (unsigned i = 0; i < 5; ++i)
   {
     [option setHim: noStates[i]];
-    [self assertFalse: option.enabledForHim message: [self qStateName: noStates[i]]];
+    XCTAssertFalse (option.enabledForHim, @"%@", [self qStateName: noStates[i]]);
   }
   [option setHim: MUTelnetQYes];
-  [self assertTrue: option.enabledForHim];
+  XCTAssertTrue (option.enabledForHim);
 }
 
 - (void) testWeAreEnabled
@@ -238,10 +238,10 @@ typedef int MUQMethodTable[QSTATES][3];
   for (unsigned i = 0; i < 5; ++i)
   {
     [option setUs: noStates[i]];
-    [self assertFalse: option.enabledForUs message: [self qStateName: noStates[i]]];
+    XCTAssertFalse (option.enabledForUs, @"%@", [self qStateName: noStates[i]]);
   }
   [option setUs: MUTelnetQYes];
-  [self assertTrue: option.enabledForUs];
+  XCTAssertTrue (option.enabledForUs);
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol
@@ -300,15 +300,11 @@ typedef int MUQMethodTable[QSTATES][3];
   
   [option performSelector: selector];
   
-  [self assertInt: (MUTelnetQState) [option performSelector: himOrUs]
-           equals: endState
-          message: [NSString stringWithFormat: @"%@ ending state", message]];
+  XCTAssertEqual ((MUTelnetQState) [option performSelector: himOrUs], endState, @"%@ ending state", message);
 
 #pragma clang diagnostic pop
   
-  [self assertInt: flags
-           equals: expectedFlags
-          message: [NSString stringWithFormat: @"%@ flags", message]];
+  XCTAssertEqual (flags, expectedFlags, @"%@ flags", message);
 }
 
 - (void) clearFlags

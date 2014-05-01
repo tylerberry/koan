@@ -29,9 +29,6 @@
 "Yes" = "Yes";
 "No" = "No";
 "QuitImmediately" = "Quit Immediately";
-"Download" = "Download";
-"RemindLater" = "Remind Me Later";
-"DontRemind" = "Don't Remind Me Again";
 
 "ConfirmCloseTitle" = "Are you sure you want to close %@?";
 "ConfirmCloseMessage" = "The currently open connection to %@ will be closed.";

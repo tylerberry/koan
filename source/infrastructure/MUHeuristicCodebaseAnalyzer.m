@@ -47,8 +47,19 @@
   
   // MSSP data is provided directly from the codebase. If it's lying, we're screwed anyway,
   // so any information acquired from MSSP is automatically treated as authoritative.
-  
-  if ([variableString isEqualToString: @"CODEBASE"])
+
+  if ([variableString isEqualToString: @"NAME"])
+  {
+    if ([valueString rangeOfString: @"SlothMUD"].location != NSNotFound)
+    {
+      _definitiveCodebaseFound = YES;
+      _codebase = MUCodebaseSlothMUD;
+      _codebaseFamily = MUCodebaseFamilyDikuMUD;
+
+      [self log: @"Analyzer: MSSP identifies as SlothMUD."];
+    }
+  }
+  else if ([variableString isEqualToString: @"CODEBASE"])
   {
     if ([valueString rangeOfString: @"StickyMUSH"].location != NSNotFound)
     {
@@ -78,7 +89,7 @@
     {
       _definitiveCodebaseFound = YES;
       _codebase = MUCodebaseDikuMUD;
-      _codebaseFamily = MUCodebaseFamilyGenericMUD;
+      _codebaseFamily = MUCodebaseFamilyDikuMUD;
 
       [self log: @"Analyzer: MSSP identifies as DikuMUD."];
     }
@@ -197,7 +208,7 @@
     else if ([lowercaseString rangeOfString: @"diku"].location != NSNotFound)
     {
       _codebase = MUCodebaseDikuMUD;
-      _codebaseFamily = MUCodebaseFamilyGenericMUD;
+      _codebaseFamily = MUCodebaseFamilyDikuMUD;
 
       [self log: @"Analyzer: Guessing DikuMUD from received text."];
     }

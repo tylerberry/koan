@@ -584,17 +584,24 @@ static NSArray *_offerableTerminalTypes;
         {
           _connectionState.stringEncoding = [self _stringEncodingForName: charset];
           [self _sendCharsetAcceptedSubnegotiationForCharset: charset];
-          
-          if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+
+          // DikuMUDs don't seem to respond well to IAC WILL TRANSMIT-BINARY requests, possibly because TRANSMIT-BINARY
+          // is 0x00.
+
+          if (_connectionState.codebaseAnalyzer.codebaseFamily != MUCodebaseFamilyDikuMUD)
           {
-            [self disableOptionForUs: MUTelnetOptionTransmitBinary];
-            [self disableOptionForHim: MUTelnetOptionTransmitBinary];
+            if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+            {
+              [self disableOptionForUs: MUTelnetOptionTransmitBinary];
+              [self disableOptionForHim: MUTelnetOptionTransmitBinary];
+            }
+            else
+            {
+              [self enableOptionForUs: MUTelnetOptionTransmitBinary];
+              [self enableOptionForHim: MUTelnetOptionTransmitBinary];
+            }
           }
-          else
-          {
-            [self enableOptionForUs: MUTelnetOptionTransmitBinary];
-            [self enableOptionForHim: MUTelnetOptionTransmitBinary];
-          }
+
           return;
         }
       }
@@ -623,16 +630,22 @@ static NSArray *_offerableTerminalTypes;
       if ([_acceptableCharsets containsObject: acceptedCharset])
       {
         _connectionState.stringEncoding = [self _stringEncodingForName: acceptedCharset];
-        
-        if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+
+        // DikuMUDs don't seem to respond well to IAC WILL TRANSMIT-BINARY requests, possibly because TRANSMIT-BINARY
+        // is 0x00.
+
+        if (_connectionState.codebaseAnalyzer.codebaseFamily != MUCodebaseFamilyDikuMUD)
         {
-          [self disableOptionForUs: MUTelnetOptionTransmitBinary];
-          [self disableOptionForHim: MUTelnetOptionTransmitBinary];
-        }
-        else
-        {
-          [self enableOptionForUs: MUTelnetOptionTransmitBinary];
-          [self enableOptionForHim: MUTelnetOptionTransmitBinary];
+          if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+          {
+            [self disableOptionForUs: MUTelnetOptionTransmitBinary];
+            [self disableOptionForHim: MUTelnetOptionTransmitBinary];
+          }
+          else
+          {
+            [self enableOptionForUs: MUTelnetOptionTransmitBinary];
+            [self enableOptionForHim: MUTelnetOptionTransmitBinary];
+          }
         }
         
         [self log: @"Received: IAC SB %@ ACCEPTED %@ IAC SE.", [MUTelnetOption optionNameForByte: bytes[0]], acceptedCharset];

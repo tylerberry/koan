@@ -431,7 +431,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
   // This is a heuristic. I've made it fairly tight to avoid false positives.
 
-  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
+  if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyDikuMUD
+      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
   {
     // MUDs are held to a less-tight restriction - they don't need a space for their prompts. (We will add the space if
     // the MUD leaves it out.)

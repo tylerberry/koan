@@ -568,7 +568,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) _reset
 {
-  _recentReceivedStrings = [NSMutableArray array];
+  [_recentReceivedStrings removeAllObjects];
   [_state reset];
   [_protocolStack reset];
 }

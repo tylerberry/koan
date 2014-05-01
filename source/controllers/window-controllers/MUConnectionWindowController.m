@@ -30,20 +30,6 @@ enum MUTextDisplayModes
 };
 
 @interface MUConnectionWindowController ()
-{
-  BOOL _currentlySearching;
-  
-  BOOL _shouldScrollToBottomAfterFullScreenTransition;
-  BOOL _shouldScrollToBottomAfterResize;
-  
-  MUHistoryRing *_historyRing;
-  
-  NSAttributedString *_currentPrompt;
-  NSRange _currentTextRangeWithoutPrompt;
-  
-  NSTimer *_timeConnectedFieldTimer;
-  NSTimer *_windowSizeNotificationTimer;
-}
 
 - (void) _clearPrompt;
 - (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
@@ -77,6 +63,20 @@ enum MUTextDisplayModes
 #pragma mark -
 
 @implementation MUConnectionWindowController
+{
+  BOOL _currentlySearching;
+
+  BOOL _shouldScrollToBottomAfterFullScreenTransition;
+  BOOL _shouldScrollToBottomAfterResize;
+
+  MUHistoryRing *_historyRing;
+
+  NSAttributedString *_currentPrompt;
+  NSRange _currentTextRangeWithoutPrompt;
+
+  NSTimer *_timeConnectedFieldTimer;
+  NSTimer *_windowSizeNotificationTimer;
+}
 
 - (id) initWithProfile: (MUProfile *) newProfile
 {

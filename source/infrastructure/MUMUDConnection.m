@@ -25,8 +25,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) _cleanUpPingTimer;
 - (void) _cleanUpStreams;
 - (void) _registerObjectForNotifications: (id) object;
-- (void) _resetRecentStrings;
-- (void) _resetState;
+- (void) _reset;
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer;
 - (void) _unregisterObjectForNotifications: (id) object;
 - (void) _writeBufferedDataToOutputStream;
@@ -249,8 +248,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _dateConnected = nil;
 
   [self _cleanUpPingTimer];
-  [self _resetRecentStrings];
-  [self _resetState];
+  [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
                                                       object: self];
@@ -263,8 +261,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _dateConnected = nil;
   [self _cleanUpPingTimer];
   [self _cleanUpStreams];
-  [self _resetRecentStrings];
-  [self _resetState];
+  [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                       object: self];
@@ -279,8 +276,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _dateConnected = nil;
   [self _cleanUpPingTimer];
   [self _cleanUpStreams];
-  [self _resetRecentStrings];
-  [self _resetState];
+  [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
                                                       object: self
@@ -570,13 +566,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                            object: self];
 }
 
-- (void) _resetRecentStrings
+- (void) _reset
 {
   _recentReceivedStrings = [NSMutableArray array];
-}
-
-- (void) _resetState
-{
   [_state reset];
   [_protocolStack reset];
 }

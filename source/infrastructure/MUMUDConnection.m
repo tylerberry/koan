@@ -578,8 +578,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) _resetState
 {
   [_state reset];
-  [_telnetProtocolHandler reset];
-  [_terminalProtocolHandler reset];
+  [_protocolStack reset];
 }
 
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer

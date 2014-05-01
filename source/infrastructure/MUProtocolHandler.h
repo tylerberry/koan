@@ -13,6 +13,7 @@
 - (void) parseByte: (uint8_t) byte;
 - (void) preprocessByte: (uint8_t) byte;
 - (void) preprocessFooterData: (NSData *) data;
+- (void) reset;
 - (void) sendPreprocessedData;
 
 @end

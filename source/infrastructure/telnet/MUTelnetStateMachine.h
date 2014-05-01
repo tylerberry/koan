@@ -18,5 +18,6 @@
 
 - (void) confirmTelnet;
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;
+- (void) reset;
 
 @end

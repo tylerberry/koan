@@ -32,4 +32,9 @@
   self.state = [self.state parse: byte forStateMachine: self protocolHandler: protocolHandler];
 }
 
+- (void) reset
+{
+  self.state = [MUTerminalTextState state];
+}
+
 @end

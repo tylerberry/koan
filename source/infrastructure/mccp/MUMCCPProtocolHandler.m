@@ -108,6 +108,11 @@
   }
 }
 
+- (void) reset
+{
+  [self _cleanUpStream];
+}
+
 #pragma mark - Private methods
 
 @dynamic bytesPending;

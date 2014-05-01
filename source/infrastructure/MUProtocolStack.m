@@ -185,6 +185,14 @@
   [_preprocessedOutputBuffer appendData: data];
 }
 
+- (void) reset
+{
+  for (MUProtocolHandler *protocolHandler in self.protocolHandlers)
+  {
+    [protocolHandler reset];
+  }
+}
+
 - (void) sendPreprocessedData
 {
   [self _sendPreprocessedDataToSocket];

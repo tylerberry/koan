@@ -57,8 +57,6 @@
 
 // Option negotation.
 
-- (void) reset;
-
 - (void) disableOptionForHim: (uint8_t) option;
 - (void) disableOptionForUs: (uint8_t) option;
 - (void) enableOptionForHim: (uint8_t) option;

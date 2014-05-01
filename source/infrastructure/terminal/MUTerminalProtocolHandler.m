@@ -401,6 +401,12 @@
   _commandBuffer.data = [NSData data];
 }
 
+- (void) reset
+{
+  [_terminalStateMachine reset];
+  [self _setUpInitialTextAttributes];
+}
+
 #pragma mark - MUProtocolHandler overrides
 
 - (void) parseByte: (uint8_t) byte

@@ -116,6 +116,11 @@ enum MCPStates
   }
 }
 
+- (void) reset
+{
+  _mcpState = MUMCPNewLineState;
+}
+
 #pragma mark - Private methods
 
 - (void) _bufferMCPByte: (uint8_t) byte

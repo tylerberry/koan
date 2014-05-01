@@ -17,5 +17,6 @@
 + (id) stateMachine;
 
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTerminalProtocolHandler> *) protocolHandler;
+- (void) reset;
 
 @end

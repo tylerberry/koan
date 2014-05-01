@@ -36,6 +36,8 @@
 - (void) parseInputData: (NSData *) data;
 - (void) preprocessOutputData: (NSData *) data;
 
+- (void) reset;
+
 - (void) addProtocolHandler: (MUProtocolHandler *) protocolHandler;
 - (void) clearAllProtocols;
 

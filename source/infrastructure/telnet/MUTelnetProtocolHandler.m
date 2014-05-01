@@ -135,40 +135,6 @@ static NSArray *_offerableTerminalTypes;
   return _options[option].enabledForUs;
 }
 
-- (void) reset
-{
-  OSAtomicTestAndClearBarrier (1, &_sentOptionRequest);
-
-  for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
-    _options[i] = [[MUTelnetOption alloc] initWithOption: i delegate: self];
-
-  [self _permitWillForOption: MUTelnetOptionEcho];
-
-  [self _permitDoForOption: MUTelnetOptionTransmitBinary];
-  [self _permitWillForOption: MUTelnetOptionTransmitBinary];
-
-  [self _permitDoForOption: MUTelnetOptionSuppressGoAhead];
-  [self _permitWillForOption: MUTelnetOptionSuppressGoAhead];
-
-  [self _permitDoForOption: MUTelnetOptionTerminalType];
-
-  [self _permitDoForOption: MUTelnetOptionEndOfRecord];
-  [self _permitWillForOption: MUTelnetOptionEndOfRecord];
-
-  [self _permitDoForOption: MUTelnetOptionNegotiateAboutWindowSize];
-
-  [self _permitDoForOption: MUTelnetOptionCharset];
-  [self _permitWillForOption: MUTelnetOptionCharset];
-
-  //[self _permitDoForOption: MUTelnetOptionStartTLS]; // Disabled due to not working properly.
-
-  [self _permitWillForOption: MUTelnetOptionMSSP];
-
-  [self _permitWillForOption: MUTelnetOptionMCCP1];
-
-  [self _permitWillForOption: MUTelnetOptionMCCP2];
-}
-
 - (void) _permitWillForOption: (uint8_t) option
 {
   _options[option].permittedForHim = YES;
@@ -424,6 +390,42 @@ static NSArray *_offerableTerminalTypes;
   } 
   
   PASS_ON_PREPROCESSED_FOOTER_DATA (footerData);
+}
+
+- (void) reset
+{
+  [_telnetStateMachine reset];
+
+  OSAtomicTestAndClearBarrier (1, &_sentOptionRequest);
+
+  for (uint8_t i = 0; i < TELNET_OPTION_MAX; i++)
+    _options[i] = [[MUTelnetOption alloc] initWithOption: i delegate: self];
+
+  [self _permitWillForOption: MUTelnetOptionEcho];
+
+  [self _permitDoForOption: MUTelnetOptionTransmitBinary];
+  [self _permitWillForOption: MUTelnetOptionTransmitBinary];
+
+  [self _permitDoForOption: MUTelnetOptionSuppressGoAhead];
+  [self _permitWillForOption: MUTelnetOptionSuppressGoAhead];
+
+  [self _permitDoForOption: MUTelnetOptionTerminalType];
+
+  [self _permitDoForOption: MUTelnetOptionEndOfRecord];
+  [self _permitWillForOption: MUTelnetOptionEndOfRecord];
+
+  [self _permitDoForOption: MUTelnetOptionNegotiateAboutWindowSize];
+
+  [self _permitDoForOption: MUTelnetOptionCharset];
+  [self _permitWillForOption: MUTelnetOptionCharset];
+
+  //[self _permitDoForOption: MUTelnetOptionStartTLS]; // Disabled due to not working properly.
+
+  [self _permitWillForOption: MUTelnetOptionMSSP];
+
+  [self _permitWillForOption: MUTelnetOptionMCCP1];
+
+  [self _permitWillForOption: MUTelnetOptionMCCP2];
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol

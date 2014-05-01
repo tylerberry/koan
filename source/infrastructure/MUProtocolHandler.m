@@ -38,6 +38,11 @@
   [self passOnPreprocessedFooterData: footerData];
 }
 
+- (void) reset
+{
+  return;
+}
+
 - (void) sendPreprocessedData
 {
   [self.protocolStack sendPreprocessedData];

@@ -79,14 +79,16 @@
   NSBezierPath *gridLine = [NSBezierPath bezierPath];
   gridLine.lineWidth = 0.5;
   
-  for (CGFloat y = self.textContainerInset.height;
-       y <= self.bounds.size.height - self.textContainerInset.height;
-       y += self.monospaceCharacterSize.height)
+  CGFloat y = self.textContainerInset.height;
+
+  while (y <= self.bounds.size.height - self.textContainerInset.height)
   {
     if (y < rect.origin.y || y > rect.origin.y + rect.size.height)
       continue;
     [gridLine moveToPoint: NSMakePoint (rect.origin.x, y)];
     [gridLine lineToPoint: NSMakePoint (rect.origin.x + rect.size.width, y)];
+
+    y += self.monospaceCharacterSize.height;
   }
   
   for (CGFloat x = self.textContainerInset.width + self.textContainer.lineFragmentPadding;

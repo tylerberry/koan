@@ -33,8 +33,12 @@
 {
   switch (byte)
   {
-    // TODO: Handle these valid commands individually.
     case MUTelnetNoOperation:
+      [stateMachine confirmTelnet];
+      return [MUTelnetTextState state];
+
+    // TODO: Handle these valid commands individually.
+
     case MUTelnetDataMark:
     case MUTelnetBreak:
     case MUTelnetInterruptProcess:

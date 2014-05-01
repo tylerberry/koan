@@ -11,6 +11,12 @@ enum MUTerminalControlStringTypes
   MUTerminalControlStringTypeApplicationProgram = 0x9f
 };
 
+enum MUTerminalCSICommands
+{
+  MUTerminalCSICursorRight = 0x43,           // 'C'
+  MUTerminalCSISelectGraphicRendition = 0x6d // 'm'
+};
+
 typedef enum MUANSICode
 {
   MUANSIReset = 0,

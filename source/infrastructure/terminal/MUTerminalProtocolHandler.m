@@ -24,6 +24,7 @@
 
 #pragma mark - ANSI Select Graphic Rendition handling
 
+- (void) _handleANSICursorRight;
 - (void) _handleANSISelectGraphicRendition;
 - (void) _setBackgroundColor: (NSColor *) color customColorTag: (enum MUCustomColorTags) customColorTag;
 - (void) _setBright;
@@ -371,7 +372,11 @@
 {
   switch (finalByte)
   {
-    case 'm':
+    case MUTerminalCSICursorRight:
+      [self _handleANSICursorRight];
+      break;
+
+    case MUTerminalCSISelectGraphicRendition:
       [self _handleANSISelectGraphicRendition];
       break;
 
@@ -625,6 +630,38 @@
       _textAttributes[NSBackgroundColorAttributeName] = _profile.effectiveTextColor;
     else
       _textAttributes[NSForegroundColorAttributeName] = _profile.effectiveTextColor;
+  }
+}
+
+#pragma mark - ANSI CSI codes
+
+- (void) _handleANSICursorRight
+{
+  [self.protocolStack flushBufferedData];
+
+  @synchronized (_textAttributes)
+  {
+    NSMutableDictionary *savedAttributes = [_textAttributes mutableCopy];
+
+    // We clear the background color attributes here because some lazy ANSI code doesn't clear inverse mode after it's
+    // done using it.
+
+    [_textAttributes removeObjectForKey: MUInverseColorsAttributeName];
+    [_textAttributes removeObjectForKey: NSBackgroundColorAttributeName];
+    _textAttributes[MUCustomBackgroundColorAttributeName] = @(MUDefaultBackgroundColorTag);
+    
+    NSString *commandCode = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
+    NSInteger numberOfSpaces = commandCode.integerValue;
+    
+    if (numberOfSpaces > 0)
+    {
+      for (NSInteger i = 0; i < numberOfSpaces; i++)
+        PASS_ON_PARSED_BYTE (' ');
+    }
+    
+    [self.protocolStack flushBufferedData];
+    
+    _textAttributes = savedAttributes;
   }
 }
 

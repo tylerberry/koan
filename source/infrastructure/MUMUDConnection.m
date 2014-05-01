@@ -23,9 +23,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) _attemptReconnect;
 - (void) _cleanUpPingTimer;
-- (void) _cleanUpStreams;
-- (void) _registerObjectForNotifications: (id) object;
 - (void) _reset;
+- (void) _registerObjectForNotifications: (id) object;
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer;
 - (void) _unregisterObjectForNotifications: (id) object;
 - (void) _writeBufferedDataToOutputStream;
@@ -80,7 +79,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _outputStream = nil;
   _outputStreamHasSpaceAvailable = NO;
   
-  _outgoingDataBuffer = [NSMutableData dataWithCapacity: 2048];
+  _outgoingDataBuffer = [[NSMutableData alloc] init];
   _incomingLineBuffer = [[NSMutableAttributedString alloc] init];
   
   _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: self];
@@ -182,10 +181,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) close
 {
   if (self.isConnectedOrConnecting)
-  {
-    [self _cleanUpStreams];
     [self setStatusClosedByClient];
-  }
 }
 
 - (void) open
@@ -244,10 +240,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) setStatusClosedByClient
 {
   [super setStatusClosedByClient];
-  
-  _dateConnected = nil;
-
-  [self _cleanUpPingTimer];
   [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
@@ -257,10 +249,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) setStatusClosedByServer
 {
   [super setStatusClosedByServer];
-  
-  _dateConnected = nil;
-  [self _cleanUpPingTimer];
-  [self _cleanUpStreams];
   [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
@@ -272,10 +260,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) setStatusClosedWithError: (NSError *) error
 {
   [super setStatusClosedWithError: error];
-  
-  _dateConnected = nil;
-  [self _cleanUpPingTimer];
-  [self _cleanUpStreams];
   [self _reset];
   
   [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
@@ -308,13 +292,11 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     case NSStreamEventEndEncountered:
       if (stream == _inputStream)
       {
-        [self _cleanUpStreams];
         [self setStatusClosedByServer];
       }
       return;
       
     case NSStreamEventErrorOccurred:
-      [self _cleanUpStreams];
       [self setStatusClosedWithError: stream.streamError];
       return;
       
@@ -328,7 +310,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
         if (readLength == 0)
         {
           free (bytes);
-          [self _cleanUpStreams];
           [self setStatusClosedByServer];
         }
         else if (readLength < 0) // Error reading.
@@ -524,18 +505,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _pingTimer = nil;
 }
 
-- (void) _cleanUpStreams
-{
-  [_inputStream close];
-  [_outputStream close];
-  
-  [_inputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  [_outputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  
-  _inputStream = nil;
-  _outputStream = nil;
-}
-
 - (void) _clearRecentReceivedStrings: (NSTimer *) timer
 {
   _recentReceivedStrings = [NSMutableArray array];
@@ -569,9 +538,28 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) _reset
 {
-  [_recentReceivedStrings removeAllObjects];
+  [_inputStream close];
+  [_outputStream close];
+
+  [_inputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
+  [_outputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
+
+  _inputStream = nil;
+  _outputStream = nil;
+  _outputStreamHasSpaceAvailable = NO;
+
   [_state reset];
   [_protocolStack reset];
+
+  [_recentReceivedStrings removeAllObjects];
+  [_clearRecentReceivedStringTimer invalidate];
+  _clearRecentReceivedStringTimer = nil;
+  
+  _dateConnected = nil;
+
+  _lastNumberOfColumns = 0;
+  _lastNumberOfLines = 0;
+  _reconnectCount = 0;
 }
 
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer

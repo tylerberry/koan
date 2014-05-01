@@ -515,8 +515,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
   if ([defaults boolForKey: MUPAutomaticReconnect]
       && ++_reconnectCount < (NSUInteger) [defaults integerForKey: MUPAutomaticReconnectCount]
-      && !([_lastSentLine isEqualToString: @"QUIT"]
-           || [_lastSentLine isEqualToString: @"@shutdown"]))
+      && !([_lastSentLine.lowercaseString rangeOfString: @"quit"].location != NSNotFound
+           || [_lastSentLine.lowercaseString rangeOfString: @"@shutdown"].location != NSNotFound
+           || [_lastSentLine isEqualToString: @"0"])) // Used as 'logout' on DikuMUDs and possibly others.
     [self open];
 }
 

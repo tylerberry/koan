@@ -438,8 +438,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
     NSString *promptCandidate = _incomingLineBuffer.string;
 
-    while ([_incomingLineBuffer.string hasSuffix: @" "])
-      promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
+    while ([promptCandidate hasSuffix: @" "])
+      promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]."];
 
@@ -455,8 +455,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   {
     NSString *promptCandidate = _incomingLineBuffer.string;
 
-    while ([_incomingLineBuffer.string hasSuffix: @" "])
-      promptCandidate = [_incomingLineBuffer.string substringToIndex: _incomingLineBuffer.length - 1];
+    while ([promptCandidate hasSuffix: @" "])
+      promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
 

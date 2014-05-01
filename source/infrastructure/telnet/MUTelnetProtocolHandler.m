@@ -276,17 +276,24 @@ static NSArray *_offerableTerminalTypes;
   
   if (option == MUTelnetOptionNegotiateAboutWindowSize)
   {
-    _connectionState.shouldReportWindowSizeChanges = YES;
-    [self.delegate reportWindowSizeToServer];
+    if (_options[MUTelnetOptionNegotiateAboutWindowSize].enabledForUs)
+    {
+      _connectionState.shouldReportWindowSizeChanges = YES;
+      [self.delegate reportWindowSizeToServer];
+    }
   }
   else if (option == MUTelnetOptionCharset)
   {
-    [self _sendCharsetRequestSubnegotiation];
+    if (_options[MUTelnetOptionCharset].enabledForUs)
+      [self _sendCharsetRequestSubnegotiation];
   }
   else if (option == MUTelnetOptionStartTLS)
   {
-    //_connectionState.needsSingleByteSocketReads = YES;
-    //[self sendStartTLSFollowsSubnegotiation];
+    //if (_options[MUTelnetOptionStartTLS].enabledForUs)
+    //{
+    //  _connectionState.needsSingleByteSocketReads = YES;
+    //  [self sendStartTLSFollowsSubnegotiation];
+    //}
   }
   
   [_connectionState.codebaseAnalyzer noteTelnetDo: option];
@@ -310,11 +317,13 @@ static NSArray *_offerableTerminalTypes;
   
   if (option == MUTelnetOptionEcho)
   {
-    _connectionState.serverWillEcho = YES;
+    if (_options[MUTelnetOptionEcho].enabledForHim)
+      _connectionState.serverWillEcho = YES;
   }
   else if (option == MUTelnetOptionMCCP2)
   {
-    _options[MUTelnetOptionMCCP1].permittedForHim = NO;
+    if (_options[MUTelnetOptionMCCP2].enabledForHim)
+      _options[MUTelnetOptionMCCP1].permittedForHim = NO;
   }
   
   [_connectionState.codebaseAnalyzer noteTelnetWill: option];

@@ -7,25 +7,25 @@
 enum MUTelnetCommands
 {
   // This command is defined in RFC 885.
-  MUTelnetEndOfRecord = 239,
+  MUTelnetEndOfRecord = 0xef,
   
   // These commands are defined in RFC 854.
-  MUTelnetEndSubnegotiation = 240,
-  MUTelnetNoOperation = 241,
-  MUTelnetDataMark = 242,
-  MUTelnetBreak = 243,
-  MUTelnetInterruptProcess = 244,
-  MUTelnetAbortOutput = 245,
-  MUTelnetAreYouThere = 246,
-  MUTelnetEraseCharacter = 247,
-  MUTelnetEraseLine = 248,
-  MUTelnetGoAhead = 249,
-  MUTelnetBeginSubnegotiation = 250,
-  MUTelnetWill = 251,
-  MUTelnetWont = 252,
-  MUTelnetDo = 253,
-  MUTelnetDont = 254,
-  MUTelnetInterpretAsCommand = 255
+  MUTelnetEndSubnegotiation = 0xf0,
+  MUTelnetNoOperation = 0xf1,
+  MUTelnetDataMark = 0xf2,
+  MUTelnetBreak = 0xf3,
+  MUTelnetInterruptProcess = 0xf4,
+  MUTelnetAbortOutput = 0xf5,
+  MUTelnetAreYouThere = 0xf6,
+  MUTelnetEraseCharacter = 0xf7,
+  MUTelnetEraseLine = 0xf8,
+  MUTelnetGoAhead = 0xf9,
+  MUTelnetBeginSubnegotiation = 0xfa,
+  MUTelnetWill = 0xfb,
+  MUTelnetWont = 0xfc,
+  MUTelnetDo = 0xfd,
+  MUTelnetDont = 0xfe,
+  MUTelnetInterpretAsCommand = 0xff
 };
 
 enum MUTelnetOptions

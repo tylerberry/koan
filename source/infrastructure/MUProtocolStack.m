@@ -102,7 +102,8 @@
 
 - (void) moveCursorBackOneCharacter
 {
-  _cursor--;
+  if (_cursor > 0)
+    _cursor--;
 }
 
 - (void) moveCursorToBeginningOfLine
@@ -194,7 +195,6 @@
                                 withBytes: &byte
                                    length: 1];
 
-  NSLog (@"String: %@", [[NSString alloc] initWithData: _parsedInputBuffer encoding: NSASCIIStringEncoding]);
   _cursor++;
 }
 

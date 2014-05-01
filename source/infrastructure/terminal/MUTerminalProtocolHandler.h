@@ -15,6 +15,8 @@
 - (void) bufferCommandByte: (uint8_t) byte;
 - (void) bufferTextByte: (uint8_t) byte;
 
+- (void) handleBackspace;
+
 - (void) log: (NSString *) message, ...;
 
 - (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType;

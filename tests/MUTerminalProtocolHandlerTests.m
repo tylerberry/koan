@@ -1165,6 +1165,21 @@
   [self _assertInput: @"m" hasOutput: @""];
 }
 
+- (void) testBackspace
+{
+  [self _assertInput: @"a\bb" hasOutput: @"b"];
+}
+
+- (void) testBackspaceAtStartOfLineDoesNothing
+{
+  [self _assertInput: @"\ba" hasOutput: @"a"];
+}
+
+- (void) testBackspaceIsNonDestructive
+{
+  [self _assertInput: @"a\b" hasOutput: @"a"];
+}
+
 #if 0
 // Disabled for now.
 - (void) testEraseData

@@ -329,22 +329,12 @@
 
 - (void) bufferTextByte: (uint8_t) byte
 {
-  if (_receivedCarriageReturn && byte != '\r')
-  {
-    _receivedCarriageReturn = NO;
-    if (byte == '\0')
-      PASS_ON_PARSED_BYTE ('\r');
-    else
-      PASS_ON_PARSED_BYTE (byte);
-  }
-  else if (byte == '\r')
-  {
-    _receivedCarriageReturn = YES;
-  }
-  else
-  {
-    PASS_ON_PARSED_BYTE (byte);
-  }
+  PASS_ON_PARSED_BYTE (byte);
+}
+
+- (void) handleBackspace
+{
+  [self.protocolStack moveCursorBackOneCharacter];
 }
 
 - (void) log: (NSString *) message, ...

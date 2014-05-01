@@ -35,7 +35,10 @@
 
 - (IBAction) connectUsingPanelInformation: (id) sender
 {
-  MUWorld *world = [MUWorld worldWithHostname: newConnectionHostnameField.stringValue
+  NSString *worldString = newConnectionHostnameField.stringValue;
+  NSString *trimmedString = [worldString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+  MUWorld *world = [MUWorld worldWithHostname: trimmedString
                                          port: @(newConnectionPortField.intValue)
                                      forceTLS: (forceSSLButton.state == NSOnState)];
   

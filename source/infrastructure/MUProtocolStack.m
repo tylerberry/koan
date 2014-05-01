@@ -74,7 +74,8 @@
     NSString *string = [[NSString alloc] initWithData: _parsedInputBuffer encoding: _connectionState.stringEncoding];
 
     // This is a pseudo-encoding: if we are using ASCII, substitute in CP437 characters.
-    if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+    if (_connectionState.allowCodePage437Substitution
+        && _connectionState.stringEncoding == NSASCIIStringEncoding)
       string = [string stringWithCodePage437Substitutions];
 
     [self.delegate appendStringToLineBuffer: string];

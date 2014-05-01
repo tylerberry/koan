@@ -73,6 +73,7 @@
 		2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4E2147173B8CA500B21859 /* JUEmptyView.m */; };
 		2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */; };
 		2F558BCA190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */; };
+		2F558BCE19121787003DF275 /* MUNewlineTextAttributeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
 		2F5DBA8B16DD30B200DE627E /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
@@ -181,7 +182,7 @@
 		7E26CB1E0BD808A500FC3843 /* MUByteSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */; };
 		7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */; };
 		7E39EF9E0783938F0042A17A /* MUProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E39EF9C0783938F0042A17A /* MUProfile.m */; };
-		7E43C1EE0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C1ED0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m */; };
+		7E43C1EE0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C1ED0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m */; };
 		7E4FB2790BCC877B007BC40F /* MUTelnetDontState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2650BCC877B007BC40F /* MUTelnetDontState.m */; };
 		7E4FB27B0BCC877B007BC40F /* MUTelnetDoState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2670BCC877B007BC40F /* MUTelnetDoState.m */; };
 		7E4FB27D0BCC877B007BC40F /* MUTelnetIACState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4FB2690BCC877B007BC40F /* MUTelnetIACState.m */; };
@@ -406,6 +407,8 @@
 		2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalCSIFirstByteState.m; sourceTree = "<group>"; };
 		2F558BC8190B077E003DF275 /* MUTerminalPseudoANSIMusicState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalPseudoANSIMusicState.h; sourceTree = "<group>"; };
 		2F558BC9190B077E003DF275 /* MUTerminalPseudoANSIMusicState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalPseudoANSIMusicState.m; sourceTree = "<group>"; };
+		2F558BCC19121787003DF275 /* MUNewlineTextAttributeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUNewlineTextAttributeFilter.h; sourceTree = "<group>"; };
+		2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNewlineTextAttributeFilter.m; sourceTree = "<group>"; };
 		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F5DBA9516DDA18300DE627E /* MURegexTestFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MURegexTestFilter.h; sourceTree = "<group>"; };
@@ -557,8 +560,8 @@
 		7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteSet.m; sourceTree = "<group>"; };
 		7E39EF9B0783938F0042A17A /* MUProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfile.h; sourceTree = "<group>"; };
 		7E39EF9C0783938F0042A17A /* MUProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfile.m; sourceTree = "<group>"; };
-		7E43C1EC0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUANSIFormattingFilterTests.h; sourceTree = "<group>"; };
-		7E43C1ED0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUANSIFormattingFilterTests.m; sourceTree = "<group>"; };
+		7E43C1EC0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTerminalProtocolHandlerTests.h; sourceTree = "<group>"; };
+		7E43C1ED0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTerminalProtocolHandlerTests.m; sourceTree = "<group>"; };
 		7E4FB2640BCC877B007BC40F /* MUTelnetDontState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetDontState.h; sourceTree = "<group>"; };
 		7E4FB2650BCC877B007BC40F /* MUTelnetDontState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetDontState.m; sourceTree = "<group>"; };
 		7E4FB2660BCC877B007BC40F /* MUTelnetDoState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetDoState.h; sourceTree = "<group>"; };
@@ -1292,8 +1295,6 @@
 			children = (
 				2F8CEAE2153AD1EA00B488E7 /* J3TestCase.h */,
 				2F8CEAE3153AD1EA00B488E7 /* J3TestCase.m */,
-				7E43C1EC0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.h */,
-				7E43C1ED0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m */,
 				E6505497077EA20E0016F30E /* MUAutoHyperlinksFilterTests.h */,
 				E6505498077EA20E0016F30E /* MUAutoHyperlinksFilterTests.m */,
 				7E26CB1C0BD808A500FC3843 /* MUByteSetTests.h */,
@@ -1320,6 +1321,8 @@
 				7EFACED10BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m */,
 				7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */,
 				7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */,
+				7E43C1EC0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.h */,
+				7E43C1ED0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m */,
 				2FCFEFDB0BCAE36D0061FB6B /* MUTextLogTests.h */,
 				2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */,
 				E6E7A63D0749698F007005AC /* MUTextLoggerTests.h */,
@@ -1362,6 +1365,8 @@
 				2F1C1797122854B90079F1E1 /* MUFilterQueue.m */,
 				2FB40CD80BF0FA3D004E13F8 /* MUFugueEditFilter.h */,
 				2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */,
+				2F558BCC19121787003DF275 /* MUNewlineTextAttributeFilter.h */,
+				2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */,
 				2F5DBA9516DDA18300DE627E /* MURegexTestFilter.h */,
 				2F5DBA9616DDA18300DE627E /* MURegexTestFilter.m */,
 				E6E7A62E07496971007005AC /* MUTextLogger.h */,
@@ -1764,7 +1769,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F8CEAE4153AD1EA00B488E7 /* J3TestCase.m in Sources */,
-				7E43C1EE0ACB1C0900A8E677 /* MUANSIFormattingFilterTests.m in Sources */,
+				7E43C1EE0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m in Sources */,
 				7E26CB1E0BD808A500FC3843 /* MUByteSetTests.m in Sources */,
 				7E87764409AD6B3000A883BC /* MUConstants.m in Sources */,
 				2FB40E7B0BF10AA2004E13F8 /* MUFilterTestCase.m in Sources */,
@@ -1818,6 +1823,7 @@
 				7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */,
 				E62C905D07422595005662BC /* MUApplicationController.m in Sources */,
 				2F0A712B19079CCE00DB9145 /* MUFontConfirmationSheetController.m in Sources */,
+				2F558BCE19121787003DF275 /* MUNewlineTextAttributeFilter.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
 				E622A553074231A60069335B /* MUConstants.m in Sources */,

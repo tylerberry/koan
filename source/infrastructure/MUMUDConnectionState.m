@@ -18,6 +18,7 @@
   _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   _isIncomingStreamCompressed = NO;
   _needsSingleByteSocketReads = NO;
+  _allowCodePage437Substitution = YES;
   _nextTerminalTypeIndex = 0;
   _serverWillEcho = NO;
   _shouldReportWindowSizeChanges = NO;
@@ -38,6 +39,7 @@
   self.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   self.isIncomingStreamCompressed = NO;
   self.needsSingleByteSocketReads = NO;
+  self.allowCodePage437Substitution = YES;
   self.nextTerminalTypeIndex = 0;
   self.serverWillEcho = NO;
   self.shouldReportWindowSizeChanges = NO;

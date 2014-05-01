@@ -53,6 +53,8 @@
   NSMutableData *_commandBuffer;
 
   NSMutableDictionary *_textAttributes;
+
+  BOOL _receivedCarriageReturn;
 }
 
 @dynamic textAttributes;
@@ -71,6 +73,7 @@
   _terminalStateMachine = [MUTerminalStateMachine stateMachine];
 
   _commandBuffer = [[NSMutableData alloc] init];
+  _receivedCarriageReturn = NO;
 
   [self _setUpInitialTextAttributes];
 
@@ -326,7 +329,22 @@
 
 - (void) bufferTextByte: (uint8_t) byte
 {
-  PASS_ON_PARSED_BYTE (byte);
+  if (_receivedCarriageReturn && byte != '\r')
+  {
+    _receivedCarriageReturn = NO;
+    if (byte == '\0')
+      PASS_ON_PARSED_BYTE ('\r');
+    else
+      PASS_ON_PARSED_BYTE (byte);
+  }
+  else if (byte == '\r')
+  {
+    _receivedCarriageReturn = YES;
+  }
+  else
+  {
+    PASS_ON_PARSED_BYTE (byte);
+  }
 }
 
 - (void) log: (NSString *) message, ...
@@ -961,11 +979,11 @@
         break;
 
       case MUANSIStrikethroughOn:
-        _textAttributes[MUHiddenTextAttributeName] = @(NSUnderlinePatternSolid | NSUnderlineStyleSingle);
+        _textAttributes[NSStrikethroughStyleAttributeName] = @(NSUnderlinePatternSolid | NSUnderlineStyleSingle);
         break;
 
       case MUANSIDoubleUnderlineOn:
-        _textAttributes[MUHiddenTextAttributeName] = @(NSUnderlinePatternSolid | NSUnderlineStyleDouble);
+        _textAttributes[NSUnderlineStyleAttributeName] = @(NSUnderlinePatternSolid | NSUnderlineStyleDouble);
         break;
 
       case MUANSIBrightOff:

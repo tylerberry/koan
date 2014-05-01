@@ -15,8 +15,9 @@
 - (void) assertData: (NSData *) data hasBytesWithZeroTerminator: (const char *) bytes;
 - (void) sendMockSocketData;
 - (void) confirmTelnetWithDontEcho;
-- (void) parseBytesWithZeroTerminator: (const uint8_t *) bytes;
-- (void) parseCString: (const char *) string;
+- (void) parseCString: (const char * const) string;
+- (void) parseData: (NSData *) data;
+- (void) parseString: (NSString *) string;
 - (void) resetTest;
 - (void) simulateDo: (uint8_t) option;
 - (void) simulateIncomingSubnegotation: (const uint8_t *) payload length: (unsigned) payloadLength;
@@ -68,41 +69,40 @@
 
 - (void) testParsePlainText
 {
-  [self parseCString: "foo"];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "foo"];
+  [self parseString: @"foo"];
+  [self assert: parsedString.string equals: @"foo"];
 }
 
 - (void) testParseCRIACIAC
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetInterpretAsCommand, 0};
+
   [self parseCString: (const char *) bytes];
-  [self assertData: parsedString hasBytesWithZeroTerminator: (const char *) bytes + 2];
+  [self assert: parsedString.string equals: [NSString stringWithCString: "\xff" encoding: NSASCIIStringEncoding]];
 }
 
 - (void) testParseCRCRLF
 {
-  [self parseCString: "\r\r\n"];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
+  [self parseString: @"\r\r\n"];
+  [self assert: parsedString.string equals: @"\n"];
 }
 
 - (void) testParseCRCRNUL
 {
-  [protocolStack parseInputData: [NSData dataWithBytes: "\r\r\0" length: 3]];
-  [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
+  [self parseData: [NSData dataWithBytes: "\r\r\0" length: 3]];
+  [self assert: parsedString.string equals: @"\r"];
 }
 
 - (void) testParseCRLF
 {
-  [self parseCString: "\r\n"];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
+  [self parseString: @"\r\n"];
+  [self assert: parsedString.string equals: @"\n"];
 }
 
 - (void) testParseCRNUL
 {
-  [protocolStack parseInputData: [NSData dataWithBytes: "\r\0" length: 2]];
-  [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
+  [self parseData: [NSData dataWithBytes: "\r\0" length: 2]];
+  [self assert: parsedString.string equals: @"\r"];
 }
 
 - (void) testParseCRSomethingElse
@@ -113,10 +113,12 @@
   {
     if (i == '\n' || i == '\r')
       continue;
+
     bytes[1] = (uint8_t) i;
-    [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 2]];
-    [protocolStack flushBufferedData];
-    [self assert: parsedString equals: [NSData dataWithBytes: bytes + 1 length: 1]];
+    [self parseData: [NSData dataWithBytes: bytes length: 2]];
+
+    [self assert: parsedString.string equals: [[NSString alloc] initWithData: [NSData dataWithBytes: bytes + 1 length: 1]
+                                                                    encoding: NSASCIIStringEncoding]];
     [self resetTest];
   }
 }
@@ -124,28 +126,27 @@
 - (void) testParseCRWithSomeTelnetThrownIn
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetNoOperation, 0};
-  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
-  [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\r"];
+  [self parseData: [NSData dataWithBytes: bytes length: 4]];
+  [self assert: parsedString.string equals: @"\r"];
 }
 
 - (void) testParseLF
 {
-  [self parseCString: "\n"];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\n"];
+  [self parseString: @"\n"];
+  [self assert: parsedString.string equals: @"\n"];
 }
 
 - (void) testParseLFCRLFCR
 {
-  [self parseCString: "\n\r\n\r"];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\n\n"];
+  [self parseString: @"\n\r\n\r"];
+  [self assert: parsedString.string equals: @"\n\n"];
 }
 
 - (void) testParseLFCRNUL
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\n\r\0" length: 3]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "\n\r"];
+  [self assert: parsedString.string equals: @"\n\r"];
 }
 
 - (void) testNVTEraseCharacter
@@ -154,27 +155,7 @@
 
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 4]];
   [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "b"];
-}
-
-- (void) testASCIIBackspace
-{
-  uint8_t bytes[3] = {'a', 0x08, 'b'};
-
-  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 3]];
-  [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "b"];
-}
-
-- (void) testBothNVTEraseCharacterAndASCIIBackspace
-{
-  // This is pretty pathological. I hope no server really ever does this.
-
-  uint8_t bytes[7] = {'a', 'b', 'c', 0x08, MUTelnetInterpretAsCommand, MUTelnetEraseCharacter, 'd'};
-
-  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 7]];
-  [protocolStack flushBufferedData];
-  [self assertData: parsedString hasBytesWithZeroTerminator: "ad"];
+  [self assert: parsedString.string equals: @"b"];
 }
 
 - (void) testSubnegotiationPutsNothingInReadBuffer
@@ -182,18 +163,16 @@
   uint8_t bytes[9] = {MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation};
   
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 9]];
-  [self assertUInteger: [parsedString length] equals: 0];
+  [self assertUInteger: parsedString.length equals: 0];
 }
 
 - (void) testSubnegotiationStrippedFromText
 {
   uint8_t bytes[13] = {'a', 'b', MUTelnetInterpretAsCommand, MUTelnetDo, MUTelnetOptionTerminalType, MUTelnetInterpretAsCommand, MUTelnetBeginSubnegotiation, MUTelnetOptionTerminalType, MUTelnetTerminalTypeSend, MUTelnetInterpretAsCommand, MUTelnetEndSubnegotiation, 'c', 'd'};
   
-  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 13]];
-  [protocolStack flushBufferedData];
-  
-  uint8_t expectedBytes[4] = {'a', 'b', 'c', 'd'};
-  [self assert: parsedString equals: [NSData dataWithBytes: expectedBytes length: 4]];
+  [self parseData: [NSData dataWithBytes: bytes length: 13]];
+
+  [self assert: parsedString.string equals: @"abcd"];
 }
 
 #pragma mark - Telnet options
@@ -389,12 +368,22 @@
 
 #pragma mark - MUProtocolStackDelegate protocol
 
-- (void) displayDataAsText: (NSData *) data
+- (void) appendStringToLineBuffer: (NSString *) string
 {
-  [parsedData appendData: data];
+  [parsedString appendAttributedString: [[NSAttributedString alloc] initWithString: string]];
 }
 
-- (void) displayDataAsPrompt: (NSData *) data
+- (void) displayBufferedStringAsText
+{
+  return;
+}
+
+- (void) displayBufferedStringAsPrompt
+{
+  return;
+}
+
+- (void) maybeDisplayBufferedStringAsPrompt
 {
   return;
 }
@@ -434,20 +423,28 @@
   [protocolStack parseInputData: [NSData dataWithBytes: bytes length: 3]];
 }
 
-- (void) parseBytesWithZeroTerminator: (const uint8_t *) bytes
+- (void) parseCString: (const char *) string
 {
-  [protocolStack parseInputData: [NSData dataWithBytes: bytes length: strlen ((const char *) bytes)]];
+  [protocolStack parseInputData: [NSData dataWithBytes: string length: strlen (string)]];
   [protocolStack flushBufferedData];
 }
 
-- (void) parseCString: (const char *) string
+- (void) parseData: (NSData *) data
 {
-  [self parseBytesWithZeroTerminator: (const uint8_t *) string];
+  [protocolStack parseInputData: data];
+  [protocolStack flushBufferedData];
+}
+
+- (void) parseString: (NSString *) string
+{
+  [protocolStack parseInputData: [string dataUsingEncoding: NSASCIIStringEncoding]];
+  [protocolStack flushBufferedData];
 }
 
 - (void) resetTest
 {
   connectionState = [[MUMUDConnectionState alloc] init];
+  connectionState.allowCodePage437Substitution = NO;
   
   protocolStack = [[MUProtocolStack alloc] initWithConnectionState: connectionState];
   protocolStack.delegate = self;
@@ -457,7 +454,7 @@
   
   [protocolStack addProtocolHandler: protocolHandler];
   
-  parsedData = [NSMutableData new];
+  parsedString = [[NSMutableAttributedString alloc] init];
   mockSocketData = [NSMutableData new];
 }
 

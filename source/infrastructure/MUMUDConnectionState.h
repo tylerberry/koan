@@ -18,6 +18,7 @@ enum charsetNegotiationStatus
 @property (strong, nonatomic) MUHeuristicCodebaseAnalyzer *codebaseAnalyzer;
 
 @property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
+@property (assign) BOOL allowCodePage437Substitution;
 @property (assign) BOOL isIncomingStreamCompressed;
 @property (assign) BOOL needsSingleByteSocketReads;
 @property (assign) unsigned nextTerminalTypeIndex;

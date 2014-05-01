@@ -368,7 +368,16 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
                                                                          attributes: _terminalProtocolHandler.textAttributes];
+
   [_incomingLineBuffer appendAttributedString: attributedString];
+}
+
+- (void) displayBufferedStringAsPrompt
+{
+  [self.state.codebaseAnalyzer notePrompt: _incomingLineBuffer];
+
+  [self.delegate displayAttributedStringAsPrompt: [_filterQueue processPartialLine: _incomingLineBuffer]];
+  [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
 }
 
 - (void) displayBufferedStringAsText
@@ -409,14 +418,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     [self.delegate displayAttributedString: [_filterQueue processCompleteLine: _incomingLineBuffer]];
     [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
   }
-}
-
-- (void) displayBufferedStringAsPrompt
-{
-  [self.state.codebaseAnalyzer notePrompt: _incomingLineBuffer];
-
-  [self.delegate displayAttributedStringAsPrompt: [_filterQueue processPartialLine: _incomingLineBuffer]];
-  [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
 }
 
 - (void) maybeDisplayBufferedStringAsPrompt

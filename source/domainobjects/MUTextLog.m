@@ -11,11 +11,10 @@ static NSString * const MUKoanLogPlayerIdentifier = @"com_3james_koan_log_player
 
 @interface MUTextLog ()
 
-@property (readonly) NSString *_spotlightDisplayName;
-
 - (BOOL) _addKeyValuePairFromString: (NSString *) string toDictionary: (NSMutableDictionary *) dictionary;
 - (NSUInteger) _findEndOfHeaderLocation: (NSString *)string lineEnding: (NSString **) lineEnding;
 - (BOOL) _parse: (NSString *) string;
+- (NSString *) _spotlightDisplayName;
 
 @end
 
@@ -43,8 +42,10 @@ static NSString * const MUKoanLogPlayerIdentifier = @"com_3james_koan_log_player
   
   if (self.headers[@"Date"])
     dictionary[(NSString *) kMDItemContentCreationDate] = [NSDate dateWithNaturalLanguageString: self.headers[@"Date"]];
-  
-  dictionary[(NSString *) kMDItemDisplayName] = self._spotlightDisplayName;
+
+  if ([self _spotlightDisplayName])
+    dictionary[(NSString *) kMDItemDisplayName] = [self _spotlightDisplayName];
+
   dictionary[(NSString *) kMDItemTextContent] = self.content;
 }
 

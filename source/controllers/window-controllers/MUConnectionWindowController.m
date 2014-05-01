@@ -1056,6 +1056,9 @@ enum MUTextDisplayModes
 
 - (void) _echoString: (NSString *) string
 {
+  if (!string || string.length == 0)
+    return;
+  
   NSMutableDictionary *attributes = [_connection.textAttributes mutableCopy];
 
   if (attributes[MUInverseColorsAttributeName])

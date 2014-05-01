@@ -84,7 +84,7 @@
 
 - (id) initWithBytes: (const uint8_t * const) bytes length: (size_t) length
 {
-  if (![self init])
+  if (!(self = [self init]))
     return nil;
   
   for (NSUInteger i = 0; i < length; i++)
@@ -95,7 +95,7 @@
 
 - (id) initWithFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes
 {
-  if (![self init])
+  if (!(self = [self init]))
     return nil;
 
   [self addFirstByte: firstByte remainingBytes: bytes];

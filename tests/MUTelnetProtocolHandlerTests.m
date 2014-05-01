@@ -90,7 +90,7 @@
 - (void) testParseCRCRNUL
 {
   [self parseData: [NSData dataWithBytes: "\r\r\0" length: 3]];
-  [self assert: parsedString.string equals: @"\r"];
+  [self assert: parsedString.string equals: @""];
 }
 
 - (void) testParseCRLF
@@ -99,10 +99,22 @@
   [self assert: parsedString.string equals: @"\n"];
 }
 
+- (void) testParseLFCR
+{
+  [self parseString: @"\n\r"];
+  [self assert: parsedString.string equals: @"\n"];
+}
+
 - (void) testParseCRNUL
 {
   [self parseData: [NSData dataWithBytes: "\r\0" length: 2]];
-  [self assert: parsedString.string equals: @"\r"];
+  [self assert: parsedString.string equals: @""];
+}
+
+- (void) testCRNULOverwritesCharacters
+{
+  [self parseData: [NSData dataWithBytes: "abcdefg\r\0pq" length: 11]];
+  [self assert: parsedString.string equals: @"pqcdefg"];
 }
 
 - (void) testParseCRSomethingElse
@@ -127,7 +139,7 @@
 {
   uint8_t bytes[4] = {'\r', MUTelnetInterpretAsCommand, MUTelnetNoOperation, 0};
   [self parseData: [NSData dataWithBytes: bytes length: 4]];
-  [self assert: parsedString.string equals: @"\r"];
+  [self assert: parsedString.string equals: @""];
 }
 
 - (void) testParseLF
@@ -146,7 +158,7 @@
 {
   [protocolStack parseInputData: [NSData dataWithBytes: "\n\r\0" length: 3]];
   [protocolStack flushBufferedData];
-  [self assert: parsedString.string equals: @"\n\r"];
+  [self assert: parsedString.string equals: @"\n"];
 }
 
 - (void) testNVTEraseCharacter

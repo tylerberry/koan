@@ -33,6 +33,10 @@
 - (void) flushBufferedData;
 - (void) maybeUseBufferedDataAsPrompt;
 
+- (void) handleNewline;
+- (void) moveCursorBackOneCharacter;
+- (void) moveCursorToBeginningOfLine;
+
 - (void) parseInputData: (NSData *) data;
 - (void) preprocessOutputData: (NSData *) data;
 

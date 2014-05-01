@@ -24,6 +24,7 @@
 
   NSMutableArray *_mutableProtocolHandlers;
   NSMutableData *_parsedInputBuffer;
+  NSUInteger _cursor;
   NSMutableData *_preprocessedOutputBuffer;
 }
 
@@ -38,6 +39,7 @@
   
   _mutableProtocolHandlers = [[NSMutableArray alloc] init];
   _parsedInputBuffer = [[NSMutableData alloc] init];
+  _cursor = 0;
   _preprocessedOutputBuffer = [[NSMutableData alloc] init];
   
   return self;
@@ -57,13 +59,14 @@
 
 - (void) deleteLastBufferedCharacter
 {
-  // At present, this is a destructive implementation of backspace and/or IAC EC.
+  // This is a destructive implementation of backspace and/or IAC EC.
 
   if (_parsedInputBuffer.length > 0)
   {
     [_parsedInputBuffer replaceBytesInRange: NSMakeRange (_parsedInputBuffer.length - 1, 1)
                                   withBytes: NULL
                                      length: 0];
+    _cursor--;
   }
 }
 
@@ -81,13 +84,30 @@
     [self.delegate appendStringToLineBuffer: string];
 
     [_parsedInputBuffer replaceBytesInRange: NSMakeRange (0, _parsedInputBuffer.length) withBytes: NULL length: 0];
+    _cursor = 0;
   }
+}
+
+- (void) handleNewline
+{
+  [_parsedInputBuffer appendBytes: "\n" length: 1];
+  [self _sendCompleteLineToDelegate];
 }
 
 - (void) maybeUseBufferedDataAsPrompt
 {
   [self flushBufferedData];
   [self.delegate maybeDisplayBufferedStringAsPrompt];
+}
+
+- (void) moveCursorBackOneCharacter
+{
+  _cursor--;
+}
+
+- (void) moveCursorToBeginningOfLine
+{
+  _cursor = 0;
 }
 
 - (void) parseInputData: (NSData *) data
@@ -170,10 +190,12 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  [_parsedInputBuffer appendBytes: &byte length: 1];
-    
-  if (byte == '\n')
-    [self _sendCompleteLineToDelegate];
+  [_parsedInputBuffer replaceBytesInRange: NSMakeRange (_cursor, _cursor == _parsedInputBuffer.length ? 0 : 1)
+                                withBytes: &byte
+                                   length: 1];
+
+  NSLog (@"String: %@", [[NSString alloc] initWithData: _parsedInputBuffer encoding: NSASCIIStringEncoding]);
+  _cursor++;
 }
 
 - (void) preprocessByte: (uint8_t) byte

@@ -162,8 +162,11 @@ static NSArray *_offerableTerminalTypes;
   if (_receivedCarriageReturn && byte != '\r')
   {
     _receivedCarriageReturn = NO;
+
     if (byte == '\0')
-      PASS_ON_PARSED_BYTE ('\r');
+      [self.protocolStack moveCursorToBeginningOfLine];
+    else if (byte == '\n')
+      [self.protocolStack handleNewline];
     else
       PASS_ON_PARSED_BYTE (byte);
   } 

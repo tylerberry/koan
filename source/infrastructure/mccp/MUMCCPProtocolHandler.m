@@ -111,6 +111,8 @@
 - (void) reset
 {
   [self _cleanUpStream];
+  if (_inbuf) free (_inbuf);
+  if (_outbuf) free (_outbuf);
 }
 
 #pragma mark - Private methods

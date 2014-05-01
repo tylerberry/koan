@@ -680,7 +680,12 @@ enum MUTextDisplayModes
 - (void) MUDConnectionWasClosedByClient: (NSNotification *) notification
 {
   [self _stopDisplayingTimeConnected];
-  [self _clearPrompt];
+  if (_currentPrompt)
+  {
+    [self _echoString: @"\n"];
+    [self _clearPrompt];
+  }
+  [self _echoString: @"\n"];
   [self _displaySystemMessage: _(MULConnectionClosed)];
   [MUGrowlService connectionClosedForTitle: self.connection.profile.windowTitle];
 }
@@ -688,7 +693,12 @@ enum MUTextDisplayModes
 - (void) MUDConnectionWasClosedByServer: (NSNotification *) notification
 {
   [self _stopDisplayingTimeConnected];
-  [self _clearPrompt];
+  if (_currentPrompt)
+  {
+    [self _echoString: @"\n"];
+    [self _clearPrompt];
+  }
+  [self _echoString: @"\n"];
   [self _displaySystemMessage: _(MULConnectionClosedByServer)];
   [MUGrowlService connectionClosedByServerForTitle: self.connection.profile.windowTitle];
 }
@@ -696,7 +706,12 @@ enum MUTextDisplayModes
 - (void) MUDConnectionWasClosedWithError: (NSNotification *) notification
 {
   [self _stopDisplayingTimeConnected];
-  [self _clearPrompt];
+  if (_currentPrompt)
+  {
+    [self _echoString: @"\n"];
+    [self _clearPrompt];
+  }
+  [self _echoString: @"\n"];
 
   NSError *error = notification.userInfo[MUMUDConnectionErrorKey];
 

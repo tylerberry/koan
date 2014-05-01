@@ -408,6 +408,29 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     
     [self.state.codebaseAnalyzer noteTextString: _incomingLineBuffer];
 
+    // Trim background color attributes from newlines. Some lazy ANSI art doesn't reset this.
+
+    NSRange newlineFoundRange;
+    NSRange searchRange = NSMakeRange (0, _incomingLineBuffer.length);
+
+    newlineFoundRange = [_incomingLineBuffer.string rangeOfString: @"\n" options: 0 range: searchRange];
+
+    while (newlineFoundRange.location != NSNotFound)
+    {
+      NSMutableDictionary *attributes = [[_incomingLineBuffer attributesAtIndex: newlineFoundRange.location
+                                                                 effectiveRange: NULL] mutableCopy];
+      [attributes removeObjectForKey: MUInverseColorsAttributeName];
+      [attributes removeObjectForKey: NSBackgroundColorAttributeName];
+      attributes[MUCustomBackgroundColorAttributeName] = @(MUDefaultBackgroundColorTag);
+
+      [_incomingLineBuffer setAttributes: attributes range: newlineFoundRange];
+
+      searchRange = NSMakeRange (newlineFoundRange.location + newlineFoundRange.length,
+                                 _incomingLineBuffer.length - newlineFoundRange.location - newlineFoundRange.length);
+
+      newlineFoundRange = [_incomingLineBuffer.string rangeOfString: @"\n" options: 0 range: searchRange];
+    }
+
     [self.delegate displayAttributedString: [_filterQueue processCompleteLine: _incomingLineBuffer]];
     [_incomingLineBuffer deleteCharactersInRange: NSMakeRange (0, _incomingLineBuffer.length)];
   }

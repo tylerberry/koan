@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUSOCKS5PrimitiveTests.h"
-
 #import "MUByteSource.h"
 #import "MUReadBuffer.h"
 #import "MUSOCKS5Authentication.h"
@@ -63,24 +61,29 @@
 
 #pragma mark -
 
-@interface MUSOCKS5PrimitiveTests ()
+@interface MUSOCKS5PrimitiveTests : XCTestCase
 
-- (void) assertObject: (id) selection writes: (NSString *) output;
+- (void) _assertObject: (id) selection writes: (NSString *) output;
 
 @end
 
 #pragma mark -
 
 @implementation MUSOCKS5PrimitiveTests
+{
+  MUWriteBuffer *_buffer;
+}
 
 - (void) setUp
 {
-  buffer = [[MUWriteBuffer alloc] init];
+  [super setUp];
+  _buffer = [[MUWriteBuffer alloc] init];
 }
 
 - (void) tearDown
 {
-  return;
+  _buffer = nil;
+  [super tearDown];
 }
 
 - (void) testMethodSelection
@@ -89,21 +92,21 @@
   const char expected1[] = {0x05, 0x01, 0x00};
   const char expected2[] = {0x05, 0x02, 0x00, 0x02};
   
-  [buffer clear];
-  [selection appendToBuffer: buffer];
+  [_buffer clear];
+  [selection appendToBuffer: _buffer];
   
-  NSString *output = buffer.stringValue;
-  for (unsigned i = 0; i < buffer.length; i++)
+  NSString *output = _buffer.stringValue;
+  for (unsigned i = 0; i < _buffer.length; i++)
   {
     XCTAssertEqual ([output characterAtIndex: i], expected1[i]);
   }
 
   [selection addMethod: MUSOCKS5UsernamePassword];
 
-  [buffer clear];
-  [selection appendToBuffer: buffer];
-  output = buffer.stringValue;
-  for (unsigned j = 0; j < buffer.length; j++)
+  [_buffer clear];
+  [selection appendToBuffer: _buffer];
+  output = _buffer.stringValue;
+  for (unsigned j = 0; j < _buffer.length; j++)
   {
     XCTAssertEqual ([output characterAtIndex: j], expected2[j]);
   }
@@ -127,10 +130,10 @@
   MUSOCKS5Request *request = [MUSOCKS5Request socksRequestWithHostname: @"example.com" port: 0xABCD];
   uint8_t expected[18] = {MUSOCKS5Version, MUSOCKS5Connect, 0, 3, 11, 'e', 'x', 'a', 'm', 'p', 'l', 'e', '.', 'c', 'o', 'm', 0xAB, 0xCD};
   
-  [buffer clear];
-  [request appendToBuffer: buffer];
+  [_buffer clear];
+  [request appendToBuffer: _buffer];
   
-  NSData *data = buffer.dataValue;
+  NSData *data = _buffer.dataValue;
   XCTAssertEqual (data.length, (NSUInteger) 18); // same as expected length above
   for (unsigned i = 0; i < 18; i++)
   {
@@ -192,10 +195,10 @@
   MUSOCKS5Authentication *auth = [MUSOCKS5Authentication socksAuthenticationWithUsername: @"bob" password: @"barfoo"];
   uint8_t expected[12] = {MUSOCKS5UsernamePasswordVersion, 3, 'b', 'o', 'b', 6, 'b', 'a', 'r', 'f', 'o', 'o'};
   
-  [buffer clear];
-  [auth appendToBuffer: buffer];
+  [_buffer clear];
+  [auth appendToBuffer: _buffer];
   
-  NSData *data = buffer.dataValue;
+  NSData *data = _buffer.dataValue;
   XCTAssertEqual (data.length, (NSUInteger) 12); // same as expected length above
   for (unsigned i = 0; i < 12; i++)
   {
@@ -221,11 +224,11 @@
 
 #pragma mark - Private methods
 
-- (void) assertObject: (id) object writes: (NSString *) output
+- (void) _assertObject: (id) object writes: (NSString *) output
 {
-  [buffer clear];
-  [object appendToBuffer: buffer];
-  XCTAssertEqualObjects (buffer.stringValue, output);
+  [_buffer clear];
+  [object appendToBuffer: _buffer];
+  XCTAssertEqualObjects (_buffer.stringValue, output);
 }
 
 @end

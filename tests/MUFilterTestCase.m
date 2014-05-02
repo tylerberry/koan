@@ -10,12 +10,14 @@
 
 - (void) setUp
 {
+  [super setUp];
   self.queue = [MUFilterQueue filterQueue];
 }
 
 - (void) tearDown
 {
   self.queue = nil;
+  [super tearDown];
 }
 
 - (void) assertInput: (NSString *) input hasOutput: (NSString *) output

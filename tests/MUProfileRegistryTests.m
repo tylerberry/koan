@@ -4,32 +4,36 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUProfileRegistryTests.h"
 #import "MUProfileRegistry.h"
 #import "MUProfile.h"
 #import "MUWorld.h"
 
-@interface MUProfileRegistryTests ()
+@interface MUProfileRegistryTests : XCTestCase
 
-- (void) assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player;
+- (void) _assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player;
 
-- (MUWorld *) testWorld;
-- (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world;
+- (MUWorld *) _createTestWorld;
+- (MUPlayer *) _createTestPlayerWithParentWorld: (MUWorld *) world;
 
 @end
 
 #pragma mark -
 
 @implementation MUProfileRegistryTests
+{
+  MUProfileRegistry *_registry;
+}
 
 - (void) setUp
 {
-  registry = [[MUProfileRegistry alloc] init];
+  [super setUp];
+  _registry = [[MUProfileRegistry alloc] init];
 }
 
 - (void) tearDown
 {
-  return;
+  _registry = nil;
+  [super tearDown];
 }
 
 - (void) testSharedRegistry
@@ -40,6 +44,7 @@
   XCTAssertNotNil (registryOne);
   
   registryTwo = [MUProfileRegistry defaultRegistry];
+  XCTAssertNotNil (registryTwo);
   XCTAssertEqualObjects (registryOne, registryTwo);
 }
 
@@ -47,90 +52,93 @@
 {
   MUProfile *profileOne = nil;
   MUProfile *profileTwo = nil;
-  MUWorld *world = [self testWorld];
+  MUWorld *world = [self _createTestWorld];
   
-  profileOne = [registry profileForWorld: world];
-  [self assertProfile: profileOne world: world player: nil];
+  profileOne = [_registry profileForWorld: world];
+  [self _assertProfile: profileOne world: world player: nil];
   
-  profileTwo = [registry profileForUniqueIdentifier: world.uniqueIdentifier];
+  profileTwo = [_registry profileForUniqueIdentifier: world.uniqueIdentifier];
   XCTAssertEqualObjects (profileTwo, profileOne, @"First");
   
-  profileOne = [registry profileForWorld: world];
+  profileOne = [_registry profileForWorld: world];
   XCTAssertEqualObjects (profileOne, profileTwo, @"Second");
+
+  [_registry removeAllProfilesForWorld: world];
 }
 
 - (void) testProfileWithWorldAndPlayer
 {
   MUProfile *profileOne = nil, *profileTwo = nil;
-  MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithParentWorld: world];
+  MUWorld *world = [self _createTestWorld];
+  MUPlayer *player = [self _createTestPlayerWithParentWorld: world];
   
-  profileOne = [registry profileForWorld: world player: player];
-  [self assertProfile: profileOne world: world player: player];
+  profileOne = [_registry profileForWorld: world player: player];
+  [self _assertProfile: profileOne world: world player: player];
   
-  profileTwo = [registry profileForUniqueIdentifier: player.uniqueIdentifier];
+  profileTwo = [_registry profileForUniqueIdentifier: player.uniqueIdentifier];
   XCTAssertEqualObjects (profileTwo, profileOne, @"First");
   
-  profileOne = [registry profileForWorld: world player: player];
+  profileOne = [_registry profileForWorld: world player: player];
   XCTAssertEqualObjects (profileOne, profileTwo, @"Second");
+
+  [_registry removeProfileForUniqueIdentifier: player.uniqueIdentifier];
 }
 
 - (void) testContains
 {
-  MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithParentWorld: world];
+  MUWorld *world = [self _createTestWorld];
+  MUPlayer *player = [self _createTestPlayerWithParentWorld: world];
   
-  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"Before adding");
+  XCTAssertFalse ([_registry containsProfileForWorld: world player: player], @"Before adding");
   
-  [registry profileForWorld: world player: player];
+  [_registry profileForWorld: world player: player];
   
-  XCTAssertTrue ([registry containsProfileForWorld: world player: player], @"After adding");
+  XCTAssertTrue ([_registry containsProfileForWorld: world player: player], @"After adding");
+
+  [_registry removeProfileForWorld: world player: player];
 }
 
 - (void) testRemove
 {
-  MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithParentWorld: world];
+  MUWorld *world = [self _createTestWorld];
+  MUPlayer *player = [self _createTestPlayerWithParentWorld: world];
 
-  [registry profileForWorld: world player: player];
-  XCTAssertTrue ([registry containsProfileForWorld: world player: player], @"Before removing");
+  [_registry profileForWorld: world player: player];
+  XCTAssertTrue ([_registry containsProfileForWorld: world player: player], @"Before removing");
   
-  [registry removeProfileForWorld: world player: player];  
-  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"After removing");
-
+  [_registry removeProfileForWorld: world player: player];  
+  XCTAssertFalse ([_registry containsProfileForWorld: world player: player], @"After removing");
 }
 
 - (void) testRemoveWorld
 {
-  MUWorld *world = [self testWorld];
-  MUPlayer *player = [self testPlayerWithParentWorld: world];
+  MUWorld *world = [self _createTestWorld];
+  MUPlayer *player = [self _createTestPlayerWithParentWorld: world];
   [world.children addObject: player];
   
-  [registry profileForWorld: world];
-  [registry profileForWorld: world player: player];
-  [registry removeAllProfilesForWorld: world];
+  [_registry profileForWorld: world];
+  [_registry profileForWorld: world player: player];
+  [_registry removeAllProfilesForWorld: world];
   
-  XCTAssertFalse ([registry containsProfileForWorld: world], @"World only");
-  XCTAssertFalse ([registry containsProfileForWorld: world player: player], @"World and player");
+  XCTAssertFalse ([_registry containsProfileForWorld: world], @"World only");
+  XCTAssertFalse ([_registry containsProfileForWorld: world player: player], @"World and player");
 }
 
 #pragma mark - Private methods
 
-- (void) assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player
+- (void) _assertProfile: (MUProfile *) profile world: (MUWorld *) world player: (MUPlayer *) player
 {
   XCTAssertNotNil (profile);
   XCTAssertEqualObjects (profile.world, world, @"World mismatch");
   XCTAssertEqualObjects (profile.player, player, @"Player mismatch");
 }
 
-- (MUWorld *) testWorld
+- (MUWorld *) _createTestWorld
 {
-  MUWorld *world = [[MUWorld alloc] init];
-  world.name = @"Test World";
-  return world;
+  return [[MUWorld alloc] initWithName: @"Test World" children: nil];
 }
 
-- (MUPlayer *) testPlayerWithParentWorld: (MUWorld *) world
+- (MUPlayer *) _createTestPlayerWithParentWorld: (MUWorld *) world
 {
   MUPlayer *player = [MUPlayer playerWithName: @"User"];
   player.parent = world;

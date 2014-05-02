@@ -4,14 +4,10 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUWriteBufferTests.h"
+#import "MUByteDestination.h"
 #import "MUWriteBuffer.h"
 
-@interface MUWriteBufferTests ()
-{
-  MUWriteBuffer *_buffer;
-  NSMutableData *_output;
-}
+@interface MUWriteBufferTests : XCTestCase <MUByteDestination>
 
 - (NSString *) _outputString;
 - (void) _assertOutputAfterFlushIsString: (NSString *) string;
@@ -21,9 +17,14 @@
 #pragma mark -
 
 @implementation MUWriteBufferTests
+{
+  MUWriteBuffer *_buffer;
+  NSMutableData *_output;
+}
 
 - (void) setUp
 {
+  [super setUp];
   _buffer = [MUWriteBuffer buffer];
   _buffer.byteDestination = self;
   _output = [NSMutableData data];
@@ -33,6 +34,7 @@
 {
   _buffer = nil;
   _output = nil;
+  [super tearDown];
 }
 
 - (void) testWriteNil

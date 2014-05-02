@@ -4,7 +4,13 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUFilterTests.h"
+#import "MUFilterQueue.h"
+
+@interface MUUpperCaseFilter : MUFilter
+
+@end
+
+#pragma mark -
 
 @implementation MUUpperCaseFilter
 
@@ -23,16 +29,22 @@
 
 #pragma mark -
 
+@interface MUFilterQueueTests : XCTestCase
+
+@end
+
+#pragma mark -
+
 @implementation MUFilterQueueTests
 
 - (void) setUp
 {
-  return;
+  [super setUp];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testFilter

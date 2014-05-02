@@ -4,8 +4,11 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUTextLogTests.h"
 #import "MUTextLog.h"
+
+@interface MUTextLogTests : XCTestCase
+
+@end
 
 #pragma mark -
 
@@ -13,12 +16,12 @@
 
 - (void) setUp
 {
-  return;
+  [super setUp];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testExtractingOneHeader

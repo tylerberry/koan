@@ -4,19 +4,24 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUByteSetTests.h"
 #import "MUByteSet.h"
+
+@interface MUByteSetTests : XCTestCase
+
+@end
+
+#pragma mark -
 
 @implementation MUByteSetTests
 
 - (void) setUp
 {
-  return;
+  [super setUp];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testEmptySet

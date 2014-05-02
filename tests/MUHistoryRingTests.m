@@ -4,464 +4,469 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUHistoryRingTests.h"
+#define FIRST @"Peter Wiggin"
+#define SECOND @"Valentine Wiggin"
+#define THIRD @"Andrew Wiggin"
 
-NSString *First = @"First";
-NSString *Second = @"Second";
-NSString *Third = @"Third";
+#import "MUHistoryRing.h"
 
-@interface MUHistoryRingTests ()
+@interface MUHistoryRingTests : XCTestCase
 
-- (void) assertCurrent: (NSString *) expected;
-- (void) assertPrevious: (NSString *) expected;
-- (void) assertNext: (NSString *) expected;
-- (void) saveOne;
-- (void) saveTwo;
-- (void) saveThree;
+- (void) _assertCurrent: (NSString *) expected;
+- (void) _assertPrevious: (NSString *) expected;
+- (void) _assertNext: (NSString *) expected;
+- (void) _saveOne;
+- (void) _saveTwo;
+- (void) _saveThree;
 
 @end
 
 #pragma mark -
 
 @implementation MUHistoryRingTests
+{
+  MUHistoryRing *_ring;
+}
 
 - (void) setUp
 {
-  ring = [[MUHistoryRing alloc] init];
+  [super setUp];
+  _ring = [[MUHistoryRing alloc] init];
 }
 
 - (void) tearDown
 {
-  return;
+  _ring = nil;
+  [super tearDown];
 }
 
 - (void) testSinglePrevious
 {
-  [self saveOne];
+  [self _saveOne];
   
-  [self assertPrevious: First];
+  [self _assertPrevious: FIRST];
 }
 
 - (void) testMultiplePrevious
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
-  [self assertPrevious: First];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
+  [self _assertPrevious: FIRST];
 }
 
 - (void) testFullCirclePrevious
 {
-  [self saveOne];
+  [self _saveOne];
   
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
 }
 
 - (void) testSingleNext
 {
-  [self saveOne];
+  [self _saveOne];
   
-  [self assertNext: First];
+  [self _assertNext: FIRST];
 }
 
 - (void) testMultipleNext
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertNext: First];
-  [self assertNext: Second];
-  [self assertNext: Third];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertNext: THIRD];
 }
 
 - (void) testFullCircleNext
 {
-  [self saveOne];
+  [self _saveOne];
   
-  [self assertNext: First];
-  [self assertNext: @""];
+  [self _assertNext: FIRST];
+  [self _assertNext: @""];
 }
 
 - (void) testBothWays
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
-  [self assertNext: Third];
-  [self assertNext: @""];
-  [self assertNext: First];
-  [self assertNext: Second];
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
+  [self _assertNext: THIRD];
+  [self _assertNext: @""];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
 }
 
 - (void) testCurrentString
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertNext: First];
-  [self assertCurrent: First];
-  [self assertNext: Second];
-  [self assertCurrent: Second];
-  [self assertNext: Third];
-  [self assertCurrent: Third];
-  [self assertNext: @""];
-  [self assertCurrent: @""];
+  [self _assertNext: FIRST];
+  [self _assertCurrent: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertCurrent: SECOND];
+  [self _assertNext: THIRD];
+  [self _assertCurrent: THIRD];
+  [self _assertNext: @""];
+  [self _assertCurrent: @""];
 }
 
 - (void) testSimpleUpdate
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
   
-  [ring updateString: @"Bar Two"];
+  [_ring updateString: @"Bar Two"];
   
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
-  [self assertPrevious: Third];
-  [self assertPrevious: @"Bar Two"];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: @"Bar Two"];
 }
 
 - (void) testUpdateBuffer
 {
-  [self saveTwo];
+  [self _saveTwo];
   
-  [self assertNext: First];
-  [self assertNext: Second];
-  [self assertNext: @""];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertNext: @""];
   
-  [ring updateString: @"Temporary"];
+  [_ring updateString: @"Temporary"];
   
-  [self assertNext: First];
-  [self assertNext: Second];
-  [self assertNext: @"Temporary"];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertNext: @"Temporary"];
   
-  [ring saveString: @"Something entirely different"];
+  [_ring saveString: @"Something entirely different"];
   
-  [self assertPrevious: @"Something entirely different"];
-  [self assertPrevious: Second];
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
+  [self _assertPrevious: @"Something entirely different"];
+  [self _assertPrevious: SECOND];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
 }
 
 - (void) testInternalSave
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertNext: First];
-  [self assertNext: Second];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
   
-  [ring saveString: @"Bar Two"];
+  [_ring saveString: @"Bar Two"];
   
-  [self assertNext: First];
-  [self assertNext: Second];
-  [self assertNext: Third];
-  [self assertNext: @"Bar Two"];
-  [self assertNext: @""];
+  [self _assertNext: FIRST];
+  [self _assertNext: SECOND];
+  [self _assertNext: THIRD];
+  [self _assertNext: @"Bar Two"];
+  [self _assertNext: @""];
 }
 
 - (void) testUpdateThenSaveBuffer
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
   
-  [ring updateString: @"Bar Two"];
+  [_ring updateString: @"Bar Two"];
   
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
-  [self assertPrevious: Third];
-  [self assertPrevious: @"Bar Two"];
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: @"Bar Two"];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
   
-  [ring saveString: @"New"];
+  [_ring saveString: @"New"];
   
-  [self assertPrevious: @"New"];
-  [self assertPrevious: Third];
-  [self assertPrevious: @"Bar Two"];
+  [self _assertPrevious: @"New"];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: @"Bar Two"];
 }
 
 - (void) testUpdateAndSaveUpdatedValue
 {
-  [self saveThree];
+  [self _saveThree];
   
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
   
-  [ring updateString: @"Bar Two"];
+  [_ring updateString: @"Bar Two"];
   
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
-  [self assertPrevious: Third];
-  [self assertPrevious: @"Bar Two"];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: @"Bar Two"];
   
-  [ring saveString: @"Updated Bar"];
+  [_ring saveString: @"Updated Bar"];
   
-  [self assertPrevious: @"Updated Bar"];
-  [self assertPrevious: Third];
-  [self assertPrevious: Second];
+  [self _assertPrevious: @"Updated Bar"];
+  [self _assertPrevious: THIRD];
+  [self _assertPrevious: SECOND];
 }
 
 - (void) testNonduplicationOfPreviousCommand
 {
-  [self saveOne];
+  [self _saveOne];
   
-  [self assertPrevious: First];
+  [self _assertPrevious: FIRST];
   
-  [ring saveString: First];
+  [_ring saveString: FIRST];
   
-  [self assertPrevious: First];
-  [self assertPrevious: @""];
+  [self _assertPrevious: FIRST];
+  [self _assertPrevious: @""];
 }
 
 - (void) testSearchFindsNothing
 {
-  [ring saveString: @"Dog"];
+  [_ring saveString: @"Dog"];
   
-  XCTAssertNil ([ring searchForwardForStringPrefix: @"Cat"]);
+  XCTAssertNil ([_ring searchForwardForStringPrefix: @"Cat"]);
 }
 
 - (void) testPerfectMatchFindsNothing
 {
-  [ring saveString: @"Cat"];
+  [_ring saveString: @"Cat"];
   
-  XCTAssertNil ([ring searchForwardForStringPrefix: @"Cat"]);
+  XCTAssertNil ([_ring searchForwardForStringPrefix: @"Cat"]);
 }
 
 - (void) testSearchForward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testWraparoundSearchForward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testMoveForwardThenSearchForward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  [self assertNext: @"Catastrophic"];
+  [self _assertNext: @"Catastrophic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testMoveBackwardThenSearchForward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  [self assertPrevious: @"Catatonic"];
+  [self _assertPrevious: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
   
-  [self assertPrevious: @"Dog"];
+  [self _assertPrevious: @"Dog"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testSearchForwardWithInterspersedResets
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Catalogue"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Catalogue"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
 
-  [ring resetSearchCursor];
+  [_ring resetSearchCursor];
 
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
 
-  [ring resetSearchCursor];
+  [_ring resetSearchCursor];
 
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchBackward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testMoveForwardThenSearchBackward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  [self assertNext: @"Catastrophic"];
+  [self _assertNext: @"Catastrophic"];
   
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
   
-  [self assertNext: @"Dog"];
+  [self _assertNext: @"Dog"];
   
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
   
 }
 
 - (void) testMoveBackwardThenSearchBackward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  [self assertPrevious: @"Catatonic"];
+  [self _assertPrevious: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchBackwardWithInterspersedResets
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Catalogue"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Catalogue"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
 
-  [ring resetSearchCursor];
+  [_ring resetSearchCursor];
 
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
 
-  [ring resetSearchCursor];
+  [_ring resetSearchCursor];
 
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
 }
 
 - (void) testSearchForwardAndBackward
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Catalogue"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Catalogue"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
-  XCTAssertEqualObjects ([ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchBackwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
 }
 
 - (void) testSearchHonorsUpdates
 {
-  [ring saveString: @"Catastrophic"];
-  [ring saveString: @"Dog"];
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Dog"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
   
-  [self assertNext: @"Catastrophic"];
-  [self assertNext: @"Dog"];
+  [self _assertNext: @"Catastrophic"];
+  [self _assertNext: @"Dog"];
   
-  [ring updateString: @"Catalogue"];
+  [_ring updateString: @"Catalogue"];
   
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
-  XCTAssertEqualObjects ([ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catatonic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catastrophic");
+  XCTAssertEqualObjects ([_ring searchForwardForStringPrefix: @"Cat"], @"Catalogue");
 }
 
 - (void) testSearchForEmptyString
 {
-  [ring saveString: @"Pixel"];
+  [_ring saveString: @"Pixel"];
   
-  XCTAssertNil ([ring searchForwardForStringPrefix: @""]);
-  XCTAssertNil ([ring searchBackwardForStringPrefix: @""]);
+  XCTAssertNil ([_ring searchForwardForStringPrefix: @""]);
+  XCTAssertNil ([_ring searchBackwardForStringPrefix: @""]);
 }
 
 - (void) testNumberOfUniqueMatches
 {
-  [ring saveString: @"Dog"];
+  [_ring saveString: @"Dog"];
   
-  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
+  XCTAssertEqual ([_ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
   
-  [ring saveString: @"Cat"];
+  [_ring saveString: @"Cat"];
   
-  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
+  XCTAssertEqual ([_ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 0);
   
-  [ring saveString: @"Catatonic"];
+  [_ring saveString: @"Catatonic"];
   
-  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 1);
+  XCTAssertEqual ([_ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 1);
   
-  [ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Catastrophic"];
   
-  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
+  XCTAssertEqual ([_ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
   
-  [ring saveString: @"Catastrophic"];
+  [_ring saveString: @"Catastrophic"];
   
-  XCTAssertEqual ([ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
+  XCTAssertEqual ([_ring numberOfUniqueMatchesForStringPrefix: @"Cat"], (NSUInteger) 2);
 }
 
 #pragma mark - Private methods
 
-- (void) assertCurrent: (NSString *) expected
+- (void) _assertCurrent: (NSString *) expected
 {
-  XCTAssertEqualObjects ([ring currentString], expected);
+  XCTAssertEqualObjects ([_ring currentString], expected);
 }
 
-- (void) assertPrevious: (NSString *) expected
+- (void) _assertPrevious: (NSString *) expected
 {
-  XCTAssertEqualObjects ([ring previousString], expected);
+  XCTAssertEqualObjects ([_ring previousString], expected);
 }
 
-- (void) assertNext: (NSString *) expected
+- (void) _assertNext: (NSString *) expected
 {
-  XCTAssertEqualObjects ([ring nextString], expected);
+  XCTAssertEqualObjects ([_ring nextString], expected);
 }
 
-- (void) saveOne
+- (void) _saveOne
 {
-  [ring saveString: First];
+  [_ring saveString: FIRST];
 }
 
-- (void) saveTwo
+- (void) _saveTwo
 {
-  [self saveOne];
-  [ring saveString: Second];
+  [self _saveOne];
+  [_ring saveString: SECOND];
 }
 
-- (void) saveThree
+- (void) _saveThree
 {
-  [self saveTwo];
-  [ring saveString: Third];
+  [self _saveTwo];
+  [_ring saveString: THIRD];
 }
 
 @end

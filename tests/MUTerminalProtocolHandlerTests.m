@@ -4,11 +4,12 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUTerminalProtocolHandlerTests.h"
-
 #import "MUConstants.h"
 #import "MUMUDConnectionState.h"
 #import "MUProfile.h"
+#import "MUProtocolStack.h"
+#import "MUTerminalProtocolHandler.h"
+
 #import "NSColor+ANSI.h"
 #import "NSFont+Traits.h"
 
@@ -45,7 +46,7 @@
 
 #pragma mark -
 
-@interface MUTerminalProtocolHandlerTests ()
+@interface MUTerminalProtocolHandlerTests : XCTestCase <MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate>
 
 - (void) _assertFinalCharacter: (unsigned char) finalChar;
 - (void) _assertInput: (NSString *) inputString hasOutput: (NSString *) _outputString;

@@ -4,8 +4,6 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUTelnetStateMachineTests.h"
-
 #import "MUByteSet.h"
 #import "MUTelnetIACState.h"
 #import "MUTelnetTextState.h"
@@ -19,142 +17,192 @@
 #import "MUTelnetSubnegotiationState.h"
 #import "MUTelnetWillState.h"
 #import "MUTelnetWontState.h"
-#import "MUWriteBuffer.h"
 
 #define C(x) ([x class])
 
-@interface MUTelnetStateMachineTests ()
+@interface MUTelnetStateMachineTests : XCTestCase <MUTelnetProtocolHandler>
 
-- (void) assertByteConfirmsTelnet: (uint8_t) byte;
-- (void) assertByteInvalidatesTelnet: (uint8_t) byte;
-- (void) assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass;
-- (void) assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass exceptForThoseInSet: (MUByteSet *) exclusions;
-- (void) assertState: (Class) stateClass givenByte: (uint8_t) givenByte producesState: (Class) nextStateClass;
-- (void) assertState: (Class) stateClass givenByte: (uint8_t) givenByte inputsByte: (uint8_t) inputsByte;
-- (void) assertStateObject: (MUTelnetState *) state givenAnyByteProducesState: (Class) nextStateClass exceptForThoseInSet: (MUByteSet *) exclusions;
-- (void) assertStateObject: (MUTelnetState *) state givenByte: (uint8_t) byte producesState: (Class) nextStateClass;
-- (void) giveStateClass: (Class) stateClass byte: (uint8_t) byte;
-- (void) resetStateMachine;
+- (void) _assertByteConfirmsTelnet: (uint8_t) byte;
+- (void) _assertByteInvalidatesTelnet: (uint8_t) byte;
+- (void) _assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass;
+- (void)     _assertState: (Class) stateClass
+givenAnyByteProducesState: (Class) nextStateClass
+      exceptForThoseInSet: (MUByteSet *) exclusions;
+- (void) _assertState: (Class) stateClass givenByte: (uint8_t) givenByte producesState: (Class) nextStateClass;
+- (void) _assertState: (Class) stateClass givenByte: (uint8_t) givenByte inputsByte: (uint8_t) inputsByte;
+- (void) _assertStateObject: (MUTelnetState *) state
+  givenAnyByteProducesState: (Class) nextStateClass
+        exceptForThoseInSet: (MUByteSet *) exclusions;
+- (void) _assertStateObject: (MUTelnetState *) state givenByte: (uint8_t) byte producesState: (Class) nextStateClass;
+- (void) _giveStateClass: (Class) stateClass byte: (uint8_t) byte;
+- (void) _resetStateMachine;
 
 @end
 
 #pragma mark -
 
 @implementation MUTelnetStateMachineTests
+{
+  MUTelnetStateMachine *_stateMachine;
+  int _lastByteInput;
+  NSMutableData *_output;
+}
 
 - (void) setUp
 {
-  [self resetStateMachine];
-  lastByteInput = -1;
-  output = [NSMutableData data];
+  [super setUp];
+  [self _resetStateMachine];
+  _lastByteInput = -1;
+  _output = [NSMutableData data];
 }
 
 - (void) tearDown
 {
-  return;
+  _stateMachine = nil;
+  _output = nil;
+  [super tearDown];
 }
 
 - (void) testTextStateTransitions
 {
-  [self assertState: C(MUTelnetTextState) givenAnyByteProducesState: C(MUTelnetTextState) exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, -1]];
-  [self assertState: C(MUTelnetTextState) givenByte: MUTelnetInterpretAsCommand producesState: C(MUTelnetIACState)];
+  MUByteSet *IACSet = [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, -1];
+  [self _assertState: C(MUTelnetTextState) givenAnyByteProducesState: C(MUTelnetTextState) exceptForThoseInSet: IACSet];
+
+  [self _assertState: C(MUTelnetTextState) givenByte: MUTelnetInterpretAsCommand producesState: C(MUTelnetIACState)];
 }
 
 - (void) testIACTransitionsThatInvalidateTelnet
 {
   MUByteSet *byteSet = [[MUTelnetState telnetCommandBytes] inverseSet];
-  //[byteSet addByte: MUTelnetBeginSubnegotiation];   // This used to invalidate Telnet, but can't due to server bugs.
+
+  // This should invalidate Telnet, as it violates spec, but it can't actually invalidate it due to server bugs.
+  //[byteSet addByte: MUTelnetBeginSubnegotiation];
+
   [byteSet addByte: MUTelnetEndSubnegotiation];
-  NSData *bytes = [byteSet dataValue];
-  for (unsigned i = 0; i < [bytes length]; ++i)
-    [self assertByteInvalidatesTelnet: ((uint8_t *)[bytes bytes])[i]];
+
+  NSData *byteSetData = byteSet.dataValue;
+
+  for (NSUInteger i = 0; i < byteSetData.length; i++)
+  {
+    [self _assertByteInvalidatesTelnet: ((uint8_t *) byteSetData.bytes)[i]];
+  }
 }
 
 - (void) testIACTransitionsThatConfirmTelnet
 {
   MUByteSet *byteSet = [MUTelnetState telnetCommandBytes];
+
   [byteSet removeByte: MUTelnetBeginSubnegotiation];
   [byteSet removeByte: MUTelnetEndSubnegotiation];
   [byteSet removeByte: MUTelnetInterpretAsCommand];
   [byteSet removeByte: MUTelnetEndOfRecord];
-  NSData *bytes = [byteSet dataValue];
-  for (unsigned i = 0; i < [bytes length]; ++i)
-    [self assertByteConfirmsTelnet: ((uint8_t *)[bytes bytes])[i]];
+
+  NSData *byteSetData = byteSet.dataValue;
+
+  for (NSUInteger i = 0; i < byteSetData.length; i++)
+  {
+    [self _assertByteConfirmsTelnet: ((uint8_t *) byteSetData.bytes)[i]];
+  }
 }
-  
+
 - (void) testIACTransitionsOnceConfirmed
 {
-  [stateMachine confirmTelnet];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetEndOfRecord producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetNoOperation producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetDataMark producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetBreak producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetInterruptProcess producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetAbortOutput producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetAreYouThere producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetEraseCharacter producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetEraseLine producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetGoAhead producesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetDo producesState: C(MUTelnetDoState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetDont producesState: C(MUTelnetDontState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetWill producesState: C(MUTelnetWillState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetWont producesState: C(MUTelnetWontState)];  
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetBeginSubnegotiation producesState: C(MUTelnetSubnegotiationOptionState)];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetInterpretAsCommand producesState: C(MUTelnetTextState)];
+  [_stateMachine confirmTelnet];
+
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetEndOfRecord producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetNoOperation producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetDataMark producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetBreak producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetInterruptProcess producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetAbortOutput producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetAreYouThere producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetEraseCharacter producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetEraseLine producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetGoAhead producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetDo producesState: C(MUTelnetDoState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetDont producesState: C(MUTelnetDontState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetWill producesState: C(MUTelnetWillState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetWont producesState: C(MUTelnetWontState)];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetInterpretAsCommand producesState: C(MUTelnetTextState)];
+
+  [self _assertState: C(MUTelnetIACState)
+           givenByte: MUTelnetBeginSubnegotiation
+       producesState: C(MUTelnetSubnegotiationOptionState)];
 }
-  
+
 - (void) testDoWontWillWontStateTransitions
 {
-  [self assertState: C(MUTelnetDoState) givenAnyByteProducesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetDontState) givenAnyByteProducesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetWillState) givenAnyByteProducesState: C(MUTelnetTextState)];
-  [self assertState: C(MUTelnetWontState) givenAnyByteProducesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetDoState) givenAnyByteProducesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetDontState) givenAnyByteProducesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetWillState) givenAnyByteProducesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetWontState) givenAnyByteProducesState: C(MUTelnetTextState)];
 }
 
 - (void) testInput
 {
-  [self assertState: C(MUTelnetTextState) givenByte: 'a' inputsByte: 'a'];
-  [self assertState: C(MUTelnetIACState) givenByte: MUTelnetInterpretAsCommand inputsByte: MUTelnetInterpretAsCommand];
+  [self _assertState: C(MUTelnetTextState) givenByte: 'a' inputsByte: 'a'];
+  [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetInterpretAsCommand inputsByte: MUTelnetInterpretAsCommand];
 }
 
 - (void) testSubnegotiationStateTransitions
 {
-  [self assertState: C(MUTelnetSubnegotiationOptionState) givenAnyByteProducesState: C(MUTelnetSubnegotiationState) exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, MUTelnetOptionMCCP1, -1]];
-  
-  [self assertState: C(MUTelnetSubnegotiationState) givenAnyByteProducesState: C(MUTelnetSubnegotiationState) exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, -1]];
-  [self assertState: C(MUTelnetSubnegotiationState) givenByte: MUTelnetInterpretAsCommand producesState: C(MUTelnetSubnegotiationIACState)];
-  
-  [self assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetSubnegotiationState)] givenAnyByteProducesState: C(MUTelnetSubnegotiationState) exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetEndSubnegotiation, -1]];
-  [self assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetSubnegotiationState)] givenByte: MUTelnetEndSubnegotiation producesState: C(MUTelnetTextState)];
+  [self      _assertState: C(MUTelnetSubnegotiationOptionState)
+givenAnyByteProducesState: C(MUTelnetSubnegotiationState)
+      exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, MUTelnetOptionMCCP1, -1]];
+
+  [self      _assertState: C(MUTelnetSubnegotiationState)
+givenAnyByteProducesState: C(MUTelnetSubnegotiationState)
+      exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetInterpretAsCommand, -1]];
+
+  [self _assertState: C(MUTelnetSubnegotiationState)
+           givenByte: MUTelnetInterpretAsCommand
+       producesState: C(MUTelnetSubnegotiationIACState)];
+
+  [self _assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetSubnegotiationState)]
+ givenAnyByteProducesState: C(MUTelnetSubnegotiationState)
+       exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetEndSubnegotiation, -1]];
+
+  [self _assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetSubnegotiationState)]
+                 givenByte: MUTelnetEndSubnegotiation
+             producesState: C(MUTelnetTextState)];
 }
 
 - (void) testMCCP1NegotiationStateTransitions
 {
-  [self assertState: C(MUTelnetSubnegotiationOptionState) givenByte: MUTelnetOptionMCCP1 producesState: C(MUTelnetMCCP1SubnegotiationState)];
-  
-  [self assertState: C(MUTelnetMCCP1SubnegotiationState) givenByte: MUTelnetWill producesState: C(MUTelnetSubnegotiationIACState)];
-  
-  [self assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetMCCP1SubnegotiationState)] givenAnyByteProducesState: C(MUTelnetMCCP1SubnegotiationState) exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetEndSubnegotiation, -1]];
-  [self assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetMCCP1SubnegotiationState)] givenByte: MUTelnetEndSubnegotiation producesState: C(MUTelnetTextState)];
+  [self _assertState: C(MUTelnetSubnegotiationOptionState)
+           givenByte: MUTelnetOptionMCCP1
+       producesState: C(MUTelnetMCCP1SubnegotiationState)];
+
+  [self _assertState: C(MUTelnetMCCP1SubnegotiationState)
+           givenByte: MUTelnetWill
+       producesState: C(MUTelnetSubnegotiationIACState)];
+
+  [self _assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetMCCP1SubnegotiationState)]
+ givenAnyByteProducesState: C(MUTelnetMCCP1SubnegotiationState)
+       exceptForThoseInSet: [MUByteSet byteSetWithBytes: MUTelnetEndSubnegotiation, -1]];
+
+  [self _assertStateObject: [MUTelnetSubnegotiationIACState stateWithReturnState: C(MUTelnetMCCP1SubnegotiationState)]
+                 givenByte: MUTelnetEndSubnegotiation
+             producesState: C(MUTelnetTextState)];
 }
 
 #pragma mark - MUTelnetProtocolHandler protocol
 
 - (void) bufferSubnegotiationByte: (uint8_t) byte
 {
-  lastByteInput = byte;
+  _lastByteInput = byte;
 }
 
 - (void) bufferTextByte: (uint8_t) byte
 {
-  [output appendBytes: &byte length: 1];
-  lastByteInput = byte;
+  [_output appendBytes: &byte length: 1];
+  _lastByteInput = byte;
 }
 
 - (void) deleteLastBufferedCharacter
 {
-  if (output.length > 0)
-    [output replaceBytesInRange: NSMakeRange (output.length - 1, 1) withBytes: NULL length: 0];
+  if (_output.length > 0)
+    [_output replaceBytesInRange: NSMakeRange (_output.length - 1, 1) withBytes: NULL length: 0];
 }
 
 - (void) handleBufferedSubnegotiation
@@ -204,78 +252,78 @@
 
 #pragma mark - Private methods
 
-- (void) assertByteConfirmsTelnet: (uint8_t) byte;
+- (void) _assertByteConfirmsTelnet: (uint8_t) byte;
 {
-  [self resetStateMachine];
-  [[MUTelnetIACState state] parse: byte forStateMachine: stateMachine protocolHandler: nil];
-  XCTAssertTrue (stateMachine.telnetConfirmed, @"%d did not confirm telnet", byte);
-  [output setLength: 0];
+  [self _resetStateMachine];
+  [[MUTelnetIACState state] parse: byte forStateMachine: _stateMachine protocolHandler: nil];
+  XCTAssertTrue (_stateMachine.telnetConfirmed, @"%d did not confirm telnet", byte);
+  [_output replaceBytesInRange: NSMakeRange (0, _output.length) withBytes: NULL length: 0];
 }
 
-- (void) assertByteInvalidatesTelnet: (uint8_t) byte
+- (void) _assertByteInvalidatesTelnet: (uint8_t) byte
 {
-  [self resetStateMachine];
+  [self _resetStateMachine];
   uint8_t bytes[] = {MUTelnetInterpretAsCommand, byte};
-  [self assertState: C(MUTelnetIACState) givenByte: byte producesState: C(MUTelnetNotTelnetState)];
-  XCTAssertEqualObjects (output, [NSData dataWithBytes: bytes length: 2]);
-  [output setLength: 0];
+  [self _assertState: C(MUTelnetIACState) givenByte: byte producesState: C(MUTelnetNotTelnetState)];
+  XCTAssertEqualObjects (_output, [NSData dataWithBytes: bytes length: 2]);
+  [_output replaceBytesInRange: NSMakeRange (0, _output.length) withBytes: NULL length: 0];
 }
 
-- (void) assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass
+- (void) _assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass
 {
-  [self assertState: stateClass givenAnyByteProducesState: nextStateClass exceptForThoseInSet: [MUByteSet byteSet]];
+  [self _assertState: stateClass givenAnyByteProducesState: nextStateClass exceptForThoseInSet: [MUByteSet byteSet]];
 }
 
-- (void) assertState: (Class) stateClass
+- (void)     _assertState: (Class) stateClass
 givenAnyByteProducesState: (Class) nextStateClass
- exceptForThoseInSet: (MUByteSet *) exclusions
+      exceptForThoseInSet: (MUByteSet *) exclusions
 {
-  [self assertStateObject: [[stateClass alloc] init] givenAnyByteProducesState: nextStateClass exceptForThoseInSet: exclusions];
+  [self _assertStateObject: [[stateClass alloc] init]
+ givenAnyByteProducesState: nextStateClass
+       exceptForThoseInSet: exclusions];
 }
 
-- (void) assertState: (Class) stateClass
-           givenByte: (uint8_t) givenByte
-       producesState: (Class) nextStateClass
+- (void) _assertState: (Class) stateClass
+            givenByte: (uint8_t) givenByte
+        producesState: (Class) nextStateClass
 {
-  [self assertStateObject: [[stateClass alloc] init]
-                givenByte: givenByte
-            producesState: nextStateClass];
+  [self _assertStateObject: [[stateClass alloc] init] givenByte: givenByte producesState: nextStateClass];
 }
 
-- (void) assertState: (Class) stateClass
-           givenByte: (uint8_t) givenByte
-          inputsByte: (uint8_t) inputsByte
+- (void) _assertState: (Class) stateClass givenByte: (uint8_t) givenByte inputsByte: (uint8_t) inputsByte
 {
-  [self giveStateClass: stateClass byte: givenByte];
-  XCTAssertEqual (lastByteInput, inputsByte);
+  [self _giveStateClass: stateClass byte: givenByte];
+
+  XCTAssertEqual (_lastByteInput, inputsByte);
 }
 
-- (void) assertStateObject: (MUTelnetState *) state
- givenAnyByteProducesState: (Class) nextStateClass
-       exceptForThoseInSet: (MUByteSet *) exclusions
+- (void) _assertStateObject: (MUTelnetState *) state
+  givenAnyByteProducesState: (Class) nextStateClass
+        exceptForThoseInSet: (MUByteSet *) exclusions
 {
-  NSData *bytes = [[exclusions inverseSet] dataValue];
-  for (unsigned i = 0; i < [bytes length]; ++i)
-    [self assertStateObject: state givenByte: ((uint8_t *)[bytes bytes])[i] producesState: nextStateClass];
+  NSData *inverseByteSetData = exclusions.inverseSet.dataValue;
+
+  for (NSUInteger i = 0; i < inverseByteSetData.length; i++)
+  {
+    [self _assertStateObject: state givenByte: ((uint8_t *) inverseByteSetData.bytes)[i] producesState: nextStateClass];
+  }
 }
 
-- (void) assertStateObject: (MUTelnetState *) state
-                 givenByte: (uint8_t) byte
-             producesState: (Class) nextStateClass
+- (void) _assertStateObject: (MUTelnetState *) state givenByte: (uint8_t) byte producesState: (Class) nextStateClass
 {
-  MUTelnetState *nextState = [state parse: byte forStateMachine: stateMachine protocolHandler: self];
+  MUTelnetState *nextState = [state parse: byte forStateMachine: _stateMachine protocolHandler: self];
+  
   XCTAssertEqualObjects ([nextState class], nextStateClass, @"Byte was 0x%x (%d)", byte, byte);
 }
 
-- (void) giveStateClass: (Class) stateClass byte: (uint8_t) byte
+- (void) _giveStateClass: (Class) stateClass byte: (uint8_t) byte
 {
-  [[[stateClass alloc] init] parse: byte forStateMachine: stateMachine protocolHandler: self];  
+  [[[stateClass alloc] init] parse: byte forStateMachine: _stateMachine protocolHandler: self];
 }
 
-- (void) resetStateMachine
+- (void) _resetStateMachine
 {
-  
-  stateMachine = [MUTelnetStateMachine stateMachine];
+  _stateMachine = [MUTelnetStateMachine stateMachine];
 }
 
 @end

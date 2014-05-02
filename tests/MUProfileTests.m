@@ -4,19 +4,24 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUProfileTests.h"
 #import "MUProfile.h"
+
+@interface MUProfileTests : XCTestCase
+
+@end
+
+#pragma mark -
 
 @implementation MUProfileTests
 
 - (void) setUp
 {
-  return;
+  [super setUp];
 }
 
 - (void) tearDown
 {
-  return;
+  [super tearDown];
 }
 
 - (void) testUniqueIdentifer

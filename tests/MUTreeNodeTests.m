@@ -1,17 +1,14 @@
 //
-//  MUTreeNodeTests.m
-//  Koan
+// MUTreeNodeTests.m
 //
-//  Created by Tyler Berry on 1/12/11.
-//  Copyright 2011 3James Software. All rights reserved.
+// Copyright 2011 3James Software. All rights reserved.
 //
 
-#import "MUTreeNodeTests.h"
 #import "MUTreeNode.h"
 
-@interface MUTreeNodeTests ()
+@interface MUTreeNodeTests : XCTestCase
 
-- (MUTreeNode *) testingNode;
+- (MUTreeNode *) _testingNode;
 
 @end
 
@@ -24,17 +21,19 @@
 
 - (void) setUp
 {
+  [super setUp];
   _node = [[MUTreeNode alloc] init];
 }
 
 - (void) tearDown
 {
   _node = nil;
+  [super tearDown];
 }
 
 - (void) testAddChild
 {
-  MUTreeNode *child = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
   [_node insertValue: child inPropertyWithKey: @"children"];
   
   XCTAssertEqualObjects (_node.children[0], child);
@@ -42,7 +41,7 @@
 
 - (void) testContainsChild
 {
-  MUTreeNode *child = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
   [_node insertValue: child inPropertyWithKey: @"children"];
   
   XCTAssertTrue ([_node.children containsObject: child]);
@@ -50,7 +49,7 @@
 
 - (void) testCopyHasDifferentUniqueIdentifier
 {
-  MUTreeNode *child = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
   MUTreeNode *copy = [child copy];
   
   XCTAssertNotEqualObjects (child.uniqueIdentifier, copy.uniqueIdentifier);
@@ -58,7 +57,7 @@
 
 - (void) testRemoveChild
 {
-  MUTreeNode *child = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
   [_node insertValue: child inPropertyWithKey: @"children"];
   [_node removeValueAtIndex: [_node.children indexOfObject: child] fromPropertyWithKey: @"children"];
   
@@ -68,8 +67,8 @@
 
 - (void) testReplaceChild
 {
-  MUTreeNode *child = [self testingNode];
-  MUTreeNode *otherChild = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
+  MUTreeNode *otherChild = [self _testingNode];
   
   [_node insertValue: child inPropertyWithKey: @"children"];
   
@@ -89,7 +88,7 @@
 - (void) testNilChildren
 {
   MUTreeNode *thisNode = [[MUTreeNode alloc] initWithName: @"" children: nil];
-  MUTreeNode *child = [self testingNode];
+  MUTreeNode *child = [self _testingNode];
   @try
   {
     [thisNode insertValue: child inPropertyWithKey: @"children"];
@@ -103,7 +102,7 @@
 
 #pragma mark - Private methods
 
-- (MUTreeNode *) testingNode
+- (MUTreeNode *) _testingNode
 {
   return [[MUTreeNode alloc] init];
 }

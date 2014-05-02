@@ -73,6 +73,7 @@
 		2F558BCE19121787003DF275 /* MUNewlineTextAttributeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */; };
 		2F558BE51912FF63003DF275 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F558BE41912FF63003DF275 /* XCTest.framework */; };
 		2F558BE9191300D8003DF275 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F558BE8191300D8003DF275 /* Cocoa.framework */; };
+		2F558BEB191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F558BEA191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m */; };
 		2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */; };
 		2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56B16DB3A1A00A038FE /* pcre_ord2utf8.c */; };
 		2F5DBA8B16DD30B200DE627E /* pcre_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F1DC56116DB3A1A00A038FE /* pcre_compile.c */; };
@@ -404,7 +405,7 @@
 		2F558BCD19121787003DF275 /* MUNewlineTextAttributeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNewlineTextAttributeFilter.m; sourceTree = "<group>"; };
 		2F558BE41912FF63003DF275 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2F558BE8191300D8003DF275 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTreeNodeTests.h; sourceTree = "<group>"; };
+		2F558BEA191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUNewlineTextAttributeFilterTests.m; sourceTree = "<group>"; };
 		2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTreeNodeTests.m; sourceTree = "<group>"; };
 		2F5DBA9516DDA18300DE627E /* MURegexTestFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MURegexTestFilter.h; sourceTree = "<group>"; };
 		2F5DBA9616DDA18300DE627E /* MURegexTestFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MURegexTestFilter.m; sourceTree = "<group>"; };
@@ -506,7 +507,6 @@
 		2FB1F805161C045500AFD977 /* AddTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AddTemplate.pdf; sourceTree = "<group>"; };
 		2FB40CD80BF0FA3D004E13F8 /* MUFugueEditFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFugueEditFilter.h; sourceTree = "<group>"; };
 		2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFugueEditFilter.m; sourceTree = "<group>"; };
-		2FB40D930BF10694004E13F8 /* MUFugueEditFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFugueEditFilterTests.h; sourceTree = "<group>"; };
 		2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFugueEditFilterTests.m; sourceTree = "<group>"; };
 		2FB40E250BF10910004E13F8 /* MUFilterTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterTestCase.h; sourceTree = "<group>"; };
 		2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterTestCase.m; sourceTree = "<group>"; };
@@ -514,7 +514,6 @@
 		2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUOutlineView.m; sourceTree = "<group>"; };
 		2FC93E280BB103C500149459 /* MUTelnetProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetProtocolHandler.h; sourceTree = "<group>"; };
 		2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetProtocolHandler.m; sourceTree = "<group>"; };
-		2FCFEFDB0BCAE36D0061FB6B /* MUTextLogTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTextLogTests.h; sourceTree = "<group>"; };
 		2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTextLogTests.m; sourceTree = "<group>"; };
 		2FD0E1EA117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetSubnegotiationOptionState.h; sourceTree = "<group>"; };
 		2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetSubnegotiationOptionState.m; sourceTree = "<group>"; };
@@ -533,7 +532,6 @@
 		2FF41C05163142B40045D569 /* MUProtocolHandlerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUProtocolHandlerSubclass.h; sourceTree = "<group>"; };
 		2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnectionSubclass.h; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Koan-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Koan-Prefix.pch"; sourceTree = "<group>"; };
-		7E070ACD0933CD81000A36CF /* MUSOCKS5PrimitiveTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5PrimitiveTests.h; sourceTree = "<group>"; };
 		7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5PrimitiveTests.m; sourceTree = "<group>"; };
 		7E070AFC0933D01E000A36CF /* MUSOCKS5MethodSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5MethodSelection.h; sourceTree = "<group>"; };
 		7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5MethodSelection.m; sourceTree = "<group>"; };
@@ -542,17 +540,14 @@
 		7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAbstractConnection.m; sourceTree = "<group>"; };
 		7E13BA1A09AE950600508460 /* MUProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySettings.h; sourceTree = "<group>"; };
 		7E13BA1B09AE950600508460 /* MUProxySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySettings.m; sourceTree = "<group>"; };
-		7E13FA590788C75F0071D30C /* MUWorldTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorldTests.h; sourceTree = "<group>"; };
 		7E13FA5A0788C75F0071D30C /* MUWorldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUWorldTests.m; sourceTree = "<group>"; };
 		7E1FC01A0787A2220070AF39 /* MUProfileRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileRegistry.h; sourceTree = "<group>"; };
 		7E1FC01B0787A2220070AF39 /* MUProfileRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileRegistry.m; sourceTree = "<group>"; };
-		7E26CB1C0BD808A500FC3843 /* MUByteSetTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSetTests.h; sourceTree = "<group>"; };
 		7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteSetTests.m; sourceTree = "<group>"; };
 		7E26CB2D0BD80AAF00FC3843 /* MUByteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSet.h; sourceTree = "<group>"; };
 		7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUByteSet.m; sourceTree = "<group>"; };
 		7E39EF9B0783938F0042A17A /* MUProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfile.h; sourceTree = "<group>"; };
 		7E39EF9C0783938F0042A17A /* MUProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfile.m; sourceTree = "<group>"; };
-		7E43C1EC0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTerminalProtocolHandlerTests.h; sourceTree = "<group>"; };
 		7E43C1ED0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTerminalProtocolHandlerTests.m; sourceTree = "<group>"; };
 		7E4FB2640BCC877B007BC40F /* MUTelnetDontState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetDontState.h; sourceTree = "<group>"; };
 		7E4FB2650BCC877B007BC40F /* MUTelnetDontState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetDontState.m; sourceTree = "<group>"; };
@@ -580,7 +575,6 @@
 		7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSFont+Traits.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7E5C2DD909B105B2006993E1 /* MUSOCKS5Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Authentication.h; sourceTree = "<group>"; };
 		7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Authentication.m; sourceTree = "<group>"; };
-		7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetStateMachineTests.h; sourceTree = "<group>"; };
 		7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachineTests.m; sourceTree = "<group>"; };
 		7E68DC34092AC2FB004554BD /* MUReadBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUReadBuffer.h; sourceTree = "<group>"; };
 		7E68DC35092AC2FB004554BD /* MUReadBuffer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUReadBuffer.m; sourceTree = "<group>"; };
@@ -595,28 +589,22 @@
 		7EA5BB1F07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "XCTestCase+NSAttributedStringAssertions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7EC10AE809AF947C00D840A1 /* MUSOCKS5Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Request.h; sourceTree = "<group>"; };
 		7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Request.m; sourceTree = "<group>"; };
-		7EC112E8078B763E00CFA562 /* MUPlayerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPlayerTests.h; sourceTree = "<group>"; };
 		7EC112E9078B763E00CFA562 /* MUPlayerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPlayerTests.m; sourceTree = "<group>"; };
-		7EC301B0092B78DE00AFA5C7 /* MUWriteBufferTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWriteBufferTests.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7EC301B1092B78DE00AFA5C7 /* MUWriteBufferTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWriteBufferTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7EC301B3092B78F200AFA5C7 /* MUWriteBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWriteBuffer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7EC301B4092B78F200AFA5C7 /* MUWriteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWriteBuffer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7EC30306092B978B00AFA5C7 /* MUMUDConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnection.h; sourceTree = "<group>"; };
 		7EC30307092B978B00AFA5C7 /* MUMUDConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnection.m; sourceTree = "<group>"; };
 		7EC61429092EFF72004DF3CD /* MUByteSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSource.h; sourceTree = "<group>"; };
-		7EDD3E3F078A4AFB00138CD1 /* MUProfileTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileTests.h; sourceTree = "<group>"; };
 		7EDD3E40078A4AFB00138CD1 /* MUProfileTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileTests.m; sourceTree = "<group>"; };
 		7EE11F380BD8284100C78D9C /* MUTelnetNotTelnetState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetNotTelnetState.h; sourceTree = "<group>"; };
 		7EE11F390BD8284100C78D9C /* MUTelnetNotTelnetState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetNotTelnetState.m; sourceTree = "<group>"; };
 		7EF77C910BCC945D0047CF5D /* MUTelnetOption.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetOption.h; sourceTree = "<group>"; };
 		7EF77C920BCC945D0047CF5D /* MUTelnetOption.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetOption.m; sourceTree = "<group>"; };
-		7EF77CC90BCC99E30047CF5D /* MUTelnetOptionTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetOptionTests.h; sourceTree = "<group>"; };
 		7EF77CCA0BCC99E30047CF5D /* MUTelnetOptionTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetOptionTests.m; sourceTree = "<group>"; };
-		7EFACED00BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetProtocolHandlerTests.h; sourceTree = "<group>"; };
 		7EFACED10BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetProtocolHandlerTests.m; sourceTree = "<group>"; };
 		7EFE43820749C7CE002C7D48 /* MUFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUFilter.h; sourceTree = "<group>"; };
 		7EFE43830749C7CE002C7D48 /* MUFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUFilter.m; sourceTree = "<group>"; };
-		7EFE43B10749CB16002C7D48 /* MUFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUFilterTests.h; sourceTree = "<group>"; };
 		7EFE43B20749CB16002C7D48 /* MUFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUFilterTests.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Koan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -632,7 +620,6 @@
 		E648B8E906B03FBC0070F73E /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		E64C9631076BF95E00D0D7C0 /* MUPortFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPortFormatter.h; sourceTree = "<group>"; };
 		E64C9632076BF95E00D0D7C0 /* MUPortFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPortFormatter.m; sourceTree = "<group>"; };
-		E6505497077EA20E0016F30E /* MUAutoHyperlinksFilterTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAutoHyperlinksFilterTests.h; sourceTree = "<group>"; };
 		E6505498077EA20E0016F30E /* MUAutoHyperlinksFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAutoHyperlinksFilterTests.m; sourceTree = "<group>"; };
 		E6505ABF07820CC00016F30E /* User Stories.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "User Stories.rtf"; sourceTree = "<group>"; };
 		E653A7CF07AEFAB900023476 /* MUGrowlService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUGrowlService.h; sourceTree = "<group>"; };
@@ -642,7 +629,6 @@
 		E65CE071075438F9003A796A /* Koan.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Koan.icns; sourceTree = "<group>"; };
 		E677D20E0778041F00B417D2 /* MUPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPlayer.h; sourceTree = "<group>"; };
 		E677D20F0778041F00B417D2 /* MUPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPlayer.m; sourceTree = "<group>"; };
-		E696783C078F55590033A4C8 /* MUProfileRegistryTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileRegistryTests.h; sourceTree = "<group>"; };
 		E696783D078F55590033A4C8 /* MUProfileRegistryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileRegistryTests.m; sourceTree = "<group>"; };
 		E6B5E3B806A6EEA600F53EBB /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E6C9D604077C2DC6007BB2C1 /* MUAutoHyperlinksFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAutoHyperlinksFilter.h; sourceTree = "<group>"; };
@@ -653,9 +639,7 @@
 		E6E7A62707496940007005AC /* MUHistoryRing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHistoryRing.m; sourceTree = "<group>"; };
 		E6E7A62E07496971007005AC /* MUTextLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTextLogger.h; sourceTree = "<group>"; };
 		E6E7A6340749697C007005AC /* MUTextLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLogger.m; sourceTree = "<group>"; };
-		E6E7A63D0749698F007005AC /* MUTextLoggerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTextLoggerTests.h; sourceTree = "<group>"; };
 		E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTextLoggerTests.m; sourceTree = "<group>"; };
-		E6E7A6CC074970FE007005AC /* MUHistoryRingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUHistoryRingTests.h; sourceTree = "<group>"; };
 		E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUHistoryRingTests.m; sourceTree = "<group>"; };
 		E6F3A71D077A1B270011A461 /* MUWorldRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUWorldRegistry.h; sourceTree = "<group>"; };
 		E6F3A71E077A1B270011A461 /* MUWorldRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUWorldRegistry.m; sourceTree = "<group>"; };
@@ -1280,43 +1264,26 @@
 		E6B5E40A06A6F28400F53EBB /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E6505497077EA20E0016F30E /* MUAutoHyperlinksFilterTests.h */,
 				E6505498077EA20E0016F30E /* MUAutoHyperlinksFilterTests.m */,
-				7E26CB1C0BD808A500FC3843 /* MUByteSetTests.h */,
 				7E26CB1D0BD808A500FC3843 /* MUByteSetTests.m */,
 				2FB40E250BF10910004E13F8 /* MUFilterTestCase.h */,
 				2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */,
-				7EFE43B10749CB16002C7D48 /* MUFilterTests.h */,
 				7EFE43B20749CB16002C7D48 /* MUFilterTests.m */,
-				2FB40D930BF10694004E13F8 /* MUFugueEditFilterTests.h */,
 				2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */,
-				E6E7A6CC074970FE007005AC /* MUHistoryRingTests.h */,
 				E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */,
-				7EC112E8078B763E00CFA562 /* MUPlayerTests.h */,
+				2F558BEA191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m */,
 				7EC112E9078B763E00CFA562 /* MUPlayerTests.m */,
-				E696783C078F55590033A4C8 /* MUProfileRegistryTests.h */,
 				E696783D078F55590033A4C8 /* MUProfileRegistryTests.m */,
-				7EDD3E3F078A4AFB00138CD1 /* MUProfileTests.h */,
 				7EDD3E40078A4AFB00138CD1 /* MUProfileTests.m */,
-				7E070ACD0933CD81000A36CF /* MUSOCKS5PrimitiveTests.h */,
 				7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */,
-				7EF77CC90BCC99E30047CF5D /* MUTelnetOptionTests.h */,
 				7EF77CCA0BCC99E30047CF5D /* MUTelnetOptionTests.m */,
-				7EFACED00BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.h */,
 				7EFACED10BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m */,
-				7E68DC2C092AC2AF004554BD /* MUTelnetStateMachineTests.h */,
 				7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */,
-				7E43C1EC0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.h */,
 				7E43C1ED0ACB1C0900A8E677 /* MUTerminalProtocolHandlerTests.m */,
-				2FCFEFDB0BCAE36D0061FB6B /* MUTextLogTests.h */,
 				2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */,
-				E6E7A63D0749698F007005AC /* MUTextLoggerTests.h */,
 				E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */,
-				2F56CEB512DEB96900452A2D /* MUTreeNodeTests.h */,
 				2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */,
-				7E13FA590788C75F0071D30C /* MUWorldTests.h */,
 				7E13FA5A0788C75F0071D30C /* MUWorldTests.m */,
-				7EC301B0092B78DE00AFA5C7 /* MUWriteBufferTests.h */,
 				7EC301B1092B78DE00AFA5C7 /* MUWriteBufferTests.m */,
 				7EA5BB1E07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.h */,
 				7EA5BB1F07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.m */,
@@ -1755,6 +1722,7 @@
 				2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */,
 				7E87757209AD62FE00A883BC /* MUSOCKS5PrimitiveTests.m in Sources */,
 				2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */,
+				2F558BEB191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m in Sources */,
 				7EFACED20BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m in Sources */,
 				7EF77CCB0BCC99E30047CF5D /* MUTelnetOptionTests.m in Sources */,
 				7E87757309AD630E00A883BC /* MUTelnetStateMachineTests.m in Sources */,

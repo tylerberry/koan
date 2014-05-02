@@ -4,9 +4,14 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUWorldTests.h"
 #import "MUWorld.h"
 #import "MUPlayer.h"
+
+@interface MUWorldTests : XCTestCase
+
+@end
+
+#pragma mark -
 
 @implementation MUWorldTests
 {
@@ -16,6 +21,7 @@
 
 - (void) setUp
 {
+  [super setUp];
   _world = [[MUWorld alloc] init];
   _player = [[MUPlayer alloc] init];
 }
@@ -24,6 +30,7 @@
 {
   _world = nil;
   _player = nil;
+  [super tearDown];
 }
 
 - (void) testUniqueIdentifierPersistsThroughArchiving

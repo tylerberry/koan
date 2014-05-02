@@ -4,9 +4,9 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUFugueEditFilterTests.h"
-#import "MUFugueEditFilter.h"
+#import "MUFilterTestCase.h"
 
+#import "MUFugueEditFilter.h"
 #import "MUPlayer.h"
 #import "MUProfile.h"
 
@@ -46,6 +46,12 @@
 
 #pragma mark -
 
+@interface MUFugueEditFilterTests : MUFilterTestCase <MUFugueEditFilterDelegate>
+
+@end
+
+#pragma mark -
+
 @implementation MUFugueEditFilterTests
 {
   NSString *_editString;
@@ -59,7 +65,6 @@
 - (void) setUp
 {
   [super setUp];
-  
   _editString = nil;
   
   [self.queue addFilter: [MUFugueEditFilter filterWithProfile: [MUProfile profileForTestingFugueEdit]
@@ -68,6 +73,7 @@
 
 - (void) tearDown
 {
+  _editString = nil;
   [super tearDown];
 }
 

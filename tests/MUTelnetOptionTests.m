@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-#import "MUTelnetOptionTests.h"
+#import "MUTelnetOption.h"
 
 #define DO 0x01
 #define DONT 0x02
@@ -13,18 +13,16 @@
 
 #define QSTATES 6
 
-#pragma mark -
-
 typedef int MUQMethodTable[QSTATES][3];
 
 #pragma mark -
 
 @interface MUTelnetOption (TestAccessors)
 
-- (MUTelnetQState) him;
-- (void) setHim: (MUTelnetQState) state;
-- (MUTelnetQState) us;
-- (void) setUs: (MUTelnetQState) state;
+- (MUTelnetQState) _him;
+- (void) _setHim: (MUTelnetQState) state;
+- (MUTelnetQState) _us;
+- (void) _setUs: (MUTelnetQState) state;
 
 @end
 
@@ -32,22 +30,22 @@ typedef int MUQMethodTable[QSTATES][3];
 
 @implementation MUTelnetOption (TestAccessors)
 
-- (MUTelnetQState) him
+- (MUTelnetQState) _him
 {
   return _him;
 }
 
-- (void) setHim: (MUTelnetQState) state
+- (void) _setHim: (MUTelnetQState) state
 {
   _him = state;
 }
 
-- (MUTelnetQState) us
+- (MUTelnetQState) _us
 {
   return _us;
 }
 
-- (void) setUs: (MUTelnetQState) state
+- (void) _setUs: (MUTelnetQState) state
 {
   _us = state;
 }
@@ -56,7 +54,7 @@ typedef int MUQMethodTable[QSTATES][3];
 
 #pragma mark -
 
-@interface MUTelnetOptionTests ()
+@interface MUTelnetOptionTests : XCTestCase <MUTelnetOptionDelegate>
 
 - (void) assertQMethodTable: (MUQMethodTable) table forSelector: (SEL) selector forHimOrUs: (SEL) himOrUs;
 - (void) assertWhenSelector: (SEL) selector
@@ -72,16 +70,22 @@ typedef int MUQMethodTable[QSTATES][3];
 #pragma mark -
 
 @implementation MUTelnetOptionTests
+{
+  MUTelnetOption *_option;
+  char _flags;
+}
 
 - (void) setUp
 {
+  [super setUp];
   [self clearFlags];
-  option = [[MUTelnetOption alloc] initWithOption: 0 delegate: self];
+  _option = [[MUTelnetOption alloc] initWithOption: 0 delegate: self];
 }
 
 - (void) tearDown
 {
-  return;
+  _option = nil;
+  [super tearDown];
 }
 
 - (void) testReceivedWont
@@ -94,7 +98,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQNo,            0},
     {MUTelnetQWantYesOpposite,  MUTelnetQNo,            0},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedWont) forHimOrUs: @selector (him)];
+  [self assertQMethodTable: table forSelector: @selector (receivedWont) forHimOrUs: @selector (_him)];
 }
 
 - (void) testReceivedDont
@@ -107,12 +111,12 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQNo,            0},
     {MUTelnetQWantYesOpposite,  MUTelnetQNo,            0},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedDont) forHimOrUs: @selector (us)];
+  [self assertQMethodTable: table forSelector: @selector (receivedDont) forHimOrUs: @selector (_us)];
 }
 
 - (void) testReceivedWillAndWeDoNotWantTo
 {
-  option.permittedForHim = NO;
+  _option.permittedForHim = NO;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            DONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -121,12 +125,12 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQYes,           0},
     {MUTelnetQWantYesOpposite,  MUTelnetQWantNoEmpty,   DONT},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedWill) forHimOrUs: @selector (him)];  
+  [self assertQMethodTable: table forSelector: @selector (receivedWill) forHimOrUs: @selector (_him)];
 }
 
 - (void) testReceivedWillAndWeDoWantTo
 {
-  option.permittedForHim = YES;
+  _option.permittedForHim = YES;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           DO},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -135,12 +139,12 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQYes,           0},
     {MUTelnetQWantYesOpposite,  MUTelnetQWantNoEmpty,   DONT},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedWill) forHimOrUs: @selector (him)];    
+  [self assertQMethodTable: table forSelector: @selector (receivedWill) forHimOrUs: @selector (_him)];
 }
 
 - (void) testReceivedDoAndWeDoNotWantTo
 {
-  option.permittedForUs = NO;
+  _option.permittedForUs = NO;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQNo,            WONT},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -149,12 +153,12 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQYes,           0},
     {MUTelnetQWantYesOpposite,  MUTelnetQWantNoEmpty,   WONT},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedDo) forHimOrUs: @selector (us)];    
+  [self assertQMethodTable: table forSelector: @selector (receivedDo) forHimOrUs: @selector (_us)];
 }
 
 - (void) testReceivedDoAndWeDoWantTo
 {
-  option.permittedForUs = YES;
+  _option.permittedForUs = YES;
   MUQMethodTable table = {
     {MUTelnetQNo,               MUTelnetQYes,           WILL},
     {MUTelnetQYes,              MUTelnetQYes,           0},
@@ -163,7 +167,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQYes,           0},
     {MUTelnetQWantYesOpposite,  MUTelnetQWantNoEmpty,   WONT},
   };
-  [self assertQMethodTable: table forSelector: @selector (receivedDo) forHimOrUs: @selector (us)];    
+  [self assertQMethodTable: table forSelector: @selector (receivedDo) forHimOrUs: @selector (_us)];
 }
 
 - (void) testEnableHimWithQueue
@@ -176,7 +180,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQWantYesEmpty,    0},   // error
     {MUTelnetQWantYesOpposite,  MUTelnetQWantYesEmpty,    0},
   };
-  [self assertQMethodTable: table forSelector: @selector (enableHim) forHimOrUs: @selector (him)];    
+  [self assertQMethodTable: table forSelector: @selector (enableHim) forHimOrUs: @selector (_him)];
 }
 
 - (void) testEnableUsWithQueue
@@ -189,7 +193,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQWantYesEmpty,    0},   // error
     {MUTelnetQWantYesOpposite,  MUTelnetQWantYesEmpty,    0},
   };
-  [self assertQMethodTable: table forSelector: @selector (enableUs) forHimOrUs: @selector (us)];    
+  [self assertQMethodTable: table forSelector: @selector (enableUs) forHimOrUs: @selector (_us)];
 }
 
 - (void) testDisableHimWithQueue
@@ -202,7 +206,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQWantYesOpposite, 0},   
     {MUTelnetQWantYesOpposite,  MUTelnetQWantYesOpposite, 0},   // error
   };
-  [self assertQMethodTable: table forSelector: @selector (disableHim) forHimOrUs: @selector (him)];    
+  [self assertQMethodTable: table forSelector: @selector (disableHim) forHimOrUs: @selector (_him)];
 }
 
 - (void) testDisableUsWithQueue
@@ -215,7 +219,7 @@ typedef int MUQMethodTable[QSTATES][3];
     {MUTelnetQWantYesEmpty,     MUTelnetQWantYesOpposite, 0},   
     {MUTelnetQWantYesOpposite,  MUTelnetQWantYesOpposite, 0},   // error
   };
-  [self assertQMethodTable: table forSelector: @selector (disableUs) forHimOrUs: @selector (us)];    
+  [self assertQMethodTable: table forSelector: @selector (disableUs) forHimOrUs: @selector (_us)];
 }
 
 - (void) testHeIsEnabled
@@ -224,11 +228,11 @@ typedef int MUQMethodTable[QSTATES][3];
     MUTelnetQWantYesEmpty, MUTelnetQWantYesOpposite};
   for (unsigned i = 0; i < 5; ++i)
   {
-    [option setHim: noStates[i]];
-    XCTAssertFalse (option.enabledForHim, @"%@", [self qStateName: noStates[i]]);
+    [_option _setHim: noStates[i]];
+    XCTAssertFalse (_option.enabledForHim, @"%@", [self qStateName: noStates[i]]);
   }
-  [option setHim: MUTelnetQYes];
-  XCTAssertTrue (option.enabledForHim);
+  [_option _setHim: MUTelnetQYes];
+  XCTAssertTrue (_option.enabledForHim);
 }
 
 - (void) testWeAreEnabled
@@ -237,33 +241,33 @@ typedef int MUQMethodTable[QSTATES][3];
     MUTelnetQWantYesEmpty, MUTelnetQWantYesOpposite};
   for (unsigned i = 0; i < 5; ++i)
   {
-    [option setUs: noStates[i]];
-    XCTAssertFalse (option.enabledForUs, @"%@", [self qStateName: noStates[i]]);
+    [_option _setUs: noStates[i]];
+    XCTAssertFalse (_option.enabledForUs, @"%@", [self qStateName: noStates[i]]);
   }
-  [option setUs: MUTelnetQYes];
-  XCTAssertTrue (option.enabledForUs);
+  [_option _setUs: MUTelnetQYes];
+  XCTAssertTrue (_option.enabledForUs);
 }
 
 #pragma mark - MUTelnetOptionDelegate protocol
 
 - (void) do: (uint8_t) option
 {
-  flags = flags | DO;
+  _flags = _flags | DO;
 }
 
 - (void) dont: (uint8_t) option
 {
-  flags = flags | DONT;
+  _flags = _flags | DONT;
 }
 
 - (void) will: (uint8_t) option
 {
-  flags = flags | WILL;
+  _flags = _flags | WILL;
 }
 
 - (void) wont: (uint8_t) option
 {
-  flags = flags | WONT;
+  _flags = _flags | WONT;
 }
 
 #pragma mark - Private methods
@@ -290,26 +294,26 @@ typedef int MUQMethodTable[QSTATES][3];
   
   [self clearFlags];
   
-  if (himOrUs == @selector (him))
-    [option setHim: startState];
+  if (himOrUs == @selector (_him))
+    [_option _setHim: startState];
   else
-    [option setUs: startState];
+    [_option _setUs: startState];
   
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
   
-  [option performSelector: selector];
+  [_option performSelector: selector];
   
-  XCTAssertEqual ((MUTelnetQState) [option performSelector: himOrUs], endState, @"%@ ending state", message);
+  XCTAssertEqual ((MUTelnetQState) [_option performSelector: himOrUs], endState, @"%@ ending state", message);
 
 #pragma clang diagnostic pop
   
-  XCTAssertEqual (flags, expectedFlags, @"%@ flags", message);
+  XCTAssertEqual (_flags, expectedFlags, @"%@ flags", message);
 }
 
 - (void) clearFlags
 {
-  flags = 0;
+  _flags = 0;
 }
 
 - (NSString *) qStateName: (MUTelnetQState) state

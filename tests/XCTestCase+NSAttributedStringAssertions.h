@@ -14,11 +14,11 @@
                    equalsString: (NSString *) expectedString;
 
 - (void) assertAttributesTheSameInString: (NSAttributedString *) string
-                               withRange: (NSRange)range
+                               withRange: (NSRange) range
                                  message: (NSString *) message;
 
 - (void) assertAttributesTheSameInString: (NSAttributedString *) string
-                               withRange: (NSRange)range;
+                               withRange: (NSRange) range;
 
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
@@ -34,12 +34,12 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString*) string
-               withRange: (NSRange)range
+               withRange: (NSRange) range
                  message: (NSString *) message;
 
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString*) string
-               withRange: (NSRange)range;
+               withRange: (NSRange) range;
 
 @end

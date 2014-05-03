@@ -62,7 +62,7 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString*) string
-               withRange: (NSRange)range
+               withRange: (NSRange) range
                  message: (NSString *) message
 {
   [self assertAttribute: attributeName
@@ -76,7 +76,7 @@
 - (void) assertAttribute: (NSString *) attributeName
                   equals: (id) expectedValue
       inAttributedString: (NSAttributedString *) string
-               withRange: (NSRange)range
+               withRange: (NSRange) range
 {
   [self assertAttribute: attributeName equals: expectedValue inAttributedString: string withRange: range message: nil];
 }

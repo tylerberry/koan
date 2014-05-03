@@ -8,9 +8,6 @@
 #import "MUProfile.h"
 
 @interface MUProfileRegistry ()
-{
-  NSMutableDictionary *_mutableProfiles;
-}
 
 - (void) _cleanUpDefaultRegistry: (NSNotification *) notification;
 - (void) _startObservingWritableValuesForProfile: (MUProfile *) profile;
@@ -22,6 +19,9 @@
 #pragma mark -
 
 @implementation MUProfileRegistry
+{
+  NSMutableDictionary *_mutableProfiles;
+}
 
 @dynamic profiles;
 

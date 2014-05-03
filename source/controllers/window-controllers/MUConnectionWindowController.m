@@ -113,7 +113,15 @@ enum MUTextDisplayModes
   
   [receivedTextView.textContainer replaceLayoutManager: [[MULayoutManager alloc] init]];
   receivedTextView.layoutManager.allowsNonContiguousLayout = YES;
-  
+
+  // Disable text substitution options on the input text view.
+
+  [inputView setAutomaticDashSubstitutionEnabled: NO];
+  [inputView setAutomaticDataDetectionEnabled: NO];
+  [inputView setAutomaticLinkDetectionEnabled: NO];
+  [inputView setAutomaticQuoteSubstitutionEnabled: NO];
+  [inputView setAutomaticTextReplacementEnabled: NO];
+
   // Set the initial link text color.
   
   [self _updateLinkTextColor];

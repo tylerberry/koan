@@ -559,7 +559,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
   _lastNumberOfColumns = 0;
   _lastNumberOfLines = 0;
-  _reconnectCount = 0;
 }
 
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer

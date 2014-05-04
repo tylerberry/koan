@@ -83,8 +83,7 @@ enum MUTextDisplayModes
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
     return nil;
   
-  _connection = [[MUMUDConnection alloc] initWithProfile: newProfile
-                                                delegate: self];
+  _connection = [[MUMUDConnection alloc] initWithProfile: newProfile delegate: self];
   
   _historyRing = [MUHistoryRing historyRing];
   

@@ -60,12 +60,8 @@
       oldProfile = nil;
     
     id newValue = changeDictionary[NSKeyValueChangeNewKey];
-    MUProfile *newProfile;
-    
-    if ([newValue isKindOfClass: [MUProfile class]])
-      newProfile = (MUProfile *) newValue;
-    else
-      newProfile = nil;
+
+    MUProfile *newProfile = [newValue isKindOfClass: [MUProfile class]] ? (MUProfile *) newValue : nil;
     
     if (oldProfile)
     {
@@ -94,6 +90,7 @@
     else
     {
       NSLog (@"Error: MUProfileViewController.representedObject got set to something that isn't an MUProfile.");
+      return;
     }
     
     [self willChangeValueForKey: @"editableEffectiveBackgroundColor"];
@@ -165,7 +162,6 @@
 
 - (void) setNextResponder: (NSResponder *) responder
 {
-  NSLog (@"Ping");
   [super setNextResponder: responder];
 }
 

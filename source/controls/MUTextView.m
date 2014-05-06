@@ -6,6 +6,8 @@
 
 #import "MUTextView.h"
 
+#import "tgmath.h"
+
 @implementation MUTextView
 
 @dynamic monospaceCharacterHeight, monospaceCharacterSize, monospaceCharacterWidth, numberOfColumns, numberOfLines;
@@ -29,47 +31,54 @@
 
 - (NSUInteger) numberOfColumns
 {
-  CGFloat availableHorizontalSpace;
+  CGFloat availableHorizontalSpace = self.enclosingScrollView ? self.enclosingScrollView.contentSize.width
+                                                              : self.bounds.size.width;
   
-  if (self.enclosingScrollView)
-    availableHorizontalSpace = self.enclosingScrollView.contentSize.width;
-  else
-    availableHorizontalSpace = self.bounds.size.width;
-  
-  availableHorizontalSpace -= 2 * (self.textContainerInset.width + self.textContainer.lineFragmentPadding);
-  
-  return (NSUInteger) (availableHorizontalSpace / self.monospaceCharacterWidth);
+  return [self numberOfColumnsForWidth: availableHorizontalSpace];
 }
 
 - (NSUInteger) numberOfLines
 {
-  CGFloat availableVerticalSpace;
+  CGFloat availableVerticalSpace = self.enclosingScrollView ? self.enclosingScrollView.contentSize.height
+                                                            : self.bounds.size.height;
   
-  if (self.enclosingScrollView)
-    availableVerticalSpace = self.enclosingScrollView.contentSize.height;
-  else
-    availableVerticalSpace = self.bounds.size.height;
-  
-  availableVerticalSpace -= 2 * self.textContainerInset.height;
-  
-  return (NSUInteger) (availableVerticalSpace / self.monospaceCharacterHeight);
+  return [self numberOfLinesForHeight: availableVerticalSpace];
 }
 
-- (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling
+#pragma mark - Methods
+
+- (CGFloat) minimumHeightForLines: (NSUInteger) numberOfLines
 {
-  if (animateScrolling)
-  {
-    NSRange glyphRange = [self.layoutManager glyphRangeForCharacterRange: range actualCharacterRange: NULL];
-    NSRect glyphRect = [self.layoutManager boundingRectForGlyphRange: glyphRange
-                                                     inTextContainer: self.textContainer];
-    
-    [NSAnimationContext beginGrouping];
-    [NSAnimationContext currentContext].duration = 1.0f;
-    [self.enclosingScrollView.contentView.animator setBoundsOrigin: glyphRect.origin];
-    [NSAnimationContext endGrouping];
-  }
-  else
-    [self scrollRangeToVisible: range];
+  CGFloat characterAreaHeight = numberOfLines * self.monospaceCharacterHeight;
+
+  return characterAreaHeight + (2 * self.textContainerInset.height);
+}
+
+- (CGFloat) minimumWidthForColumns: (NSUInteger) numberOfColumns
+{
+  CGFloat characterAreaWidth = numberOfColumns * self.monospaceCharacterWidth;
+
+  return characterAreaWidth + 2 * (self.textContainerInset.width + self.textContainer.lineFragmentPadding);
+}
+
+- (NSUInteger) numberOfColumnsForWidth: (CGFloat) width
+{
+  if (self.monospaceCharacterWidth == 0.0) // Dividing by zero is bad. :)
+    return 0;
+
+  width -= 2 * (self.textContainerInset.width + self.textContainer.lineFragmentPadding);
+  
+  return (NSUInteger) floor (width / self.monospaceCharacterWidth);
+}
+
+- (NSUInteger) numberOfLinesForHeight: (CGFloat) height
+{
+  if (self.monospaceCharacterHeight == 0.0) // Dividing by zero is still bad. :)
+    return 0;
+
+  height -= 2 * self.textContainerInset.height;
+
+  return (NSUInteger) floor (height / self.monospaceCharacterHeight);
 }
 
 #pragma mark - Overrides
@@ -81,19 +90,26 @@
   
   CGFloat y = self.textContainerInset.height;
 
+  if (self.monospaceCharacterHeight == 0.0
+      || self.monospaceCharacterWidth == 0.0)
+    return;
+
   while (y <= self.bounds.size.height - self.textContainerInset.height)
   {
     if (y < rect.origin.y || y > rect.origin.y + rect.size.height)
+    {
+      y += self.monospaceCharacterHeight;
       continue;
+    }
     [gridLine moveToPoint: NSMakePoint (rect.origin.x, y)];
     [gridLine lineToPoint: NSMakePoint (rect.origin.x + rect.size.width, y)];
 
-    y += self.monospaceCharacterSize.height;
+    y += self.monospaceCharacterHeight;
   }
   
   for (CGFloat x = self.textContainerInset.width + self.textContainer.lineFragmentPadding;
        x <= self.bounds.size.width - self.textContainerInset.width - self.textContainer.lineFragmentPadding;
-       x += self.monospaceCharacterSize.width)
+       x += self.monospaceCharacterWidth)
   {
     if (x < rect.origin.x || x > rect.origin.x + rect.size.width)
       continue;
@@ -112,14 +128,30 @@
   //[self drawGrid: rect];
 }
 
+- (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling
+{
+  if (animateScrolling)
+  {
+    NSRange glyphRange = [self.layoutManager glyphRangeForCharacterRange: range actualCharacterRange: NULL];
+    NSRect glyphRect = [self.layoutManager boundingRectForGlyphRange: glyphRange
+                                                     inTextContainer: self.textContainer];
+
+    [NSAnimationContext beginGrouping];
+    [NSAnimationContext currentContext].duration = 1.0f;
+    [self.enclosingScrollView.contentView.animator setBoundsOrigin: glyphRect.origin];
+    [NSAnimationContext endGrouping];
+  }
+  else
+    [self scrollRangeToVisible: range];
+}
+
 - (BOOL) validateMenuItem: (NSMenuItem *) menuItem
 {
   if (menuItem.action == @selector (paste:)
       || menuItem.action == @selector (pasteAsPlainText:)
       || menuItem.action == @selector (pasteAsRichText:))
   {
-    if ([self.delegate respondsToSelector: @selector (textView:pasteAsPlainText:)])
-      return YES;
+    return [self.delegate respondsToSelector: @selector (textView:pasteAsPlainText:)];
   }
   
   return [super validateMenuItem: menuItem];

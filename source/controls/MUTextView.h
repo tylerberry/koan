@@ -10,11 +10,19 @@
 
 @property (weak) IBOutlet NSObject <MUTextViewPasteDelegate> *pasteDelegate;
 
-@property (readonly) CGFloat monospaceCharacterWidth;
 @property (readonly) NSSize monospaceCharacterSize;
+
+@property (readonly) CGFloat monospaceCharacterWidth;
 @property (readonly) CGFloat monospaceCharacterHeight;
+
 @property (readonly) NSUInteger numberOfColumns;
 @property (readonly) NSUInteger numberOfLines;
+
+- (NSUInteger) numberOfColumnsForWidth: (CGFloat) width;
+- (NSUInteger) numberOfLinesForHeight: (CGFloat) height;
+
+- (CGFloat) minimumHeightForLines: (NSUInteger) numberOfLines;
+- (CGFloat) minimumWidthForColumns: (NSUInteger) numberOfColumns;
 
 - (void) scrollRangeToVisible: (NSRange) range animate: (BOOL) animateScrolling;
 

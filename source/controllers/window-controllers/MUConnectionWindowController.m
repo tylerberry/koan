@@ -57,6 +57,8 @@ enum MUTextDisplayModes
 - (void) _updateTextColor;
 - (void) _updateTimeConnectedField: (NSTimer *) timer;
 - (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
+- (CGFloat) _windowHeightForCandidateHeight: (CGFloat) candidateHeight;
+- (CGFloat) _windowWidthForCandidateWidth: (CGFloat) candidateWidth;
 
 @end
 
@@ -128,12 +130,29 @@ enum MUTextDisplayModes
   // Restore window and split view title, size, and position.
   
   self.window.title = self.connection.profile.windowTitle;
+
   self.window.frameAutosaveName = self.connection.profile.uniqueIdentifier;
-  self.window.frameUsingName = self.connection.profile.uniqueIdentifier;
-  
+  [self.window setFrameUsingName: self.connection.profile.uniqueIdentifier];
+
   splitView.autosaveName = [self _splitViewAutosaveName];
   [splitView adjustSubviews];
-  
+
+  // Ratchet the window down to respect column and line size.
+
+  [self.window setFrame: NSMakeRect (self.window.frame.origin.x,
+                                     self.window.frame.origin.y,
+                                     [self _windowWidthForCandidateWidth: self.window.frame.size.width],
+                                     [self _windowHeightForCandidateHeight: self.window.frame.size.height])
+                display: YES];
+
+  NSLog (@"%g, %g", ((NSView *) self.window.contentView).frame.size.width, ((NSView *) self.window.contentView).frame.size.height);
+  NSLog (@"splitView height: frame %g bounds %g", splitView.frame.size.height, splitView.bounds.size.height);
+  NSLog (@"receivedTextView height: frame %g bounds %g", receivedTextView.frame.size.height, receivedTextView.bounds.size.height);
+  NSLog (@"inputTextView height: frame %g bounds %g", inputView.frame.size.height, inputView.bounds.size.height);
+
+  NSLog (@"receivedTextView width: frame %g bounds %g", receivedTextView.frame.size.width, receivedTextView.bounds.size.width);
+  NSLog (@"inputTextView width: frame %g bounds %g", inputView.frame.size.width, inputView.bounds.size.width);
+
   // Bindings and notifications.
   
   [receivedTextView bind: @"backgroundColor"
@@ -978,7 +997,8 @@ enum MUTextDisplayModes
 {
   _shouldScrollToBottomAfterResize = [self _shouldScrollDisplayViewToBottom];
   
-  return frameSize;
+  return NSMakeSize ([self _windowWidthForCandidateWidth: frameSize.width],
+                     [self _windowHeightForCandidateHeight: frameSize.height]);
 }
 
 #pragma mark - Private methods
@@ -1537,6 +1557,19 @@ enum MUTextDisplayModes
     if (contextInfo)
       ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, YES);
   }
+}
+
+- (CGFloat) _windowHeightForCandidateHeight: (CGFloat) candidateHeight
+{
+  return candidateHeight;
+}
+
+- (CGFloat) _windowWidthForCandidateWidth: (CGFloat) candidateWidth
+{
+  NSUInteger numberOfColumnsForWidth = [receivedTextView numberOfColumnsForWidth: candidateWidth];
+
+  return numberOfColumnsForWidth == 0 ? candidateWidth
+                                      : [receivedTextView minimumWidthForColumns: numberOfColumnsForWidth];
 }
 
 @end

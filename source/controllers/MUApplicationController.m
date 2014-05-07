@@ -73,7 +73,7 @@
   
   [MUApplicationController _initializeUserDefaults];
   
-  [[NSFontManager sharedFontManager] setAction: @selector (changeProfileFont:)];
+  [NSFontManager sharedFontManager].action = @selector (changeProfileFont:);
 }
 
 - (void) awakeFromNib

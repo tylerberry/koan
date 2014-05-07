@@ -31,14 +31,14 @@
                         <rect key="frame" x="0.0" y="21.5" width="534" height="432"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" id="150">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" id="150" userLabel="Scroll View - Received Text View">
                                 <rect key="frame" x="0.0" y="0.0" width="534" height="349.5"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="kTI-JR-FqR">
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="kTI-JR-FqR" userLabel="Clip View - Received Text View">
                                     <rect key="frame" x="0.0" y="0.0" width="534" height="349.5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView editable="NO" importsGraphics="NO" findStyle="bar" incrementalSearchingEnabled="YES" usesRuler="YES" verticallyResizable="YES" spellingCorrection="YES" id="153" customClass="MUTextView">
+                                        <textView editable="NO" importsGraphics="NO" findStyle="bar" incrementalSearchingEnabled="YES" usesRuler="YES" verticallyResizable="YES" spellingCorrection="YES" id="153" userLabel="Received Text View" customClass="MUTextView">
                                             <rect key="frame" x="0.0" y="0.0" width="534" height="349.5"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -65,14 +65,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" id="155">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" id="155" userLabel="Scroll View - Input Text View">
                                 <rect key="frame" x="0.0" y="350.5" width="534" height="81.5"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Ylz-3L-zZ4">
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Ylz-3L-zZ4" userLabel="Clip View - Input Text View">
                                     <rect key="frame" x="0.0" y="0.0" width="534" height="81.5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView importsGraphics="NO" allowsUndo="YES" usesRuler="YES" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="156" customClass="MUTextView">
+                                        <textView importsGraphics="NO" allowsUndo="YES" usesRuler="YES" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="156" userLabel="Input Text View" customClass="MUTextView">
                                             <rect key="frame" x="0.0" y="0.0" width="534" height="81.5"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -108,10 +108,10 @@
                             <outlet property="delegate" destination="-2" id="180"/>
                         </connections>
                     </splitView>
-                    <textField verticalHuggingPriority="750" id="181">
+                    <textField verticalHuggingPriority="750" id="181" userLabel="Text Field - Time Connected">
                         <rect key="frame" x="461" y="5" width="70" height="11"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="3:04:11" id="182">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="3:04:11" id="182" userLabel="Text Field Cell - Time Connected">
                             <font key="font" metaFont="miniSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

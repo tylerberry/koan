@@ -1,9 +1,7 @@
 //
-//  MUTerminalStateMachine.m
-//  Koan
+// MUTerminalStateMachine.m
 //
-//  Created by Tyler Berry on 4/24/14.
-//  Copyright (c) 2014 3James Software. All rights reserved.
+// Copyright (c) 2014 3James Software. All rights reserved.
 //
 
 #import "MUTerminalStateMachine.h"
@@ -12,12 +10,12 @@
 
 @implementation MUTerminalStateMachine
 
-+ (id) stateMachine
++ (instancetype) stateMachine
 {
   return [[self alloc] init];
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

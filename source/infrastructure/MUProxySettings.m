@@ -35,7 +35,7 @@ static const int32_t currentProxyVersion = 3;
   }
 }
 
-+ (MUProxySettings *) systemSOCKSProxySettings
++ (instancetype) systemSOCKSProxySettings
 {
   CFDictionaryRef proxySettings = SCDynamicStoreCopyProxies (NULL);
   
@@ -62,12 +62,7 @@ static const int32_t currentProxyVersion = 3;
   }
 }
 
-+ (MUProxySettings *) proxySettings
-{
-  return [[self alloc] init];
-}
-
-- (id) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort
+- (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort
 {
   if (!(self = [super init]))
     return nil;
@@ -81,7 +76,7 @@ static const int32_t currentProxyVersion = 3;
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithHostname: @"" port: @1080];
 }
@@ -98,7 +93,7 @@ static const int32_t currentProxyVersion = 3;
 
 #pragma mark - NSCoding protocol
 
-- (id) initWithCoder: (NSCoder *) coder
+- (instancetype) initWithCoder: (NSCoder *) coder
 {
   int32_t version = [coder decodeInt32ForKey: @"version"];
   

@@ -11,12 +11,12 @@
 
 @interface MUProxySocket : MUSocket
 
-+ (id) socketWithHostname: (NSString *) hostname
-                     port: (uint16_t) port
-            proxySettings: (MUProxySettings *) settings;
++ (instancetype) socketWithHostname: (NSString *) hostname
+                               port: (uint16_t) port
+                      proxySettings: (MUProxySettings *) settings;
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (uint16_t) port
-          proxySettings: (MUProxySettings *) settings;
+- (instancetype) initWithHostname: (NSString *) hostname
+                             port: (uint16_t) port
+                    proxySettings: (MUProxySettings *) settings;
 
 @end

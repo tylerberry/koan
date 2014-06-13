@@ -127,7 +127,7 @@
   }
 }
 
-- (id) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object
+- (instancetype) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object
 {
   if (!(self = [super init]))
     return nil;

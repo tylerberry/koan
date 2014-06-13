@@ -11,7 +11,7 @@
 
 @implementation MUSocketFactory
 
-+ (MUSocketFactory *) defaultFactory
++ (instancetype) defaultFactory
 {
   static MUSocketFactory *defaultFactory = nil;  
   static dispatch_once_t predicate;
@@ -21,7 +21,7 @@
   return defaultFactory;
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

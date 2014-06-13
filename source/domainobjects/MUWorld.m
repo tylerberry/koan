@@ -14,12 +14,12 @@ static const int32_t currentWorldVersion = 9;
 
 @dynamic windowTitle;
 
-+ (MUWorld *) worldWithName: (NSString *) name
-                   hostname: (NSString *) hostname
-                       port: (NSNumber *) port
-                   forceTLS: (BOOL) forceTLS
-                        URL: (NSString *) url
-                   children: (NSArray *) children
++ (instancetype) worldWithName: (NSString *) name
+                      hostname: (NSString *) hostname
+                          port: (NSNumber *) port
+                      forceTLS: (BOOL) forceTLS
+                           URL: (NSString *) url
+                      children: (NSArray *) children
 {
   return [[self alloc] initWithName: name
                            hostname: hostname
@@ -29,9 +29,9 @@ static const int32_t currentWorldVersion = 9;
                            children: children];
 }
 
-+ (MUWorld *) worldWithHostname: (NSString *) hostname
-                           port: (NSNumber *) port
-                       forceTLS: (BOOL) forceTLS
++ (instancetype) worldWithHostname: (NSString *) hostname
+                              port: (NSNumber *) port
+                          forceTLS: (BOOL) forceTLS
 {
   return [[self alloc] initWithName: hostname
                            hostname: hostname
@@ -41,12 +41,12 @@ static const int32_t currentWorldVersion = 9;
                            children: nil];
 }
 
-- (id) initWithName: (NSString *) name
-           hostname: (NSString *) hostname
-               port: (NSNumber *) port
-           forceTLS: (BOOL) forceTLS
-                URL: (NSString *) url
-           children: (NSArray *) children
+- (instancetype) initWithName: (NSString *) name
+                     hostname: (NSString *) hostname
+                         port: (NSNumber *) port
+                     forceTLS: (BOOL) forceTLS
+                          URL: (NSString *) url
+                     children: (NSArray *) children
 {
   if (!(self = [super initWithName: name children: children]))
     return nil;
@@ -59,9 +59,9 @@ static const int32_t currentWorldVersion = 9;
   return self;
 }
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (NSNumber *) port
-               forceTLS: (BOOL) forceTLS
+- (instancetype) initWithHostname: (NSString *) hostname
+                             port: (NSNumber *) port
+                         forceTLS: (BOOL) forceTLS
 {
   return [self initWithName: hostname
                    hostname: hostname
@@ -71,7 +71,7 @@ static const int32_t currentWorldVersion = 9;
                    children: nil];
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithName: @"New world"
                    hostname: @""
@@ -107,7 +107,7 @@ static const int32_t currentWorldVersion = 9;
   [encoder encodeObject: self.url forKey: @"URL"];
 }
 
-- (id) initWithCoder: (NSCoder *) decoder
+- (instancetype) initWithCoder: (NSCoder *) decoder
 {
   int32_t version = [decoder decodeInt32ForKey: @"worldVersion"];
   

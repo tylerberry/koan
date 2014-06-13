@@ -1,33 +1,26 @@
 //
-//  MUFontConfirmationSheetController.m
-//  Koan
+// MUFontConfirmationSheetController.m
 //
-//  Created by Tyler Berry on 4/23/14.
-//  Copyright (c) 2014 3James Software. All rights reserved.
+// Copyright (c) 2014 3James Software. All rights reserved.
 //
 
 #import "MUFontConfirmationSheetController.h"
 
-@interface MUFontConfirmationSheetController ()
-
-@end
-
 @implementation MUFontConfirmationSheetController
 
-- (id)initWithWindow:(NSWindow *)window
+- (instancetype) initWithWindow: (NSWindow *) window
 {
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+  if (!(self = [super initWithWindow: window]))
+    return nil;
+
+  return self;
 }
 
-- (void)windowDidLoad
+- (void) windowDidLoad
 {
-    [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+  [super windowDidLoad];
+
+  // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 @end

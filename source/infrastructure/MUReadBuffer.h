@@ -31,6 +31,6 @@
   NSMutableData *dataBuffer;
 }
 
-+ (MUReadBuffer *) buffer;
++ (instancetype) buffer;
 
 @end

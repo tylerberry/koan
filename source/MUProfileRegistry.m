@@ -25,7 +25,7 @@
 
 @dynamic profiles;
 
-+ (MUProfileRegistry *) defaultRegistry
++ (instancetype) defaultRegistry
 {
   static MUProfileRegistry *_defaultRegistry = nil;
   static dispatch_once_t predicate;
@@ -35,7 +35,7 @@
   return _defaultRegistry;
 }
 
-- (id) initWithProfilesFromUserDefaults
+- (instancetype) initWithProfilesFromUserDefaults
 {
   if (!(self = [super init]))
     return nil;
@@ -57,7 +57,7 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

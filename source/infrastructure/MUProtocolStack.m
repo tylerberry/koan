@@ -30,7 +30,7 @@
 
 @dynamic protocolHandlers;
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;

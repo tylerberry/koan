@@ -10,7 +10,7 @@
 
 @property (readonly, atomic) NSArray *filters;
 
-+ (id) filterQueue;
++ (instancetype) filterQueue;
 
 - (NSAttributedString *) processCompleteLine: (NSAttributedString *) attributedString;
 - (NSAttributedString *) processPartialLine: (NSAttributedString *) attributedString;

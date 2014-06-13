@@ -27,7 +27,7 @@
 @synthesize toolbarItemImage = _toolbarItemImage;
 @synthesize toolbarItemLabel = _toolbarItemLabel;
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUSoundsPreferencesView" bundle: nil]))
     return nil;

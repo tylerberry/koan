@@ -9,7 +9,7 @@
 
 @implementation MULogBrowserWindowController
 
-+ (id) sharedLogBrowserWindowController
++ (instancetype) sharedLogBrowserWindowController
 {
   static MULogBrowserWindowController *_sharedLogBrowserWindowController = nil;
   static dispatch_once_t predicate;
@@ -19,7 +19,7 @@
   return _sharedLogBrowserWindowController;
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithWindowNibName: @"MULogBrowser" owner: self]))
     return nil;

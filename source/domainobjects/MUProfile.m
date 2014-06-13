@@ -55,18 +55,18 @@ static const int32_t currentProfileVersion = 4;
   return keyPaths;
 }\
 
-+ (MUProfile *) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
++ (instancetype) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [[self alloc] initWithWorld: newWorld
                               player: newPlayer];
 }
 
-+ (MUProfile *) profileWithWorld: (MUWorld *) newWorld
++ (instancetype) profileWithWorld: (MUWorld *) newWorld
 {
   return [[self alloc] initWithWorld: newWorld];
 }
 
-- (id) initWithWorld: (MUWorld *) newWorld
+- (instancetype) initWithWorld: (MUWorld *) newWorld
               player: (MUPlayer *) newPlayer
          autoconnect: (BOOL) newAutoconnect
                 font: (NSFont *) newFont
@@ -92,7 +92,7 @@ static const int32_t currentProfileVersion = 4;
   return self;
 }
 
-- (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
+- (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [self initWithWorld: newWorld
                       player: newPlayer
@@ -104,7 +104,7 @@ static const int32_t currentProfileVersion = 4;
                    textColor: nil];
 }
 
-- (id) initWithWorld: (MUWorld *) newWorld
+- (instancetype) initWithWorld: (MUWorld *) newWorld
 {
   return [self initWithWorld: newWorld player: nil];
 }
@@ -296,7 +296,7 @@ static const int32_t currentProfileVersion = 4;
   [encoder encodeObject: [NSArchiver archivedDataWithRootObject: self.textColor] forKey: @"textColor"];
 }
 
-- (id) initWithCoder: (NSCoder *) decoder
+- (instancetype) initWithCoder: (NSCoder *) decoder
 {
   int32_t version = [decoder decodeInt32ForKey: @"version"];
   

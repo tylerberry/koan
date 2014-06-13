@@ -52,7 +52,7 @@
 
 @implementation MUProfilesWindowController
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithWindowNibName: @"MUProfilesWindow" owner: self]))
     return nil;

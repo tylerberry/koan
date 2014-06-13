@@ -27,7 +27,7 @@
 @property (readonly) NSArray *protocolHandlers;
 @property (weak) NSObject <MUProtocolStackDelegate> *delegate;
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) newConnectionState;
 
 - (void) deleteLastBufferedCharacter;
 - (void) flushBufferedData;

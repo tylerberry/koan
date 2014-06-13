@@ -12,8 +12,8 @@
 
 @interface MUProfile (TestingFugueEdit)
 
-+ (id) profileForTestingFugueEdit;
-- (id) initForTestingFugueEdit;
++ (instancetype) _profileForTestingFugueEdit;
+- (instancetype) _initForTestingFugueEdit;
 
 @end
 
@@ -21,12 +21,12 @@
 
 @implementation MUProfile (TestingFugueEdit)
 
-+ (id) profileForTestingFugueEdit
++ (instancetype) _profileForTestingFugueEdit
 {
-  return [[self alloc] initForTestingFugueEdit];
+  return [[self alloc] _initForTestingFugueEdit];
 }
 
-- (id) initForTestingFugueEdit
+- (instancetype) _initForTestingFugueEdit
 {
   MUPlayer *player = [[MUPlayer alloc] init];
   
@@ -67,7 +67,7 @@
   [super setUp];
   _editString = nil;
   
-  [self.queue addFilter: [MUFugueEditFilter filterWithProfile: [MUProfile profileForTestingFugueEdit]
+  [self.queue addFilter: [MUFugueEditFilter filterWithProfile: [MUProfile _profileForTestingFugueEdit]
                                                      delegate: self]];
 }
 

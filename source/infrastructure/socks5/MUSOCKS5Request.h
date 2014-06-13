@@ -10,19 +10,16 @@
 @protocol MUWriteBuffer;
 
 @interface MUSOCKS5Request : NSObject
-{
-  MUSOCKS5Reply reply;
-}
 
 @property (copy) NSString *hostname;
-@property (assign, nonatomic) int port;
+@property (assign, nonatomic) uint16_t port;
+@property (readonly) MUSOCKS5Reply reply;
 
-+ (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue;
++ (instancetype) socksRequestWithHostname: (NSString *) hostname port: (uint16_t) port;
 
-- (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue;
+- (instancetype) initWithHostname: (NSString *) hostname port: (uint16_t) port;
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer;
 - (void) parseReplyFromByteSource: (NSObject <MUByteSource> *) source;
-- (MUSOCKS5Reply) reply;
 
 @end

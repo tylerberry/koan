@@ -23,17 +23,17 @@
 
 @implementation MUTextLogger
 
-+ (MUFilter *) filterWithWorld: (MUWorld *) world
++ (instancetype) filterWithWorld: (MUWorld *) world
 {
   return [[self alloc] initWithWorld: world];
 }
 
-+ (MUFilter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player
++ (instancetype) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player
 {
   return [[self alloc] initWithWorld: world player: player];
 }
 
-- (id) initWithOutputStream: (NSOutputStream *) outputStream
+- (instancetype) initWithOutputStream: (NSOutputStream *) outputStream
 {
   if (!outputStream || !(self = [super init]))
     return nil;
@@ -44,17 +44,17 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithWorld: nil player: nil];
 }
 
-- (id) initWithWorld: (MUWorld *) world
+- (instancetype) initWithWorld: (MUWorld *) world
 {
   return [self initWithWorld: world player: nil];
 }
 
-- (id) initWithWorld: (MUWorld *) world player: (MUPlayer *) player
+- (instancetype) initWithWorld: (MUWorld *) world player: (MUPlayer *) player
 {
   NSString *todayString = [[NSCalendarDate calendarDate] descriptionWithCalendarFormat: @"%Y-%m-%d"];
   NSString *logFileName = [NSString stringWithFormat: @"%@%@%@.koanlog",

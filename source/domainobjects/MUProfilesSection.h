@@ -8,6 +8,6 @@
 
 @interface MUProfilesSection : MUSection
 
-- (id) initWithName: (NSString *) newName;
+- (instancetype) initWithName: (NSString *) newName;
 
 @end

@@ -11,11 +11,6 @@
 
 @implementation MUProtocolHandler
 
-+ (id) protocolHandler
-{
-  return [[self alloc] init];
-}
-
 #pragma mark - MUProtocolHandler protocol
 
 - (void) notePromptMarker

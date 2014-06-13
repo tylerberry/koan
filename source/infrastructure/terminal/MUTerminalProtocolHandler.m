@@ -59,12 +59,14 @@
 
 @dynamic textAttributes;
 
-+ (id) protocolHandlerWithProfile: (MUProfile *) profile connectionState: (MUMUDConnectionState *) telnetConnectionState
++ (instancetype) protocolHandlerWithProfile: (MUProfile *) profile
+                            connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   return [[self alloc] initWithProfile: profile connectionState: telnetConnectionState];
 }
 
-- (id) initWithProfile: (MUProfile *) profile connectionState: (MUMUDConnectionState *) telnetConnectionState
+- (instancetype) initWithProfile: (MUProfile *) profile
+                 connectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   if (!(self = [super init]))
     return nil;

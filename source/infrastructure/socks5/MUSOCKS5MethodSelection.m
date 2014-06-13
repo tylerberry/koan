@@ -13,12 +13,12 @@
   NSMutableData *_methods;
 }
 
-+ (id) socksMethodSelection
++ (instancetype) socksMethodSelection
 {
   return [[MUSOCKS5MethodSelection alloc] init];
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

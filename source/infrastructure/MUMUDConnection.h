@@ -53,11 +53,11 @@ extern NSString *MUMUDConnectionErrorKey;
 
 @property (readonly) NSDate *dateConnected;
 
-+ (id) connectionWithProfile: (MUProfile *) profile
-                    delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
++ (instancetype) connectionWithProfile: (MUProfile *) profile
+                              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
-- (id) initWithProfile: (MUProfile *) profile
-              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
+- (instancetype) initWithProfile: (MUProfile *) profile
+                        delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
 - (void) writeLine: (NSString *) line;

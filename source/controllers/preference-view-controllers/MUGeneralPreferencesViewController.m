@@ -20,7 +20,7 @@
 @synthesize toolbarItemImage = _toolbarItemImage;
 @synthesize toolbarItemLabel = _toolbarItemLabel;
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUGeneralPreferencesView" bundle: nil]))
     return nil;

@@ -23,14 +23,14 @@
   NSString *_password;
 }
 
-+ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) username
-                                                    password: (NSString *) password
++ (instancetype) socksAuthenticationWithUsername: (NSString *) username
+                                        password: (NSString *) password
 {
   return [[MUSOCKS5Authentication alloc] initWithUsername: username password: password];
 }
 
-- (id) initWithUsername: (NSString *) username
-               password: (NSString *) password
+- (instancetype) initWithUsername: (NSString *) username
+                         password: (NSString *) password
 {
   if (!(self = [super init]))
     return nil;

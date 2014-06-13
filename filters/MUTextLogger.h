@@ -11,12 +11,12 @@
 
 @interface MUTextLogger : MUFilter
 
-+ (MUFilter *) filterWithWorld: (MUWorld *) world;
-+ (MUFilter *) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player;
++ (instancetype) filterWithWorld: (MUWorld *) world;
++ (instancetype) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player;
 
 // Designated initializer.
-- (id) initWithOutputStream: (NSOutputStream *) outputStream;
-- (id) initWithWorld: (MUWorld *) world;
-- (id) initWithWorld: (MUWorld *) world player: (MUPlayer *) player;
+- (instancetype) initWithOutputStream: (NSOutputStream *) outputStream;
+- (instancetype) initWithWorld: (MUWorld *) world;
+- (instancetype) initWithWorld: (MUWorld *) world player: (MUPlayer *) player;
 
 @end

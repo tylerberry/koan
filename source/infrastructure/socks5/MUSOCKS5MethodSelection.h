@@ -13,7 +13,7 @@
 
 @property (readonly) MUSOCKS5Method selectedMethod;
 
-+ (id) socksMethodSelection;
++ (instancetype) socksMethodSelection;
 
 - (void) addMethod: (MUSOCKS5Method) method;
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer;

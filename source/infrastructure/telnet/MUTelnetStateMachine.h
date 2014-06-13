@@ -14,7 +14,7 @@
 @property (strong) MUTelnetState *state;
 @property (readonly) BOOL telnetConfirmed;
 
-+ (id) stateMachine;
++ (instancetype) stateMachine;
 
 - (void) confirmTelnet;
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;

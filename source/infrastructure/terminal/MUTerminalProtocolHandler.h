@@ -40,9 +40,9 @@
 @property (weak) NSObject <MUTerminalProtocolHandlerDelegate> *delegate;
 @property (readonly) NSDictionary *textAttributes;
 
-+ (id) protocolHandlerWithProfile: (MUProfile *) profile
-                  connectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithProfile: (MUProfile *) profile
-       connectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (instancetype) protocolHandlerWithProfile: (MUProfile *) profile
+                            connectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (instancetype) initWithProfile: (MUProfile *) profile
+                 connectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 @end

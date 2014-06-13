@@ -15,6 +15,6 @@
 
 @interface MUFilter : NSObject <MUFiltering>
 
-+ (id) filter;
++ (instancetype) filter;
 
 @end

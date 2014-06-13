@@ -31,25 +31,25 @@ static NSMutableDictionary *_uniqueIdentifiers;
   _uniqueIdentifiers = [[NSMutableDictionary alloc] init];
 }
 
-- (id) initWithName: (NSString *) newName children: (NSArray *) newChildren
+- (instancetype) initWithName: (NSString *) name children: (NSArray *) children
 {
   if (!(self = [super init]))
     return nil;
   
-  _name = [newName copy];
+  _name = [name copy];
   _parent = nil;
   _uniqueIdentifier = [self _createUniqueIdentifier];
   _uniqueIdentifiers[_uniqueIdentifier] = @YES;
   
-  if (newChildren)
-    _children = [newChildren mutableCopy];
+  if (children)
+    _children = [children mutableCopy];
   else
     _children = [[NSMutableArray alloc] init];
 
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithName: @"Empty node" children: nil];
 }
@@ -172,7 +172,7 @@ static NSMutableDictionary *_uniqueIdentifiers;
   [encoder encodeObject: self.children forKey: @"children"];
 }
 
-- (id) initWithCoder: (NSCoder *) decoder
+- (instancetype) initWithCoder: (NSCoder *) decoder
 {
   if (!(self = [super init]))
     return nil;

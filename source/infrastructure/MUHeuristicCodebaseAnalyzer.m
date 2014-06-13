@@ -8,7 +8,7 @@
 
 @interface MUHeuristicCodebaseAnalyzer ()
 
-- (void) log: (NSString *) message, ...;
+- (void) _log: (NSString *) message, ...;
 
 @end
 
@@ -19,7 +19,7 @@
   BOOL _definitiveCodebaseFound;
 }
 
-- (id) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate
+- (instancetype) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate
 {
   if (!(self = [super init]))
     return nil;
@@ -33,7 +33,7 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithDelegate: nil];
 }
@@ -56,7 +56,7 @@
       _codebase = MUCodebaseSlothMUD;
       _codebaseFamily = MUCodebaseFamilyDikuMUD;
 
-      [self log: @"Analyzer: MSSP identifies as SlothMUD."];
+      [self _log: @"Analyzer: MSSP identifies as SlothMUD."];
     }
   }
   else if ([variableString isEqualToString: @"CODEBASE"])
@@ -67,7 +67,7 @@
       _codebase = MUCodebaseStickyMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
-      [self log: @"Analyzer: MSSP identifies as StickyMUSH."];
+      [self _log: @"Analyzer: MSSP identifies as StickyMUSH."];
     }
     else if ([valueString rangeOfString: @"PennMUSH"].location != NSNotFound)
     {
@@ -75,7 +75,7 @@
       _codebase = MUCodebasePennMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
-      [self log: @"Analyzer: MSSP identifies as PennMUSH."];
+      [self _log: @"Analyzer: MSSP identifies as PennMUSH."];
     }
     else if ([valueString rangeOfString: @"Evennia"].location != NSNotFound)
     {
@@ -83,7 +83,7 @@
       _codebase = MUCodebaseEvennia;
       _codebaseFamily = MUCodebaseFamilyEvennia;
 
-      [self log: @"Analyzer: MSSP identifies as Evennia."];
+      [self _log: @"Analyzer: MSSP identifies as Evennia."];
     }
     else if ([valueString rangeOfString: @"Diku"].location != NSNotFound)
     {
@@ -91,7 +91,7 @@
       _codebase = MUCodebaseDikuMUD;
       _codebaseFamily = MUCodebaseFamilyDikuMUD;
 
-      [self log: @"Analyzer: MSSP identifies as DikuMUD."];
+      [self _log: @"Analyzer: MSSP identifies as DikuMUD."];
     }
   }
 }
@@ -146,35 +146,35 @@
       _codebase = MUCodebaseStickyMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
-      [self log: @"Analyzer: Guessing StickyMUSH from received text."];
+      [self _log: @"Analyzer: Guessing StickyMUSH from received text."];
     }
     else if ([lowercaseString rangeOfString: @"evennia"].location != NSNotFound)
     {
       _codebase = MUCodebaseEvennia;
       _codebaseFamily = MUCodebaseFamilyEvennia;
 
-      [self log: @"Analyzer: Guessing Evennia from received text."];
+      [self _log: @"Analyzer: Guessing Evennia from received text."];
     }
     else if ([lowercaseString rangeOfString: @"pennmush"].location != NSNotFound)
     {
       _codebase = MUCodebasePennMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
-      [self log: @"Analyzer: Guessing PennMUSH from received text."];
+      [self _log: @"Analyzer: Guessing PennMUSH from received text."];
     }
     else if ([lowercaseString rangeOfString: @"rhost"].location != NSNotFound)
     {
       _codebase = MUCodebaseRhostMUSH;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
-      [self log: @"Analyzer: Guessing RhostMUSH from received text."];
+      [self _log: @"Analyzer: Guessing RhostMUSH from received text."];
     }
     else if ([lowercaseString rangeOfString: @"mux"].location != NSNotFound)
     {
       _codebase = MUCodebaseTinyMUX;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
-      [self log: @"Analyzer: Guessing TinyMUX from received text."];
+      [self _log: @"Analyzer: Guessing TinyMUX from received text."];
     }
     else if ([lowercaseString rangeOfString: @"tinybit"].location != NSNotFound
              || [lowercaseString rangeOfString: @"8bit"].location != NSNotFound)
@@ -182,47 +182,47 @@
       _codebase = MUCodebaseTinyBitMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;
       
-      [self log: @"Analyzer: Guessing TinyBit MUSH from received text."];
+      [self _log: @"Analyzer: Guessing TinyBit MUSH from received text."];
     }
     else if ([lowercaseString rangeOfString: @"tinymush"].location != NSNotFound)
     {
       _codebase = MUCodebaseTinyMUSH;
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
-      [self log: @"Analyzer: Guessing TinyMUSH from received text."];
+      [self _log: @"Analyzer: Guessing TinyMUSH from received text."];
     }
     else if ([lowercaseString rangeOfString: @"dgd"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUDWithDGD;
       _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
-      [self log: @"Analyzer: Guessing LPMUD with DGD from received text."];
+      [self _log: @"Analyzer: Guessing LPMUD with DGD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"lpmud"].location != NSNotFound)
     {
       _codebase = MUCodebaseLPMUD;
       _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
-      [self log: @"Analyzer: Guessing LPMUD from received text."];
+      [self _log: @"Analyzer: Guessing LPMUD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"diku"].location != NSNotFound)
     {
       _codebase = MUCodebaseDikuMUD;
       _codebaseFamily = MUCodebaseFamilyDikuMUD;
 
-      [self log: @"Analyzer: Guessing DikuMUD from received text."];
+      [self _log: @"Analyzer: Guessing DikuMUD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"mud"].location != NSNotFound)
     {
       _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
-      [self log: @"Analyzer: Guessing generic MUD from received text."];
+      [self _log: @"Analyzer: Guessing generic MUD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"mush"].location != NSNotFound)
     {
       _codebaseFamily = MUCodebaseFamilyTinyMUSH;
       
-      [self log: @"Analyzer: Guessing generic TinyMUSH from received text."];
+      [self _log: @"Analyzer: Guessing generic TinyMUSH from received text."];
     }
   }
 }
@@ -236,7 +236,7 @@
 
 #pragma mark - Private methods
 
-- (void) log: (NSString *) message, ...
+- (void) _log: (NSString *) message, ...
 {
   va_list args;
   va_start (args, message);

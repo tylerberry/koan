@@ -34,12 +34,12 @@ enum MCPStates
 
 @synthesize delegate;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState
++ (instancetype) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   return [[self alloc] initWithConnectionState: connectionState];
 }
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;

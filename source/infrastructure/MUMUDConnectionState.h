@@ -26,7 +26,7 @@ enum charsetNegotiationStatus
 @property (assign) BOOL serverWillEcho;
 @property (assign) NSStringEncoding stringEncoding;
 
-- (id) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
+- (instancetype) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 
 - (void) reset;
 

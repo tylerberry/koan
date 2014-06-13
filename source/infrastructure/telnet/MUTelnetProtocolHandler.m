@@ -79,12 +79,12 @@ static NSArray *_offerableTerminalTypes;
   _offerableTerminalTypes = @[@"koan-256color", @"koan", @"unknown", @"unknown"];
 }
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
++ (instancetype) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   return [[self alloc] initWithConnectionState: telnetConnectionState];
 }
 
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
 {
   if (!(self = [super init]))
     return nil;

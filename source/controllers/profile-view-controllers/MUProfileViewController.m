@@ -20,7 +20,7 @@
 
 @dynamic editableEffectiveBackgroundColor, editableEffectiveLinkColor, editableEffectiveTextColor;
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUEditProfileView" bundle: nil]))
     return nil;

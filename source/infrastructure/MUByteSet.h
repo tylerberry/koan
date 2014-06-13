@@ -9,12 +9,12 @@
   BOOL contains[UINT8_MAX];
 }
 
-+ (id) byteSet;
-+ (id) byteSetWithBytes: (const uint8_t) firstByte, ...;
-+ (id) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length;
++ (instancetype) byteSet;
++ (instancetype) byteSetWithBytes: (const uint8_t) firstByte, ...;
++ (instancetype) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length;
 
-- (id) initWithBytes: (const uint8_t * const) bytes length: (size_t) length;
-- (id) initWithFirstByte: (const uint8_t) first remainingBytes: (va_list) bytes;
+- (instancetype) initWithBytes: (const uint8_t * const) bytes length: (size_t) length;
+- (instancetype) initWithFirstByte: (const uint8_t) first remainingBytes: (va_list) bytes;
 
 - (void) addByte: (const uint8_t) byte;
 - (void) addBytes: (const uint8_t) firstByte, ...;

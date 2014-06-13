@@ -33,12 +33,16 @@
 
 @implementation MUProxySocket
 
-+ (id) socketWithHostname: (NSString *) hostname port: (uint16_t) port proxySettings: (MUProxySettings *) settings
++ (instancetype) socketWithHostname: (NSString *) hostname
+                               port: (uint16_t) port
+                      proxySettings: (MUProxySettings *) settings
 {
   return [[self alloc] initWithHostname: hostname port: port proxySettings: settings];
 }
 
-- (id) initWithHostname: (NSString *) hostnameValue port: (uint16_t) portValue proxySettings: (MUProxySettings *) settings
+- (instancetype) initWithHostname: (NSString *) hostnameValue
+                             port: (uint16_t) portValue
+                    proxySettings: (MUProxySettings *) settings
 {
   if (!(self = [super initWithHostname: settings.hostname port: settings.port.intValue]))
     return nil;

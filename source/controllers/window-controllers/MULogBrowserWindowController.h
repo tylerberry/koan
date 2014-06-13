@@ -9,6 +9,6 @@
   IBOutlet NSTextView *textView;
 }
 
-+ (id) sharedLogBrowserWindowController;
++ (instancetype) sharedLogBrowserWindowController;
 
 @end

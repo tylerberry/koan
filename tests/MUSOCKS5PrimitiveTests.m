@@ -14,7 +14,7 @@
 
 @interface MUMockByteSource : MUReadBuffer <MUByteSource>
 
-+ (id) mockByteSource;
++ (instancetype) mockByteSource;
 
 @end
 
@@ -22,7 +22,7 @@
 
 @implementation MUMockByteSource
 
-+ (id) mockByteSource
++ (instancetype) mockByteSource
 {
   return [[MUMockByteSource alloc] init];
 }

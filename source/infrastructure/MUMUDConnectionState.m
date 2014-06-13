@@ -8,7 +8,7 @@
 
 @implementation MUMUDConnectionState
 
-- (id) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
+- (instancetype) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 {
   if (!(self = [super init]))
     return nil;
@@ -27,7 +27,7 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithCodebaseAnalyzerDelegate: nil];
 }

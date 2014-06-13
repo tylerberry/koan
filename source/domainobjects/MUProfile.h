@@ -44,17 +44,17 @@
 + (MUProfile *) profileWithWorld: (MUWorld *) newWorld;
 
 // Designated initializer.
-- (id) initWithWorld: (MUWorld *) newWorld
-              player: (MUPlayer *) newPlayer
-         autoconnect: (BOOL) newAutoconnect
-                font: (NSFont *) newFont
-     backgroundColor: (NSColor *) newBackgroundColor
-           linkColor: (NSColor *) newLinkColor
-     systemTextColor: (NSColor *) newSystemTextColor
-           textColor: (NSColor *) newTextColor;
+- (instancetype) initWithWorld: (MUWorld *) newWorld
+                        player: (MUPlayer *) newPlayer
+                   autoconnect: (BOOL) newAutoconnect
+                          font: (NSFont *) newFont
+               backgroundColor: (NSColor *) newBackgroundColor
+                     linkColor: (NSColor *) newLinkColor
+               systemTextColor: (NSColor *) newSystemTextColor
+                     textColor: (NSColor *) newTextColor;
 
-- (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
-- (id) initWithWorld: (MUWorld *) newWorld;
+- (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
+- (instancetype) initWithWorld: (MUWorld *) newWorld;
 
 // Actions.
 - (MUFilter *) createLogger;

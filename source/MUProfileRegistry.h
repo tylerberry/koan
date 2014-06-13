@@ -12,9 +12,9 @@
 
 @property (readonly) NSDictionary *profiles;
 
-+ (MUProfileRegistry *) defaultRegistry;
++ (instancetype) defaultRegistry;
 
-- (id) initWithProfilesFromUserDefaults;
+- (instancetype) initWithProfilesFromUserDefaults;
 
 - (MUProfile *) profileForProfile: (MUProfile *) profile;
 - (MUProfile *) profileForWorld: (MUWorld *) world;

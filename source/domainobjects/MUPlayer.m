@@ -19,7 +19,7 @@ static const int32_t currentPlayerVersion = 4;
   return [[self alloc] initWithName: newName];
 }
 
-- (id) initWithName: (NSString *) newName
+- (instancetype) initWithName: (NSString *) newName
 {
   if (!(self = [super initWithName: newName children: nil]))
     return nil;
@@ -27,7 +27,7 @@ static const int32_t currentPlayerVersion = 4;
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithName: @"New player"];
 }
@@ -233,7 +233,7 @@ static const int32_t currentPlayerVersion = 4;
   [encoder encodeObject: self.fugueEditPrefix forKey: @"fugueEditPrefix"];
 }
 
-- (id) initWithCoder: (NSCoder *) decoder
+- (instancetype) initWithCoder: (NSCoder *) decoder
 {
   int32_t version = [decoder decodeInt32ForKey: @"playerVersion"];
   
@@ -265,7 +265,7 @@ static const int32_t currentPlayerVersion = 4;
 
 - (id) copyWithZone: (NSZone *) zone
 {
-  MUPlayer *copy = [[MUPlayer allocWithZone: zone] initWithName: self.name];
+  MUPlayer *copy = [[[self class] allocWithZone: zone] initWithName: self.name];
   
   copy.fugueEditPrefix = self.fugueEditPrefix;
   

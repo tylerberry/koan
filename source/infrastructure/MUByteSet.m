@@ -8,12 +8,12 @@
 
 @implementation MUByteSet
 
-+ (id) byteSet
++ (instancetype) byteSet
 {
   return [[self alloc] init];
 }
 
-+ (id) byteSetWithBytes: (const uint8_t) firstByte, ...
++ (instancetype) byteSetWithBytes: (const uint8_t) firstByte, ...
 {
   va_list args;
   va_start (args, firstByte);
@@ -22,10 +22,44 @@
   return result;
 }
 
-+ (id) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length
++ (instancetype) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length
 {
   return [[self alloc] initWithBytes: bytes length: length];
 }
+
+- (instancetype) init
+{
+  if (!(self = [super init]))
+    return nil;
+
+  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
+    contains[i] = NO;
+
+  return self;
+}
+
+- (instancetype) initWithBytes: (const uint8_t * const) bytes length: (size_t) length
+{
+  if (!(self = [self init]))
+    return nil;
+
+  for (NSUInteger i = 0; i < length; i++)
+    [self addByte: bytes[i]];
+
+  return self;
+}
+
+- (instancetype) initWithFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes
+{
+  if (!(self = [self init]))
+    return nil;
+
+  [self addFirstByte: firstByte remainingBytes: bytes];
+
+  return self;
+}
+
+#pragma mark - Methods
 
 - (void) addByte: (const uint8_t) byte;
 {
@@ -69,38 +103,6 @@
     }
   }
   return result;
-}
-
-- (id) init
-{
-  if (!(self = [super init]))
-    return nil;
-  
-  for (NSUInteger i = 0; i <= UINT8_MAX; i++)
-    contains[i] = NO;
-  
-  return self;
-}
-
-- (id) initWithBytes: (const uint8_t * const) bytes length: (size_t) length
-{
-  if (!(self = [self init]))
-    return nil;
-  
-  for (NSUInteger i = 0; i < length; i++)
-    [self addByte: bytes[i]];
-  
-  return self;
-}
-
-- (id) initWithFirstByte: (const uint8_t) firstByte remainingBytes: (va_list) bytes
-{
-  if (!(self = [self init]))
-    return nil;
-
-  [self addFirstByte: firstByte remainingBytes: bytes];
-  
-  return self;
 }
 
 - (MUByteSet *) inverseSet

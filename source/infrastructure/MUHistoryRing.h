@@ -8,7 +8,7 @@
 
 @property (readonly) NSUInteger count;
 
-+ (MUHistoryRing *) historyRing;
++ (instancetype) historyRing;
 
 - (NSString *) stringAtIndex: (NSUInteger) ringIndex;
 

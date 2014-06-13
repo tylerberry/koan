@@ -8,7 +8,7 @@
 
 @implementation MUFilter
 
-+ (id) filter
++ (instancetype) filter
 {
   return [[self alloc] init];
 }

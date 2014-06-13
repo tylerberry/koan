@@ -11,14 +11,14 @@
   MUProfile *_profile;
 }
 
-+ (MUFilter *) filterWithProfile: (MUProfile *) newProfile
++ (instancetype) filterWithProfile: (MUProfile *) newProfile
                         delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate
 {
   return [[self alloc] initWithProfile: newProfile delegate: newDelegate];
 }
 
-- (id) initWithProfile: (MUProfile *) newProfile
-              delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate
+- (instancetype) initWithProfile: (MUProfile *) newProfile
+                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate
 {
   if (!(self = [super init]))
     return nil;
@@ -28,7 +28,7 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   return [self initWithProfile: nil delegate: nil];
 }

@@ -52,8 +52,8 @@
 
 @property (weak) NSObject <MUTelnetProtocolHandlerDelegate> *delegate;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
-- (id) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
++ (instancetype) protocolHandlerWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
 
 // Option negotation.
 

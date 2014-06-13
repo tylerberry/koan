@@ -27,12 +27,12 @@
 
 @implementation MUWriteBuffer
 
-+ (id) buffer
++ (instancetype) buffer
 {
   return [[self alloc] init];
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

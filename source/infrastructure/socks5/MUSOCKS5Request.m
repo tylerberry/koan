@@ -10,20 +10,20 @@
 
 @implementation MUSOCKS5Request
 
-+ (id) socksRequestWithHostname: (NSString *) hostnameValue port: (int) portValue
++ (instancetype) socksRequestWithHostname: (NSString *) hostname port: (uint16_t) port
 {
-  return [[MUSOCKS5Request alloc] initWithHostname: hostnameValue port: portValue];
+  return [[MUSOCKS5Request alloc] initWithHostname: hostname port: port];
 }
 
-- (id) initWithHostname: (NSString *) hostnameValue port: (int) portValue
+- (instancetype) initWithHostname: (NSString *) hostname port: (uint16_t) port
 {
   if (!(self = [super init]))
     return nil;
   
-  _hostname = [hostnameValue copy];
-  _port = portValue;
+  _hostname = [hostname copy];
+  _port = port;
   
-  reply = MUSOCKS5NoReply;
+  _reply = MUSOCKS5NoReply;
   
   return self;
 }
@@ -67,12 +67,7 @@
       break;
   }
   [source readExactlyLength: 2];
-  reply = buffer[1];
-}
-
-- (MUSOCKS5Reply) reply
-{
-  return reply;
+  _reply = buffer[1];
 }
 
 @end

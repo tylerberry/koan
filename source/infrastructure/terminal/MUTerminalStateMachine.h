@@ -1,9 +1,7 @@
 //
-//  MUTerminalStateMachine.h
-//  Koan
+// MUTerminalStateMachine.h
 //
-//  Created by Tyler Berry on 4/24/14.
-//  Copyright (c) 2014 3James Software. All rights reserved.
+// Copyright (c) 2014 3James Software. All rights reserved.
 //
 
 #import "MUTerminalProtocolHandler.h"
@@ -14,7 +12,7 @@
 
 @property (strong) MUTerminalState *state;
 
-+ (id) stateMachine;
++ (instancetype) stateMachine;
 
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTerminalProtocolHandler> *) protocolHandler;
 - (void) reset;

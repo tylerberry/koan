@@ -13,9 +13,9 @@
                                          // Could possibly be rewritten to have better encapsulation? But don't just
                                          // change this without dealing with that as well.
 
-+ (MUWorldRegistry *) defaultRegistry;
++ (instancetype) defaultRegistry;
 
-- (id) initWithWorldsFromUserDefaults;
+- (instancetype) initWithWorldsFromUserDefaults;
 
 - (MUWorld *) worldForUniqueIdentifier: (NSString *) identifier;
 

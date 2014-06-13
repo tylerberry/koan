@@ -9,7 +9,7 @@
 
 @implementation MUProfilesSection
 
-- (id) initWithName: (NSString *) newName
+- (instancetype) initWithName: (NSString *) newName
 {
   if (!(self = [super initWithName: newName children: nil]))
     return nil;

@@ -48,7 +48,7 @@ typedef enum MUCodebaseFamily
 @property (readonly) MUCodebaseFamily codebaseFamily;
 @property (readonly) BOOL shouldSuppressGoAhead;
 
-- (id) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
+- (instancetype) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
 
 - (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value;
 - (void) notePrompt: (NSAttributedString *) promptString;

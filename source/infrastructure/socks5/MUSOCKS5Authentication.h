@@ -9,13 +9,13 @@
 
 @interface MUSOCKS5Authentication : NSObject
 
-+ (MUSOCKS5Authentication *) socksAuthenticationWithUsername: (NSString *) usernameValue
-                                                    password: (NSString *) passwordValue;
-
 @property (readonly) BOOL authenticated;
 
-- (id) initWithUsername: (NSString *) usernameValue
-               password: (NSString *) passwordValue;
++ (instancetype) socksAuthenticationWithUsername: (NSString *) username
+                                        password: (NSString *) password;
+
+- (instancetype) initWithUsername: (NSString *) username
+                         password: (NSString *) password;
 
 - (void) appendToBuffer: (NSObject <MUWriteBuffer> *) buffer;
 - (void) parseReplyFromSource: (NSObject <MUByteSource> *) source;

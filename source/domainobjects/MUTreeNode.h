@@ -13,8 +13,7 @@
 @property (readonly) BOOL isLeaf;
 @property (readonly) NSString *uniqueIdentifier;
 
-- (id) initWithName: (NSString *) newName children: (NSArray *) newChildren;
-- (id) init;
+- (instancetype) initWithName: (NSString *) name children: (NSArray *) children;
 
 - (void) createNewUniqueIdentifier;
 - (void) recursivelyUpdateParentsWithParentNode: (MUTreeNode *) topParentNode;

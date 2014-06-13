@@ -22,7 +22,7 @@
 
 @interface MUProfile (TestingANSI)
 
-+ (id) _profileForTestingANSI;
++ (instancetype) _profileForTestingANSI;
 
 @end
 
@@ -30,7 +30,7 @@
 
 @implementation MUProfile (TestingANSI)
 
-+ (id) _profileForTestingANSI
++ (instancetype) _profileForTestingANSI
 {
   return [[self alloc] initWithWorld: nil
                               player: nil

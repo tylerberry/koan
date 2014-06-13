@@ -8,7 +8,7 @@
 
 @implementation MUAcknowledgementsWindowController
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithWindowNibName: @"MUAcknowledgementsWindow" owner: self]))
     return nil;

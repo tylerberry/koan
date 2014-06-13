@@ -21,10 +21,10 @@
 
 @property (weak, nonatomic) NSObject <MUFugueEditFilterDelegate> *delegate;
 
-+ (MUFilter *) filterWithProfile: (MUProfile *) newProfile
-                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
++ (instancetype) filterWithProfile: (MUProfile *) newProfile
+                          delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
-- (id) initWithProfile: (MUProfile *) newProfile
-              delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
+- (instancetype) initWithProfile: (MUProfile *) newProfile
+                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
 @end

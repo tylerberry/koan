@@ -30,10 +30,10 @@
 @property (readonly) MUMUDConnection *connection;
 
 // Designated initializer.
-- (id) initWithProfile: (MUProfile *) newProfile;
+- (instancetype) initWithProfile: (MUProfile *) newProfile;
 
-- (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
-- (id) initWithWorld: (MUWorld *) newWorld;
+- (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
+- (instancetype) initWithWorld: (MUWorld *) newWorld;
 
 - (void) confirmClose: (SEL) callback;
 

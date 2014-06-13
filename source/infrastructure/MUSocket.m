@@ -103,20 +103,20 @@ static inline ssize_t safe_write (int file_descriptor, const void *bytes, size_t
 
 @synthesize delegate = _delegate;
 
-+ (id) socketWithHostname: (NSString *) hostname port: (uint16_t) port
++ (instancetype) socketWithHostname: (NSString *) hostname port: (uint16_t) port
 {
   return [[self alloc] initWithHostname: hostname port: port];
 }
 
-- (id) initWithHostname: (NSString *) newHostname port: (uint16_t) newPort
+- (instancetype) initWithHostname: (NSString *) hostname port: (uint16_t) port
 {
   if (!(self = [super init]))
     return nil;
   
   _availableBytes = [NSNumber numberWithUnsignedInteger: 0];
-  _hostname = [newHostname copy];
+  _hostname = [hostname copy];
   _socketfd = -1;
-  _port = newPort;
+  _port = port;
   _serverHostent = NULL;
   _dataToWrite = [[NSMutableData alloc] initWithCapacity: 2048];
   

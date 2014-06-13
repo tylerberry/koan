@@ -22,7 +22,19 @@
 
 @synthesize worlds = _worlds;
 
-+ (MUWorldRegistry *) defaultRegistry
++ (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
+{
+  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey: key];
+
+  if ([key isEqualToString: @"worlds"])
+  {
+    keyPaths = [keyPaths setByAddingObject: @"mutableWorlds"];
+  }
+
+  return keyPaths;
+}
+
++ (instancetype) defaultRegistry
 {
   static MUWorldRegistry *_defaultRegistry = nil;
   static dispatch_once_t predicate;
@@ -32,19 +44,7 @@
   return _defaultRegistry;
 }
 
-+ (NSSet *) keyPathsForValuesAffectingValueForKey: (NSString *) key
-{
-  NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey: key];
-  
-  if ([key isEqualToString: @"worlds"])
-  {
-    keyPaths = [keyPaths setByAddingObject: @"mutableWorlds"];
-  }
-  
-  return keyPaths;
-}
-
-- (id) initWithWorldsFromUserDefaults
+- (instancetype) initWithWorldsFromUserDefaults
 {
   if (!(self = [super init]))
     return nil;
@@ -72,7 +72,7 @@
   return self;
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

@@ -8,7 +8,7 @@
 
 @implementation MUWorldViewController
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUEditWorldView" bundle: nil]))
     return nil;

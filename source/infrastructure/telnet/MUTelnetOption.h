@@ -42,7 +42,7 @@ typedef enum MUTelnetQ {
 
 + (NSString *) optionNameForByte: (uint8_t) option;
 
-- (id) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
+- (instancetype) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
 
 // Negotiation we respond to.
 - (void) receivedDo;

@@ -22,12 +22,12 @@
 
 @dynamic count;
 
-+ (id) historyRing
++ (instancetype) historyRing
 {
   return [[self alloc] init];
 }
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super init]))
     return nil;

@@ -17,9 +17,8 @@
 
 + (BOOL) isSystemSOCKSProxyEnabled;
 
-+ (MUProxySettings *) systemSOCKSProxySettings;
-+ (MUProxySettings *) proxySettings;
++ (instancetype) systemSOCKSProxySettings;
 
-- (id) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort;
+- (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort;
 
 @end

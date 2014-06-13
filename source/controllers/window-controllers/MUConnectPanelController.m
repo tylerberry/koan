@@ -18,7 +18,7 @@
 
 @implementation MUConnectPanelController
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithWindowNibName: @"MUConnectPanel" owner: self]))
     return nil;

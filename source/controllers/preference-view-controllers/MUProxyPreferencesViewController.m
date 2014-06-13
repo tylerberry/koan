@@ -21,7 +21,7 @@
 @synthesize toolbarItemLabel = _toolbarItemLabel;
 @dynamic shouldEnableCustomProxyControls;
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUProxyPreferencesView" bundle: nil]))
     return nil;

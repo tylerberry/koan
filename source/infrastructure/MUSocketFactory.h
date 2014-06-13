@@ -11,7 +11,7 @@
 
 @interface MUSocketFactory : NSObject
 
-+ (MUSocketFactory *) defaultFactory;
++ (instancetype) defaultFactory;
 
 - (MUSocket *) makeSocketWithHostname: (NSString *) hostname port: (int) port;
 

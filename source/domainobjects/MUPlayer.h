@@ -18,6 +18,6 @@
 + (MUPlayer *) playerWithName: (NSString *) newName;
 
 // Designated initializer.
-- (id) initWithName: (NSString *) newName;
+- (instancetype) initWithName: (NSString *) newName;
 
 @end

@@ -63,14 +63,14 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 @dynamic textAttributes;
 
-+ (id) connectionWithProfile: (MUProfile *) profile
-                    delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate
++ (instancetype) connectionWithProfile: (MUProfile *) profile
+                              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate
 {
   return [[self alloc] initWithProfile: profile delegate: delegate];
 }
 
-- (id) initWithProfile: (MUProfile *) profile
-              delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) newDelegate
+- (instancetype) initWithProfile: (MUProfile *) profile
+                        delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) newDelegate
 {
   if (!(self = [super init]))
     return nil;

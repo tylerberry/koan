@@ -80,7 +80,7 @@ enum MUTextDisplayModes
   NSTimer *_windowSizeNotificationTimer;
 }
 
-- (id) initWithProfile: (MUProfile *) newProfile
+- (instancetype) initWithProfile: (MUProfile *) newProfile
 {
   if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
     return nil;
@@ -98,12 +98,12 @@ enum MUTextDisplayModes
   return self;
 }
 
-- (id) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
+- (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
   return [self initWithProfile: [MUProfile profileWithWorld: newWorld player: newPlayer]];
 }
 
-- (id) initWithWorld: (MUWorld *) newWorld
+- (instancetype) initWithWorld: (MUWorld *) newWorld
 {
   return [self initWithWorld: newWorld player: nil];
 }

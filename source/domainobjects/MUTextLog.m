@@ -22,7 +22,7 @@ static NSString * const MUKoanLogPlayerIdentifier = @"com_3james_koan_log_player
 
 @implementation MUTextLog
 
-- (id) initWithString: (NSString *) string
+- (instancetype) initWithString: (NSString *) string
 {
   if (!(self = [super init]))
     return nil;

@@ -8,7 +8,7 @@
 
 @implementation MUPlayerViewController
 
-- (id) init
+- (instancetype) init
 {
   if (!(self = [super initWithNibName: @"MUEditPlayerView" bundle: nil]))
     return nil;

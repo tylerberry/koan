@@ -19,7 +19,7 @@
 
 @property (weak) NSObject <MUMCCPProtocolHandlerDelegate> *delegate;
 
-+ (id) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState;
-- (id) initWithConnectionState: (MUMUDConnectionState *) connectionState;
++ (instancetype) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState;
 
 @end

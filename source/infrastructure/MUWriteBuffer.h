@@ -43,7 +43,7 @@
   NSUInteger totalLength;
 }
 
-+ (id) buffer;
++ (instancetype) buffer;
 
 - (void) setByteDestination: (NSObject <MUByteDestination> *) object;
 

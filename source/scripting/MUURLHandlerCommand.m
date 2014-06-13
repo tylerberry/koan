@@ -6,13 +6,16 @@
 
 #import "MUURLHandlerCommand.h"
 
-#import "Controllers/MUApplicationController.h"
+#import "MUApplicationController.h"
 
 @implementation MUURLHandlerCommand
 
 - (id) performDefaultImplementation
 {
-  [[NSApp delegate] connectToURL: [NSURL URLWithString: self.directParameter]];
+  if ([[NSApp delegate] isKindOfClass: [MUApplicationController class]])
+  {
+    [(MUApplicationController *) [NSApp delegate] connectToURL: [NSURL URLWithString: self.directParameter]];
+  }
   
   return nil;
 }

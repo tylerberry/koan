@@ -117,11 +117,11 @@ enum MUTextDisplayModes
 
   // Disable text substitution options on the input text view.
 
-  [inputView setAutomaticDashSubstitutionEnabled: NO];
-  [inputView setAutomaticDataDetectionEnabled: NO];
-  [inputView setAutomaticLinkDetectionEnabled: NO];
-  [inputView setAutomaticQuoteSubstitutionEnabled: NO];
-  [inputView setAutomaticTextReplacementEnabled: NO];
+  [inputTextView setAutomaticDashSubstitutionEnabled: NO];
+  [inputTextView setAutomaticDataDetectionEnabled: NO];
+  [inputTextView setAutomaticLinkDetectionEnabled: NO];
+  [inputTextView setAutomaticQuoteSubstitutionEnabled: NO];
+  [inputTextView setAutomaticTextReplacementEnabled: NO];
 
   // Set the initial link text color.
   
@@ -148,10 +148,10 @@ enum MUTextDisplayModes
   NSLog (@"%g, %g", ((NSView *) self.window.contentView).frame.size.width, ((NSView *) self.window.contentView).frame.size.height);
   NSLog (@"splitView height: frame %g bounds %g", splitView.frame.size.height, splitView.bounds.size.height);
   NSLog (@"receivedTextView height: frame %g bounds %g", receivedTextView.frame.size.height, receivedTextView.bounds.size.height);
-  NSLog (@"inputTextView height: frame %g bounds %g", inputView.frame.size.height, inputView.bounds.size.height);
+  NSLog (@"inputTextView height: frame %g bounds %g", inputTextView.frame.size.height, inputTextView.bounds.size.height);
 
   NSLog (@"receivedTextView width: frame %g bounds %g", receivedTextView.frame.size.width, receivedTextView.bounds.size.width);
-  NSLog (@"inputTextView width: frame %g bounds %g", inputView.frame.size.width, inputView.bounds.size.width);
+  NSLog (@"inputTextView width: frame %g bounds %g", inputTextView.frame.size.width, inputTextView.bounds.size.width);
 
   // Bindings and notifications.
   
@@ -160,19 +160,19 @@ enum MUTextDisplayModes
              withKeyPath: @"effectiveBackgroundColor"
                  options: nil];
   
-  [inputView bind: @"font"
+  [inputTextView bind: @"font"
          toObject: self.connection.profile
       withKeyPath: @"effectiveFont"
           options: nil];
-  [inputView bind: @"textColor"
+  [inputTextView bind: @"textColor"
          toObject: self.connection.profile
       withKeyPath: @"effectiveTextColor"
           options: nil];
-  [inputView bind: @"insertionPointColor"
+  [inputTextView bind: @"insertionPointColor"
          toObject: self.connection.profile
       withKeyPath: @"effectiveTextColor"
           options: nil];
-  [inputView bind: @"backgroundColor"
+  [inputTextView bind: @"backgroundColor"
          toObject: self.connection.profile
       withKeyPath: @"effectiveBackgroundColor"
           options: nil];
@@ -553,15 +553,15 @@ enum MUTextDisplayModes
 
 - (IBAction) sendInputText: (id) sender
 {
-  [self.connection writeLine: inputView.string];
+  [self.connection writeLine: inputTextView.string];
   
   if (!self.connection.state.serverWillEcho)
   {
-    [_historyRing saveString: inputView.string];
+    [_historyRing saveString: inputTextView.string];
   
     if (_currentPrompt)
     {
-      [self _echoString: [NSString stringWithFormat: @"%@\n", inputView.string]];
+      [self _echoString: [NSString stringWithFormat: @"%@\n", inputTextView.string]];
       _currentPrompt = nil;
     }
   }
@@ -571,23 +571,23 @@ enum MUTextDisplayModes
     _currentPrompt = nil;
   }
   
-  inputView.string = @"";
-  inputView.font = self.connection.profile.effectiveFont; // Sending non-ASCII text can screw up the font. Resetting it
+  inputTextView.string = @"";
+  inputTextView.font = self.connection.profile.effectiveFont; // Sending non-ASCII text can screw up the font. Resetting it
                                                           // here makes sure we don't suddenly have a weird proportional
                                                           // font out of nowhere.
-  [self.window makeFirstResponder: inputView];
+  [self.window makeFirstResponder: inputTextView];
 }
 
 - (IBAction) nextCommand: (id) sender
 {
-  [_historyRing updateString: inputView.string];
-  inputView.string = [_historyRing nextString];
+  [_historyRing updateString: inputTextView.string];
+  inputTextView.string = [_historyRing nextString];
 }
 
 - (IBAction) previousCommand: (id) sender
 {
-  [_historyRing updateString: inputView.string];
-  inputView.string = [_historyRing previousString];
+  [_historyRing updateString: inputTextView.string];
+  inputTextView.string = [_historyRing previousString];
 }
 
 #pragma mark - Responder chain methods
@@ -662,7 +662,7 @@ enum MUTextDisplayModes
 
 - (void) setInputViewString: (NSString *) string
 {
-  inputView.string = string;
+  inputTextView.string = string;
 }
 
 #pragma mark - MUMUDConnectionDelegate protocol
@@ -759,11 +759,11 @@ enum MUTextDisplayModes
 {
   if (textView == receivedTextView)
   {
-    [inputView insertText: string];
-    [self.window makeFirstResponder: inputView];
+    [inputTextView insertText: string];
+    [self.window makeFirstResponder: inputTextView];
     return YES;
   }
-  else if (textView == inputView)
+  else if (textView == inputTextView)
   {
     [self _endCompletion];
     return NO;
@@ -775,11 +775,11 @@ enum MUTextDisplayModes
 {
   if (textView == receivedTextView)
   {
-    [inputView pasteAsPlainText: originalSender];
-    [self.window makeFirstResponder: inputView];
+    [inputTextView pasteAsPlainText: originalSender];
+    [self.window makeFirstResponder: inputTextView];
     return YES;
   }
-  else if (textView == inputView)
+  else if (textView == inputTextView)
   {
     [self _endCompletion];
     return NO;
@@ -789,7 +789,7 @@ enum MUTextDisplayModes
 
 - (BOOL) textView: (MUTextView *) textView performFindPanelAction: (id) originalSender
 {
-  if (textView == inputView)
+  if (textView == inputTextView)
   {
     [receivedTextView performFindPanelAction: originalSender];
     return YES;
@@ -798,6 +798,31 @@ enum MUTextDisplayModes
 }
 
 #pragma mark - NSSplitViewDelegate protocol
+
+- (BOOL) splitView: (NSSplitView *) view shouldAdjustSizeOfSubview: (NSView *) subview
+{
+  // This causes the input portion of the view to remain constant size if possible when the window is resizing.
+
+  return subview != inputTextView.enclosingScrollView;
+}
+
+- (CGFloat)  splitView: (NSSplitView *) view
+constrainSplitPosition: (CGFloat) proposedPosition
+           ofSubviewAt: (NSInteger) dividerIndex
+{
+  CGFloat position = proposedPosition;
+
+  if (view == splitView && dividerIndex == 0)
+  {
+    NSScrollView *scrollView = view.subviews[dividerIndex];
+    MUTextView *textView = scrollView.documentView;
+
+    NSUInteger numberOfLines = [textView numberOfLinesForHeight: proposedPosition - 1.0];
+    position = [textView minimumHeightForLines: numberOfLines] + 1.0;
+  }
+
+  return position;
+}
 
 - (void) splitViewDidResizeSubviews: (NSNotification *) notification
 {
@@ -824,17 +849,17 @@ enum MUTextDisplayModes
              || commandSelector == @selector (insertTab:)
              || commandSelector == @selector (insertBacktab:))
     {
-      [[self window] makeFirstResponder: inputView];
+      [[self window] makeFirstResponder: inputTextView];
       return YES;
     }
     else
     {
-      [inputView doCommandBySelector: commandSelector];
-      [[self window] makeFirstResponder: inputView];
+      [inputTextView doCommandBySelector: commandSelector];
+      [[self window] makeFirstResponder: inputTextView];
       return YES;
     }
   }
-  else if (textView == inputView)
+  else if (textView == inputTextView)
   {
     if ([NSApp currentEvent].type != NSKeyDown)
     {
@@ -978,7 +1003,7 @@ enum MUTextDisplayModes
   timeConnectedField.hidden = YES;
   
   splitView.frame = NSMakeRect (splitView.frame.origin.x, -1.0,
-                                splitView.frame.size.width, splitView.frame.size.height + 25.0);
+                                splitView.frame.size.width, splitView.frame.size.height + 22.0);
 }
 
 - (void) windowWillExitFullScreen: (NSNotification *) notification
@@ -989,8 +1014,8 @@ enum MUTextDisplayModes
   
   timeConnectedField.hidden = NO;
   
-  splitView.frame = NSMakeRect (splitView.frame.origin.x, 22.0,
-                                splitView.frame.size.width, splitView.frame.size.height - 23.0);
+  splitView.frame = NSMakeRect (splitView.frame.origin.x, 21.0,
+                                splitView.frame.size.width, splitView.frame.size.height - 22.0);
 }
 
 - (NSSize) windowWillResize: (NSWindow *) sender toSize: (NSSize) frameSize
@@ -1163,7 +1188,7 @@ enum MUTextDisplayModes
 - (void) _setTextViewsNeedDisplay: (NSNotification *) notification
 {
   receivedTextView.needsDisplay = YES;
-  inputView.needsDisplay = YES;
+  inputTextView.needsDisplay = YES;
 }
 
 - (BOOL) _shouldScrollDisplayViewToBottom
@@ -1183,29 +1208,29 @@ enum MUTextDisplayModes
   
   if (_currentlySearching)
   {
-    currentPrefix = [[inputView.string copy] substringToIndex: inputView.selectedRange.location];
+    currentPrefix = [[inputTextView.string copy] substringToIndex: inputTextView.selectedRange.location];
     
     if ([_historyRing numberOfUniqueMatchesForStringPrefix: currentPrefix] == 1)
     {
-      inputView.selectedRange = NSMakeRange (inputView.textStorage.length, 0);
+      inputTextView.selectedRange = NSMakeRange (inputTextView.textStorage.length, 0);
       [self _endCompletion];
       return;
     }
   }
   else
-    currentPrefix = [inputView.string copy];
+    currentPrefix = [inputTextView.string copy];
   
   NSString *foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
                                                 : [_historyRing searchForwardForStringPrefix: currentPrefix];
   
   if (foundString)
   {
-    while ([foundString isEqualToString: inputView.string])
+    while ([foundString isEqualToString: inputTextView.string])
       foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
                                                     : [_historyRing searchForwardForStringPrefix: currentPrefix];
     
-    inputView.string = foundString;
-    inputView.selectedRange = NSMakeRange (currentPrefix.length, inputView.textStorage.length - currentPrefix.length);
+    inputTextView.string = foundString;
+    inputTextView.selectedRange = NSMakeRange (currentPrefix.length, inputTextView.textStorage.length - currentPrefix.length);
   }
   
   _currentlySearching = YES;
@@ -1379,7 +1404,7 @@ enum MUTextDisplayModes
   }
   
   receivedTextView.needsDisplay = YES;
-  inputView.needsDisplay = YES;
+  inputTextView.needsDisplay = YES;
 }
 
 - (void) _updateBackgroundColor
@@ -1403,7 +1428,7 @@ enum MUTextDisplayModes
   }
   
   receivedTextView.needsDisplay = YES;
-  inputView.needsDisplay = YES;
+  inputTextView.needsDisplay = YES;
 }
 
 - (void) _updateFonts
@@ -1437,15 +1462,15 @@ enum MUTextDisplayModes
     index += attributeRange.length;
   }
   
-  inputView.font = self.connection.profile.effectiveFont;
+  inputTextView.font = self.connection.profile.effectiveFont;
   
   [receivedTextView scrollRangeToVisible: NSMakeRange (visibleRange.location + visibleRange.length, 0)];
-  [inputView scrollRangeToVisible: NSMakeRange (inputView.textStorage.length, 0)];
+  [inputTextView scrollRangeToVisible: NSMakeRange (inputTextView.textStorage.length, 0)];
   
   [self.connection reportWindowSizeToServer];
   
   receivedTextView.needsDisplay = YES;
-  inputView.needsDisplay = YES;
+  inputTextView.needsDisplay = YES;
 }
 
 - (void) _updateLinkTextColor
@@ -1516,10 +1541,10 @@ enum MUTextDisplayModes
     index += attributeRange.length;
   }
   
-  inputView.textColor = self.connection.profile.effectiveTextColor;
+  inputTextView.textColor = self.connection.profile.effectiveTextColor;
   
   receivedTextView.needsDisplay = YES;
-  inputView.needsDisplay = YES;
+  inputTextView.needsDisplay = YES;
 }
 
 - (void) _updateTimeConnectedField: (NSTimer *) timer
@@ -1561,15 +1586,32 @@ enum MUTextDisplayModes
 
 - (CGFloat) _windowHeightForCandidateHeight: (CGFloat) candidateHeight
 {
-  return candidateHeight;
+  // Explanation of the math here, because it's not as straightforward as width. The splitView.height =
+  // receivedTextView.height + inputTextView.height + 1.0, where the 1.0 is the height of the splitter.
+  //
+  // The window height is splitView.height + 21.0. The bottom border is actually 22.0 pixels, but the splitView overlaps
+  // the bottom border by one pixel for display reasons. So, the window total height = receivedTextView.height +
+  // inputTextView.height + 1.0 + 21.0.
+  //
+  // We know that the receivedTextView and inputTextView have the same line heights, since we go to considerable trouble
+  // to keep it that way, so we can get the number of lines for both views taken as an aggregate like this:
+
+  NSUInteger totalTextViewLines = [receivedTextView numberOfLinesForHeight: candidateHeight - 22.0];
+
+  // And then the total height is reassembled with the 22.0 missing height.
+
+  return totalTextViewLines == 0 ? candidateHeight
+                                 : [receivedTextView minimumHeightForLines: totalTextViewLines] + 22.0;
 }
 
 - (CGFloat) _windowWidthForCandidateWidth: (CGFloat) candidateWidth
 {
-  NSUInteger numberOfColumnsForWidth = [receivedTextView numberOfColumnsForWidth: candidateWidth];
+  // Width is much easier, since the text views always have the same width as the window as a whole (and as each other).
 
-  return numberOfColumnsForWidth == 0 ? candidateWidth
-                                      : [receivedTextView minimumWidthForColumns: numberOfColumnsForWidth];
+  NSUInteger receivedTextViewColumns = [receivedTextView numberOfColumnsForWidth: candidateWidth];
+
+  return receivedTextViewColumns == 0 ? candidateWidth
+                                      : [receivedTextView minimumWidthForColumns: receivedTextViewColumns];
 }
 
 @end

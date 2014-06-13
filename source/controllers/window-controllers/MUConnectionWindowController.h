@@ -20,7 +20,7 @@
 @interface MUConnectionWindowController : NSWindowController <MUFugueEditFilterDelegate, MUMUDConnectionDelegate, MUTextViewPasteDelegate, NSSplitViewDelegate, NSTextViewDelegate, NSWindowDelegate>
 {
   IBOutlet MUTextView *receivedTextView;
-  IBOutlet MUTextView *inputView;
+  IBOutlet MUTextView *inputTextView;
   IBOutlet NSSplitView *splitView;
   
   IBOutlet NSTextField *timeConnectedField;

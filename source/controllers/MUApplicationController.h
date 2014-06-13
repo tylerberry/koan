@@ -8,8 +8,6 @@
 #import "MUConnectionWindowController.h"
 #import "MUProfilesWindowController.h"
 
-@class MUPreferencesController;
-
 @interface MUApplicationController : NSObject <NSApplicationDelegate, MUConnectPanelControllerDelegate, MUConnectionWindowControllerDelegate, MUProfilesWindowControllerDelegate>
 {
   IBOutlet NSMenu *openConnectionMenu;
@@ -46,8 +44,9 @@
 + (NSString *) keyPathForSoundChoice;
 + (NSString *) keyPathForSoundVolume;
 
+- (void) connectToURL: (NSURL *) url;
+
 - (IBAction) chooseNewFont: (id) sender;
-- (IBAction) connectToURL: (NSURL *) url;
 
 - (IBAction) openBugsWebPage: (id) sender;
 - (IBAction) showAboutPanel: (id) sender;

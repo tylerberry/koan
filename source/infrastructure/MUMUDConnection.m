@@ -458,15 +458,29 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) enableTLS
 {
-  NSDictionary *sslSettings = @{(NSString *) kCFStreamSSLAllowsExpiredCertificates: @YES,
-                                (NSString *) kCFStreamSSLAllowsExpiredRoots: @YES,
-                                (NSString *) kCFStreamSSLAllowsAnyRoot: @YES,
-                                (NSString *) kCFStreamSSLValidatesCertificateChain: @NO,
-                                (NSString *) kCFStreamSSLPeerName: _profile.world.hostname,
-                                (NSString *) kCFStreamSSLLevel: (NSString *) kCFStreamSocketSecurityLevelNegotiatedSSL};
+  const void *keys[] = {
+    kCFStreamSSLLevel,
+    kCFStreamSSLPeerName,
+    kCFStreamSSLValidatesCertificateChain
+  };
   
+  const void *values[] = {
+    kCFStreamSocketSecurityLevelNegotiatedSSL,
+    (__bridge CFStringRef) _profile.world.hostname,
+    kCFBooleanFalse
+  };
+
+  CFDictionaryRef sslSettings = CFDictionaryCreate (NULL,
+                                                    keys,
+                                                    values,
+                                                    3,
+                                                    &kCFTypeDictionaryKeyCallBacks,
+                                                    &kCFTypeDictionaryValueCallBacks);
+
   CFReadStreamSetProperty ((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
   CFWriteStreamSetProperty ((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
+
+  CFRelease (sslSettings);
 }
 
 - (void) reportWindowSizeToServer

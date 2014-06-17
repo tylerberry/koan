@@ -162,7 +162,19 @@ static NSMutableDictionary *_uniqueIdentifiers;
   }
 }
 
-#pragma mark - NSCoding protocol
+#pragma mark - NSCopying protocol
+
+- (id) copyWithZone: (NSZone *) zone
+{
+  return [[[self class] alloc] initWithName: self.name children: self.children];
+}
+
+#pragma mark - NSSecureCoding protocol
+
++ (BOOL) supportsSecureCoding
+{
+  return YES;
+}
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -179,21 +191,14 @@ static NSMutableDictionary *_uniqueIdentifiers;
   
   //uint32_t version = [coder decodeInt32ForKey: @"treeNodeVersion"];
   
-  _uniqueIdentifier = [decoder decodeObjectForKey: @"uniqueIdentifier"];
+  _uniqueIdentifier = [decoder decodeObjectOfClass: [NSString class] forKey: @"uniqueIdentifier"];
   _uniqueIdentifiers[_uniqueIdentifier] = @YES;
   
-  _name = [decoder decodeObjectForKey: @"name"];
+  _name = [decoder decodeObjectOfClass: [NSString class] forKey: @"name"];
   
-  _children = [[decoder decodeObjectForKey: @"children"] mutableCopy];
+  _children = [[decoder decodeObjectOfClass: [NSArray class] forKey: @"children"] mutableCopy];
   
   return self;
-}
-
-#pragma mark - NSCopying protocol
-
-- (id) copyWithZone: (NSZone *) zone
-{
-  return [[[self class] alloc] initWithName: self.name children: self.children];
 }
 
 #pragma mark - Private methods

@@ -281,7 +281,12 @@ static const int32_t currentProfileVersion = 4;
   return @[@"autoconnect", @"font", @"backgroundColor", @"linkColor", @"textColor"];
 }
 
-#pragma mark - NSCoding protocol
+#pragma mark - NSSecureCoding protocol
+
++ (BOOL) supportsSecureCoding
+{
+  return YES;
+}
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -303,10 +308,10 @@ static const int32_t currentProfileVersion = 4;
   if (version < 3) // Versions prior to 3 did not track world or player identifiers and are useless.
     return nil;
   
-  NSString *worldIdentifier = [decoder decodeObjectForKey: @"worldIdentifier"];
+  NSString *worldIdentifier = [decoder decodeObjectOfClass: [NSString class] forKey: @"worldIdentifier"];
   MUWorld *world = [[MUWorldRegistry defaultRegistry] worldForUniqueIdentifier: worldIdentifier];
   
-  NSString *playerIdentifier = [decoder decodeObjectForKey: @"playerIdentifier"];
+  NSString *playerIdentifier = [decoder decodeObjectOfClass: [NSString class] forKey: @"playerIdentifier"];
   MUPlayer *player = nil;
   
   if (playerIdentifier)
@@ -323,18 +328,23 @@ static const int32_t currentProfileVersion = 4;
   
   _autoconnect = [decoder decodeBoolForKey: @"autoconnect"];
   
-  _textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"textColor"]];
-  _backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"backgroundColor"]];
-  _linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"linkColor"]];
+  _textColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectOfClass: [NSData class]
+                                                                            forKey: @"textColor"]];
+  _backgroundColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectOfClass: [NSData class]
+                                                                                  forKey: @"backgroundColor"]];
+  _linkColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectOfClass: [NSData class]
+                                                                            forKey: @"linkColor"]];
   
   if (version >= 4)
   {
-    _font = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"font"]];
-    _systemTextColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectForKey: @"systemTextColor"]];
+    _font = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectOfClass: [NSData class]
+                                                                         forKey: @"font"]];
+    _systemTextColor = [NSUnarchiver unarchiveObjectWithData: [decoder decodeObjectOfClass: [NSData class]
+                                                                                    forKey: @"systemTextColor"]];
   }
   else
   {
-    _font = [NSFont fontWithName: [decoder decodeObjectForKey: @"fontName"]
+    _font = [NSFont fontWithName: [decoder decodeObjectOfClass: [NSString class] forKey: @"fontName"]
                             size: [decoder decodeFloatForKey: @"fontSize"]];
     _systemTextColor = nil;
   }
@@ -343,6 +353,8 @@ static const int32_t currentProfileVersion = 4;
   
   return self;
 }
+
+#pragma mark - Private methods
 
 - (void) _startObservingUserDefaultsController
 {

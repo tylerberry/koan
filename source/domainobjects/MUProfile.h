@@ -11,7 +11,7 @@
 @class MUMUDConnection;
 @protocol MUFugueEditFilterDelegate;
 
-@interface MUProfile : NSObject <NSCoding>
+@interface MUProfile : NSObject <NSSecureCoding>
 
 @property (strong) MUWorld *world;
 @property (strong) MUPlayer *player;

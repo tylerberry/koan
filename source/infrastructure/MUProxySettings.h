@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-@interface MUProxySettings : NSObject <NSCoding>
+@interface MUProxySettings : NSObject <NSSecureCoding>
 
 @property (copy) NSString *hostname;
 @property (copy) NSNumber *port;

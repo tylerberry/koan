@@ -91,20 +91,25 @@ static const int32_t currentProxyVersion = 3;
   return self.username && self.username.length > 0;
 }
 
-#pragma mark - NSCoding protocol
+#pragma mark - NSSecureCoding protocol
+
++ (BOOL) supportsSecureCoding
+{
+  return YES;
+}
 
 - (instancetype) initWithCoder: (NSCoder *) coder
 {
   int32_t version = [coder decodeInt32ForKey: @"version"];
   
-  if (!(self = [self initWithHostname: [coder decodeObjectForKey: @"hostname"]
-                                 port: [coder decodeObjectForKey: @"port"]]))
+  if (!(self = [self initWithHostname: [coder decodeObjectOfClass: [NSString class] forKey: @"hostname"]
+                                 port: [coder decodeObjectOfClass: [NSNumber class] forKey: @"port"]]))
     return nil;
   
   if (version >= 2)
   {
-    _username = [coder decodeObjectForKey: @"username"];
-    _password = [coder decodeObjectForKey: @"password"];
+    _username = [coder decodeObjectOfClass: [NSString class] forKey: @"username"];
+    _password = [coder decodeObjectOfClass: [NSString class] forKey: @"password"];
   }
   else
   {

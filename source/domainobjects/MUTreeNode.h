@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-@interface MUTreeNode : NSObject <NSCoding, NSCopying>
+@interface MUTreeNode : NSObject <NSCopying, NSSecureCoding>
 
 @property (copy) NSString *name;
 @property (readonly) NSImage *icon;

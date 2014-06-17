@@ -93,7 +93,19 @@ static const int32_t currentWorldVersion = 9;
   return [NSString stringWithFormat: @"%@", self.name];
 }
 
-#pragma mark - NSCoding protocol
+#pragma mark - NSCopying protocol
+
+- (id) copyWithZone: (NSZone *) zone
+{
+  return [[MUWorld allocWithZone: zone] initWithName: self.name
+                                            hostname: self.hostname
+                                                port: self.port
+                                            forceTLS: self.forceTLS
+                                                 URL: self.url
+                                            children: self.children];
+}
+
+#pragma mark - NSSecureCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -126,35 +138,35 @@ static const int32_t currentWorldVersion = 9;
   
   if (version < 5)
   {
-    self.name = [decoder decodeObjectForKey: @"worldName"];
-    _hostname = [decoder decodeObjectForKey: @"worldHostname"];
+    self.name = [decoder decodeObjectOfClass: [NSString class] forKey: @"worldName"];
+    _hostname = [decoder decodeObjectOfClass: [NSString class] forKey: @"worldHostname"];
   }
   else if (version < 8)
   {
-    self.name = [decoder decodeObjectForKey: @"name"];
-    _hostname = [decoder decodeObjectForKey: @"hostname"];
+    self.name = [decoder decodeObjectOfClass: [NSString class] forKey: @"name"];
+    _hostname = [decoder decodeObjectOfClass: [NSString class] forKey: @"hostname"];
   }
   else
   {
-    _hostname = [decoder decodeObjectForKey: @"hostname"];
+    _hostname = [decoder decodeObjectOfClass: [NSString class] forKey: @"hostname"];
   }
   
   if (version == 7)
-    self.children = [decoder decodeObjectForKey: @"children"];
+    self.children = [decoder decodeObjectOfClass: [NSArray class] forKey: @"children"];
   else if (version < 7)
-    self.children = [decoder decodeObjectForKey: @"players"];
+    self.children = [decoder decodeObjectOfClass: [NSArray class] forKey: @"players"];
   
   if (version >= 6)
     _port = @([decoder decodeIntForKey: @"port"]);
   else if (version == 5)
-    _port = [decoder decodeObjectForKey: @"port"];
+    _port = [decoder decodeObjectOfClass: [NSNumber class] forKey: @"port"];
   else
-    _port = [decoder decodeObjectForKey: @"worldPort"];
+    _port = [decoder decodeObjectOfClass: [NSNumber class] forKey: @"worldPort"];
   
   if (version >= 5)
-    _url = [decoder decodeObjectForKey: @"URL"];
+    _url = [decoder decodeObjectOfClass: [NSString class] forKey: @"URL"];
   else if (version >= 1)
-    _url = [decoder decodeObjectForKey: @"worldURL"];
+    _url = [decoder decodeObjectOfClass: [NSString class] forKey: @"worldURL"];
   else
     _url = @"";
   
@@ -164,18 +176,6 @@ static const int32_t currentWorldVersion = 9;
     _forceTLS = NO;
 
   return self;
-}
-
-#pragma mark - NSCopying protocol
-
-- (id) copyWithZone: (NSZone *) zone
-{
-  return [[MUWorld allocWithZone: zone] initWithName: self.name
-                                            hostname: self.hostname
-                                                port: self.port
-                                            forceTLS: self.forceTLS
-                                                 URL: self.url
-                                            children: self.children];
 }
 
 @end

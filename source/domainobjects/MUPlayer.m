@@ -222,7 +222,18 @@ static const int32_t currentPlayerVersion = 4;
   return (MUWorld *) self.parent;
 }
 
-#pragma mark - NSCoding protocol
+#pragma mark - NSCopying protocol
+
+- (id) copyWithZone: (NSZone *) zone
+{
+  MUPlayer *copy = [[[self class] allocWithZone: zone] initWithName: self.name];
+
+  copy.fugueEditPrefix = self.fugueEditPrefix;
+
+  return copy;
+}
+
+#pragma mark - NSSecureCoding protocol
 
 - (void) encodeWithCoder: (NSCoder *) encoder
 {
@@ -251,25 +262,14 @@ static const int32_t currentPlayerVersion = 4;
   }
   
   if (version == 1)
-    self.name = [decoder decodeObjectForKey: @"name"];
+    self.name = [decoder decodeObjectOfClass: [NSString class] forKey: @"name"];
   
   if (version >= 3)
-    _fugueEditPrefix = [decoder decodeObjectForKey: @"fugueEditPrefix"];
+    _fugueEditPrefix = [decoder decodeObjectOfClass: [NSString class] forKey: @"fugueEditPrefix"];
   else
     _fugueEditPrefix = nil;
   
   return self;
-}
-
-#pragma mark - NSCopying protocol
-
-- (id) copyWithZone: (NSZone *) zone
-{
-  MUPlayer *copy = [[[self class] allocWithZone: zone] initWithName: self.name];
-  
-  copy.fugueEditPrefix = self.fugueEditPrefix;
-  
-  return copy;
 }
 
 @end

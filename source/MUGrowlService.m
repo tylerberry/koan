@@ -21,7 +21,7 @@
   BOOL _growlIsReady;
 }
 
-+ (MUGrowlService *) defaultGrowlService
++ (instancetype) defaultGrowlService
 {
   static MUGrowlService *_defaultGrowlService;
   static dispatch_once_t predicate;

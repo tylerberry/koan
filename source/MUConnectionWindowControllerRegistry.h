@@ -14,7 +14,7 @@
 @property (readonly) NSUInteger count;
 @property (readonly) NSUInteger connectedCount;
 
-+ (MUConnectionWindowControllerRegistry *) defaultRegistry;
++ (instancetype) defaultRegistry;
 
 - (MUConnectionWindowController *) controllerForProfile: (MUProfile *) profile;
 - (MUConnectionWindowController *) controllerForWorld: (MUWorld *) world;

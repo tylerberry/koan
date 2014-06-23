@@ -25,7 +25,7 @@
 
 @dynamic count;
 
-+ (MUConnectionWindowControllerRegistry *) defaultRegistry
++ (instancetype) defaultRegistry
 {
   static MUConnectionWindowControllerRegistry *_defaultRegistry = nil;
   static dispatch_once_t predicate;

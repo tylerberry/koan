@@ -8,7 +8,7 @@
 
 @interface MUGrowlService : NSObject <GrowlApplicationBridgeDelegate>
 
-+ (MUGrowlService *) defaultGrowlService;
++ (instancetype) defaultGrowlService;
 
 + (void) connectionOpenedForTitle: (NSString *) title;
 + (void) connectionClosedForTitle: (NSString *) title;

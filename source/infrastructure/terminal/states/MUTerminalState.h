@@ -9,7 +9,7 @@
 
 @interface MUTerminalState : NSObject
 
-+ (id) state;
++ (instancetype) state;
 
 - (MUTerminalState *) parse: (uint8_t) byte
             forStateMachine: (MUTerminalStateMachine *) stateMachine

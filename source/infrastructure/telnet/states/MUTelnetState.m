@@ -12,11 +12,11 @@ static NSMutableDictionary *states;
 
 @implementation MUTelnetState
 
-+ (id) state
++ (instancetype) state
 {
   MUTelnetState *result;
 
-  // Todo: This is probably not thread-safe.
+  // TODO: This is probably not thread-safe.
   
   if (!states)
     states = [[NSMutableDictionary alloc] init];

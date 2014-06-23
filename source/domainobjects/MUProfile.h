@@ -40,8 +40,8 @@
 
 @property (readonly) NSArray *writableProperties;
 
-+ (MUProfile *) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
-+ (MUProfile *) profileWithWorld: (MUWorld *) newWorld;
++ (instancetype) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
++ (instancetype) profileWithWorld: (MUWorld *) newWorld;
 
 // Designated initializer.
 - (instancetype) initWithWorld: (MUWorld *) newWorld

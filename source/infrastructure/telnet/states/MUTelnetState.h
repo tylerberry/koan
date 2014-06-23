@@ -12,7 +12,7 @@
 
 @interface MUTelnetState : NSObject
 
-+ (id) state;
++ (instancetype) state;
 
 + (MUByteSet *) telnetCommandBytes;
 

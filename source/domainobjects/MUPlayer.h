@@ -15,7 +15,7 @@
 @property (readonly) NSString *loginString;
 @property (readonly) NSString *windowTitle;
 
-+ (MUPlayer *) playerWithName: (NSString *) newName;
++ (instancetype) playerWithName: (NSString *) newName;
 
 // Designated initializer.
 - (instancetype) initWithName: (NSString *) newName;

@@ -14,12 +14,12 @@
   Class _returnState;
 }
 
-+ (id) stateWithReturnState: (Class) state
++ (instancetype) stateWithReturnState: (Class) state
 {
   return [[self alloc] initWithReturnState: state];
 }
 
-- (id) initWithReturnState: (Class) state
+- (instancetype) initWithReturnState: (Class) state
 {
   if (!(self = [super init]))
     return nil;

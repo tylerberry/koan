@@ -8,7 +8,7 @@
 
 @implementation MUTerminalState
 
-+ (id) state
++ (instancetype) state
 {
   return [[self alloc] init];
 }

@@ -8,8 +8,8 @@
 
 @interface MUTelnetSubnegotiationIACState : MUTelnetState
 
-+ (id) stateWithReturnState: (Class) state;
++ (instancetype) stateWithReturnState: (Class) state;
 
-- (id) initWithReturnState: (Class) state;
+- (instancetype) initWithReturnState: (Class) state;
 
 @end

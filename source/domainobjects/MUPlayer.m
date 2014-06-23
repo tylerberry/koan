@@ -14,7 +14,7 @@ static const int32_t currentPlayerVersion = 4;
 
 @dynamic loginString, password, windowTitle, world;
 
-+ (MUPlayer *) playerWithName: (NSString *) newName
++ (instancetype) playerWithName: (NSString *) newName
 {
   return [[self alloc] initWithName: newName];
 }

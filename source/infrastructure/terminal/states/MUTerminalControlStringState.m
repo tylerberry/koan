@@ -13,12 +13,12 @@
   enum MUTerminalControlStringTypes _controlStringType;
 }
 
-+ (id) stateWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
++ (instancetype) stateWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
 {
   return [[self alloc] initWithControlStringType: controlStringType];
 }
 
-- (id) initWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
+- (instancetype) initWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
 {
   if (!(self = [super init]))
     return nil;

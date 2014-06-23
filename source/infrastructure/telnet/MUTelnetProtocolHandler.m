@@ -259,10 +259,7 @@ static NSArray *_offerableTerminalTypes;
   else if (option == MUTelnetOptionStartTLS)
   {
     //if (_options[MUTelnetOptionStartTLS].enabledForUs)
-    //{
-    //  _connectionState.needsSingleByteSocketReads = YES;
     //  [self sendStartTLSFollowsSubnegotiation];
-    //}
   }
   
   [_connectionState.codebaseAnalyzer noteTelnetDo: option];

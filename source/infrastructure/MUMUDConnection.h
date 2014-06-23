@@ -4,6 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
+#import "GCDAsyncSocket.h"
 #import "MUAbstractConnection.h"
 #import "MUByteDestination.h"
 #import "MUByteSource.h"
@@ -44,7 +45,7 @@ extern NSString *MUMUDConnectionErrorKey;
 
 #pragma mark -
 
-@interface MUMUDConnection : MUAbstractConnection <NSStreamDelegate, MUHeuristicCodebaseAnalyzerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate, MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate, MUTelnetProtocolHandlerDelegate>
+@interface MUMUDConnection : MUAbstractConnection <GCDAsyncSocketDelegate, MUHeuristicCodebaseAnalyzerDelegate, MUMCPProtocolHandlerDelegate, MUMCCPProtocolHandlerDelegate, MUProtocolStackDelegate, MUTerminalProtocolHandlerDelegate, MUTelnetProtocolHandlerDelegate>
 
 @property (readonly) MUProfile *profile;
 @property (strong, nonatomic) MUMUDConnectionState *state;

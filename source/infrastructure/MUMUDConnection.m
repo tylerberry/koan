@@ -27,7 +27,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 - (void) _registerObjectForNotifications: (id) object;
 - (void) _sendPeriodicPing: (NSTimer *) pingTimer;
 - (void) _unregisterObjectForNotifications: (id) object;
-- (void) _writeBufferedDataToOutputStream;
 - (void) _writeDataWithPreprocessing: (NSData *) data;
 
 @end
@@ -36,9 +35,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 @implementation MUMUDConnection
 {
-  NSInputStream *_inputStream;
-  NSOutputStream *_outputStream;
-  BOOL _outputStreamHasSpaceAvailable;
+  GCDAsyncSocket *_socket;
 
   NSMutableData *_outgoingDataBuffer;
   NSMutableAttributedString *_incomingLineBuffer;
@@ -74,10 +71,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 {
   if (!(self = [super init]))
     return nil;
-  
-  _inputStream = nil;
-  _outputStream = nil;
-  _outputStreamHasSpaceAvailable = NO;
+
+  _socket = [[GCDAsyncSocket alloc] initWithDelegate: self
+                                       delegateQueue: dispatch_get_main_queue ()];
   
   _outgoingDataBuffer = [[NSMutableData alloc] init];
   _incomingLineBuffer = [[NSMutableAttributedString alloc] init];
@@ -186,31 +182,16 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) open
 {
-  CFReadStreamRef readStream;
-  CFWriteStreamRef writeStream;
-  
-  CFStreamCreatePairWithSocketToHost (NULL,
-                                      (__bridge CFStringRef) _profile.world.hostname,
-                                      (UInt32) _profile.world.port.integerValue,
-                                      &readStream,
-                                      &writeStream);
-  
-  _inputStream = (__bridge_transfer NSInputStream *) readStream;
-  _outputStream = (__bridge_transfer NSOutputStream *) writeStream;
-  
-  _inputStream.delegate = self;
-  _outputStream.delegate = self;
-  
+  NSError *connectError = nil;
+
+  [self setStatusConnecting];
+
+  [_socket connectToHost: _profile.world.hostname onPort: (uint16_t) _profile.world.port.intValue error: &connectError];
+
   if (_profile.world.forceTLS)
     [self enableTLS];
-  
-  [_inputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  [_outputStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  
-  [self setStatusConnecting];
-  
-  [_inputStream open];
-  [_outputStream open];
+
+  [_socket readDataWithTimeout: -1 tag: 0];
 }
 
 - (void) setStatusConnected
@@ -239,33 +220,42 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) setStatusClosedByClient
 {
-  [super setStatusClosedByClient];
-  [self _reset];
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
-                                                      object: self];
+  if (self.status != MUConnectionStatusNotConnected)
+  {
+    [super setStatusClosedByClient];
+    [self _reset];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByClientNotification
+                                                        object: self];
+  }
 }
 
 - (void) setStatusClosedByServer
 {
-  [super setStatusClosedByServer];
-  [self _reset];
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
-                                                      object: self];
+  if (self.status != MUConnectionStatusNotConnected)
+  {
+    [super setStatusClosedByServer];
+    [self _reset];
 
-  [self _attemptReconnect];
+    [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
+                                                        object: self];
+
+    [self _attemptReconnect];
+  }
 }
 
 - (void) setStatusClosedWithError: (NSError *) error
 {
-  [super setStatusClosedWithError: error];
-  [self _reset];
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
-                                                      object: self
-                                                    userInfo: @{MUMUDConnectionErrorKey: error}];
-  [self _attemptReconnect];
+  if (self.status != MUConnectionStatusNotConnected)
+  {
+    [super setStatusClosedWithError: error];
+    [self _reset];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedWithErrorNotification
+                                                        object: self
+                                                      userInfo: @{MUMUDConnectionErrorKey: error}];
+    [self _attemptReconnect];
+  }
 }
 
 #pragma mark - Various protocols for delegates
@@ -275,69 +265,44 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   NSLog (@"[%@:%@] %@", _profile.world.hostname, _profile.world.port, [[NSString alloc] initWithFormat: message arguments: args]);
 }
 
-#pragma mark - NSStreamDelegate protocol
+#pragma mark - GCDAsyncSocketDelegate protocol
 
-- (void) stream: (NSStream *) stream handleEvent: (NSStreamEvent) eventCode
+- (void) socket: (GCDAsyncSocket *) socket didConnectToHost: (NSString *) hostname port: (uint16_t) port
 {
-  switch (eventCode)
-  {
-    case NSStreamEventNone:
-      return;
-      
-    case NSStreamEventOpenCompleted:
-      if (stream == _inputStream)
-        [self setStatusConnected];
-      return;
-      
-    case NSStreamEventEndEncountered:
-      if (stream == _inputStream)
-      {
-        [self setStatusClosedByServer];
-      }
-      return;
-      
-    case NSStreamEventErrorOccurred:
-      [self setStatusClosedWithError: stream.streamError];
-      return;
-      
-    case NSStreamEventHasBytesAvailable:
-      if (stream == _inputStream)
-      {
-        unsigned numberOfBytesToRead = _state.needsSingleByteSocketReads ? 1 : 1024;
-        uint8_t *bytes = calloc (numberOfBytesToRead, sizeof (uint8_t));
-        NSInteger readLength = [_inputStream read: bytes maxLength: numberOfBytesToRead];
-        
-        if (readLength == 0)
-        {
-          free (bytes);
-          [self setStatusClosedByServer];
-        }
-        else if (readLength < 0) // Error reading.
-        {
-          free (bytes);
-        }
-        else
-        {
-          NSData *receivedData = [NSData dataWithBytesNoCopy: bytes length: readLength freeWhenDone: YES];
+  if (socket == _socket)
+    [self setStatusConnected];
+}
 
-          [_protocolStack parseInputData: receivedData];
-        }
-        
-        if (!_inputStream.hasBytesAvailable)
-          [_protocolStack maybeUseBufferedDataAsPrompt];
-      }
-      return;
-      
-    case NSStreamEventHasSpaceAvailable:
-      if (stream == _outputStream)
-      {
-        if (_outgoingDataBuffer.length > 0)
-          [self _writeBufferedDataToOutputStream];
-        else
-          _outputStreamHasSpaceAvailable = YES;
-      }
-      return;
+- (void) socket: (GCDAsyncSocket *) socket didReadData: (NSData *) data withTag: (long) tag
+{
+  if (socket == _socket)
+  {
+    [_protocolStack parseInputData: data];
+    [_protocolStack maybeUseBufferedDataAsPrompt];
+
+    [_socket readDataWithTimeout: -1 tag: 0];
   }
+}
+
+- (void) socketDidDisconnect: (GCDAsyncSocket *) socket withError: (NSError *) error
+{
+  if (socket == _socket)
+  {
+    if (!error || error.code == GCDAsyncSocketClosedError)
+      [self setStatusClosedByServer];
+    else
+      [self setStatusClosedWithError: error];
+  }
+}
+
+- (void) socket: (GCDAsyncSocket *) socket didReceiveTrust: (SecTrustRef) trust completionHandler: (void (^)(BOOL)) completionHandler
+{
+  completionHandler (YES);
+}
+
+- (void) socketDidSecure: (GCDAsyncSocket *) socket9847
+{
+  [self log: @"     SSL: Secure connection established."];
 }
 
 #pragma mark - MUProtocolStackDelegate protocol
@@ -448,39 +413,18 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) writeDataToSocket: (NSData *) data
 {
-  [_outgoingDataBuffer appendData: data];
-  
-  if (_outputStreamHasSpaceAvailable)
-    [self _writeBufferedDataToOutputStream];
+  static NSUInteger tag = 0;
+
+  if (data.length > 0)
+    [_socket writeData: [data copy] withTimeout: -1 tag: tag++];
 }
 
 #pragma mark - MUTelnetProtocolHandlerDelegate protocol
 
 - (void) enableTLS
 {
-  const void *keys[] = {
-    kCFStreamSSLLevel,
-    kCFStreamSSLPeerName,
-    kCFStreamSSLValidatesCertificateChain
-  };
-  
-  const void *values[] = {
-    kCFStreamSocketSecurityLevelNegotiatedSSL,
-    (__bridge CFStringRef) _profile.world.hostname,
-    kCFBooleanFalse
-  };
-
-  CFDictionaryRef sslSettings = CFDictionaryCreate (NULL,
-                                                    keys,
-                                                    values,
-                                                    3,
-                                                    &kCFTypeDictionaryKeyCallBacks,
-                                                    &kCFTypeDictionaryValueCallBacks);
-
-  CFReadStreamSetProperty ((CFReadStreamRef) _inputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
-  CFWriteStreamSetProperty ((CFWriteStreamRef) _outputStream, kCFStreamPropertySSLSettings, (CFTypeRef) sslSettings);
-
-  CFRelease (sslSettings);
+  [_socket startTLS: @{NSStreamSocketSecurityLevelKey: NSStreamSocketSecurityLevelNegotiatedSSL,
+                       GCDAsyncSocketManuallyEvaluateTrust: @YES}];
 }
 
 - (void) reportWindowSizeToServer
@@ -552,15 +496,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) _reset
 {
-  [_inputStream close];
-  [_outputStream close];
-
-  [_inputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-  [_outputStream removeFromRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
-
-  _inputStream = nil;
-  _outputStream = nil;
-  _outputStreamHasSpaceAvailable = NO;
+  [_socket disconnect];
 
   [_state reset];
   [_protocolStack reset];
@@ -595,20 +531,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   [notificationCenter removeObserver: object name: MUMUDConnectionWasClosedByClientNotification object: self];
   [notificationCenter removeObserver: object name: MUMUDConnectionWasClosedByServerNotification object: self];
   [notificationCenter removeObserver: object name: MUMUDConnectionWasClosedWithErrorNotification object: self];
-}
-
-- (void) _writeBufferedDataToOutputStream
-{
-  uint8_t *bytes = (uint8_t *) [_outgoingDataBuffer mutableBytes];
-  NSInteger bytesWritten = [_outputStream write: (const uint8_t *) bytes maxLength: _outgoingDataBuffer.length];
-  if (bytesWritten < 0)
-  {
-    // FIXME: Error condition. Is this the correct way to handle this?
-    _outputStreamHasSpaceAvailable = NO;
-    return;
-  }
-  [_outgoingDataBuffer replaceBytesInRange: NSMakeRange (0, bytesWritten) withBytes: NULL length: 0];
-  _outputStreamHasSpaceAvailable = NO;
 }
 
 - (void) _writeDataWithPreprocessing: (NSData *) data

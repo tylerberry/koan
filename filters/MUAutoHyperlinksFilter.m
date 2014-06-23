@@ -10,11 +10,6 @@
 
 @implementation MUAutoHyperlinksFilter
 
-+ (MUFilter *) filter
-{
-  return [[self alloc] init];
-}
-
 - (NSAttributedString *) filterCompleteLine: (NSAttributedString *) attributedString
 {
   NSMutableAttributedString *linkStrippedString = [attributedString mutableCopy];

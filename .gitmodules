@@ -19,3 +19,9 @@
 [submodule "source/thirdparty/Punycode-Cocoa"]
 	path = source/thirdparty/Punycode-Cocoa
 	url = https://github.com/Wevah/Punycode-Cocoa
+[submodule "source/thirdparty/ProxyKit"]
+	path = source/thirdparty/ProxyKit
+	url = https://github.com/tylerberry/ProxyKit.git
+[submodule "source/thirdparty/CocoaAsyncSocket"]
+	path = source/thirdparty/CocoaAsyncSocket
+	url = https://github.com/tylerberry/CocoaAsyncSocket.git

@@ -11,7 +11,6 @@
 
 @class MUTelnetState;
 @class MUTelnetStateMachine;
-@protocol MUWriteBuffer;
 
 #pragma mark -
 

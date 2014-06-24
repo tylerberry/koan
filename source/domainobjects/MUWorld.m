@@ -6,7 +6,6 @@
 
 #import "MUWorld.h"
 #import "MUPlayer.h"
-#import "MUSocketFactory.h"
 
 static const int32_t currentWorldVersion = 9;
 

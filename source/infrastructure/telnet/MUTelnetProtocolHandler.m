@@ -9,7 +9,6 @@
 
 #import "MUProtocolStack.h"
 #import "MUTelnetStateMachine.h"
-#import "MUWriteBuffer.h"
 
 static NSArray *_acceptableCharsets;
 static NSArray *_offerableCharsets;

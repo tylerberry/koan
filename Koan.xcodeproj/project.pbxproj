@@ -48,7 +48,6 @@
 		2F30906616D5E71B00266E4A /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F30906416D5E71B00266E4A /* iPad.storyboard */; };
 		2F30906916D5E71B00266E4A /* MUIMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906816D5E71B00266E4A /* MUIMasterViewController.m */; };
 		2F30906C16D5E71B00266E4A /* MUIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F30906B16D5E71B00266E4A /* MUIDetailViewController.m */; };
-		2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC35092AC2FB004554BD /* MUReadBuffer.m */; };
 		2F37FAC0190A12D2008EE58E /* MUTerminalProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FABF190A12D2008EE58E /* MUTerminalProtocolHandler.m */; };
 		2F37FAC3190A1DB2008EE58E /* MUTerminalStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC2190A1DB2008EE58E /* MUTerminalStateMachine.m */; };
 		2F37FAC7190A21DA008EE58E /* MUTerminalState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F37FAC6190A21DA008EE58E /* MUTerminalState.m */; };
@@ -89,6 +88,7 @@
 		2F5DBA9716DDA18300DE627E /* MURegexTestFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DBA9616DDA18300DE627E /* MURegexTestFilter.m */; };
 		2F5DBA9916DDA49100DE627E /* MUConditionsPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F5DBA9816DDA49100DE627E /* MUConditionsPreferencesView.xib */; };
 		2F5DBA9B16E1CE5900DE627E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2F5DBA9A16E1CE5900DE627E /* README.md */; };
+		2F5F7F87194D199B00EDD74E /* MUCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F5F7F86194D199B00EDD74E /* MUCondition.m */; };
 		2F6264551662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6264541662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m */; };
 		2F6264A01663384D008DDBF2 /* NSString+CodePage437.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F62649F1663384D008DDBF2 /* NSString+CodePage437.m */; };
 		2F6264A316644620008DDBF2 /* NSColor+ANSI.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6264A216644620008DDBF2 /* NSColor+ANSI.m */; };
@@ -120,9 +120,9 @@
 		2F82CB9F12422DFC00D32655 /* MUTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F82CB9E12422DFC00D32655 /* MUTreeNode.m */; };
 		2F861FB811FD53F2007136D5 /* MUProtocolStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F861FB711FD53F2007136D5 /* MUProtocolStack.m */; };
 		2F8C6D2D167E69940006F975 /* MMTabBarView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0705631613F4D700A71314 /* MMTabBarView.framework */; };
-		2F8C6D2E167E69B30006F975 /* MMTabBarView.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0705631613F4D700A71314 /* MMTabBarView.framework */; };
+		2F8C6D2E167E69B30006F975 /* MMTabBarView.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0705631613F4D700A71314 /* MMTabBarView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2F8CEADC153ACD7500B488E7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8CEAD9153ACD7500B488E7 /* Growl.framework */; };
-		2F8CEAE0153ACDCB00B488E7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8CEAD9153ACD7500B488E7 /* Growl.framework */; };
+		2F8CEAE0153ACDCB00B488E7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8CEAD9153ACD7500B488E7 /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2F8E7E2F12ED2B2C00AFA68C /* MUProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F8E7E2E12ED2B2C00AFA68C /* MUProtocolHandler.m */; };
 		2F93A80618CEAAEA0076363C /* NSStringPunycodeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F93A80518CEAAEA0076363C /* NSStringPunycodeAdditions.m */; };
 		2F93AB2D166B40D2006516F5 /* VolumeMax.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 2F93AB29166B40D2006516F5 /* VolumeMax.tiff */; };
@@ -135,6 +135,8 @@
 		2F97B0AF16337BF000B33F4A /* MUWorldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0AE16337BF000B33F4A /* MUWorldViewController.m */; };
 		2F97B0B216337C2A00B33F4A /* MUPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0B116337C2900B33F4A /* MUPlayerViewController.m */; };
 		2F97B0C11633905700B33F4A /* MUProfileContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F97B0C01633905700B33F4A /* MUProfileContentView.m */; };
+		2F9C1D20194AA16B00A7D38E /* MUConditionsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F9C1D1F194AA16B00A7D38E /* MUConditionsPreferencesViewController.m */; };
+		2FA19FE01950EFEC009C4D45 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA19FDF1950EFEC009C4D45 /* GCDAsyncSocket.m */; };
 		2FA24AD2162363A300A9D92B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FA24AD11623639A00A9D92B /* libz.dylib */; };
 		2FA2B35B16655D91000C6F9A /* MULayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B35A16655D91000C6F9A /* MULayoutManager.m */; };
 		2FA2B3CE1666D686000C6F9A /* BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA2B3BD1666D686000C6F9A /* BFColorPickerPopover.m */; };
@@ -158,7 +160,7 @@
 		2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */; };
 		2FC93E2B0BB103C500149459 /* MUTelnetProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */; };
 		2FCFEF3E0BCADEB40061FB6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */; };
+		2FCFEF720BCADF970061FB6B /* KoanTextLog.mdimporter in Copy Importer */ = {isa = PBXBuildFile; fileRef = 2FE367F10BCAD3730068A6AA /* KoanTextLog.mdimporter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2FCFEFDD0BCAE36D0061FB6B /* MUTextLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FCFEFDC0BCAE36D0061FB6B /* MUTextLogTests.m */; };
 		2FD0E1EC117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD0E1EB117DBB8F00E75640 /* MUTelnetSubnegotiationOptionState.m */; };
 		2FD7F68212ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */; };
@@ -168,9 +170,6 @@
 		2FE368170BCAD4F30068A6AA /* MUSpotlightImporterMain.c in Sources */ = {isa = PBXBuildFile; fileRef = 2FE367EC0BCAD35E0068A6AA /* MUSpotlightImporterMain.c */; };
 		2FE368440BCAD5DB0068A6AA /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FE368420BCAD5DB0068A6AA /* schema.xml */; };
 		2FE3691F0BCAD8370068A6AA /* schema.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2FE3691E0BCAD8370068A6AA /* schema.strings */; };
-		2FE47378171339D2002C17E7 /* MUSOCKS5Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */; };
-		2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */; };
-		2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */; };
 		2FE4737C1714BDAD002C17E7 /* iCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737B1714BDAD002C17E7 /* iCloud.png */; };
 		2FE4737E1714BDBA002C17E7 /* iCloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE4737D1714BDBA002C17E7 /* iCloud@2x.png */; };
 		7E0EEC160C27140E0043FA91 /* MUAbstractConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */; };
@@ -195,17 +194,14 @@
 		7E87756509AD62E400A883BC /* MUHistoryRingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A6CD074970FE007005AC /* MUHistoryRingTests.m */; };
 		7E87756809AD62E400A883BC /* MUAutoHyperlinksFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6505498077EA20E0016F30E /* MUAutoHyperlinksFilterTests.m */; };
 		7E87756909AD62E400A883BC /* MUTextLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */; };
-		7E87756B09AD62E400A883BC /* MUWriteBufferTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC301B1092B78DE00AFA5C7 /* MUWriteBufferTests.m */; };
 		7E87756C09AD62E400A883BC /* MUPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC112E9078B763E00CFA562 /* MUPlayerTests.m */; };
 		7E87756D09AD62E400A883BC /* MUProfileRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E696783D078F55590033A4C8 /* MUProfileRegistryTests.m */; };
 		7E87756E09AD62E400A883BC /* MUProfileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDD3E40078A4AFB00138CD1 /* MUProfileTests.m */; };
 		7E87757009AD62E400A883BC /* MUWorldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E13FA5A0788C75F0071D30C /* MUWorldTests.m */; };
 		7E87757109AD62E400A883BC /* XCTestCase+NSAttributedStringAssertions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA5BB1F07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.m */; };
-		7E87757209AD62FE00A883BC /* MUSOCKS5PrimitiveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */; };
 		7E87757309AD630E00A883BC /* MUTelnetStateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */; };
 		7E87764409AD6B3000A883BC /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E622A551074231A60069335B /* MUConstants.m */; };
 		7EC3030A092B978B00AFA5C7 /* MUMUDConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC30307092B978B00AFA5C7 /* MUMUDConnection.m */; };
-		7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC301B4092B78F200AFA5C7 /* MUWriteBuffer.m */; };
 		7EE11F3B0BD8284100C78D9C /* MUTelnetNotTelnetState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EE11F390BD8284100C78D9C /* MUTelnetNotTelnetState.m */; };
 		7EF77C940BCC945D0047CF5D /* MUTelnetOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF77C920BCC945D0047CF5D /* MUTelnetOption.m */; };
 		7EF77CCB0BCC99E30047CF5D /* MUTelnetOptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF77CCA0BCC99E30047CF5D /* MUTelnetOptionTests.m */; };
@@ -411,6 +407,8 @@
 		2F5DBA9616DDA18300DE627E /* MURegexTestFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MURegexTestFilter.m; sourceTree = "<group>"; };
 		2F5DBA9816DDA49100DE627E /* MUConditionsPreferencesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MUConditionsPreferencesView.xib; sourceTree = "<group>"; };
 		2F5DBA9A16E1CE5900DE627E /* README.md */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = README.md; sourceTree = SOURCE_ROOT; };
+		2F5F7F85194D199B00EDD74E /* MUCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUCondition.h; sourceTree = "<group>"; };
+		2F5F7F86194D199B00EDD74E /* MUCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUCondition.m; sourceTree = "<group>"; };
 		2F6264531662FCF5008DDBF2 /* MUGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		2F6264541662FCF5008DDBF2 /* MUGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUGeneralPreferencesViewController.m; sourceTree = "<group>"; };
 		2F62649E1663381E008DDBF2 /* NSString+CodePage437.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSString+CodePage437.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -467,7 +465,6 @@
 		2F940FD5169ACB3C00E1CF39 /* MULoggingPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULoggingPreferencesViewController.h; sourceTree = "<group>"; };
 		2F940FD6169ACB3C00E1CF39 /* MULoggingPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULoggingPreferencesViewController.m; sourceTree = "<group>"; };
 		2F940FDB169ACCE500E1CF39 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MULoggingPreferencesView.xib; sourceTree = "<group>"; };
-		2F946F3716AE9B8E00661918 /* MUSocketSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUSocketSubclass.h; sourceTree = "<group>"; };
 		2F946F3816AECC6400661918 /* NSTreeController+IndexPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTreeController+IndexPaths.h"; sourceTree = "<group>"; };
 		2F946F3916AECC6400661918 /* NSTreeController+IndexPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTreeController+IndexPaths.m"; sourceTree = "<group>"; };
 		2F97B0AD16337BF000B33F4A /* MUWorldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWorldViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -476,6 +473,10 @@
 		2F97B0B116337C2900B33F4A /* MUPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPlayerViewController.m; sourceTree = "<group>"; };
 		2F97B0BF1633905700B33F4A /* MUProfileContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProfileContentView.h; sourceTree = "<group>"; };
 		2F97B0C01633905700B33F4A /* MUProfileContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileContentView.m; sourceTree = "<group>"; };
+		2F9C1D1E194AA16B00A7D38E /* MUConditionsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUConditionsPreferencesViewController.h; sourceTree = "<group>"; };
+		2F9C1D1F194AA16B00A7D38E /* MUConditionsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUConditionsPreferencesViewController.m; sourceTree = "<group>"; };
+		2FA19FDE1950EFEC009C4D45 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
+		2FA19FDF1950EFEC009C4D45 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		2FA24AD11623639A00A9D92B /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2FA2B35916655D91000C6F9A /* MULayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MULayoutManager.h; sourceTree = "<group>"; };
 		2FA2B35A16655D91000C6F9A /* MULayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MULayoutManager.m; sourceTree = "<group>"; };
@@ -532,10 +533,6 @@
 		2FF41C05163142B40045D569 /* MUProtocolHandlerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUProtocolHandlerSubclass.h; sourceTree = "<group>"; };
 		2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnectionSubclass.h; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Koan-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Koan-Prefix.pch"; sourceTree = "<group>"; };
-		7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5PrimitiveTests.m; sourceTree = "<group>"; };
-		7E070AFC0933D01E000A36CF /* MUSOCKS5MethodSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5MethodSelection.h; sourceTree = "<group>"; };
-		7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5MethodSelection.m; sourceTree = "<group>"; };
-		7E070B260933D32B000A36CF /* MUSOCKS5Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Constants.h; sourceTree = "<group>"; };
 		7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUAbstractConnection.h; sourceTree = "<group>"; };
 		7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUAbstractConnection.m; sourceTree = "<group>"; };
 		7E13BA1A09AE950600508460 /* MUProxySettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySettings.h; sourceTree = "<group>"; };
@@ -569,33 +566,16 @@
 		7E4FB2750BCC877B007BC40F /* MUTelnetWillState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetWillState.m; sourceTree = "<group>"; };
 		7E4FB2760BCC877B007BC40F /* MUTelnetWontState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetWontState.h; sourceTree = "<group>"; };
 		7E4FB2770BCC877B007BC40F /* MUTelnetWontState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetWontState.m; sourceTree = "<group>"; };
-		7E50AC1F09AEB90B00E0BFE7 /* MUProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUProxySocket.h; sourceTree = "<group>"; };
-		7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProxySocket.m; sourceTree = "<group>"; };
 		7E51030F0AD1D5AA00142EF3 /* NSFont+Traits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSFont+Traits.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7E5103100AD1D5AA00142EF3 /* NSFont+Traits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSFont+Traits.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7E5C2DD909B105B2006993E1 /* MUSOCKS5Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Authentication.h; sourceTree = "<group>"; };
-		7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Authentication.m; sourceTree = "<group>"; };
 		7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachineTests.m; sourceTree = "<group>"; };
-		7E68DC34092AC2FB004554BD /* MUReadBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUReadBuffer.h; sourceTree = "<group>"; };
-		7E68DC35092AC2FB004554BD /* MUReadBuffer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUReadBuffer.m; sourceTree = "<group>"; };
-		7E68DC38092AC2FB004554BD /* MUSocket.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUSocket.h; sourceTree = "<group>"; };
-		7E68DC39092AC2FB004554BD /* MUSocket.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MUSocket.m; sourceTree = "<group>"; };
 		7E68DC3A092AC2FB004554BD /* MUTelnetConstants.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetConstants.h; sourceTree = "<group>"; };
-		7E68DCD4092AC77D004554BD /* MUByteDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteDestination.h; sourceTree = "<group>"; };
-		7E87735109AD44DE00A883BC /* MUSocketFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSocketFactory.h; sourceTree = "<group>"; };
-		7E87735209AD44DE00A883BC /* MUSocketFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSocketFactory.m; sourceTree = "<group>"; };
 		7E87751809AD558700A883BC /* KoanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EA5BB1E07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "XCTestCase+NSAttributedStringAssertions.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7EA5BB1F07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "XCTestCase+NSAttributedStringAssertions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7EC10AE809AF947C00D840A1 /* MUSOCKS5Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUSOCKS5Request.h; sourceTree = "<group>"; };
-		7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUSOCKS5Request.m; sourceTree = "<group>"; };
 		7EC112E9078B763E00CFA562 /* MUPlayerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPlayerTests.m; sourceTree = "<group>"; };
-		7EC301B1092B78DE00AFA5C7 /* MUWriteBufferTests.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWriteBufferTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7EC301B3092B78F200AFA5C7 /* MUWriteBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MUWriteBuffer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		7EC301B4092B78F200AFA5C7 /* MUWriteBuffer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MUWriteBuffer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7EC30306092B978B00AFA5C7 /* MUMUDConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUMUDConnection.h; sourceTree = "<group>"; };
 		7EC30307092B978B00AFA5C7 /* MUMUDConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUMUDConnection.m; sourceTree = "<group>"; };
-		7EC61429092EFF72004DF3CD /* MUByteSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUByteSource.h; sourceTree = "<group>"; };
 		7EDD3E40078A4AFB00138CD1 /* MUProfileTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUProfileTests.m; sourceTree = "<group>"; };
 		7EE11F380BD8284100C78D9C /* MUTelnetNotTelnetState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTelnetNotTelnetState.h; sourceTree = "<group>"; };
 		7EE11F390BD8284100C78D9C /* MUTelnetNotTelnetState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTelnetNotTelnetState.m; sourceTree = "<group>"; };
@@ -981,6 +961,8 @@
 		2F3DBAC3165304EF0056D738 /* Preference View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2F9C1D1E194AA16B00A7D38E /* MUConditionsPreferencesViewController.h */,
+				2F9C1D1F194AA16B00A7D38E /* MUConditionsPreferencesViewController.m */,
 				2F3DBAC4165309750056D738 /* MUFontsAndColorsPreferencesViewController.h */,
 				2F3DBAC5165309750056D738 /* MUFontsAndColorsPreferencesViewController.m */,
 				2F6264531662FCF5008DDBF2 /* MUGeneralPreferencesViewController.h */,
@@ -1055,6 +1037,23 @@
 			path = "Punycode-Cocoa";
 			sourceTree = "<group>";
 		};
+		2FA19FDC1950EFBE009C4D45 /* CocoaAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				2FA19FDE1950EFEC009C4D45 /* GCDAsyncSocket.h */,
+				2FA19FDF1950EFEC009C4D45 /* GCDAsyncSocket.m */,
+			);
+			path = CocoaAsyncSocket;
+			sourceTree = "<group>";
+		};
+		2FA19FDD1950EFC7009C4D45 /* ProxyKit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ProxyKit;
+			path = ProxyKit/ProxyKit;
+			sourceTree = "<group>";
+		};
 		2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */ = {
 			isa = PBXGroup;
 			children = (
@@ -1111,11 +1110,13 @@
 				2F07055B1613F4D700A71314 /* MMTabBarView.xcodeproj */,
 				2F22DF20172F4B8C00C50CBA /* AutoHyperlinks2 */,
 				2FA2B3BB1666D648000C6F9A /* BFColorPickerPopover */,
+				2FA19FDC1950EFBE009C4D45 /* CocoaAsyncSocket */,
 				2F07053816139F3300A71314 /* JRSwizzle */,
 				2FD221DE173B83760061917E /* JUEmptyView */,
 				2F3DBAB71652FF910056D738 /* MASPreferences */,
 				2F1DC55B16DB1D2500A038FE /* PCRE */,
 				2F4D3BFE166C1032002EBA99 /* PLWeakCompatibility */,
+				2FA19FDD1950EFC7009C4D45 /* ProxyKit */,
 				2F93A80318CEAAD00076363C /* Punycode-Cocoa */,
 				2F1DC5D716DB44A400A038FE /* AGRegex.h */,
 				2F1DC5D816DB44A400A038FE /* AGRegex.m */,
@@ -1139,21 +1140,6 @@
 			);
 			name = "Spotlight Importer";
 			path = importer;
-			sourceTree = "<group>";
-		};
-		7E0709EF09339A1E000A36CF /* SOCKS5 */ = {
-			isa = PBXGroup;
-			children = (
-				7E5C2DD909B105B2006993E1 /* MUSOCKS5Authentication.h */,
-				7E5C2DDA09B105B2006993E1 /* MUSOCKS5Authentication.m */,
-				7E070B260933D32B000A36CF /* MUSOCKS5Constants.h */,
-				7E070AFC0933D01E000A36CF /* MUSOCKS5MethodSelection.h */,
-				7E070AFD0933D01E000A36CF /* MUSOCKS5MethodSelection.m */,
-				7EC10AE809AF947C00D840A1 /* MUSOCKS5Request.h */,
-				7EC10AE909AF947C00D840A1 /* MUSOCKS5Request.m */,
-			);
-			name = SOCKS5;
-			path = socks5;
 			sourceTree = "<group>";
 		};
 		7E4FB2630BCC877B007BC40F /* States */ = {
@@ -1275,7 +1261,6 @@
 				7EC112E9078B763E00CFA562 /* MUPlayerTests.m */,
 				E696783D078F55590033A4C8 /* MUProfileRegistryTests.m */,
 				7EDD3E40078A4AFB00138CD1 /* MUProfileTests.m */,
-				7E070ACE0933CD81000A36CF /* MUSOCKS5PrimitiveTests.m */,
 				7EF77CCA0BCC99E30047CF5D /* MUTelnetOptionTests.m */,
 				7EFACED10BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m */,
 				7E68DC2D092AC2AF004554BD /* MUTelnetStateMachineTests.m */,
@@ -1284,7 +1269,6 @@
 				E6E7A63E0749698F007005AC /* MUTextLoggerTests.m */,
 				2F56CEB612DEB96900452A2D /* MUTreeNodeTests.m */,
 				7E13FA5A0788C75F0071D30C /* MUWorldTests.m */,
-				7EC301B1092B78DE00AFA5C7 /* MUWriteBufferTests.m */,
 				7EA5BB1E07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.h */,
 				7EA5BB1F07A76A98002336EE /* XCTestCase+NSAttributedStringAssertions.m */,
 				E648B8E906B03FBC0070F73E /* Tests-Info.plist */,
@@ -1332,6 +1316,8 @@
 			isa = PBXGroup;
 			children = (
 				2F7B4FD40BCAC3A800C1586D /* Documents */,
+				2F5F7F85194D199B00EDD74E /* MUCondition.h */,
+				2F5F7F86194D199B00EDD74E /* MUCondition.m */,
 				2F82CAD81241F81300D32655 /* MUFolder.h */,
 				2F82CAD91241F81300D32655 /* MUFolder.m */,
 				E677D20E0778041F00B417D2 /* MUPlayer.h */,
@@ -1358,16 +1344,13 @@
 			children = (
 				2F7CDB73121EFB39001B4879 /* MCCP */,
 				2F7094031223BB1B00E0D178 /* MCP */,
-				7E0709EF09339A1E000A36CF /* SOCKS5 */,
 				7E68DC33092AC2FB004554BD /* Telnet */,
 				2F37FABD190A10C0008EE58E /* Terminal */,
 				7E0EEC130C27140E0043FA91 /* MUAbstractConnection.h */,
 				2FFD6EE6155676130098A0A2 /* MUAbstractConnectionSubclass.h */,
 				7E0EEC140C27140E0043FA91 /* MUAbstractConnection.m */,
-				7E68DCD4092AC77D004554BD /* MUByteDestination.h */,
 				7E26CB2D0BD80AAF00FC3843 /* MUByteSet.h */,
 				7E26CB2E0BD80AAF00FC3843 /* MUByteSet.m */,
-				7EC61429092EFF72004DF3CD /* MUByteSource.h */,
 				2FD7F68012ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.h */,
 				2FD7F68112ED5F3600BBE950 /* MUHeuristicCodebaseAnalyzer.m */,
 				E6E7A6210749693A007005AC /* MUHistoryRing.h */,
@@ -1383,17 +1366,6 @@
 				2F861FB711FD53F2007136D5 /* MUProtocolStack.m */,
 				7E13BA1A09AE950600508460 /* MUProxySettings.h */,
 				7E13BA1B09AE950600508460 /* MUProxySettings.m */,
-				7E50AC1F09AEB90B00E0BFE7 /* MUProxySocket.h */,
-				7E50AC2009AEB90B00E0BFE7 /* MUProxySocket.m */,
-				7E68DC34092AC2FB004554BD /* MUReadBuffer.h */,
-				7E68DC35092AC2FB004554BD /* MUReadBuffer.m */,
-				7E68DC38092AC2FB004554BD /* MUSocket.h */,
-				2F946F3716AE9B8E00661918 /* MUSocketSubclass.h */,
-				7E68DC39092AC2FB004554BD /* MUSocket.m */,
-				7E87735109AD44DE00A883BC /* MUSocketFactory.h */,
-				7E87735209AD44DE00A883BC /* MUSocketFactory.m */,
-				7EC301B3092B78F200AFA5C7 /* MUWriteBuffer.h */,
-				7EC301B4092B78F200AFA5C7 /* MUWriteBuffer.m */,
 			);
 			name = Infrastructure;
 			path = infrastructure;
@@ -1522,7 +1494,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = MU;
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "3James Software";
 			};
 			buildConfigurationList = E69E22380854FB100055BCF5 /* Build configuration list for PBXProject "Koan" */;
@@ -1717,11 +1689,6 @@
 				7E87756C09AD62E400A883BC /* MUPlayerTests.m in Sources */,
 				7E87756D09AD62E400A883BC /* MUProfileRegistryTests.m in Sources */,
 				7E87756E09AD62E400A883BC /* MUProfileTests.m in Sources */,
-				2F354AD912ED34FE002B1577 /* MUReadBuffer.m in Sources */,
-				2FE47378171339D2002C17E7 /* MUSOCKS5Authentication.m in Sources */,
-				2FE47379171339D2002C17E7 /* MUSOCKS5MethodSelection.m in Sources */,
-				7E87757209AD62FE00A883BC /* MUSOCKS5PrimitiveTests.m in Sources */,
-				2FE4737A171339D2002C17E7 /* MUSOCKS5Request.m in Sources */,
 				2F558BEB191434B4003DF275 /* MUNewlineTextAttributeFilterTests.m in Sources */,
 				7EFACED20BC4BEFD007AE743 /* MUTelnetProtocolHandlerTests.m in Sources */,
 				7EF77CCB0BCC99E30047CF5D /* MUTelnetOptionTests.m in Sources */,
@@ -1730,7 +1697,6 @@
 				7E87756909AD62E400A883BC /* MUTextLoggerTests.m in Sources */,
 				2F56CEB712DEB96900452A2D /* MUTreeNodeTests.m in Sources */,
 				7E87757009AD62E400A883BC /* MUWorldTests.m in Sources */,
-				7E87756B09AD62E400A883BC /* MUWriteBufferTests.m in Sources */,
 				7E87757109AD62E400A883BC /* XCTestCase+NSAttributedStringAssertions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1754,6 +1720,7 @@
 				2FA2B3D51666D686000C6F9A /* BFIconTabBar.m in Sources */,
 				2FA2B3CF1666D686000C6F9A /* BFPopoverColorWell.m in Sources */,
 				2F07053B16139F4C00A71314 /* JRSwizzle.m in Sources */,
+				2F5F7F87194D199B00EDD74E /* MUCondition.m in Sources */,
 				2F37FACA190A316C008EE58E /* MUTerminalTextState.m in Sources */,
 				2F37FAC7190A21DA008EE58E /* MUTerminalState.m in Sources */,
 				2F4E2148173B8CA500B21859 /* JUEmptyView.m in Sources */,
@@ -1764,6 +1731,7 @@
 				2F558BCE19121787003DF275 /* MUNewlineTextAttributeFilter.m in Sources */,
 				7E26CB300BD80AAF00FC3843 /* MUByteSet.m in Sources */,
 				2F4C3A40168968DB0075FB7A /* MUConnectionWindowControllerRegistry.m in Sources */,
+				2FA19FE01950EFEC009C4D45 /* GCDAsyncSocket.m in Sources */,
 				E622A553074231A60069335B /* MUConstants.m in Sources */,
 				2F7B4FB90BCAC1FD00C1586D /* MUDocumentController.m in Sources */,
 				7EFE43870749C7CE002C7D48 /* MUFilter.m in Sources */,
@@ -1795,6 +1763,7 @@
 				2F0A7124190789A800DB9145 /* MUConnectPanelController.m in Sources */,
 				7E1FC01D0787A2220070AF39 /* MUProfileRegistry.m in Sources */,
 				2F0A7123190789A800DB9145 /* MUConnectionWindowController.m in Sources */,
+				2F9C1D20194AA16B00A7D38E /* MUConditionsPreferencesViewController.m in Sources */,
 				2F6F9F1A1633F7990071AE70 /* MUProfileViewController.m in Sources */,
 				2FA60E5512E13939008BD147 /* MUProfilesSection.m in Sources */,
 				2F8E7E2F12ED2B2C00AFA68C /* MUProtocolHandler.m in Sources */,
@@ -1828,7 +1797,6 @@
 				E6DA667307776D9900C46267 /* MUWorld.m in Sources */,
 				E6F3A720077A1B270011A461 /* MUWorldRegistry.m in Sources */,
 				2F97B0AF16337BF000B33F4A /* MUWorldViewController.m in Sources */,
-				7EC30509092BBB6200AFA5C7 /* MUWriteBuffer.m in Sources */,
 				2F6264A316644620008DDBF2 /* NSColor+ANSI.m in Sources */,
 				2FA2B3D01666D686000C6F9A /* NSColor+BFColorPickerPopover.m in Sources */,
 				2FA2B3D11666D686000C6F9A /* NSColorPanel+BFColorPickerPopover.m in Sources */,
@@ -2280,10 +2248,14 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2291,6 +2263,7 @@
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
@@ -2302,8 +2275,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -2316,15 +2289,20 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
@@ -2336,8 +2314,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 			};
 			name = Release;
 		};

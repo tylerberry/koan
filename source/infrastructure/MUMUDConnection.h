@@ -6,8 +6,6 @@
 
 #import "GCDAsyncSocket.h"
 #import "MUAbstractConnection.h"
-#import "MUByteDestination.h"
-#import "MUByteSource.h"
 #import "MUFugueEditFilter.h"
 #import "MUMCPProtocolHandler.h"
 #import "MUMCCPProtocolHandler.h"
@@ -16,7 +14,6 @@
 #import "MUProtocolStack.h"
 #import "MUTelnetProtocolHandler.h"
 #import "MUTerminalProtocolHandler.h"
-#import "MUWriteBuffer.h"
 
 @class MUSocketFactory;
 

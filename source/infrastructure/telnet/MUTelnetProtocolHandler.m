@@ -69,11 +69,12 @@ static NSArray *_offerableTerminalTypes;
 
 + (void) initialize
 {
-  _acceptableCharsets = @[@"UTF-8", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987", @"ISO-IR-100", @"LATIN1", @"L1",
-                         @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII", @"ANSI_X3.4-1968", @"ISO-IR-6",
-                         @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US", @"IBM367", @"CP367", @"CSASCII"];
+  _acceptableCharsets = @[@"UTF-8", @"EUC-JP", @"CSEUCPKDFMTJAPANESE", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
+                          @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII",
+                          @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US",
+                          @"IBM367", @"CP367", @"CSASCII"];
   
-  _offerableCharsets = @[@"UTF-8", @"ISO-8859-1", @"US-ASCII"];
+  _offerableCharsets = @[@"UTF-8", @"EUC-JP", @"ISO-8859-1", @"US-ASCII"];
 
   _offerableTerminalTypes = @[@"koan-256color", @"koan", @"unknown", @"unknown"];
 }
@@ -757,6 +758,10 @@ static NSArray *_offerableTerminalTypes;
 {
   if ([encodingName caseInsensitiveCompare: @"UTF-8"] == NSOrderedSame)
     return NSUTF8StringEncoding;
+
+  else if ([encodingName caseInsensitiveCompare: @"EUC-JP"] == NSOrderedSame
+           || [encodingName caseInsensitiveCompare: @"CSEUCPKDFMTJAPANESE"] == NSOrderedSame)
+    return NSJapaneseEUCStringEncoding;
   
   else if ([encodingName caseInsensitiveCompare: @"ISO-8859-1"] == NSOrderedSame
            || [encodingName caseInsensitiveCompare: @"ISO_8859-1"] == NSOrderedSame

@@ -374,35 +374,46 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) maybeDisplayBufferedStringAsPrompt
 {
+  // This is a heuristic. I've tried to make it fairly tight to avoid false positives.
+
   if (!_incomingLineBuffer
       || _incomingLineBuffer.length == 0
       || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
     return;                                                                      // PennMUSH does, though.
 
-  // This is a heuristic. I've tried to make it fairly tight to avoid false positives.
+  // First, MUDs are allowed to have prompts that don't end in spaces, but MUSHes aren't. This is mostly to try to the
+  // reduce the number of false positives on MUSHes.
+
+  if ([_incomingLineBuffer.string hasSuffix: @" "]
+      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyDikuMUD
+      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
+    return;
+
+  // Now we've decided to at least give the string a chance at becoming a prompt. First, trim whitespace.
+
+  NSString *promptCandidate = _incomingLineBuffer.string;
+
+  while ([promptCandidate hasSuffix: @" "])
+  {
+    promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
+
+    if (promptCandidate.length == 0)
+      return;
+  }
+
+  // Now, scan the last character against a set of "prompt-ish" characters.
 
   if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyDikuMUD
       || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
   {
-    // MUDs are held to a less-tight restriction - they don't need a space for their prompts. (We will add the space if
-    // the MUD leaves it out.)
-    //
-    // Also, MUD prompts can end in '!' or '.' as well as promptier characters.
+    // MUD prompts can end in standard punctuation like '.', '?', and '!' as well as promptier characters.
 
-    NSString *promptCandidate = _incomingLineBuffer.string;
-
-    while ([promptCandidate hasSuffix: @" "])
-    {
-      promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
-
-      if (promptCandidate.length == 0)
-        return;
-    }
-
-    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]."];
+    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">|:)].!?"];
 
     if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
     {
+      // We add in the space if the MUD didn't give us one, for prettiness's sake.
+
       if (![_incomingLineBuffer.string hasSuffix: @" "])
         [self appendStringToLineBuffer: @" "];
 
@@ -411,17 +422,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   }
   else if ([_incomingLineBuffer.string hasSuffix: @" "])
   {
-    NSString *promptCandidate = _incomingLineBuffer.string;
-
-    while ([promptCandidate hasSuffix: @" "])
-    {
-      promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
-
-      if (promptCandidate.length == 0)
-        return;
-    }
-
-    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
+    NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">|:)]"];
 
     if ([promptCharacterSet characterIsMember: [promptCandidate characterAtIndex: promptCandidate.length - 1]])
       [self displayBufferedStringAsPrompt];

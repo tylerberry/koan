@@ -39,16 +39,26 @@
       [protocolHandler bufferCommandByte: byte];
       return self;
 
-    case 0x07: // ASCII BEL, in common use (by XTerm et al) to end Control String commands.
+      // The Duff's Device-esque code below is definitely cuter than it actually needs to be, but I like it anyway.
+
+    case 0x07: // ASCII BEL, in common use (by XTerm et al) to end OSC commands. Invalid for Application Program and
+               // Privacy Message.
+      if (_controlStringType == MUTerminalControlStringTypeOperatingSystemCommand)
+
     case 0x9c: // String Terminator, ECMA-48 standard terminator for a valid Control String command.
-      [protocolHandler processCommandStringWithType: _controlStringType];
-      return [MUTerminalTextState state];
+      {
+        [protocolHandler processCommandStringWithType: _controlStringType];
+        return [MUTerminalTextState state];
+      }
+      else
 
     default:
-      // TODO: Invalid, need to determine what we can do here. Probably have to revert to text.
-      [protocolHandler bufferCommandByte: byte];
-      [protocolHandler bufferTextByte: byte];
-      return self;
+      {
+        // TODO: Invalid, need to determine what we can do here. Probably have to revert to text.
+        [protocolHandler bufferCommandByte: byte];
+        [protocolHandler bufferTextByte: byte];
+        return self;
+      }
   }
 }
 

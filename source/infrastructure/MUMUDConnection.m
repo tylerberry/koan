@@ -49,6 +49,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   NSUInteger _lastNumberOfColumns;
   NSUInteger _lastNumberOfLines;
 
+  NSUInteger _socketReceivedTag;
+  NSUInteger _socketSentTag;
+
   NSUInteger _droppedLines;
   NSMutableArray *_recentReceivedStrings;
   NSTimer *_clearRecentReceivedStringTimer;
@@ -85,6 +88,9 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   _lastSentLine = nil;
   _lastNumberOfColumns = 0;
   _lastNumberOfLines = 0;
+
+  _socketReceivedTag = 0;
+  _socketSentTag = 0;
 
   _droppedLines = 0;
   _recentReceivedStrings = [NSMutableArray array];
@@ -191,7 +197,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   if (_profile.world.forceTLS)
     [self enableTLS];
 
-  [_socket readDataWithTimeout: -1 tag: 0];
+  [_socket readDataWithTimeout: -1 tag: _socketReceivedTag++];
 }
 
 - (void) setStatusConnected
@@ -280,7 +286,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     [_protocolStack parseInputData: data];
     [_protocolStack maybeUseBufferedDataAsPrompt];
 
-    [_socket readDataWithTimeout: -1 tag: 0];
+    [_socket readDataWithTimeout: -1 tag: _socketReceivedTag++];
   }
 }
 
@@ -413,10 +419,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) writeDataToSocket: (NSData *) data
 {
-  static NSUInteger tag = 0;
-
   if (data.length > 0)
-    [_socket writeData: [data copy] withTimeout: -1 tag: tag++];
+    [_socket writeData: [data copy] withTimeout: -1 tag: _socketSentTag++];
 }
 
 #pragma mark - MUTelnetProtocolHandlerDelegate protocol

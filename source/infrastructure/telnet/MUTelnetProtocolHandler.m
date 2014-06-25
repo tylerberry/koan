@@ -70,11 +70,11 @@ static NSArray *_offerableTerminalTypes;
 + (void) initialize
 {
   _acceptableCharsets = @[@"UTF-8", @"EUC-JP", @"CSEUCPKDFMTJAPANESE", @"ISO-8859-1", @"ISO_8859-1", @"ISO_8859-1:1987",
-                          @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"US-ASCII", @"ASCII",
-                          @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US", @"ISO646-US",
-                          @"IBM367", @"CP367", @"CSASCII"];
+                          @"ISO-IR-100", @"LATIN1", @"L1", @"IBM819", @"CP819", @"CSISOLATIN1", @"CP437", @"US-ASCII",
+                          @"ASCII", @"ANSI_X3.4-1968", @"ISO-IR-6", @"ANSI_X3.4-1986", @"ISO_646.IRV:1991", @"US",
+                          @"ISO646-US", @"IBM367", @"CP367", @"CSASCII"];
   
-  _offerableCharsets = @[@"UTF-8", @"EUC-JP", @"ISO-8859-1", @"US-ASCII"];
+  _offerableCharsets = @[@"UTF-8", @"EUC-JP", @"ISO-8859-1", @"CP437", @"US-ASCII"];
 
   _offerableTerminalTypes = @[@"koan-256color", @"koan", @"unknown", @"unknown"];
 }
@@ -585,6 +585,12 @@ static NSArray *_offerableTerminalTypes;
         if ([_acceptableCharsets containsObject: charset])
         {
           _connectionState.stringEncoding = [self _stringEncodingForName: charset];
+
+          if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+            _connectionState.allowCodePage437Substitution = ([charset caseInsensitiveCompare: @"CP437"] == NSOrderedSame);
+          else
+            _connectionState.allowCodePage437Substitution = NO;
+
           [self _sendCharsetAcceptedSubnegotiationForCharset: charset];
 
           // DikuMUDs don't seem to respond well to IAC WILL TRANSMIT-BINARY requests, possibly because TRANSMIT-BINARY
@@ -632,6 +638,11 @@ static NSArray *_offerableTerminalTypes;
       if ([_acceptableCharsets containsObject: acceptedCharset])
       {
         _connectionState.stringEncoding = [self _stringEncodingForName: acceptedCharset];
+
+        if (_connectionState.stringEncoding == NSASCIIStringEncoding)
+          _connectionState.allowCodePage437Substitution = ([acceptedCharset caseInsensitiveCompare: @"CP437"] == NSOrderedSame);
+        else
+          _connectionState.allowCodePage437Substitution = NO;
 
         // DikuMUDs don't seem to respond well to IAC WILL TRANSMIT-BINARY requests, possibly because TRANSMIT-BINARY
         // is 0x00.

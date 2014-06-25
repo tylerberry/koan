@@ -17,7 +17,7 @@
   
   _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
   _isIncomingStreamCompressed = NO;
-  _allowCodePage437Substitution = YES;
+  _allowCodePage437Substitution = YES; // Defaulting to YES allows some MUSHes that can't negotiate to work properly.
   _nextTerminalTypeIndex = 0;
   _serverWillEcho = NO;
   _shouldReportWindowSizeChanges = NO;
@@ -42,6 +42,7 @@
   self.serverWillEcho = NO;
   self.shouldReportWindowSizeChanges = NO;
   self.stringEncoding = NSASCIIStringEncoding;
+
 }
 
 @end

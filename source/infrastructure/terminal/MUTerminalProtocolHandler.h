@@ -17,6 +17,8 @@
 
 - (void) handleBackspace;
 
+- (void) setStringEncoding: (NSStringEncoding) stringEncoding;
+
 - (void) log: (NSString *) message, ...;
 
 - (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType;
@@ -41,8 +43,8 @@
 @property (readonly) NSDictionary *textAttributes;
 
 + (instancetype) protocolHandlerWithProfile: (MUProfile *) profile
-                            connectionState: (MUMUDConnectionState *) telnetConnectionState;
+                            connectionState: (MUMUDConnectionState *) connectionState;
 - (instancetype) initWithProfile: (MUProfile *) profile
-                 connectionState: (MUMUDConnectionState *) telnetConnectionState;
+                 connectionState: (MUMUDConnectionState *) connectionState;
 
 @end

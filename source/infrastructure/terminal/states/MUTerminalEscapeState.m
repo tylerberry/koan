@@ -9,6 +9,7 @@
 #import "MUTerminalConstants.h"
 #import "MUTerminalControlStringState.h"
 #import "MUTerminalCSIFirstByteState.h"
+#import "MUTerminalDesignateOtherCodingSystemState.h"
 #import "MUTerminalTextState.h"
 
 @implementation MUTerminalEscapeState
@@ -19,6 +20,9 @@
 {
   switch (byte)
   {
+    case 0x25: // Designate Other Coding System
+      return [MUTerminalDesignateOtherCodingSystemState state];
+
     // These are all valid C1 codes that we don't handle.
 
     case 0x40: // Padding Character

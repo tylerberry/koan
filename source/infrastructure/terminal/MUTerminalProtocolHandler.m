@@ -60,18 +60,19 @@
 @dynamic textAttributes;
 
 + (instancetype) protocolHandlerWithProfile: (MUProfile *) profile
-                            connectionState: (MUMUDConnectionState *) telnetConnectionState
+                            connectionState: (MUMUDConnectionState *) connectionState
 {
-  return [[self alloc] initWithProfile: profile connectionState: telnetConnectionState];
+  return [[self alloc] initWithProfile: profile connectionState: connectionState];
 }
 
 - (instancetype) initWithProfile: (MUProfile *) profile
-                 connectionState: (MUMUDConnectionState *) telnetConnectionState
+                 connectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
 
   _profile = profile;
+  _connectionState = connectionState;
   _terminalStateMachine = [MUTerminalStateMachine stateMachine];
 
   _commandBuffer = [[NSMutableData alloc] init];
@@ -416,6 +417,12 @@
 {
   [_terminalStateMachine reset];
   [self _setUpInitialTextAttributes];
+}
+
+- (void) setStringEncoding: (NSStringEncoding) stringEncoding
+{
+  [self.protocolStack flushBufferedData];
+  _connectionState.stringEncoding = stringEncoding;
 }
 
 #pragma mark - MUProtocolHandler overrides

@@ -83,6 +83,10 @@ extern NSString * const MUPLogDirectoryURL;
 extern NSString * const MUPProxySettings;
 extern NSString * const MUPUseProxy;
 
+// Conditions.
+
+extern NSString * const MUPConditions;
+
 #define MUPProxyNone @0
 #define MUPProxySystem @1
 #define MUPProxyCustom @2

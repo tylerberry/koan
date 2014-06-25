@@ -79,6 +79,10 @@ NSString * const MUPLogDirectoryURL = @"MUPLogDirectoryURL";
 NSString * const MUPProxySettings = @"MUPProxySettings";
 NSString * const MUPUseProxy = @"MUPUseProxy";
 
+// Conditions.
+
+NSString * const MUPConditions = @"MUPConditions";
+
 #pragma mark Custom string attributes.
 
 NSString * const MUBrightColorAttributeName = @"MUBoldFont";

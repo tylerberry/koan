@@ -14,8 +14,6 @@
 
 + (instancetype) state;
 
-+ (MUByteSet *) telnetCommandBytes;
-
 - (MUTelnetState *) parse: (uint8_t) byte
           forStateMachine: (MUTelnetStateMachine *) stateMachine
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;

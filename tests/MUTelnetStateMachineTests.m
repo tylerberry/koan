@@ -22,6 +22,8 @@
 
 @interface MUTelnetStateMachineTests : XCTestCase <MUTelnetProtocolHandler>
 
++ (MUByteSet *) _telnetCommandBytes;
+
 - (void) _assertByteConfirmsTelnet: (uint8_t) byte;
 - (void) _assertByteInvalidatesTelnet: (uint8_t) byte;
 - (void) _assertState: (Class) stateClass givenAnyByteProducesState: (Class) nextStateClass;
@@ -73,7 +75,7 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 - (void) testIACTransitionsThatInvalidateTelnet
 {
-  MUByteSet *byteSet = [[MUTelnetState telnetCommandBytes] inverseSet];
+  MUByteSet *byteSet = [[MUTelnetStateMachineTests _telnetCommandBytes] inverseSet];
 
   // This should invalidate Telnet, as it violates spec, but it can't actually invalidate it due to server bugs.
   //[byteSet addByte: MUTelnetBeginSubnegotiation];
@@ -90,7 +92,7 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 - (void) testIACTransitionsThatConfirmTelnet
 {
-  MUByteSet *byteSet = [MUTelnetState telnetCommandBytes];
+  MUByteSet *byteSet = [MUTelnetStateMachineTests _telnetCommandBytes];
 
   [byteSet removeByte: MUTelnetBeginSubnegotiation];
   [byteSet removeByte: MUTelnetEndSubnegotiation];
@@ -251,6 +253,29 @@ givenAnyByteProducesState: C(MUTelnetSubnegotiationState)
 }
 
 #pragma mark - Private methods
+
++ (MUByteSet *) _telnetCommandBytes
+{
+  return [MUByteSet byteSetWithBytes:
+          MUTelnetEndOfRecord,
+          MUTelnetEndSubnegotiation,
+          MUTelnetNoOperation,
+          MUTelnetDataMark,
+          MUTelnetBreak,
+          MUTelnetInterruptProcess,
+          MUTelnetAbortOutput,
+          MUTelnetAreYouThere,
+          MUTelnetEraseCharacter,
+          MUTelnetEraseLine,
+          MUTelnetGoAhead,
+          MUTelnetBeginSubnegotiation,
+          MUTelnetWill,
+          MUTelnetWont,
+          MUTelnetDo,
+          MUTelnetDont,
+          MUTelnetInterpretAsCommand,
+          -1];
+}
 
 - (void) _assertByteConfirmsTelnet: (uint8_t) byte;
 {

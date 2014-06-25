@@ -32,29 +32,6 @@ static NSMutableDictionary *states;
   return result;
 }
 
-+ (MUByteSet *) telnetCommandBytes
-{
-  return [MUByteSet byteSetWithBytes:
-    MUTelnetEndOfRecord,
-    MUTelnetEndSubnegotiation,
-    MUTelnetNoOperation,
-    MUTelnetDataMark,
-    MUTelnetBreak,
-    MUTelnetInterruptProcess,
-    MUTelnetAbortOutput,
-    MUTelnetAreYouThere,
-    MUTelnetEraseCharacter,
-    MUTelnetEraseLine,
-    MUTelnetGoAhead,
-    MUTelnetBeginSubnegotiation,
-    MUTelnetWill,
-    MUTelnetWont,
-    MUTelnetDo,
-    MUTelnetDont,
-    MUTelnetInterpretAsCommand,
-    -1];
-}
-
 - (MUTelnetState *) parse: (uint8_t) byte
           forStateMachine: (MUTelnetStateMachine *) stateMachine
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocol

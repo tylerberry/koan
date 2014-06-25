@@ -374,11 +374,12 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) maybeDisplayBufferedStringAsPrompt
 {
-  if (!_incomingLineBuffer || _incomingLineBuffer.length == 0
+  if (!_incomingLineBuffer
+      || _incomingLineBuffer.length == 0
       || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyTinyMUSH) // TinyMUSH does not use prompts.
     return;                                                                      // PennMUSH does, though.
 
-  // This is a heuristic. I've made it fairly tight to avoid false positives.
+  // This is a heuristic. I've tried to make it fairly tight to avoid false positives.
 
   if (self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyDikuMUD
       || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
@@ -391,7 +392,12 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     NSString *promptCandidate = _incomingLineBuffer.string;
 
     while ([promptCandidate hasSuffix: @" "])
+    {
       promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
+
+      if (promptCandidate.length == 0)
+        return;
+    }
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]."];
 
@@ -408,7 +414,12 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
     NSString *promptCandidate = _incomingLineBuffer.string;
 
     while ([promptCandidate hasSuffix: @" "])
+    {
       promptCandidate = [promptCandidate substringToIndex: promptCandidate.length - 1];
+
+      if (promptCandidate.length == 0)
+        return;
+    }
 
     NSCharacterSet *promptCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @">?|:)]"];
 

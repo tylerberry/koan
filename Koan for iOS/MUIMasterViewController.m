@@ -1,9 +1,7 @@
 //
-//  MUIMasterViewController.m
-//  Koan for iOS
+// MUIMasterViewController.m
 //
-//  Created by Tyler Berry on 2/20/13.
-//  Copyright (c) 2013 3James Software. All rights reserved.
+// Copyright (c) 2013 3James Software. All rights reserved.
 //
 
 #import "MUIMasterViewController.h"
@@ -134,7 +132,7 @@ commitEditingStyle: (UITableViewCellEditingStyle) editingStyle
   {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     NSDate *object = _objects[indexPath.row];
-    segue.destinationViewController.detailItem = object];
+    [segue.destinationViewController setDetailItem: object];
   }
 }
 

@@ -1,9 +1,7 @@
 //
-//  MUIDetailViewController.m
-//  Koan for iOS
+// MUIDetailViewController.m
 //
-//  Created by Tyler Berry on 2/20/13.
-//  Copyright (c) 2013 3James Software. All rights reserved.
+// Copyright (c) 2013 3James Software. All rights reserved.
 //
 
 #import "MUIDetailViewController.h"
@@ -42,7 +40,7 @@
   
   if (self.detailItem)
   {
-    self.detailDescriptionLabel.text = self.detailItem.description;
+    self.detailDescriptionLabel.text = [self.detailItem description];
   }
 }
 

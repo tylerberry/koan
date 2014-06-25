@@ -457,9 +457,9 @@
                     </connections>
                 </colorWell>
                 <button id="761">
-                    <rect key="frame" x="18" y="18" width="293" height="18"/>
+                    <rect key="frame" x="18" y="18" width="482" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Display ANSI bright characters as bold text" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="762">
+                    <buttonCell key="cell" type="check" title="Display ANSI bright characters as bold" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="762">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

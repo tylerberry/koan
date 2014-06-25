@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MUConnectionWindowController">
             <connections>
-                <outlet property="inputView" destination="156" id="177"/>
+                <outlet property="inputTextView" destination="156" id="VLu-Qk-JFt"/>
                 <outlet property="receivedTextView" destination="153" id="162"/>
                 <outlet property="splitView" destination="178" id="179"/>
                 <outlet property="timeConnectedField" destination="181" id="211"/>

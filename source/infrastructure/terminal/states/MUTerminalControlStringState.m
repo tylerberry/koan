@@ -39,12 +39,13 @@
       [protocolHandler bufferCommandByte: byte];
       return self;
 
-    case 0x9c: // String Terminator, ends a valid OSC command.
+    case 0x07: // ASCII BEL, in common use (by XTerm et al) to end Control String commands.
+    case 0x9c: // String Terminator, ECMA-48 standard terminator for a valid Control String command.
       [protocolHandler processCommandStringWithType: _controlStringType];
       return [MUTerminalTextState state];
 
     default:
-      // Invalid, need to determine what we can do here. Probably have to revert to text.
+      // TODO: Invalid, need to determine what we can do here. Probably have to revert to text.
       [protocolHandler bufferCommandByte: byte];
       [protocolHandler bufferTextByte: byte];
       return self;

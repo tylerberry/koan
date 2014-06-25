@@ -23,7 +23,6 @@
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
 #import "MUProxySettings.h"
-#import "MUSocketFactory.h"
 #import "MUWorld.h"
 #import "MUWorldRegistry.h"
 

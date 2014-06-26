@@ -27,7 +27,6 @@
 
     default:
       [protocolHandler bufferCommandByte: byte];
-      [protocolHandler bufferTextByte: byte];
       return [MUTerminalTextState state];
   }
 }

@@ -11,6 +11,7 @@
 #import "MUTerminalCSIFirstByteState.h"
 #import "MUTerminalDesignateOtherCodingSystemState.h"
 #import "MUTerminalTextState.h"
+#import "MUTerminalUnhandledTwoByteCodeState.h"
 
 @implementation MUTerminalEscapeState
 
@@ -22,6 +23,19 @@
   {
     case 0x25: // Designate Other Coding System
       return [MUTerminalDesignateOtherCodingSystemState state];
+
+    // These are all C1-esque terminal codes that take a total of two bytes which we don't handle.
+
+    case 0x20: // ' ': Set 7-bit mode, 8-bit mode, or ANSI conformance level
+    case 0x23: // '#': Various DEC terminal line sizing commands
+    case 0x28: // '(': Designate G0 Character Set (ISO-2022 or VT100)
+    case 0x29: // ')': Designate G1 Character Set (ISO-2022 or VT100)
+    case 0x2a: // '*': Designate G2 Character Set (ISO-2022 or VT100)
+    case 0x2b: // '+': Designate G3 Character Set (ISO-2022 or VT100)
+    case 0x2d: // '-': Designate G1 Character Set (VT300)
+    case 0x2e: // '.': Designate G2 Character Set (VT300)
+    case 0x2f: // '/': Designate G3 Character Set (VT300)
+      return [MUTerminalUnhandledTwoByteCodeState stateWithFirstByte: byte];
 
     // These are all valid C1 codes that we don't handle.
 
@@ -56,16 +70,16 @@
       [protocolHandler log: @"Terminal: Unimplemented C1: ESC %02u/%02u.", byte / 16, byte % 16];
       return [MUTerminalTextState state];
 
-    case 0x5b: // Control Sequence Introducer.
+    case 0x5b: // Control Sequence Introducer
       return [MUTerminalCSIFirstByteState state];
 
-    case 0x5d:
+    case 0x5d: // Operating System Command
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypeOperatingSystemCommand];
 
-    case 0x5e:
+    case 0x5e: // Privacy Message
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypePrivacyMessage];
 
-    case 0x5f:
+    case 0x5f: // Application Program
       return [MUTerminalControlStringState stateWithControlStringType: MUTerminalControlStringTypeApplicationProgram];
 
     default:

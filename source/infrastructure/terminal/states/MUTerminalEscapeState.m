@@ -24,7 +24,7 @@
     case 0x25: // Designate Other Coding System
       return [MUTerminalDesignateOtherCodingSystemState state];
 
-    // These are all C1-esque terminal codes that take a total of two bytes which we don't handle.
+    // These are all C1-esque terminal codes that take an extra byte, and which we don't handle.
 
     case 0x20: // ' ': Set 7-bit mode, 8-bit mode, or ANSI conformance level
     case 0x23: // '#': Various DEC terminal line sizing commands
@@ -37,7 +37,7 @@
     case 0x2f: // '/': Designate G3 Character Set (VT300)
       return [MUTerminalUnhandledTwoByteCodeState stateWithFirstByte: byte];
 
-    // These are all valid C1 codes that we don't handle.
+    // These are all valid C1 codes which we don't handle.
 
     case 0x40: // Padding Character
     case 0x41: // High Octet Preset
@@ -45,7 +45,7 @@
     case 0x43: // No Break Here
     case 0x44: // Index
     case 0x45: // Next Line
-    case 0x46: // Start Of Selected Area
+    case 0x46: // Start Of Selected Area (also, for some HP terminals, cursor reset to lower left)
     case 0x47: // End Of Selected Area
     case 0x48: // Character Tabulation Set
     case 0x49: // Character Tabulation With Justification
@@ -68,6 +68,25 @@
     case 0x5a: // Single Character Introducer <-- makes next character printed
     case 0x5c: // String Terminator
       [protocolHandler log: @"Terminal: Unimplemented C1: ESC %02u/%02u.", byte / 16, byte % 16];
+      return [MUTerminalTextState state];
+
+    // These are all unimplemented C1-esque codes which we don't handle.
+
+    case 0x36: // '6': Back Index
+    case 0x37: // '7': Save Cursor
+    case 0x38: // '8': Restore Cursor
+    case 0x39: // '9': Forward Index
+    case 0x3d: // '=': Application Keypad
+    case 0x3e: // '>': Normal Keypad
+    case 0x63: // 'c': Full Reset
+    case 0x6c: // 'l': Memory Lock
+    case 0x6d: // 'm': Memory Unlock
+    case 0x6e: // 'n': Invoke G2 Character Set As GL
+    case 0x6f: // 'o': Invoke G3 Character Set As GL
+    case 0x7c: // '|': Invoke G3 Character Set As GR
+    case 0x7d: // '}': Invoke G2 Character Set As GR
+    case 0x7e: // '~': Invoke G1 Character Set As GR
+      [protocolHandler log: @"Terminal: Unimplemented code: ESC %02u/%02u.", byte / 16, byte % 16];
       return [MUTerminalTextState state];
 
     case 0x5b: // Control Sequence Introducer

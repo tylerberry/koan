@@ -18,7 +18,7 @@
 {
   switch (byte)
   {
-    case 0x4d: // 'M': Used as a marker for nonstandard, and spec-violating, pseudo-ANSI music.
+    case 0x4d: // 'M': Used as a marker for non-standard, and ECMA-48 spec-violating, pseudo-ANSI music.
       [protocolHandler bufferCommandByte: byte];
       return [MUTerminalPseudoANSIMusicState state];
 

@@ -4,13 +4,10 @@
 // Copyright (c) 2014 3James Software. All rights reserved.
 //
 
-@interface MUCondition : NSObject <NSCopying, NSSecureCoding>
+@interface MUCondition : NSObject
 
-@property (copy) NSPredicate *predicate;
-@property (copy) NSMutableArray *actions;
+@property (copy) NSString *name;
 
-- (instancetype) initWithPredicate: (NSPredicate *) predicate actions: (NSArray *) actions;
-
-- (void) applyToMutableAttributedString: (NSMutableAttributedString *) mutableAttributedString;
+- (instancetype) initWithName: (NSString *) name;
 
 @end

@@ -73,7 +73,7 @@
 
   _profile = profile;
   _connectionState = connectionState;
-  _terminalStateMachine = [MUTerminalStateMachine stateMachine];
+  _terminalStateMachine = [MUTerminalStateMachine stateMachineWithConnectionState: connectionState];
 
   _commandBuffer = [[NSMutableData alloc] init];
   _receivedCarriageReturn = NO;

@@ -10,16 +10,17 @@
 
 @implementation MUTerminalStateMachine
 
-+ (instancetype) stateMachine
++ (instancetype) stateMachineWithConnectionState: (MUMUDConnectionState *) connectionState
 {
-  return [[self alloc] init];
+  return [[self alloc] initWithConnectionState: connectionState];
 }
 
-- (instancetype) init
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
 
+  _connectionState = connectionState;
   _state = [MUTerminalTextState state];
 
   return self;

@@ -19,17 +19,13 @@
     case 0x00: // Null.
       return self;
 
+    // This set of characters are also used for graphical display in Code Page 437.
+
     case 0x01: // Start Of Heading.
-    case 0x02: // Start Of Text.
     case 0x03: // End Of Text.
     case 0x04: // End Of Transmission.
     case 0x05: // Enquiry.
     case 0x06: // Acknowledge.
-    case 0x07: // Bell.
-    case 0x0b: // Vertical Tabulation.
-    case 0x0c: // Form Feed.
-    case 0x0e: // Shift Out. (To alternate character set.)
-    case 0x0f: // Shift In.
     case 0x10: // Data Link Escape.
     case 0x11: // Device Control 1 (XON).
     case 0x12: // Device Control 2.
@@ -45,6 +41,17 @@
     case 0x1d: // Group Separator.
     case 0x1e: // Record Separator.
     case 0x1f: // Unit Separator.
+    {
+      if (stateMachine.connectionState.allowCodePage437Substitution)
+        return self;
+    }
+
+    case 0x02: // Start Of Text.
+    case 0x07: // Bell.
+    case 0x0b: // Vertical Tabulation.
+    case 0x0c: // Form Feed.
+    case 0x0e: // Shift Out. (To alternate character set.)
+    case 0x0f: // Shift In.
       [protocolHandler log: @"Terminal: Unimplemented C0: %02u/%02u.", byte / 16, byte % 16];
       return self;
 

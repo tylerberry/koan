@@ -381,7 +381,15 @@
     NSString *input = [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i];
     [self _parseString: input];
 
-    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: (uint8_t) i];
+    uint16_t adjustedColor = i - 16;
+    uint16_t red = (adjustedColor / 36 == 0) ? 0 : (adjustedColor / 36) * 40 + 55;
+    uint16_t green = ((adjustedColor / 6) % 6 == 0) ? 0 : ((adjustedColor / 6) % 6) * 40 + 55;
+    uint16_t blue =  (adjustedColor % 6 == 0) ? 0 : (adjustedColor % 6) * 40 + 55;
+
+    NSColor *expectedColor = [NSColor colorWithCalibratedRed: red / 255.0
+                                                       green: green / 255.0
+                                                        blue: blue / 255.0
+                                                       alpha: 1.0];
 
     [self _assertString: _outputBuffer
                hasValue: expectedColor
@@ -397,8 +405,9 @@
     NSString *input = [NSString stringWithFormat: @"\x1B[38;5;%dm%d", i, i];
     [self _parseString: input];
 
-    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: (uint8_t) i];
-
+    NSColor *expectedColor = [NSColor colorWithCalibratedWhite: (i - 232 == 0 ? 0 : 8 + (i - 232) * 10) / 255.0
+                                                         alpha: 1.0];
+    
     [self _assertString: _outputBuffer
                hasValue: expectedColor
            forAttribute: NSForegroundColorAttributeName
@@ -578,7 +587,15 @@
     NSString *input = [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i];
     [self _parseString: input];
 
-    NSColor *expectedColor = [NSColor ANSI256ColorCubeColorForCode: (uint8_t) i];
+    uint16_t adjustedColor = i - 16;
+    uint16_t red = (adjustedColor / 36 == 0) ? 0 : (adjustedColor / 36) * 40 + 55;
+    uint16_t green = ((adjustedColor / 6) % 6 == 0) ? 0 : ((adjustedColor / 6) % 6) * 40 + 55;
+    uint16_t blue =  (adjustedColor % 6 == 0) ? 0 : (adjustedColor % 6) * 40 + 55;
+
+    NSColor *expectedColor = [NSColor colorWithCalibratedRed: red / 255.0
+                                                       green: green / 255.0
+                                                        blue: blue / 255.0
+                                                       alpha: 1.0];
 
     [self _assertString: _outputBuffer
                hasValue: expectedColor
@@ -594,7 +611,8 @@
     NSString *input = [NSString stringWithFormat: @"\x1B[48;5;%dm%d", i, i];
     [self _parseString: input];
 
-    NSColor *expectedColor = [NSColor ANSI256GrayscaleColorForCode: (uint8_t) i];
+    NSColor *expectedColor = [NSColor colorWithCalibratedWhite: (i - 232 == 0 ? 0 : 8 + (i - 232) * 10) / 255.0
+                                                         alpha: 1.0];
 
     [self _assertString: _outputBuffer
                hasValue: expectedColor

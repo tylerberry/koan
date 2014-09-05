@@ -157,6 +157,9 @@
 		2FB40CDB0BF0FA3D004E13F8 /* MUFugueEditFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40CD90BF0FA3D004E13F8 /* MUFugueEditFilter.m */; };
 		2FB40DE10BF10797004E13F8 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */; };
 		2FB40E7B0BF10AA2004E13F8 /* MUFilterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */; };
+		2FC2327F19B94DB200D22A30 /* MUPredicateCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC2327E19B94DB200D22A30 /* MUPredicateCondition.m */; };
+		2FC2328419B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC2328119B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.m */; };
+		2FC2328519B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC2328319B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.m */; };
 		2FC6BCCC163CA8A30027CCFD /* MUOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */; };
 		2FC93E2B0BB103C500149459 /* MUTelnetProtocolHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC93E290BB103C500149459 /* MUTelnetProtocolHandler.m */; };
 		2FCFEF3E0BCADEB40061FB6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -511,6 +514,12 @@
 		2FB40D940BF10694004E13F8 /* MUFugueEditFilterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFugueEditFilterTests.m; sourceTree = "<group>"; };
 		2FB40E250BF10910004E13F8 /* MUFilterTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUFilterTestCase.h; sourceTree = "<group>"; };
 		2FB40E260BF10911004E13F8 /* MUFilterTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUFilterTestCase.m; sourceTree = "<group>"; };
+		2FC2327D19B94DB200D22A30 /* MUPredicateCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUPredicateCondition.h; sourceTree = "<group>"; };
+		2FC2327E19B94DB200D22A30 /* MUPredicateCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUPredicateCondition.m; sourceTree = "<group>"; };
+		2FC2328019B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalDesignateOtherCodingSystemState.h; sourceTree = "<group>"; };
+		2FC2328119B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalDesignateOtherCodingSystemState.m; sourceTree = "<group>"; };
+		2FC2328219B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUTerminalUnhandledTwoByteCodeState.h; sourceTree = "<group>"; };
+		2FC2328319B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUTerminalUnhandledTwoByteCodeState.m; sourceTree = "<group>"; };
 		2FC6BCCA163CA8A30027CCFD /* MUOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUOutlineView.h; sourceTree = "<group>"; };
 		2FC6BCCB163CA8A30027CCFD /* MUOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUOutlineView.m; sourceTree = "<group>"; };
 		2FC93E280BB103C500149459 /* MUTelnetProtocolHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MUTelnetProtocolHandler.h; sourceTree = "<group>"; };
@@ -920,6 +929,8 @@
 				2F558BC6190B06DA003DF275 /* MUTerminalCSIFirstByteState.m */,
 				2F37FACE190A33A0008EE58E /* MUTerminalCSIState.h */,
 				2F37FACF190A33A0008EE58E /* MUTerminalCSIState.m */,
+				2FC2328019B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.h */,
+				2FC2328119B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.m */,
 				2F37FACB190A31DB008EE58E /* MUTerminalEscapeState.h */,
 				2F37FACC190A31DB008EE58E /* MUTerminalEscapeState.m */,
 				2F558BC8190B077E003DF275 /* MUTerminalPseudoANSIMusicState.h */,
@@ -928,6 +939,8 @@
 				2F37FAC6190A21DA008EE58E /* MUTerminalState.m */,
 				2F37FAC8190A316C008EE58E /* MUTerminalTextState.h */,
 				2F37FAC9190A316C008EE58E /* MUTerminalTextState.m */,
+				2FC2328219B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.h */,
+				2FC2328319B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.m */,
 			);
 			name = States;
 			path = states;
@@ -1322,6 +1335,8 @@
 				2F82CAD91241F81300D32655 /* MUFolder.m */,
 				E677D20E0778041F00B417D2 /* MUPlayer.h */,
 				E677D20F0778041F00B417D2 /* MUPlayer.m */,
+				2FC2327D19B94DB200D22A30 /* MUPredicateCondition.h */,
+				2FC2327E19B94DB200D22A30 /* MUPredicateCondition.m */,
 				7E39EF9B0783938F0042A17A /* MUProfile.h */,
 				7E39EF9C0783938F0042A17A /* MUProfile.m */,
 				2FA60E4912E1384F008BD147 /* MUProfilesSection.h */,
@@ -1496,6 +1511,14 @@
 				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "3James Software";
+				TargetAttributes = {
+					2F30904716D5E71B00266E4A = {
+						DevelopmentTeam = QRQZ87T7UT;
+					};
+					8D1107260486CEB800E47090 = {
+						DevelopmentTeam = QRQZ87T7UT;
+					};
+				};
 			};
 			buildConfigurationList = E69E22380854FB100055BCF5 /* Build configuration list for PBXProject "Koan" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1748,6 +1771,7 @@
 				2F940FD7169ACB3D00E1CF39 /* MULoggingPreferencesViewController.m in Sources */,
 				2F7CDB76121EFC22001B4879 /* MUMCCPProtocolHandler.m in Sources */,
 				2F6E481612E69ADD00D9B29C /* MUMCPProtocolHandler.m in Sources */,
+				2FC2328519B94DD700D22A30 /* MUTerminalUnhandledTwoByteCodeState.m in Sources */,
 				7EC3030A092B978B00AFA5C7 /* MUMUDConnection.m in Sources */,
 				2F558BC7190B06DA003DF275 /* MUTerminalCSIFirstByteState.m in Sources */,
 				2F2718EB12141166006710C7 /* MUMUDConnectionState.m in Sources */,
@@ -1813,7 +1837,9 @@
 				2F1DC57716DB3A1A00A038FE /* pcre_exec.c in Sources */,
 				2F5DBA8F16DD487700DE627E /* pcre_fullinfo.c in Sources */,
 				2F5DBA8C16DD310F00DE627E /* pcre_get.c in Sources */,
+				2FC2328419B94DD700D22A30 /* MUTerminalDesignateOtherCodingSystemState.m in Sources */,
 				2F5DBA8E16DD486700DE627E /* pcre_globals.c in Sources */,
+				2FC2327F19B94DB200D22A30 /* MUPredicateCondition.m in Sources */,
 				2F37FAC0190A12D2008EE58E /* MUTerminalProtocolHandler.m in Sources */,
 				2F5DBA8D16DD483400DE627E /* pcre_newline.c in Sources */,
 				2F5DBA8A16DD301C00DE627E /* pcre_ord2utf8.c in Sources */,
@@ -2037,6 +2063,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2073,6 +2100,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2180,6 +2208,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = resources/Koan.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/frameworks",
 					"$(inherited)",
@@ -2205,6 +2235,7 @@
 					"-fobjc-runtime-has-weak",
 				);
 				PRODUCT_NAME = Koan;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2213,6 +2244,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = resources/Koan.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/frameworks",
 					"$(inherited)",
@@ -2236,6 +2269,7 @@
 					"-fobjc-runtime-has-weak",
 				);
 				PRODUCT_NAME = Koan;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

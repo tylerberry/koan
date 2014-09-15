@@ -119,7 +119,7 @@
     [super editWithFrame: rect inView: controlView editor: editor delegate: delegate event: event];
 }
 
-- (NSCellHitResult) hitTestForEvent: (NSEvent *) event inRect: (NSRect) rect ofView: (NSView *) controlView
+- (NSUInteger) hitTestForEvent: (NSEvent *) event inRect: (NSRect) rect ofView: (NSView *) controlView
 {
   if (self.image)
   {

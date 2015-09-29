@@ -19,7 +19,7 @@ enum charsetNegotiationStatus
 
 @property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
 @property (assign) BOOL allowCodePage437Substitution;
-@property (assign) BOOL isIncomingStreamCompressed;
+@property (assign, getter=isIncomingStreamCompressed) BOOL incomingStreamCompressed;
 @property (assign) unsigned nextTerminalTypeIndex;
 @property (assign) BOOL shouldReportWindowSizeChanges;
 @property (assign) BOOL serverWillEcho;

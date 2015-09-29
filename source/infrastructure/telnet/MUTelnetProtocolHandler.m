@@ -869,7 +869,7 @@ static NSArray *_offerableTerminalTypes;
       break;
   }
   
-  _connectionState.isIncomingStreamCompressed = YES;
+  _connectionState.incomingStreamCompressed = YES;
 }
 
 #pragma mark - MSSP

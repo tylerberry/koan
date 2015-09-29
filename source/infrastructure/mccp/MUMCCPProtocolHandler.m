@@ -81,7 +81,7 @@
 
 - (void) parseByte: (uint8_t) byte
 {
-  if (!_connectionState.isIncomingStreamCompressed)
+  if (!_connectionState.incomingStreamCompressed)
   {
     PASS_ON_PARSED_BYTE (byte);
     return;
@@ -174,7 +174,7 @@
       
       [self _cleanUpStream];
       [self _log: @"    MCCP: Decompression of incoming data ended."];
-      _connectionState.isIncomingStreamCompressed = NO;
+      _connectionState.incomingStreamCompressed = NO;
     }
     
     return;

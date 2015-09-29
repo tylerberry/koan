@@ -84,7 +84,7 @@
   {
     MUProfile *profile = (MUProfile *) object;
     
-    if ([profile.writableProperties containsObject: keyPath])
+    if ([[MUProfile writableProperties] containsObject: keyPath])
     {
       [self _writeProfilesToUserDefaults];
       return;
@@ -207,7 +207,7 @@
 
 - (void) _startObservingWritableValuesForProfile: (MUProfile *) profile
 {
-  for (NSString *keyPath in profile.writableProperties)
+  for (NSString *keyPath in [MUProfile writableProperties])
   {
     [profile addObserver: self forKeyPath: keyPath options: 0 context: nil];
   }
@@ -215,7 +215,7 @@
 
 - (void) _stopObservingWritableValuesForProfile: (MUProfile *) profile
 {
-  for (NSString *keyPath in profile.writableProperties)
+  for (NSString *keyPath in [MUProfile writableProperties])
   {
     [profile removeObserver: self forKeyPath: keyPath];
   }

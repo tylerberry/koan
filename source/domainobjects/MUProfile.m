@@ -53,7 +53,12 @@ static const int32_t currentProfileVersion = 4;
   }
   
   return keyPaths;
-}\
+}
+
++ (NSArray <NSString *> *) writableProperties
+{
+  return @[@"autoconnect", @"font", @"backgroundColor", @"linkColor", @"textColor"];
+}
 
 + (instancetype) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer
 {
@@ -274,11 +279,6 @@ static const int32_t currentProfileVersion = 4;
 - (NSString *) windowTitle
 {
   return (self.player ? self.player.windowTitle : self.world.windowTitle);
-}
-
-- (NSArray *) writableProperties
-{
-  return @[@"autoconnect", @"font", @"backgroundColor", @"linkColor", @"textColor"];
 }
 
 #pragma mark - NSSecureCoding protocol

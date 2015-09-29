@@ -38,7 +38,7 @@
 @property (readonly) NSString *uniqueIdentifier;
 @property (readonly) NSString *windowTitle;
 
-@property (readonly) NSArray *writableProperties;
++ (NSArray <NSString *> *) writableProperties;
 
 + (instancetype) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 + (instancetype) profileWithWorld: (MUWorld *) newWorld;

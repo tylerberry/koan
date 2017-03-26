@@ -47,6 +47,7 @@
 // Preferences strings.
 
 "PreferencesWindowName" = "Preferences";
+"PreferencesConditions" = "Conditions";
 "PreferencesFontsAndColors" = "Fonts and Colors";
 "PreferencesGeneral" = "General";
 "PreferencesLogging" = "Logging";

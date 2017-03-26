@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -25,12 +23,8 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleGetInfoString</key>
-	<string>${EXECUTABLE_NAME} ${APPLICATION_VERSION}, Copyright © 2013 3James Software</string>
-	<key>CFBundleIconFile</key>
-	<string>Koan.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.3james.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -73,7 +67,7 @@
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSHumanReadableCopyright</key>
-	<string></string>
+	<string>Copyright © 2015 3James Software. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MUMainMenu</string>
 	<key>NSPrincipalClass</key>

@@ -1,118 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
-	<data>
-		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">14A238x</string>
-		<string key="IBDocument.InterfaceBuilderVersion">6154.17</string>
-		<string key="IBDocument.AppKitVersion">1318.14</string>
-		<string key="IBDocument.HIToolboxVersion">735.00</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">6154.17</string>
-		</object>
-		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSCustomObject</string>
-			<string>NSCustomView</string>
-		</array>
-		<array key="IBDocument.PluginDependencies">
-			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-		</array>
-		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
-			<integer value="1" key="NS.object.0"/>
-		</object>
-		<array class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
-			<object class="NSCustomObject" id="1001">
-				<string key="NSClassName">NSObject</string>
-			</object>
-			<object class="NSCustomObject" id="1003">
-				<string key="NSClassName">FirstResponder</string>
-			</object>
-			<object class="NSCustomObject" id="1004">
-				<string key="NSClassName">NSApplication</string>
-			</object>
-			<object class="NSCustomView" id="1005">
-				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">268</int>
-				<array class="NSMutableArray" key="NSSubviews"/>
-				<string key="NSFrameSize">{480, 272}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<string key="NSClassName">NSView</string>
-			</object>
-		</array>
-		<object class="IBObjectContainer" key="IBDocument.Objects">
-			<array class="NSMutableArray" key="connectionRecords"/>
-			<object class="IBMutableOrderedSet" key="objectRecords">
-				<array key="orderedObjects">
-					<object class="IBObjectRecord">
-						<int key="objectID">0</int>
-						<array key="object" id="0"/>
-						<reference key="children" ref="1000"/>
-						<nil key="parent"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">-2</int>
-						<reference key="object" ref="1001"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">File's Owner</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">-1</int>
-						<reference key="object" ref="1003"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">First Responder</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">-3</int>
-						<reference key="object" ref="1004"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Application</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">1</int>
-						<reference key="object" ref="1005"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="0"/>
-					</object>
-				</array>
-			</object>
-			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			</dictionary>
-			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
-			<nil key="activeLocalization"/>
-			<dictionary class="NSMutableDictionary" key="localizations"/>
-			<nil key="sourceID"/>
-			<int key="maxID">9</int>
-		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">FirstResponder</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBUserSource</string>
-						<string key="minorKey"/>
-					</object>
-				</object>
-			</array>
-		</object>
-		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
-		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
-			<integer value="4600" key="NS.object.0"/>
-		</object>
-		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<bool key="IBDocument.UseAutolayout">YES</bool>
-	</data>
-</archive>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MUConditionsPreferencesViewController">
+            <connections>
+                <outlet property="view" destination="1" id="46"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <customView id="1">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <scrollView appearanceType="aqua" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="64">
+                    <rect key="frame" x="20" y="22" width="440" height="230"/>
+                    <clipView key="contentView" id="szZ-a6-Oyy">
+                        <rect key="frame" x="1" y="1" width="438" height="228"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="65">
+                                <rect key="frame" x="0.0" y="0.0" width="438" height="228"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <size key="intercellSpacing" width="3" height="2"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <tableColumns>
+                                    <tableColumn identifier="names" width="435" minWidth="40" maxWidth="1000" id="69" userLabel="Table Column">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                        </tableHeaderCell>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="72">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="name"/>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
+                                        <prototypeCellViews>
+                                            <tableCellView id="141">
+                                                <rect key="frame" x="1" y="1" width="435" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="142">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="96" id="145"/>
+                                                        </constraints>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="143">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="141" name="value" keyPath="objectValue.name" id="164"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="142" firstAttribute="centerY" secondItem="141" secondAttribute="centerY" id="146"/>
+                                                    <constraint firstItem="142" firstAttribute="leading" secondItem="141" secondAttribute="leading" constant="2" id="147"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="textField" destination="142" id="144"/>
+                                                </connections>
+                                            </tableCellView>
+                                        </prototypeCellViews>
+                                    </tableColumn>
+                                </tableColumns>
+                                <registeredNibsByIdentifier>
+                                    <nib key="AutomaticTableColumnIdentifier.0">
+                                        <mutableData key="keyedArchiveRepresentation">
+YnBsaXN0MDDUAQIDBAUGLi9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKcHCBkd
+JCgrVSRudWxs2AkKCwwNDg8QERITFBQWEhNWJGNsYXNzXxATTlNOaWJGaWxlU291bmRCbG9ic18QD05T
+TmliRmlsZUltYWdlc18QEE5TTmliRmlsZUlzS2V5ZWRfEBhOU05pYkZpbGVVc2VQYXJlbnRCdW5kbGVd
+TlNOaWJGaWxlRGF0YV8QE05TTmliRmlsZUltYWdlQmxvYnNfEA9OU05pYkZpbGVTb3VuZHOABoAEgAAJ
+CYACgASAANIaCRscV05TLmRhdGFPEQj+YnBsaXN0MDDUAQIDBAUG5+hYJHZlcnNpb25YJG9iamVjdHNZ
+JGFyY2hpdmVyVCR0b3ASAAGGoK8QMwcIHyMkKS0xNT1JTV9gYXFyent+iImKj5KXmJugpqqrrLCxtby/
+wMLJ0lzbjdzdhd7h5FUkbnVsbNsJCgsMDQ4PEBESExQVFhcYGRoZHB0eVk5TUm9vdF1OU0Nvbm5lY3Rp
+b25zXE5TT2lkc1ZhbHVlc18QD05TT2JqZWN0c1ZhbHVlc11OU09iamVjdHNLZXlzXxAZTlNBY2Nlc3Np
+YmlsaXR5T2lkc1ZhbHVlc18QEE5TVmlzaWJsZVdpbmRvd3NfEBdOU0FjY2Vzc2liaWxpdHlPaWRzS2V5
+c18QGU5TQWNjZXNzaWJpbGl0eUNvbm5lY3RvcnNWJGNsYXNzWk5TT2lkc0tleXOAAoAHgCmAJ4AjgDGA
+BYAxgDCAMoAo0iASISJbTlNDbGFzc05hbWWAA4AEWE5TT2JqZWN00iUmJyhaJGNsYXNzbmFtZVgkY2xh
+c3Nlc15OU0N1c3RvbU9iamVjdKInI9IqEissWk5TLm9iamVjdHOggAbSJSYuL1xOU011dGFibGVTZXSj
+LjAjVU5TU2V00ioSMjShM4AIgB3UNjc4Ejk6OzxYTlNTb3VyY2VdTlNEZXN0aW5hdGlvbldOU0xhYmVs
+gAmAC4AhgCLWPj8SQEFCQ0RFRkdIXxAPTlNOZXh0UmVzcG9uZGVyWk5TU3Vidmlld3NXTlNGcmFtZV8Q
+FE5TUmV1c2VJZGVudGlmaWVyS2V5WE5TdkZsYWdzgACACoAggB6AHxEBEtIqEko0oTqAC4Ad2k5PElA+
+UUJSU1RVVldYOTlbXF1eVk5TQ2VsbF8QHk5TQWxsb3dzTG9naWNhbExheW91dERpcmVjdGlvbl8QGU5T
+QW50aUNvbXByZXNzaW9uUHJpb3JpdHlbTlNTdXBlcnZpZXdfECVOU1RleHRGaWVsZEFsaWdubWVudFJl
+Y3RJbnNldHNWZXJzaW9uW05TRnJhbWVTaXplWU5TRW5hYmxlZIAOCIAcgA2ACYAJEQEKEAGADAlZezEx
+NiwgMTd9WnsyNTAsIDc1MH3YYmMSZGVmZ2hpOmtsbW5vcFtOU0NlbGxGbGFnc11OU0NvbnRyb2xWaWV3
+WU5TU3VwcG9ydF8QEU5TQmFja2dyb3VuZENvbG9yW05TVGV4dENvbG9yWk5TQ29udGVudHNcTlNDZWxs
+RmxhZ3MyEgQAAECAC4AbgBCAE4AYgA8SEEAIAF8QD1RhYmxlIFZpZXcgQ2VsbNRzdHUSdnd4eVZOU1Np
+emVYTlNmRmxhZ3NWTlNOYW1lI0AqAAAAAAAAEQQUgBGAEl8QIy5IZWx2ZXRpY2FOZXVlRGVza0ludGVy
+ZmFjZS1SZWd1bGFy0iUmfH1WTlNGb250onwj1RJ/gIGCg4SFhodbTlNDb2xvck5hbWVcTlNDb2xvclNw
+YWNlXU5TQ2F0YWxvZ05hbWVXTlNDb2xvcoAXgBUQBoAUgBZWU3lzdGVtXGNvbnRyb2xDb2xvctOLgBKM
+jYNXTlNXaGl0ZU0wLjY2NjY2NjY2NjcAEAOAF9IlJpCRV05TQ29sb3KikCPVEn+AgYKDlIWGloAXgBmA
+FIAaXxAQY29udHJvbFRleHRDb2xvctOLgBKZjYNCMACAF9IlJpydXxAPTlNUZXh0RmllbGRDZWxspJye
+nyNcTlNBY3Rpb25DZWxsVk5TQ2VsbNIlJqGiW05TVGV4dEZpZWxkpaGjpKUjWU5TQ29udHJvbFZOU1Zp
+ZXdbTlNSZXNwb25kZXLSJSanqF5OU011dGFibGVBcnJheaOnqSNXTlNBcnJheV8QE3t7MSwgMX0sIHsx
+MTYsIDE3fX1fECBBdXRvbWF0aWNUYWJsZUNvbHVtbklkZW50aWZpZXIuMNIlJq2uXxAPTlNUYWJsZUNl
+bGxWaWV3pK+kpSNfEA9OU1RhYmxlQ2VsbFZpZXdZdGV4dEZpZWxk0iUmsrNfEBROU05pYk91dGxldENv
+bm5lY3RvcqOytCNeTlNOaWJDb25uZWN0b3LSKhK2u6Q5OlW6gAmAC4AOgCSAJtIgEr0igCWABF1OU0Fw
+cGxpY2F0aW9u0iUmqcGiqSPSKhLDu6QUOToUgAKACYALgAKAJtIqEsq7phQ5OlW6M4ACgAmAC4AOgCSA
+CIAm0ioS07um1NXW19jZgCqAK4AsgC2ALoAvgCYQAhAEEAXSKhLfNKCAHdIqEuK7oIAm0iUm5eZeTlNJ
+Qk9iamVjdERhdGGi5SNfEA9OU0tleWVkQXJjaGl2ZXLS6epc618QGklCLnN5c3RlbUZvbnRVcGRhdGVW
+ZXJzaW9uXUlCLm9iamVjdGRhdGGAAQAIABEAGgAjAC0AMgA3AG0AcwCKAJEAnwCsAL4AzADoAPsBFQEx
+ATgBQwFFAUcBSQFLAU0BTwFRAVMBVQFXAVkBXgFqAWwBbgF3AXwBhwGQAZ8BogGnAbIBswG1AboBxwHL
+AdEB1gHYAdoB3AHlAe4B/AIEAgYCCAIKAgwCGQIrAjYCPgJVAl4CYAJiAmQCZgJoAmsCcAJyAnQCdgKL
+ApICswLPAtsDAwMPAxkDGwMcAx4DIAMiAyQDJwMpAysDLAM2A0EDUgNeA2wDdgOKA5YDoQOuA7MDtQO3
+A7kDuwO9A78DxAPWA98D5gPvA/YD/wQCBAQEBgQsBDEEOAQ7BEYEUgRfBG0EdQR3BHkEewR9BH8EhgST
+BJoEogSwBLIEtAS5BMEExATPBNEE0wTVBNcE6gTxBPQE9gT7BQ0FEgUfBSYFKwU3BT0FRwVOBVoFXwVu
+BXIFegWQBbMFuAXKBc8F4QXrBfAGBwYLBhoGHwYkBiYGKAYqBiwGLgYzBjUGNwZFBkoGTQZSBlcGWQZb
+Bl0GXwZhBmYGbQZvBnEGcwZ1BncGeQZ7BoAGhwaJBosGjQaPBpEGkwaVBpcGmQabBqAGoQajBqgGqQar
+BrAGvwbCBtQG2Qb2BwQAAAAAAAACAQAAAAAAAADsAAAAAAAAAAAAAAAAAAAHBoAD0h4fICFaJGNsYXNz
+bmFtZVgkY2xhc3Nlc11OU011dGFibGVEYXRhoyAiI1ZOU0RhdGFYTlNPYmplY3TSJQkmJ1pOUy5vYmpl
+Y3RzoIAF0h4fKSpXTlNBcnJheaIpI9IeHywtVU5TTmlioiwjXxAPTlNLZXllZEFyY2hpdmVy0TAxVHJv
+b3SAAQAIABEAGgAjAC0AMgA3AD8ARQBWAF0AcwCFAJgAswDBANcA6QDrAO0A7wDwAPEA8wD1APcA/AEE
+CgYKCAoNChgKIQovCjMKOgpDCkgKUwpUClYKWwpjCmYKawpxCnQKhgqJCo4AAAAAAAACAQAAAAAAAAAy
+AAAAAAAAAAAAAAAAAAAKkA
+</mutableData>
+                                    </nib>
+                                    <nib key="AutomaticTableColumnIdentifier.1">
+                                        <mutableData key="keyedArchiveRepresentation">
+YnBsaXN0MDDUAQIDBAUGLi9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoKcHCBkd
+JCgrVSRudWxs2AkKCwwNDg8QERITFBQWEhNWJGNsYXNzXxATTlNOaWJGaWxlU291bmRCbG9ic18QD05T
+TmliRmlsZUltYWdlc18QEE5TTmliRmlsZUlzS2V5ZWRfEBhOU05pYkZpbGVVc2VQYXJlbnRCdW5kbGVd
+TlNOaWJGaWxlRGF0YV8QE05TTmliRmlsZUltYWdlQmxvYnNfEA9OU05pYkZpbGVTb3VuZHOABoAEgAAJ
+CYACgASAANIaCRscV05TLmRhdGFPEQkAYnBsaXN0MDDUAQIDBAUG5+hYJHZlcnNpb25YJG9iamVjdHNZ
+JGFyY2hpdmVyVCR0b3ASAAGGoK8QMwcIHyMkKS0xNT1JTV9gYXFyent+iImKj5KXmJugpqqrrLCxtby/
+wMLJ0lzbjdzdhd7h5FUkbnVsbNsJCgsMDQ4PEBESExQVFhcYGRoZHB0eVk5TUm9vdF1OU0Nvbm5lY3Rp
+b25zXE5TT2lkc1ZhbHVlc18QD05TT2JqZWN0c1ZhbHVlc11OU09iamVjdHNLZXlzXxAZTlNBY2Nlc3Np
+YmlsaXR5T2lkc1ZhbHVlc18QEE5TVmlzaWJsZVdpbmRvd3NfEBdOU0FjY2Vzc2liaWxpdHlPaWRzS2V5
+c18QGU5TQWNjZXNzaWJpbGl0eUNvbm5lY3RvcnNWJGNsYXNzWk5TT2lkc0tleXOAAoAHgCmAJ4AjgDGA
+BYAxgDCAMoAo0iASISJbTlNDbGFzc05hbWWAA4AEWE5TT2JqZWN00iUmJyhaJGNsYXNzbmFtZVgkY2xh
+c3Nlc15OU0N1c3RvbU9iamVjdKInI9IqEissWk5TLm9iamVjdHOggAbSJSYuL1xOU011dGFibGVTZXSj
+LjAjVU5TU2V00ioSMjShM4AIgB3UNjc4Ejk6OzxYTlNTb3VyY2VdTlNEZXN0aW5hdGlvbldOU0xhYmVs
+gAmAC4AhgCLWPj8SQEFCQ0RFRkdIXxAPTlNOZXh0UmVzcG9uZGVyWk5TU3Vidmlld3NXTlNGcmFtZV8Q
+FE5TUmV1c2VJZGVudGlmaWVyS2V5WE5TdkZsYWdzgACACoAggB6AHxEBEtIqEko0oTqAC4Ad2k5PElA+
+UUJSU1RVVldYOTlbXF1eVk5TQ2VsbF8QHk5TQWxsb3dzTG9naWNhbExheW91dERpcmVjdGlvbl8QGU5T
+QW50aUNvbXByZXNzaW9uUHJpb3JpdHlbTlNTdXBlcnZpZXdfECVOU1RleHRGaWVsZEFsaWdubWVudFJl
+Y3RJbnNldHNWZXJzaW9uW05TRnJhbWVTaXplWU5TRW5hYmxlZIAOCIAcgA2ACYAJEQEKEAGADAlZezEx
+NiwgMTd9WnsyNTAsIDc1MH3YYmMSZGVmZ2hpOmtsbW5vcFtOU0NlbGxGbGFnc11OU0NvbnRyb2xWaWV3
+WU5TU3VwcG9ydF8QEU5TQmFja2dyb3VuZENvbG9yW05TVGV4dENvbG9yWk5TQ29udGVudHNcTlNDZWxs
+RmxhZ3MyEgQAAECAC4AbgBCAE4AYgA8SEEAIAF8QD1RhYmxlIFZpZXcgQ2VsbNRzdHUSdnd4eVZOU1Np
+emVYTlNmRmxhZ3NWTlNOYW1lI0AqAAAAAAAAEQQUgBGAEl8QIy5IZWx2ZXRpY2FOZXVlRGVza0ludGVy
+ZmFjZS1SZWd1bGFy0iUmfH1WTlNGb250onwj1RJ/gIGCg4SFhodbTlNDb2xvck5hbWVcTlNDb2xvclNw
+YWNlXU5TQ2F0YWxvZ05hbWVXTlNDb2xvcoAXgBUQBoAUgBZWU3lzdGVtXGNvbnRyb2xDb2xvctOLgBKM
+jYNXTlNXaGl0ZU0wLjY2NjY2NjY2NjcAEAOAF9IlJpCRV05TQ29sb3KikCPVEn+AgYKDlIWGloAXgBmA
+FIAaXxAQY29udHJvbFRleHRDb2xvctOLgBKZjYNCMACAF9IlJpydXxAPTlNUZXh0RmllbGRDZWxspJye
+nyNcTlNBY3Rpb25DZWxsVk5TQ2VsbNIlJqGiW05TVGV4dEZpZWxkpaGjpKUjWU5TQ29udHJvbFZOU1Zp
+ZXdbTlNSZXNwb25kZXLSJSanqF5OU011dGFibGVBcnJheaOnqSNXTlNBcnJheV8QFXt7MTIwLCAxfSwg
+ezExNiwgMTd9fV8QIEF1dG9tYXRpY1RhYmxlQ29sdW1uSWRlbnRpZmllci4x0iUmra5fEA9OU1RhYmxl
+Q2VsbFZpZXekr6SlI18QD05TVGFibGVDZWxsVmlld1l0ZXh0RmllbGTSJSays18QFE5TTmliT3V0bGV0
+Q29ubmVjdG9yo7K0I15OU05pYkNvbm5lY3RvctIqEra7pDk6VbqACYALgA6AJIAm0iASvSKAJYAEXU5T
+QXBwbGljYXRpb27SJSapwaKpI9IqEsO7pBQ5OhSAAoAJgAuAAoAm0ioSyrumFDk6VbozgAKACYALgA6A
+JIAIgCbSKhLTu6bU1dbX2NmAKoArgCyALYAugC+AJhACEAQQBdIqEt80oIAd0ioS4ruggCbSJSbl5l5O
+U0lCT2JqZWN0RGF0YaLlI18QD05TS2V5ZWRBcmNoaXZlctLp6lzrXxAaSUIuc3lzdGVtRm9udFVwZGF0
+ZVZlcnNpb25dSUIub2JqZWN0ZGF0YYABAAgAEQAaACMALQAyADcAbQBzAIoAkQCfAKwAvgDMAOgA+wEV
+ATEBOAFDAUUBRwFJAUsBTQFPAVEBUwFVAVcBWQFeAWoBbAFuAXcBfAGHAZABnwGiAacBsgGzAbUBugHH
+AcsB0QHWAdgB2gHcAeUB7gH8AgQCBgIIAgoCDAIZAisCNgI+AlUCXgJgAmICZAJmAmgCawJwAnICdAJ2
+AosCkgKzAs8C2wMDAw8DGQMbAxwDHgMgAyIDJAMnAykDKwMsAzYDQQNSA14DbAN2A4oDlgOhA64DswO1
+A7cDuQO7A70DvwPEA9YD3wPmA+8D9gP/BAIEBAQGBCwEMQQ4BDsERgRSBF8EbQR1BHcEeQR7BH0EfwSG
+BJMEmgSiBLAEsgS0BLkEwQTEBM8E0QTTBNUE1wTqBPEE9AT2BPsFDQUSBR8FJgUrBTcFPQVHBU4FWgVf
+BW4FcgV6BZIFtQW6BcwF0QXjBe0F8gYJBg0GHAYhBiYGKAYqBiwGLgYwBjUGNwY5BkcGTAZPBlQGWQZb
+Bl0GXwZhBmMGaAZvBnEGcwZ1BncGeQZ7Bn0GggaJBosGjQaPBpEGkwaVBpcGmQabBp0GogajBqUGqgar
+Bq0GsgbBBsQG1gbbBvgHBgAAAAAAAAIBAAAAAAAAAOwAAAAAAAAAAAAAAAAAAAcIgAPSHh8gIVokY2xh
+c3NuYW1lWCRjbGFzc2VzXU5TTXV0YWJsZURhdGGjICIjVk5TRGF0YVhOU09iamVjdNIlCSYnWk5TLm9i
+amVjdHOggAXSHh8pKldOU0FycmF5oikj0h4fLC1VTlNOaWKiLCNfEA9OU0tleWVkQXJjaGl2ZXLRMDFU
+cm9vdIABAAgAEQAaACMALQAyADcAPwBFAFYAXQBzAIUAmACzAMEA1wDpAOsA7QDvAPAA8QDzAPUA9wD8
+AQQKCAoKCg8KGgojCjEKNQo8CkUKSgpVClYKWApdCmUKaAptCnMKdgqICosKkAAAAAAAAAIBAAAAAAAA
+ADIAAAAAAAAAAAAAAAAAAAqSA
+</mutableData>
+                                    </nib>
+                                </registeredNibsByIdentifier>
+                                <connections>
+                                    <binding destination="127" name="content" keyPath="arrangedObjects" id="136"/>
+                                    <binding destination="127" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="136" id="138"/>
+                                    <binding destination="127" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="138" id="140"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="66">
+                        <rect key="frame" x="1" y="119" width="223" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="68">
+                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="64" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="73"/>
+                <constraint firstItem="64" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" symbolic="YES" id="74"/>
+                <constraint firstAttribute="trailing" secondItem="64" secondAttribute="trailing" constant="20" symbolic="YES" id="102"/>
+                <constraint firstAttribute="bottom" secondItem="64" secondAttribute="bottom" constant="22" id="103"/>
+            </constraints>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="15"/>
+        <arrayController objectClassName="MUCondition" id="127" userLabel="Array Controller - Conditions">
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="conditionsArray" id="135"/>
+            </connections>
+        </arrayController>
+    </objects>
+</document>

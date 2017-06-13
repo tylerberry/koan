@@ -13,7 +13,10 @@ enum MCPStates
   MUMCPReceivedHashState,
   MUMCPReceivedHashDollarState,
   MUMCPPassThroughState,
-  MUMCPBufferMCPCommandState
+  MUMCPBeginCommandState,
+  MUMCPBufferCommandState,
+  MUMCPBufferMultilineValueState,
+  MUMCPEndMultilineValueState,
 };
 
 @interface MUMCPProtocolHandler ()
@@ -24,7 +27,9 @@ enum MCPStates
 }
 
 - (void) _bufferMCPByte: (uint8_t) byte;
-- (void) _handleBufferedMCPMessage;
+- (void) _finalizeMultilineValue;
+- (void) _handleCommand;
+- (void) _handleMultilineValue;
 
 @end
 
@@ -83,7 +88,7 @@ enum MCPStates
       
     case MUMCPReceivedHashDollarState:
       if (byte == '#')
-        _mcpState = MUMCPBufferMCPCommandState;
+        _mcpState = MUMCPBeginCommandState;
       else if (byte == '"')
         _mcpState = MUMCPPassThroughState;
       else
@@ -104,11 +109,43 @@ enum MCPStates
       PASS_ON_PARSED_BYTE (byte);
       break;
       
-    case MUMCPBufferMCPCommandState:
+    case MUMCPBeginCommandState:
+      if (byte == '*')
+        _mcpState = MUMCPBufferMultilineValueState;
+      else if (byte == ':')
+        _mcpState = MUMCPEndMultilineValueState;
+      else
+      {
+        _mcpState = MUMCPBufferCommandState;
+        [self _bufferMCPByte: byte];
+      }
+      break;
+      
+    case MUMCPBufferCommandState:
       if (byte == '\n')
       {
         _mcpState = MUMCPNewLineState;
-        [self _handleBufferedMCPMessage];
+        [self _handleCommand];
+      }
+      else
+        [self _bufferMCPByte: byte];
+      break;
+      
+    case MUMCPBufferMultilineValueState:
+      if (byte == '\n')
+      {
+        _mcpState = MUMCPNewLineState;
+        [self _handleMultilineValue];
+      }
+      else
+        [self _bufferMCPByte: byte];
+      break;
+      
+    case MUMCPEndMultilineValueState:
+      if (byte == '\n')
+      {
+        _mcpState = MUMCPNewLineState;
+        [self _finalizeMultilineValue];
       }
       else
         [self _bufferMCPByte: byte];
@@ -128,7 +165,17 @@ enum MCPStates
   return;
 }
 
-- (void) _handleBufferedMCPMessage
+- (void) _finalizeMultilineValue
+{
+  return;
+}
+
+- (void) _handleCommand
+{
+  return;
+}
+
+- (void) _handleMultilineValue
 {
   return;
 }

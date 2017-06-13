@@ -82,8 +82,6 @@
 {
   if ([object isKindOfClass: [MUProfile class]])
   {
-    MUProfile *profile = (MUProfile *) object;
-    
     if ([[MUProfile writableProperties] containsObject: keyPath])
     {
       [self _writeProfilesToUserDefaults];

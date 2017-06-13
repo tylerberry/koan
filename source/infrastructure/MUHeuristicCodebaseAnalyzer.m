@@ -45,8 +45,8 @@
   if (_definitiveCodebaseFound)
     return;
   
-  // MSSP data is provided directly from the codebase. If it's lying, we're screwed anyway,
-  // so any information acquired from MSSP is automatically treated as authoritative.
+  // MSSP data is provided directly from the codebase. If it's lying, we're screwed anyway, so any information acquired
+  // from MSSP is automatically treated as authoritative.
 
   if ([variableString isEqualToString: @"NAME"])
   {
@@ -176,6 +176,13 @@
       
       [self _log: @"Analyzer: Guessing TinyMUX from received text."];
     }
+    else if ([lowercaseString rangeOfString: @"muck"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseTinyMUCK;
+      _codebaseFamily = MUCodebaseFamilyTinyMUCK;
+      
+      [self _log: @"Analyzer: Guessing TinyMUCK from received text."];
+    }
     else if ([lowercaseString rangeOfString: @"tinybit"].location != NSNotFound
              || [lowercaseString rangeOfString: @"8bit"].location != NSNotFound)
     {
@@ -204,6 +211,13 @@
       _codebaseFamily = MUCodebaseFamilyGenericMUD;
       
       [self _log: @"Analyzer: Guessing LPMUD from received text."];
+    }
+    else if ([lowercaseString rangeOfString: @"merc"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseMercMUD;
+      _codebaseFamily = MUCodebaseFamilyDikuMUD;
+      
+      [self _log: @"Analyzer: Guessing Merc MUD from received text."];
     }
     else if ([lowercaseString rangeOfString: @"diku"].location != NSNotFound)
     {

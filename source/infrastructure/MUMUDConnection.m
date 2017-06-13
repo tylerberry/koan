@@ -385,8 +385,8 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
   // reduce the number of false positives on MUSHes.
 
   if ([_incomingLineBuffer.string hasSuffix: @" "]
-      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyDikuMUD
-      || self.state.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyGenericMUD)
+      && self.state.codebaseAnalyzer.codebaseFamily != MUCodebaseFamilyDikuMUD
+      && self.state.codebaseAnalyzer.codebaseFamily != MUCodebaseFamilyGenericMUD)
     return;
 
   // Now we've decided to at least give the string a chance at becoming a prompt. First, trim whitespace.

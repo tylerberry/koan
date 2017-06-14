@@ -15,6 +15,6 @@
 
 @interface MUOutlineView : NSOutlineView
 
-@property NSObject <MUOutlineViewDelegate> *delegate;
+@property (weak) NSObject <MUOutlineViewDelegate, NSOutlineViewDelegate> *delegate;
 
 @end

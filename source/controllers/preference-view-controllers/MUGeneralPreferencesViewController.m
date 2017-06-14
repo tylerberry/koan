@@ -62,7 +62,7 @@
   
   NSMenuItem *koanMenuItem = [[NSMenuItem alloc] init];
   NSBundle *koanBundle = [NSBundle mainBundle];
-  NSString *koanBundleName = [koanBundle objectForInfoDictionaryKey: @"CFBundleDisplayName"];
+  NSString *koanBundleName = [koanBundle objectForInfoDictionaryKey: (NSString *) kCFBundleNameKey];
   NSString *koanBundleVersion = [koanBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
   
   koanMenuItem.title = [NSString stringWithFormat: @"%@ (%@)", koanBundleName, koanBundleVersion];

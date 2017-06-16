@@ -22,6 +22,10 @@
 //   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 //   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //   POSSIBILITY OF SUCH DAMAGE.
+//
+// Modifications by Tyler Berry.
+// Copyright (c) 2013 3James Software.
+//
 
 #import "pcre.h"
 #import "AGRegex.h"
@@ -84,6 +88,11 @@ static int utf8charcount(const char *str, int len) {
 
 
 @implementation AGRegex
+{
+  void *regex;
+  void *extra;
+  int groupCount;
+}
 
 static AGRegex *backrefPattern;
 
@@ -365,6 +374,12 @@ static AGRegex *backrefPattern;
 @end
 
 @implementation AGRegexMatch
+{
+  AGRegex *regex;
+  NSString *string;
+  int *matchv;
+  NSUInteger count;
+}
 
 // takes ownership of the passed match vector, free on dealloc
 - (id)initWithRegex:(AGRegex *)re string:(NSString *)str vector:(int *)mv count:(int)c {

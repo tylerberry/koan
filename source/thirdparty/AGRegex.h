@@ -22,6 +22,10 @@
 //   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 //   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //   POSSIBILITY OF SUCH DAMAGE.
+//
+// Modifications by Tyler Berry.
+// Copyright (c) 2013 3James Software.
+//
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
@@ -50,12 +54,7 @@ enum {
  @abstract A single occurence of a regular expression.
  @discussion An AGRegexMatch represents a single occurence of a regular expression within the target string. The range of each subpattern within the target string is returned by -range, -rangeAtIndex:, or -rangeNamed:. The part of the target string that matched each subpattern is returned by -group, -groupAtIndex:, or -groupNamed:.
  */
-@interface AGRegexMatch : NSObject {
-  AGRegex *regex;
-  NSString *string;
-  int *matchv;
-  NSUInteger count;
-}
+@interface AGRegexMatch : NSObject
 
 /*!
  @method count
@@ -159,11 +158,7 @@ enum {
  
  In Perl, this would return "R", undef, "p", "a", "t", undef, "r". Unfortunately, there is no convenient way to represent this in an NSArray. (NSNull could be used in place of undef, but then all members of the array couldn't be expected to be NSStrings.)
  */
-@interface AGRegex : NSObject {
-  void *regex;
-  void *extra;
-  int groupCount;
-}
+@interface AGRegex : NSObject
 
 /*!
  @method regexWithPattern:

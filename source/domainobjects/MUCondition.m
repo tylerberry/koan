@@ -18,4 +18,10 @@
   return self;
 }
 
+- (void) applyToMutableAttributedString: (NSMutableAttributedString *) mutableAttributedString
+{
+  [NSException raise: NSInternalInconsistencyException
+              format: @"must implement %@ in a subclass", NSStringFromSelector (_cmd)];
+}
+
 @end

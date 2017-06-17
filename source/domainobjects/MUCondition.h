@@ -10,4 +10,6 @@
 
 - (instancetype) initWithName: (NSString *) name;
 
+- (void) applyToMutableAttributedString: (NSMutableAttributedString *) mutableAttributedString;
+
 @end

@@ -9,6 +9,7 @@
 #import "NSColor+ANSI.h"
 #import "NSObject+BetterHashing.h"
 
+#import "MUConditionsPreferencesViewController.h"
 #import "MUFontsAndColorsPreferencesViewController.h"
 #import "MUGeneralPreferencesViewController.h"
 #import "MULoggingPreferencesViewController.h"
@@ -20,6 +21,7 @@
 #import "MUConnectionWindowController.h"
 #import "MUConnectionWindowControllerRegistry.h"
 #import "MUPlayer.h"
+#import "MUPredicateCondition.h"
 #import "MUProfileRegistry.h"
 #import "MUProfilesWindowController.h"
 #import "MUProxySettings.h"
@@ -190,10 +192,11 @@
   
   dispatch_once (&predicate, ^{
     NSArray *preferenceViewControllers = @[[[MUGeneralPreferencesViewController alloc] init],
-    [[MUFontsAndColorsPreferencesViewController alloc] init],
-    [[MUSoundsPreferencesViewController alloc] init],
-    [[MULoggingPreferencesViewController alloc] init],
-    [[MUProxyPreferencesViewController alloc] init]];
+                                           [[MUConditionsPreferencesViewController alloc] init],
+                                           [[MUFontsAndColorsPreferencesViewController alloc] init],
+                                           [[MUSoundsPreferencesViewController alloc] init],
+                                           [[MULoggingPreferencesViewController alloc] init],
+                                           [[MUProxyPreferencesViewController alloc] init]];
     
     _preferencesController = [[MASPreferencesWindowController alloc] initWithViewControllers: preferenceViewControllers
                                                                                        title: _(MULPreferencesWindowName)];
@@ -408,6 +411,11 @@
   
   initialValues[MUPUseProxy] = MUPProxyNone;
   initialValues[MUPProxySettings] = [NSKeyedArchiver archivedDataWithRootObject: [[MUProxySettings alloc] init]];
+
+  initialValues[MUPConditions] = [NSKeyedArchiver archivedDataWithRootObject:
+                                  @[[[MUPredicateCondition alloc] initWithName: @"One"],
+                                    [[MUPredicateCondition alloc] initWithName: @"Two"],
+                                    [[MUPredicateCondition alloc] initWithName: @"Three"]]];
   
   [[NSUserDefaults standardUserDefaults] registerDefaults: initialValues];
 }

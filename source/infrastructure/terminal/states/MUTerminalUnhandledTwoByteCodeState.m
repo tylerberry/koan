@@ -32,8 +32,8 @@
             forStateMachine: (MUTerminalStateMachine *) stateMachine
             protocolHandler: (NSObject <MUTerminalProtocolHandler> *) protocolHandler
 {
-  [protocolHandler log: @"Terminal: Unimplemented code: ESC %02u/%02u %02u/%02u.",
-                        _firstByte / 16, _firstByte % 16, byte / 16, byte % 16];
+  [protocolHandler log: @"Terminal: Unimplemented code: ESC %c %c (%02u/%02u %02u/%02u).",
+                        _firstByte, byte, _firstByte / 16, _firstByte % 16, byte / 16, byte % 16];
 
   return [MUTerminalTextState state];
 }

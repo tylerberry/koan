@@ -52,7 +52,7 @@
     case 0x0c: // Form Feed.
     case 0x0e: // Shift Out. (To alternate character set.)
     case 0x0f: // Shift In.
-      [protocolHandler log: @"Terminal: Unimplemented C0: %02u/%02u.", byte / 16, byte % 16];
+      [protocolHandler log: @"Terminal: Unimplemented C0: %c (%02u/%02u).", byte, byte / 16, byte % 16];
       return self;
 
 

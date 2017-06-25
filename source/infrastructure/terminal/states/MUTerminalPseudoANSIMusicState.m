@@ -33,6 +33,8 @@
       return [MUTerminalTextState state];
 
     default:
+      // TODO: Figure out how to gracefully exit.
+      
       [protocolHandler bufferCommandByte: byte];
       [protocolHandler bufferTextByte: byte];
       return [MUTerminalTextState state];

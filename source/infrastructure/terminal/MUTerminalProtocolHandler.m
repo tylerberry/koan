@@ -396,7 +396,7 @@
     {
       NSString *commandString = [[NSString alloc] initWithData: _commandBuffer encoding: NSASCIIStringEncoding];
 
-      [self log: @"Terminal: Unhandled CSI %@%c [%02u/%02u].", commandString, finalByte, finalByte / 16, finalByte % 16];
+      [self log: @"Terminal: Unhandled CSI %@%c (%02u/%02u).", commandString, finalByte, finalByte / 16, finalByte % 16];
     }
   }
 

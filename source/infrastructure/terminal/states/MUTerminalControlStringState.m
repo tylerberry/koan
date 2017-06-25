@@ -39,7 +39,7 @@
       [protocolHandler bufferCommandByte: byte];
       return self;
 
-      // The Duff's Device-esque code below is definitely cuter than it actually needs to be, but I like it anyway.
+    // The Duff's Device-esque code below is definitely cuter than it actually needs to be, but I like it anyway.
 
     case 0x07: // ASCII BEL, in common use (by XTerm et al) to end OSC commands. Invalid for Application Program and
                // Privacy Message.

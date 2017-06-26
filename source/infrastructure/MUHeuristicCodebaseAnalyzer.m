@@ -141,7 +141,14 @@
     // somebody does because that would be awful. Therefore if we have any guess at all as to what we're running on, we
     // shouldn't do textual matching anymore. We're hoping this is sent early, in the connect banner for example.
     
-    if ([lowercaseString rangeOfString: @"stickymush"].location != NSNotFound)
+    if ([lowercaseString rangeOfString: @"mud client test server"].location != NSNotFound)
+    {
+      _codebase = MUCodebaseMCTS;
+      _codebaseFamily = MUCodebaseFamilyMCTS;
+      
+      [self _log: @"Analyzer: Guessing StickyMUSH from received text."];
+    }
+    else if ([lowercaseString rangeOfString: @"stickymush"].location != NSNotFound)
     {
       _codebase = MUCodebaseStickyMUSH;
       _codebaseFamily = MUCodebaseFamilyPennMUSH;

@@ -186,6 +186,7 @@ extern NSString * const MULConnectionNoErrorAvailable;
 #pragma mark Preferences localization constants.
 
 extern NSString * const MULPreferencesWindowName;
+extern NSString * const MULPreferencesConditions;
 extern NSString * const MULPreferencesFontsAndColors;
 extern NSString * const MULPreferencesGeneral;
 extern NSString * const MULPreferencesLogging;

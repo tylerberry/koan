@@ -155,6 +155,7 @@ NSString * const MULConfirmQuitMessage = @"ConfirmQuitMessage";
 #pragma mark Preferences localization constants.
 
 NSString * const MULPreferencesWindowName = @"PreferencesWindowName";
+NSString * const MULPreferencesConditions = @"PreferencesConditions";
 NSString * const MULPreferencesFontsAndColors = @"PreferencesFontsAndColors";
 NSString * const MULPreferencesGeneral = @"PreferencesGeneral";
 NSString * const MULPreferencesLogging = @"PreferencesLogging";

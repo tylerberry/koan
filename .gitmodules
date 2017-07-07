@@ -1,27 +1,27 @@
 [submodule "source/thirdparty/JRSwizzle"]
-	path = source/thirdparty/JRSwizzle
+	path = macos/thirdparty/JRSwizzle
 	url = git://github.com/rentzsch/jrswizzle.git
 [submodule "source/thirdparty/MMTabBarView"]
-	path = source/thirdparty/MMTabBarView
+	path = macos/thirdparty/MMTabBarView
 	url = git://github.com/tylerberry/MMTabBarView.git
 [submodule "source/thirdparty/MASPreferences"]
-	path = source/thirdparty/MASPreferences
+	path = macos/thirdparty/MASPreferences
 	url = git://github.com/tylerberry/MASPreferences.git
 [submodule "source/thirdparty/BFColorPickerPopover"]
-	path = source/thirdparty/BFColorPickerPopover
+	path = macos/thirdparty/BFColorPickerPopover
 	url = git://github.com/tylerberry/BFColorPickerPopover.git
 [submodule "source/thirdparty/PLWeakCompatibility"]
-	path = source/thirdparty/PLWeakCompatibility
+	path = macos/thirdparty/PLWeakCompatibility
 	url = git://github.com/plausiblelabs/PLWeakCompatibility.git
 [submodule "source/thirdparty/JUEmptyView"]
-	path = source/thirdparty/JUEmptyView
+	path = macos/thirdparty/JUEmptyView
 	url = git://github.com/tylerberry/JUEmptyView.git
 [submodule "source/thirdparty/Punycode-Cocoa"]
-	path = source/thirdparty/Punycode-Cocoa
+	path = macos/thirdparty/Punycode-Cocoa
 	url = https://github.com/Wevah/Punycode-Cocoa
 [submodule "source/thirdparty/ProxyKit"]
-	path = source/thirdparty/ProxyKit
+	path = macos/thirdparty/ProxyKit
 	url = https://github.com/tylerberry/ProxyKit.git
 [submodule "source/thirdparty/CocoaAsyncSocket"]
-	path = source/thirdparty/CocoaAsyncSocket
+	path = macos/thirdparty/CocoaAsyncSocket
 	url = https://github.com/tylerberry/CocoaAsyncSocket.git

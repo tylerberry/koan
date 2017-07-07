@@ -59,7 +59,7 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
 /*!
  * @brief Allocs and inits a new lax AHHyperlinkScanner with the given NSString
  *
- * @param inString the scanner's string
+ * @param string the scanner's string
  * @return a new AHHyperlinkScanner
  */
 + (id) hyperlinkScannerWithString: (NSString *) string;
@@ -67,7 +67,7 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
 /*!
  * @brief Allocs and inits a new strict AHHyperlinkScanner with the given NSString
  *
- * @param inString the scanner's string
+ * @param string the scanner's string
  * @return a new AHHyperlinkScanner
  */
 + (id) strictHyperlinkScannerWithString: (NSString *) string;
@@ -76,7 +76,7 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
 /*!
  * @brief Allocs and inits a new lax AHHyperlinkScanner with the given attributed string
  *
- * @param inString the scanner's string
+ * @param attributedString the scanner's string
  * @return a new AHHyperlinkScanner
  */
 + (id) hyperlinkScannerWithAttributedString: (NSAttributedString *) attributedString;
@@ -84,7 +84,7 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
 /*!
  * @brief Allocs and inits a new strict AHHyperlinkScanner with the given attributed string
  *
- * @param inString the scanner's string
+ * @param attributedString the scanner's string
  * @return a new AHHyperlinkScanner
  */
 + (id) strictHyperlinkScannerWithAttributedString: (NSAttributedString *) attributedString;
@@ -93,8 +93,8 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
 /*!
  * @brief Determine the validity of a given string with a custom strictness
  *
- * @param inString The string to be verified
- * @param useStrictChecking Use strict rules or not
+ * @param string The string to be verified
+ * @param strictChecking Use strict rules or not
  * @param index a pointer to the index the string starts at, for easy incrementing.
  * @return Boolean
  */
@@ -109,8 +109,8 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
  *
  * Inits a new AHHyperlinkScanner object for a NSString with the set strict checking option.
  *
- * @param inString the NSString to be scanned.
- * @param flag Sets strict checking preference.
+ * @param string the NSString to be scanned.
+ * @param strictChecking Sets strict checking preference.
  * @return A new AHHyperlinkScanner.
  */
 - (id) initWithString: (NSString *) string usingStrictChecking: (BOOL) strictChecking;
@@ -121,8 +121,8 @@ extern void AH_delete_buffer(AH_BUFFER_STATE, yyscan_t scanner);
  *
  * Inits a new AHHyperlinkScanner object for a NSAttributedString with the set strict checking option.
  *
- * param inString the NSString to be scanned.
- * @param flag Sets strict checking preference.
+ * param string the NSString to be scanned.
+ * @param strictChecking Sets strict checking preference.
  * @return A new AHHyperlinkScanner.
  */
 - (id) initWithAttributedString: (NSAttributedString *) attributedString usingStrictChecking: (BOOL) strictChecking;

@@ -18,7 +18,7 @@
 + (BOOL) isSystemSOCKSProxyEnabled;
 
 + (instancetype) systemSOCKSProxySettings;
-w
+
 - (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort NS_DESIGNATED_INITIALIZER;
 
 @end

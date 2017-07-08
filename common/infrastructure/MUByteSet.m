@@ -13,7 +13,7 @@
   return [[self alloc] init];
 }
 
-+ (instancetype) byteSetWithBytes: (const uint8_t) firstByte, ...
++ (instancetype) byteSetWithBytes: (const unsigned int) firstByte, ...
 {
   va_list args;
   va_start (args, firstByte);
@@ -67,7 +67,7 @@
     contains[byte] = YES;
 }
 
-- (void) addBytes: (const uint8_t) firstByte, ...
+- (void) addBytes: (const unsigned int) firstByte, ...
 {
   va_list args;
   va_start (args, firstByte);

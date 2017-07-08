@@ -456,7 +456,7 @@
 
 - (void) _resetTest
 {
-  _connectionState = [[MUMUDConnectionState alloc] init];
+  _connectionState = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: nil];
   _connectionState.allowCodePage437Substitution = NO;
   
   _protocolStack = [[MUProtocolStack alloc] initWithConnectionState: _connectionState];

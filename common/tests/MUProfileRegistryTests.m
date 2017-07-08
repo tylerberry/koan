@@ -135,7 +135,7 @@
 
 - (MUWorld *) _createTestWorld
 {
-  return [[MUWorld alloc] initWithName: @"Test World" children: nil];
+  return [[MUWorld alloc] initWithHostname: @"test.world.com" port: @25 forceTLS: NO];
 }
 
 - (MUPlayer *) _createTestPlayerWithParentWorld: (MUWorld *) world

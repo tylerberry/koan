@@ -92,21 +92,9 @@
 
 - (void) setURLFromString: (NSString *) inString
 {
-  NSString *preString =
-  (__bridge_transfer NSString *) CFURLCreateStringByReplacingPercentEscapesUsingEncoding (kCFAllocatorDefault,
-                                                                                          (CFStringRef) inString,
-                                                                                          CFSTR (""),
-                                                                                          kCFStringEncodingUTF8);
+  NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString: inString];
   
-  NSString *linkString =
-  (__bridge_transfer NSString *) CFURLCreateStringByAddingPercentEscapes (kCFAllocatorDefault,
-                                                                          preString ? (__bridge CFStringRef) preString
-                                                                                    : (__bridge CFStringRef) inString,
-                                                                          CFSTR ("#[]"),
-                                                                          NULL,
-                                                                          kCFStringEncodingUTF8);
-  
-  self.URL = [NSURL URLWithString: linkString];
+  self.URL = urlComponents.URL;
 }
 
 #pragma mark NSCopying

@@ -18,8 +18,7 @@
 + (BOOL) isSystemSOCKSProxyEnabled;
 
 + (instancetype) systemSOCKSProxySettings;
-
-- (instancetype) init NS_UNAVAILABLE;
+w
 - (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort NS_DESIGNATED_INITIALIZER;
 
 @end

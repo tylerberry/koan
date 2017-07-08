@@ -31,7 +31,6 @@ enum MUTextDisplayModes
 @interface MUConnectionWindowController ()
 
 - (void) _clearPrompt;
-- (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 - (void) _displayAttributedString: (NSAttributedString *) attributedString
                   textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
 - (void) _displaySystemMessage: (NSString *) string;
@@ -55,7 +54,6 @@ enum MUTextDisplayModes
 - (void) _updateSystemTextColor;
 - (void) _updateTextColor;
 - (void) _updateTimeConnectedField: (NSTimer *) timer;
-- (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 - (CGFloat) _windowHeightForCandidateHeight: (CGFloat) candidateHeight;
 - (CGFloat) _windowWidthForCandidateWidth: (CGFloat) candidateWidth;
 
@@ -509,17 +507,31 @@ enum MUTextDisplayModes
 {
   [self.window makeKeyAndOrderFront: nil];
   
-  NSBeginAlertSheet ([NSString stringWithFormat: _(MULConfirmCloseTitle), self.connection.profile.windowTitle],
-                     _(MULOK),
-                     _(MULCancel),
-                     nil,
-                     self.window,
-                     self,
-                     @selector (_willEndCloseSheet:returnCode:contextInfo:),
-                     @selector (_didEndCloseSheet:returnCode:contextInfo:),
-                     (void *) callback,
-                     _(MULConfirmCloseMessage),
-                     self.connection.profile.hostname);
+  NSAlert *alert = [[NSAlert alloc] init];
+  
+  alert.messageText = [NSString stringWithFormat: _(MULConfirmCloseTitle), self.connection.profile.windowTitle];
+  alert.informativeText = [NSString stringWithFormat:  _(MULConfirmCloseMessage), self.connection.profile.hostname];
+  
+  [alert addButtonWithTitle: _(MULOK)];
+  [alert addButtonWithTitle: _(MULCancel)];
+  
+  [alert beginSheetModalForWindow: self.window completionHandler: ^(NSModalResponse response) {
+    if (response == NSAlertFirstButtonReturn) /* OK. */
+    {
+      if (self.connection.isConnectedOrConnecting)
+        [self.connection close];
+      
+      [self.window close];
+      
+      if (callback != NULL)
+        ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) callback, YES);
+    }
+    else if (response == NSAlertSecondButtonReturn) /* Cancel. */
+    {
+      if (callback != NULL)
+        ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) callback, NO);
+    }
+  }];
 }
 
 - (IBAction) clearWindow: (id) sender
@@ -593,7 +605,7 @@ enum MUTextDisplayModes
 
 - (void) changeProfileFont: (id) sender
 {
-  BOOL changeUserDefaultsFont = NO;
+  //BOOL changeUserDefaultsFont = NO;
   
   if (self.connection.profile.font == nil)
   {
@@ -758,7 +770,7 @@ enum MUTextDisplayModes
 {
   if (textView == receivedTextView)
   {
-    [inputTextView insertText: string];
+    [inputTextView insertText: string replacementRange: inputTextView.selectedRange];
     [self.window makeFirstResponder: inputTextView];
     return YES;
   }
@@ -834,7 +846,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
 {
   if (textView == receivedTextView)
   {
-    if ([[NSApp currentEvent] type] != NSKeyDown
+    if ([[NSApp currentEvent] type] != NSEventTypeKeyDown
         || commandSelector == @selector (moveUp:)
         || commandSelector == @selector (moveDown:)
         || commandSelector == @selector (scrollPageUp:)
@@ -860,7 +872,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
   }
   else if (textView == inputTextView)
   {
-    if ([NSApp currentEvent].type != NSKeyDown)
+    if ([NSApp currentEvent].type != NSEventTypeKeyDown)
     {
       return NO;
     }
@@ -1140,15 +1152,6 @@ constrainSplitPosition: (CGFloat) proposedPosition
   timeConnectedField.stringValue = @"Disconnected";
 }
 
-- (void) _didEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == NSAlertAlternateReturn) /* Cancel. */
-  {
-    if (contextInfo)
-      ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, NO);
-  }
-}
-
 - (void) _endCompletion
 {
   _currentlySearching = NO;
@@ -1245,8 +1248,8 @@ constrainSplitPosition: (CGFloat) proposedPosition
 - (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color
 {
   NSColor *specifiedColor;
-  enum MUCustomColorTags colorTagForANSI256;
-  enum MUCustomColorTags colorTagForANSI16;
+  MUCustomColorTag colorTagForANSI256;
+  MUCustomColorTag colorTagForANSI16;
   BOOL changeIfBright;
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -1550,7 +1553,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
 {
   NSDate *dateNow = [NSDate date];
   
-  NSUInteger componentUnits = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+  NSUInteger componentUnits = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
   NSDate *dateConnected = self.connection.dateConnected;
   NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components: componentUnits
                                                                      fromDate: dateConnected
@@ -1567,20 +1570,6 @@ constrainSplitPosition: (CGFloat) proposedPosition
   else
     timeConnectedField.stringValue = [NSString stringWithFormat: @"%ld:%02ld",
                                       dateComponents.minute, dateComponents.second];
-}
-
-- (void) _willEndCloseSheet: (NSWindow *) sheet returnCode: (int) returnCode contextInfo: (void *) contextInfo
-{
-  if (returnCode == NSAlertDefaultReturn) /* Close. */
-  {
-    if (self.connection.isConnectedOrConnecting)
-      [self.connection close];
-    
-    [self.window close];
-
-    if (contextInfo)
-      ((void (*) (id, SEL, BOOL)) objc_msgSend) ([NSApp delegate], (SEL) contextInfo, YES);
-  }
 }
 
 - (CGFloat) _windowHeightForCandidateHeight: (CGFloat) candidateHeight

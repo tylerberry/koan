@@ -76,11 +76,11 @@
   [proxyImage lockFocus];
   [networkImage drawAtPoint: NSMakePoint (0.0, 0)
                 fromRect: NSZeroRect
-               operation: NSCompositeDestinationOver
+               operation: NSCompositingOperationDestinationOver
                    fraction: 1.0];
   [gearImage drawAtPoint: NSMakePoint (10.0, 0)
                 fromRect: NSZeroRect
-               operation: NSCompositeSourceOver
+               operation: NSCompositingOperationSourceOver
                 fraction: 1.0];
   [proxyImage unlockFocus];
   

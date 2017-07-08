@@ -68,7 +68,7 @@
   openPanel.canChooseFiles = YES;
   openPanel.directoryURL = [[NSURL alloc] initFileURLWithPath: NSHomeDirectory ()];
   
-  if ([openPanel runModal] == NSOKButton)
+  if ([openPanel runModal] == NSModalResponseOK)
   {
     NSURL *selectedURL = openPanel.URLs[0]; // Guaranteed to be only one since we disallowed multiples.
     

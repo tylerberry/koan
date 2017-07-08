@@ -108,9 +108,10 @@ extern NSString * const MUCustomBackgroundColorAttributeName;
 
 #pragma mark Custom color tags.
 
-enum MUCustomColorTags
+typedef NS_ENUM(NSInteger, MUCustomColorTag)
 {
-  MUDefaultForegroundColorTag,
+  MUUndefinedColorTag = -1,
+  MUDefaultForegroundColorTag = 0,
   MUDefaultBackgroundColorTag,
   MUSystemTextColorTag,
   MUANSIBlackColorTag,

@@ -18,7 +18,7 @@
     return nil;
 
   _identifier = @"conditions";
-  _toolbarItemImage = [NSImage imageNamed: nil];
+  _toolbarItemImage = nil;
   _toolbarItemLabel = _(MULPreferencesConditions);
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

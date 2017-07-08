@@ -256,32 +256,31 @@
 
   if (openConnections > 0)
   {
-    NSAlert *alert;
-    NSInteger choice = NSAlertDefaultReturn;
-    NSString *title = [NSString stringWithFormat:
-      (openConnections == 1 ? _(MULConfirmQuitTitleSingular)
-                            : _(MULConfirmQuitTitlePlural)),
-      openConnections];
-  
+    NSModalResponse choice = NSAlertFirstButtonReturn;
+    
     if (openConnections > 1)
     {
-      alert = [NSAlert alertWithMessageText: title
-                              defaultButton: _(MULConfirm)
-                            alternateButton: _(MULCancel)
-                                otherButton: _(MULQuitImmediately)
-                  informativeTextWithFormat: _(MULConfirmQuitMessage)];
-    
-      choice = [alert runModal];
+      NSAlert *alert = [[NSAlert alloc] init];
       
-      if (choice == NSAlertAlternateReturn)
-        return NSTerminateCancel;
+      alert.messageText = [NSString stringWithFormat:
+                           (openConnections == 1 ? _(MULConfirmQuitTitleSingular)
+                            : _(MULConfirmQuitTitlePlural)),
+                           openConnections];
+      alert.informativeText = _(MULConfirmQuitMessage);
+      [alert addButtonWithTitle: _(MULConfirm)];
+      [alert addButtonWithTitle: _(MULCancel)];
+      [alert addButtonWithTitle: _(MULQuitImmediately)];
+      
+      choice = [alert runModal];
     }
     
-    if (choice == NSAlertDefaultReturn)
+    if (choice == NSAlertFirstButtonReturn)
     {
       [self _recursivelyConfirmClose: YES];
       return NSTerminateLater;
     }
+    else if (choice == NSAlertSecondButtonReturn)
+      return NSTerminateCancel;
   }
   
   return NSTerminateNow;

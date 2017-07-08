@@ -16,7 +16,7 @@
 
 - (CGFloat) monospaceCharacterHeight
 {
-  return [self.layoutManager defaultLineHeightForFont: [self.layoutManager substituteFontForFont: self.font]];
+  return [self.layoutManager defaultLineHeightForFont: self.font];
 }
 
 - (NSSize) monospaceCharacterSize
@@ -26,7 +26,7 @@
 
 - (CGFloat) monospaceCharacterWidth
 {
-  return [self.layoutManager substituteFontForFont: self.font].maximumAdvancement.width;
+  return self.font.maximumAdvancement.width;
 }
 
 - (NSUInteger) numberOfColumns
@@ -157,7 +157,7 @@
   return [super validateMenuItem: menuItem];
 }
 
-- (void) insertText: (id) string
+- (void) insertText: (id) string replacementRange: (NSRange) replacementRange
 {
   BOOL result = NO;
   
@@ -165,7 +165,7 @@
     result = [self.pasteDelegate textView: self insertText: string];
   
   if (!result)
-    [super insertText: string];
+    [super insertText: string replacementRange: replacementRange];
 }
 
 - (IBAction) paste: (id) sender

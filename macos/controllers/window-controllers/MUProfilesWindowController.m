@@ -286,7 +286,7 @@
   else
   {
     [NSMenu popUpContextMenu: addMenu
-                   withEvent: [NSEvent mouseEventWithType: NSLeftMouseUp
+                   withEvent: [NSEvent mouseEventWithType: NSEventTypeLeftMouseUp
                                                  location: addButton.frame.origin
                                             modifierFlags: 0
                                                 timestamp: NSTimeIntervalSince1970
@@ -302,7 +302,7 @@
 - (IBAction) showActionContextMenu: (id) sender
 {
   [NSMenu popUpContextMenu: actionMenu
-                 withEvent: [NSEvent mouseEventWithType: NSLeftMouseUp
+                 withEvent: [NSEvent mouseEventWithType: NSEventTypeLeftMouseUp
                                                location: actionButton.frame.origin
                                           modifierFlags: 0
                                               timestamp: NSTimeIntervalSince1970

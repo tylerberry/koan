@@ -79,7 +79,7 @@ typedef NS_ENUM (NSInteger, MUTextDisplayMode)
 
 - (instancetype) initWithProfile: (MUProfile *) newProfile
 {
-  if (!(self = [super initWithWindowNibName: @"MUConnectionWindow" owner: self]))
+  if (!(self = [super initWithWindow: nil]))
     return nil;
   
   _connection = [[MUMUDConnection alloc] initWithProfile: newProfile delegate: self];
@@ -472,7 +472,12 @@ typedef NS_ENUM (NSInteger, MUTextDisplayMode)
   
   return NO;
 }
-  
+
+- (NSString *) windowNibName
+{
+  return @"MUConnectionWindow";
+}
+
 #pragma mark - Accessors
 
 - (void) setDelegate: (id) newDelegate

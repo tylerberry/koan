@@ -25,7 +25,8 @@ typedef NS_ENUM (NSInteger, MUCharsetNegotiationState)
 @property (assign) BOOL serverWillEcho;
 @property (assign) NSStringEncoding stringEncoding;
 
-- (instancetype) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate NS_DESIGNATED_INITIALIZER;
 
 - (void) reset;
 

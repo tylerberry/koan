@@ -11,11 +11,12 @@
 
 @interface MUTextLogger : MUFilter
 
++ (instancetype) filter NS_UNAVAILABLE;
 + (instancetype) filterWithWorld: (MUWorld *) world;
 + (instancetype) filterWithWorld: (MUWorld *) world player: (MUPlayer *) player;
 
-// Designated initializer.
-- (instancetype) initWithOutputStream: (NSOutputStream *) outputStream;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithOutputStream: (NSOutputStream *) outputStream NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithWorld: (MUWorld *) world;
 - (instancetype) initWithWorld: (MUWorld *) world player: (MUPlayer *) player;
 

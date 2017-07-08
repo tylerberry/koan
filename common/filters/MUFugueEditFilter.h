@@ -21,10 +21,12 @@
 
 @property (weak, nonatomic) NSObject <MUFugueEditFilterDelegate> *delegate;
 
++ (instancetype) filter NS_UNAVAILABLE;
 + (instancetype) filterWithProfile: (MUProfile *) newProfile
                           delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
 
+- (instancetype) init NS_UNAVAILABLE;
 - (instancetype) initWithProfile: (MUProfile *) newProfile
-                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate;
+                        delegate: (NSObject <MUFugueEditFilterDelegate> *) newDelegate NS_DESIGNATED_INITIALIZER;
 
 @end

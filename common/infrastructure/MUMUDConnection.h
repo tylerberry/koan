@@ -54,8 +54,9 @@ extern NSString *MUMUDConnectionErrorKey;
 + (instancetype) connectionWithProfile: (MUProfile *) profile
                               delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
 
+- (instancetype) init NS_UNAVAILABLE;
 - (instancetype) initWithProfile: (MUProfile *) profile
-                        delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate;
+                        delegate: (NSObject <MUMUDConnectionDelegate, MUFugueEditFilterDelegate> *) delegate NS_DESIGNATED_INITIALIZER;
 
 - (void) sendNumberOfWindowLines: (NSUInteger) numberOfLines columns: (NSUInteger) numberOfColumns;
 - (void) writeLine: (NSString *) line;

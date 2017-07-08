@@ -19,6 +19,7 @@
 
 + (instancetype) systemSOCKSProxySettings;
 
-- (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithHostname: (NSString *) newHostname port: (NSNumber *) newPort NS_DESIGNATED_INITIALIZER;
 
 @end

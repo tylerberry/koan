@@ -13,6 +13,7 @@
 + (instancetype) byteSetWithBytes: (const unsigned int) firstByte, ...;
 + (instancetype) byteSetWithBytes: (const uint8_t * const) bytes length: (size_t) length;
 
+- (instancetype) init NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithBytes: (const uint8_t * const) bytes length: (size_t) length;
 - (instancetype) initWithFirstByte: (const uint8_t) first remainingBytes: (va_list) bytes;
 

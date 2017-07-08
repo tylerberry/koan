@@ -52,7 +52,8 @@ typedef NS_ENUM (NSInteger, MUCodebaseFamily)
 @property (readonly) MUCodebaseFamily codebaseFamily;
 @property (readonly) BOOL shouldSuppressGoAhead;
 
-- (instancetype) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate NS_DESIGNATED_INITIALIZER;
 
 - (void) noteMSSPVariable: (NSString *) variable value: (NSString *) value;
 - (void) notePrompt: (NSAttributedString *) promptString;

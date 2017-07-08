@@ -29,7 +29,6 @@
 @property (weak, nonatomic) NSObject <MUConnectionWindowControllerDelegate> *delegate;
 @property (readonly) MUMUDConnection *connection;
 
-// Designated initializer.
 - (instancetype) initWithProfile: (MUProfile *) newProfile;
 
 - (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;

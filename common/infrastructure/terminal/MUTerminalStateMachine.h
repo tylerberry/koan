@@ -17,7 +17,8 @@
 
 + (instancetype) stateMachineWithConnectionState: (MUMUDConnectionState *) connectionState;
 
-- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState NS_DESIGNATED_INITIALIZER;
 
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTerminalProtocolHandler> *) protocolHandler;
 - (void) reset;

@@ -10,6 +10,7 @@
 
 + (instancetype) stateWithControlStringType: (MUTerminalControlStringType) controlStringType;
 
-- (instancetype) initWithControlStringType: (MUTerminalControlStringType) controlStringType;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithControlStringType: (MUTerminalControlStringType) controlStringType NS_DESIGNATED_INITIALIZER;
 
 @end

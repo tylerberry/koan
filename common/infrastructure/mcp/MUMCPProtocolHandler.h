@@ -14,7 +14,9 @@
 @property (weak, nonatomic) NSObject <MUMCPProtocolHandlerDelegate> *delegate;
 
 + (instancetype) protocolHandlerWithConnectionState: (MUMUDConnectionState *) connectionState;
-- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState;
+
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState NS_DESIGNATED_INITIALIZER;
 
 @end
 

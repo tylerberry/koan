@@ -10,6 +10,7 @@
 
 + (instancetype) stateWithReturnState: (Class) state;
 
-- (instancetype) initWithReturnState: (Class) state;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithReturnState: (Class) state NS_DESIGNATED_INITIALIZER;
 
 @end

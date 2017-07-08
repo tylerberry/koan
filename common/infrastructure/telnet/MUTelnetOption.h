@@ -43,7 +43,9 @@ typedef NS_ENUM (NSInteger, MUTelnetQState)
 
 + (NSString *) optionNameForByte: (uint8_t) option;
 
-- (instancetype) initWithOption: (uint8_t) option delegate: (NSObject <MUTelnetOptionDelegate> *) object;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithOption: (uint8_t) option
+                       delegate: (NSObject <MUTelnetOptionDelegate> *) object NS_DESIGNATED_INITIALIZER;
 
 // Negotiation we respond to.
 - (void) receivedDo;

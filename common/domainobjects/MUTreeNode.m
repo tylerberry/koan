@@ -100,6 +100,11 @@ static NSMutableDictionary *_uniqueIdentifiers;
   [self _postWorldsDidChangeNotification];
 }
 
+- (void) insertInChildren: (MUTreeNode *) object
+{
+  [self insertObject: object inChildrenAtIndex: _children.count];
+}
+
 - (void) insertChildren: (NSArray *) objects atIndexes: (NSIndexSet *) indexes
 {
   for (MUTreeNode *child in objects)

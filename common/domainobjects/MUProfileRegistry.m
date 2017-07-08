@@ -37,7 +37,7 @@
 
 - (instancetype) initWithProfilesFromUserDefaults
 {
-  if (!(self = [super init]))
+  if (!(self = [self init]))
     return nil;
   
   NSData *profilesData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];

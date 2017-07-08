@@ -12,6 +12,8 @@
 @property (copy) NSMutableArray *actions;
 
 // Designated initializer.
-- (instancetype) initWithName: (NSString *) name predicate: (NSPredicate *) predicate actions: (NSArray *) actions;
+- (instancetype) initWithName: (NSString *) name
+                    predicate: (NSPredicate *) predicate
+                      actions: (NSArray *) actions NS_DESIGNATED_INITIALIZER;
 
 @end

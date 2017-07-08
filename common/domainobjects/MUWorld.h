@@ -28,13 +28,16 @@
                               port: (NSNumber *) port
                           forceTLS: (BOOL) forceTLS;
 
-// Designated initializer.
+- (instancetype) initWithCoder: (NSCoder *) decoder NS_DESIGNATED_INITIALIZER;
+
+- (instancetype) initWithName: (NSString *) name children: (NSArray *) children NS_UNAVAILABLE;
+
 - (instancetype) initWithName: (NSString *) name
                      hostname: (NSString *) hostname
                          port: (NSNumber *) port
                      forceTLS: (BOOL) forceTLS
                           URL: (NSString *) url
-                     children: (NSArray *) children;
+                     children: (NSArray *) children NS_DESIGNATED_INITIALIZER;
 
 - (instancetype) initWithHostname: (NSString *) hostname
                              port: (NSNumber *) port

@@ -49,6 +49,11 @@ static NSMutableDictionary *_uniqueIdentifiers;
   return self;
 }
 
+- (instancetype) initWithName: (NSString *) name
+{
+  return [self initWithName: name children: nil];
+}
+
 - (instancetype) init
 {
   return [self initWithName: @"Empty node" children: nil];

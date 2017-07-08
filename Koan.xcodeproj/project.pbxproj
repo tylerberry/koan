@@ -457,7 +457,7 @@
 		2F42737B1F0C451800A06B84 /* MUProfileRegistryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUProfileRegistryTests.m; sourceTree = "<group>"; };
 		2F42737C1F0C451800A06B84 /* MUTelnetStateMachineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUTelnetStateMachineTests.m; sourceTree = "<group>"; };
 		2F42737D1F0C451800A06B84 /* MUTerminalProtocolHandlerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUTerminalProtocolHandlerTests.m; sourceTree = "<group>"; };
-		2F42737E1F0C451800A06B84 /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
+		2F42737E1F0C451800A06B84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F42737F1F0C451800A06B84 /* MUWorldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUWorldTests.m; sourceTree = "<group>"; };
 		2F4273801F0C451800A06B84 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		2F4273811F0C451800A06B84 /* MUPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUPlayerTests.m; sourceTree = "<group>"; };
@@ -1114,7 +1114,7 @@
 				2F4273711F0C451800A06B84 /* MUTextLogTests.m */,
 				2F42736C1F0C451800A06B84 /* MUTreeNodeTests.m */,
 				2F42737F1F0C451800A06B84 /* MUWorldTests.m */,
-				2F42737E1F0C451800A06B84 /* Tests-Info.plist */,
+				2F42737E1F0C451800A06B84 /* Info.plist */,
 				2F4273801F0C451800A06B84 /* Tests-Prefix.pch */,
 				2F42737A1F0C451800A06B84 /* XCTestCase+NSAttributedStringAssertions.h */,
 				2F4273821F0C451800A06B84 /* XCTestCase+NSAttributedStringAssertions.m */,

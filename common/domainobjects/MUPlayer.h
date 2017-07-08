@@ -17,7 +17,4 @@
 
 + (instancetype) playerWithName: (NSString *) newName;
 
-// Designated initializer.
-- (instancetype) initWithName: (NSString *) newName;
-
 @end

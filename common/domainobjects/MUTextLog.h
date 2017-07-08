@@ -9,7 +9,8 @@
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSDictionary *headers;
 
-- (instancetype) initWithString: (NSString *) string;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithString: (NSString *) string NS_DESIGNATED_INITIALIZER;
 
 - (void) fillDictionaryWithMetadata: (NSMutableDictionary *) dictionary;
 

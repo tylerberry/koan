@@ -43,7 +43,8 @@
 + (instancetype) profileWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 + (instancetype) profileWithWorld: (MUWorld *) newWorld;
 
-// Designated initializer.
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithWorld: (MUWorld *) newWorld
                         player: (MUPlayer *) newPlayer
                    autoconnect: (BOOL) newAutoconnect
@@ -51,7 +52,7 @@
                backgroundColor: (NSColor *) newBackgroundColor
                      linkColor: (NSColor *) newLinkColor
                systemTextColor: (NSColor *) newSystemTextColor
-                     textColor: (NSColor *) newTextColor;
+                     textColor: (NSColor *) newTextColor NS_DESIGNATED_INITIALIZER;
 
 - (instancetype) initWithWorld: (MUWorld *) newWorld player: (MUPlayer *) newPlayer;
 - (instancetype) initWithWorld: (MUWorld *) newWorld;

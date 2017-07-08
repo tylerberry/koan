@@ -19,17 +19,14 @@ static const int32_t currentPlayerVersion = 4;
   return [[self alloc] initWithName: newName];
 }
 
-- (instancetype) initWithName: (NSString *) newName
-{
-  if (!(self = [super initWithName: newName children: nil]))
-    return nil;
-  
-  return self;
-}
-
 - (instancetype) init
 {
   return [self initWithName: @"New player"];
+}
+
+- (instancetype) initWithName: (NSString *) name children: (NSArray *) children
+{
+  return [super initWithName: name children: children];
 }
 
 #pragma mark - Property method implementations

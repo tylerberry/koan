@@ -8,7 +8,8 @@
 
 @property (copy) NSString *name;
 
-- (instancetype) initWithName: (NSString *) name;
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithName: (NSString *) name NS_DESIGNATED_INITIALIZER;
 
 - (void) applyToMutableAttributedString: (NSMutableAttributedString *) mutableAttributedString;
 

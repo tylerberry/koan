@@ -30,7 +30,7 @@
 - (void) testSingleNewline
 {
   NSDictionary *attributes = @{MUInverseColorsAttributeName: @YES,
-                               MUCustomBackgroundColorAttributeName: @(MUANSIRedColorTag),
+                               MUCustomBackgroundColorAttributeName: @(MUColorTagANSIRed),
                                NSBackgroundColorAttributeName: [NSColor redColor],
                                NSFontAttributeName: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]};
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: @"a\nb" attributes: attributes];
@@ -42,11 +42,11 @@
   XCTAssertNotNil ([results attribute: MUInverseColorsAttributeName atIndex: 2 effectiveRange: NULL]);
 
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 0 effectiveRange: NULL],
-                         @(MUANSIRedColorTag));
+                         @(MUColorTagANSIRed));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 1 effectiveRange: NULL],
-                         @(MUDefaultBackgroundColorTag));
+                         @(MUColorTagDefaultBackground));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 2 effectiveRange: NULL],
-                         @(MUANSIRedColorTag));
+                         @(MUColorTagANSIRed));
 
   XCTAssertEqualObjects ([results attribute: NSBackgroundColorAttributeName atIndex: 0 effectiveRange: NULL],
                          [NSColor redColor]);
@@ -65,7 +65,7 @@
 - (void) testMultipleNewlines
 {
   NSDictionary *attributes = @{MUInverseColorsAttributeName: @YES,
-                               MUCustomBackgroundColorAttributeName: @(MUANSIRedColorTag),
+                               MUCustomBackgroundColorAttributeName: @(MUColorTagANSIRed),
                                NSBackgroundColorAttributeName: [NSColor redColor],
                                NSFontAttributeName: [NSFont systemFontOfSize: [NSFont smallSystemFontSize]]};
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: @"a\nb\nc" attributes: attributes];
@@ -79,15 +79,15 @@
   XCTAssertNotNil ([results attribute: MUInverseColorsAttributeName atIndex: 4 effectiveRange: NULL]);
 
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 0 effectiveRange: NULL],
-                         @(MUANSIRedColorTag));
+                         @(MUColorTagANSIRed));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 1 effectiveRange: NULL],
-                         @(MUDefaultBackgroundColorTag));
+                         @(MUColorTagDefaultBackground));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 2 effectiveRange: NULL],
-                         @(MUANSIRedColorTag));
+                         @(MUColorTagANSIRed));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 3 effectiveRange: NULL],
-                         @(MUDefaultBackgroundColorTag));
+                         @(MUColorTagDefaultBackground));
   XCTAssertEqualObjects ([results attribute: MUCustomBackgroundColorAttributeName atIndex: 4 effectiveRange: NULL],
-                         @(MUANSIRedColorTag));
+                         @(MUColorTagANSIRed));
 
   XCTAssertEqualObjects ([results attribute: NSBackgroundColorAttributeName atIndex: 0 effectiveRange: NULL],
                          [NSColor redColor]);

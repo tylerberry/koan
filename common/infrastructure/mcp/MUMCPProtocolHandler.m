@@ -7,23 +7,23 @@
 #import "MUMCPProtocolHandler.h"
 #import "MUProtocolHandlerSubclass.h"
 
-enum MCPStates
+typedef NS_ENUM (NSInteger, MCPState)
 {
-  MUMCPNewLineState,
-  MUMCPReceivedHashState,
-  MUMCPReceivedHashDollarState,
-  MUMCPPassThroughState,
-  MUMCPBeginCommandState,
-  MUMCPBufferCommandState,
-  MUMCPBufferMultilineValueState,
-  MUMCPEndMultilineValueState,
+  MUMCPStateNewLine,
+  MUMCPStateReceivedHash,
+  MUMCPStateReceivedHashDollar,
+  MUMCPStatePassThrough,
+  MUMCPStateBeginCommand,
+  MUMCPStateBufferCommand,
+  MUMCPStateBufferMultilineValue,
+  MUMCPStateEndMultilineValue,
 };
 
 @interface MUMCPProtocolHandler ()
 {
   MUMUDConnectionState *_connectionState;
   
-  enum MCPStates _mcpState;
+  MCPState _mcpState;
 }
 
 - (void) _bufferMCPByte: (uint8_t) byte;
@@ -50,7 +50,7 @@ enum MCPStates
     return nil;
   
   _connectionState = connectionState;
-  _mcpState = MUMCPNewLineState;
+  _mcpState = MUMCPStateNewLine;
   
   return self;
 }
@@ -61,90 +61,90 @@ enum MCPStates
 {
   switch (_mcpState)
   {
-    case MUMCPNewLineState:
+    case MUMCPStateNewLine:
       if (byte == '#')
-        _mcpState = MUMCPReceivedHashState;
+        _mcpState = MUMCPStateReceivedHash;
       else
       {
         if (byte != '\n')
-          _mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPStatePassThrough;
         PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
-    case MUMCPReceivedHashState:
+    case MUMCPStateReceivedHash:
       if (byte == '$')
-        _mcpState = MUMCPReceivedHashDollarState;
+        _mcpState = MUMCPStateReceivedHashDollar;
       else
       {
         if (byte == '\n')
-          _mcpState = MUMCPNewLineState;
+          _mcpState = MUMCPStateNewLine;
         else
-          _mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPStatePassThrough;
         PASS_ON_PARSED_BYTE ('#');
         PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
-    case MUMCPReceivedHashDollarState:
+    case MUMCPStateReceivedHashDollar:
       if (byte == '#')
-        _mcpState = MUMCPBeginCommandState;
+        _mcpState = MUMCPStateBeginCommand;
       else if (byte == '"')
-        _mcpState = MUMCPPassThroughState;
+        _mcpState = MUMCPStatePassThrough;
       else
       {
         if (byte == '\n')
-          _mcpState = MUMCPNewLineState;
+          _mcpState = MUMCPStateNewLine;
         else
-          _mcpState = MUMCPPassThroughState;
+          _mcpState = MUMCPStatePassThrough;
         PASS_ON_PARSED_BYTE ('#');
         PASS_ON_PARSED_BYTE ('$');
         PASS_ON_PARSED_BYTE (byte);
       }
       break;
       
-    case MUMCPPassThroughState:
+    case MUMCPStatePassThrough:
       if (byte == '\n')
-        _mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPStateNewLine;
       PASS_ON_PARSED_BYTE (byte);
       break;
       
-    case MUMCPBeginCommandState:
+    case MUMCPStateBeginCommand:
       if (byte == '*')
-        _mcpState = MUMCPBufferMultilineValueState;
+        _mcpState = MUMCPStateBufferMultilineValue;
       else if (byte == ':')
-        _mcpState = MUMCPEndMultilineValueState;
+        _mcpState = MUMCPStateEndMultilineValue;
       else
       {
-        _mcpState = MUMCPBufferCommandState;
+        _mcpState = MUMCPStateBufferCommand;
         [self _bufferMCPByte: byte];
       }
       break;
       
-    case MUMCPBufferCommandState:
+    case MUMCPStateBufferCommand:
       if (byte == '\n')
       {
-        _mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPStateNewLine;
         [self _handleCommand];
       }
       else
         [self _bufferMCPByte: byte];
       break;
       
-    case MUMCPBufferMultilineValueState:
+    case MUMCPStateBufferMultilineValue:
       if (byte == '\n')
       {
-        _mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPStateNewLine;
         [self _handleMultilineValue];
       }
       else
         [self _bufferMCPByte: byte];
       break;
       
-    case MUMCPEndMultilineValueState:
+    case MUMCPStateEndMultilineValue:
       if (byte == '\n')
       {
-        _mcpState = MUMCPNewLineState;
+        _mcpState = MUMCPStateNewLine;
         [self _finalizeMultilineValue];
       }
       else
@@ -155,7 +155,7 @@ enum MCPStates
 
 - (void) reset
 {
-  _mcpState = MUMCPNewLineState;
+  _mcpState = MUMCPStateNewLine;
 }
 
 #pragma mark - Private methods

@@ -15,24 +15,24 @@
 #import <objc/objc-runtime.h>
 #include <tgmath.h>
 
-enum MUSearchDirections
+typedef NS_ENUM (NSInteger, MUSearchDirection)
 {
-  MUBackwardSearch,
-  MUForwardSearch
+  MUSearchDirectionBackward,
+  MUSearchDirectionForward
 };
 
-enum MUTextDisplayModes
+typedef NS_ENUM (NSInteger, MUTextDisplayMode)
 {
-  MUNormalTextDisplayMode,
-  MUPromptTextDisplayMode,
-  MUEchoedTextDisplayMode
+  MUTextDisplayModeNormal,
+  MUTextDisplayModePrompt,
+  MUTextDisplayModeEchoed
 };
 
 @interface MUConnectionWindowController ()
 
 - (void) _clearPrompt;
 - (void) _displayAttributedString: (NSAttributedString *) attributedString
-                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode;
+                  textDisplayMode: (MUTextDisplayMode) textDisplayMode;
 - (void) _displaySystemMessage: (NSString *) string;
 - (void) _echoString: (NSString *) string;
 - (void) _endCompletion;
@@ -45,9 +45,9 @@ enum MUTextDisplayModes
 - (NSString *) _splitViewAutosaveName;
 - (void) _startDisplayingTimeConnected;
 - (void) _stopDisplayingTimeConnected;
-- (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction;
+- (void) _tabCompleteWithDirection: (MUSearchDirection) direction;
 - (void) _triggerDelayedReportWindowSizeToServer: (NSTimer *) timer;
-- (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color;
+- (void) _updateANSIColorsForColor: (MUAbstractANSIColor) color;
 - (void) _updateBackgroundColor;
 - (void) _updateFonts;
 - (void) _updateLinkTextColor;
@@ -356,82 +356,82 @@ enum MUTextDisplayModes
   {
     if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlackColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBlackColor];
+      [self _updateANSIColorsForColor: MUANSIColorBlack];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIRedColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIRedColor];
+      [self _updateANSIColorsForColor: MUANSIColorRed];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIGreenColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIGreenColor];
+      [self _updateANSIColorsForColor: MUANSIColorGreen];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIYellowColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIYellowColor];
+      [self _updateANSIColorsForColor: MUANSIColorYellow];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBlueColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBlueColor];
+      [self _updateANSIColorsForColor: MUANSIColorBlue];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIMagentaColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIMagentaColor];
+      [self _updateANSIColorsForColor: MUANSIColorMagenta];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSICyanColor]])
     {
-      [self _updateANSIColorsForColor: MUANSICyanColor];
+      [self _updateANSIColorsForColor: MUANSIColorCyan];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIWhiteColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIWhiteColor];
+      [self _updateANSIColorsForColor: MUANSIColorWhite];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlackColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightBlackColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightBlack];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightRedColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightRedColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightRed];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightGreenColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightGreenColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightGreen];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightYellowColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightYellowColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightYellow];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightBlueColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightBlueColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightBlue];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightMagentaColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightMagentaColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightMagenta];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightCyanColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightCyanColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightCyan];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForANSIBrightWhiteColor]])
     {
-      [self _updateANSIColorsForColor: MUANSIBrightWhiteColor];
+      [self _updateANSIColorsForColor: MUANSIColorBrightWhite];
       return;
     }
     else if ([keyPath isEqualToString: [MUApplicationController keyPathForDisplayBrightAsBold]])
@@ -681,13 +681,13 @@ enum MUTextDisplayModes
 - (void) displayAttributedString: (NSAttributedString *) attributedString
 {
   if (attributedString && attributedString.length > 0)
-    [self _displayAttributedString: attributedString textDisplayMode: MUNormalTextDisplayMode];
+    [self _displayAttributedString: attributedString textDisplayMode: MUTextDisplayModeNormal];
 }
 
 - (void) displayAttributedStringAsPrompt: (NSAttributedString *) attributedString
 {
   if (attributedString && attributedString.length > 0)
-    [self _displayAttributedString: attributedString textDisplayMode: MUPromptTextDisplayMode];
+    [self _displayAttributedString: attributedString textDisplayMode: MUTextDisplayModePrompt];
   else
     [self _clearPrompt];
 }
@@ -878,7 +878,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
     }
     else if (commandSelector == @selector (insertBacktab:))
     {
-      [self _tabCompleteWithDirection: MUForwardSearch];
+      [self _tabCompleteWithDirection: MUSearchDirectionForward];
       return YES;
     }
     else if (commandSelector == @selector (insertNewline:))
@@ -899,7 +899,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
     }
     else if (commandSelector == @selector (insertTab:))
     {
-      [self _tabCompleteWithDirection: MUBackwardSearch];
+      [self _tabCompleteWithDirection: MUSearchDirectionBackward];
       return YES;
     }
     else if (commandSelector == @selector (moveDown:))
@@ -1058,7 +1058,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
 }
 
 - (void) _displayAttributedString: (NSAttributedString *) attributedString
-                  textDisplayMode: (enum MUTextDisplayModes) textDisplayMode
+                  textDisplayMode: (MUTextDisplayMode) textDisplayMode
 {
   if (attributedString.length == 0)
     return;
@@ -1068,12 +1068,12 @@ constrainSplitPosition: (CGFloat) proposedPosition
   if ([self _shouldScrollDisplayViewToBottom])
     needsScrollToBottom = YES;
 
-  if (textDisplayMode == MUPromptTextDisplayMode)
+  if (textDisplayMode == MUTextDisplayModePrompt)
     _currentPrompt = [attributedString copy];
 
   [receivedTextView.textStorage beginEditing];
 
-  if (_currentPrompt && textDisplayMode != MUEchoedTextDisplayMode)
+  if (_currentPrompt && textDisplayMode != MUTextDisplayModeEchoed)
   {
     NSRange promptRange = NSMakeRange (_currentTextRangeWithoutPrompt.length,
                                        receivedTextView.textStorage.length - _currentTextRangeWithoutPrompt.length);
@@ -1083,11 +1083,11 @@ constrainSplitPosition: (CGFloat) proposedPosition
 
   [receivedTextView.textStorage appendAttributedString: attributedString];
 
-  if (textDisplayMode != MUPromptTextDisplayMode)
+  if (textDisplayMode != MUTextDisplayModePrompt)
   {
     _currentTextRangeWithoutPrompt = NSMakeRange (0, receivedTextView.textStorage.length);
 
-    if (_currentPrompt && textDisplayMode == MUNormalTextDisplayMode)
+    if (_currentPrompt && textDisplayMode == MUTextDisplayModeNormal)
       [receivedTextView.textStorage appendAttributedString: _currentPrompt];
   }
 
@@ -1108,13 +1108,13 @@ constrainSplitPosition: (CGFloat) proposedPosition
   NSMutableDictionary *attributes = [_connection.textAttributes mutableCopy];
 
   if (attributes[MUInverseColorsAttributeName])
-    attributes[MUCustomBackgroundColorAttributeName] = @(MUSystemTextColorTag);
+    attributes[MUCustomBackgroundColorAttributeName] = @(MUColorTagSystemText);
   else
-    attributes[MUCustomForegroundColorAttributeName] = @(MUSystemTextColorTag);
+    attributes[MUCustomForegroundColorAttributeName] = @(MUColorTagSystemText);
   attributes[NSForegroundColorAttributeName] = self.connection.profile.effectiveSystemTextColor;
 
   [self _displayAttributedString: [[NSAttributedString alloc] initWithString: stringWithNewline attributes: attributes]
-                 textDisplayMode: MUNormalTextDisplayMode];
+                 textDisplayMode: MUTextDisplayModeNormal];
 }
 
 - (void) _echoString: (NSString *) string
@@ -1125,14 +1125,14 @@ constrainSplitPosition: (CGFloat) proposedPosition
   NSMutableDictionary *attributes = [_connection.textAttributes mutableCopy];
 
   if (attributes[MUInverseColorsAttributeName])
-    attributes[MUCustomBackgroundColorAttributeName] = @(MUSystemTextColorTag);
+    attributes[MUCustomBackgroundColorAttributeName] = @(MUColorTagSystemText);
   else
-    attributes[MUCustomForegroundColorAttributeName] = @(MUSystemTextColorTag);
+    attributes[MUCustomForegroundColorAttributeName] = @(MUColorTagSystemText);
   attributes[NSForegroundColorAttributeName] = self.connection.profile.effectiveSystemTextColor;
 
   NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString: string
                                                                          attributes: attributes];
-  [self _displayAttributedString: attributedString textDisplayMode: MUEchoedTextDisplayMode];
+  [self _displayAttributedString: attributedString textDisplayMode: MUTextDisplayModeEchoed];
 }
 
 - (void) _startDisplayingTimeConnected
@@ -1204,7 +1204,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
   return [NSString stringWithFormat: @"%@.split", self.connection.profile.uniqueIdentifier];
 }
 
-- (void) _tabCompleteWithDirection: (enum MUSearchDirections) direction
+- (void) _tabCompleteWithDirection: (MUSearchDirection) direction
 {
   NSString *currentPrefix;
   
@@ -1222,14 +1222,16 @@ constrainSplitPosition: (CGFloat) proposedPosition
   else
     currentPrefix = [inputTextView.string copy];
   
-  NSString *foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
+  NSString *foundString = (direction == MUSearchDirectionBackward) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
                                                 : [_historyRing searchForwardForStringPrefix: currentPrefix];
   
   if (foundString)
   {
     while ([foundString isEqualToString: inputTextView.string])
-      foundString = (direction == MUBackwardSearch) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
-                                                    : [_historyRing searchForwardForStringPrefix: currentPrefix];
+    {
+      foundString = (direction == MUSearchDirectionBackward) ? [_historyRing searchBackwardForStringPrefix: currentPrefix]
+                                                             : [_historyRing searchForwardForStringPrefix: currentPrefix];
+    }
     
     inputTextView.string = foundString;
     inputTextView.selectedRange = NSMakeRange (currentPrefix.length, inputTextView.textStorage.length - currentPrefix.length);
@@ -1245,126 +1247,126 @@ constrainSplitPosition: (CGFloat) proposedPosition
   [self.connection reportWindowSizeToServer];
 }
 
-- (void) _updateANSIColorsForColor: (enum MUAbstractANSIColors) color
+- (void) _updateANSIColorsForColor: (MUAbstractANSIColor) color
 {
   NSColor *specifiedColor;
-  MUCustomColorTag colorTagForANSI256;
-  MUCustomColorTag colorTagForANSI16;
+  MUColorTag colorTagForANSI256;
+  MUColorTag colorTagForANSI16;
   BOOL changeIfBright;
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   
   switch (color)
   {
-    case MUANSIBlackColor:
+    case MUANSIColorBlack:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlackColor]];
-      colorTagForANSI256 = MUANSI256BlackColorTag;
-      colorTagForANSI16 = MUANSIBlackColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Black;
+      colorTagForANSI16 = MUColorTagANSIBlack;
       changeIfBright = NO;
       break;
       
-    case MUANSIRedColor:
+    case MUANSIColorRed:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIRedColor]];
-      colorTagForANSI256 = MUANSI256RedColorTag;
-      colorTagForANSI16 = MUANSIRedColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Red;
+      colorTagForANSI16 = MUColorTagANSIRed;
       changeIfBright = NO;
       break;
       
-    case MUANSIGreenColor:
+    case MUANSIColorGreen:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIGreenColor]];
-      colorTagForANSI256 = MUANSI256GreenColorTag;
-      colorTagForANSI16 = MUANSIGreenColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Green;
+      colorTagForANSI16 = MUColorTagANSIGreen;
       changeIfBright = NO;
       break;
       
-    case MUANSIYellowColor:
+    case MUANSIColorYellow:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIYellowColor]];
-      colorTagForANSI256 = MUANSI256YellowColorTag;
-      colorTagForANSI16 = MUANSIYellowColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Yellow;
+      colorTagForANSI16 = MUColorTagANSIYellow;
       changeIfBright = NO;
       break;
       
-    case MUANSIBlueColor:
+    case MUANSIColorBlue:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBlueColor]];
-      colorTagForANSI256 = MUANSI256BlueColorTag;
-      colorTagForANSI16 = MUANSIBlueColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Blue;
+      colorTagForANSI16 = MUColorTagANSIBlue;
       changeIfBright = NO;
       break;
       
-    case MUANSIMagentaColor:
+    case MUANSIColorMagenta:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIMagentaColor]];
-      colorTagForANSI256 = MUANSI256MagentaColorTag;
-      colorTagForANSI16 = MUANSIMagentaColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Magenta;
+      colorTagForANSI16 = MUColorTagANSIMagenta;
       changeIfBright = NO;
       break;
       
-    case MUANSICyanColor:
+    case MUANSIColorCyan:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSICyanColor]];
-      colorTagForANSI256 = MUANSI256CyanColorTag;
-      colorTagForANSI16 = MUANSICyanColorTag;
+      colorTagForANSI256 = MUColorTagANSI256Cyan;
+      colorTagForANSI16 = MUColorTagANSICyan;
       changeIfBright = NO;
       break;
       
-    case MUANSIWhiteColor:
+    case MUANSIColorWhite:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIWhiteColor]];
-      colorTagForANSI256 = MUANSI256WhiteColorTag;
-      colorTagForANSI16 = MUANSIWhiteColorTag;
+      colorTagForANSI256 = MUColorTagANSI256White;
+      colorTagForANSI16 = MUColorTagANSIWhite;
       changeIfBright = NO;
       break;
       
-    case MUANSIBrightBlackColor:
+    case MUANSIColorBrightBlack:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlackColor]];
-      colorTagForANSI256 = MUANSIBrightBlackColorTag;
-      colorTagForANSI16 = MUANSIBlackColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightBlack;
+      colorTagForANSI16 = MUColorTagANSIBlack;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightRedColor:
+    case MUANSIColorBrightRed:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightRedColor]];
-      colorTagForANSI256 = MUANSIBrightRedColorTag;
-      colorTagForANSI16 = MUANSIRedColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightRed;
+      colorTagForANSI16 = MUColorTagANSIRed;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightGreenColor:
+    case MUANSIColorBrightGreen:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightGreenColor]];
-      colorTagForANSI256 = MUANSIBrightGreenColorTag;
-      colorTagForANSI16 = MUANSIGreenColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightGreen;
+      colorTagForANSI16 = MUColorTagANSIGreen;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightYellowColor:
+    case MUANSIColorBrightYellow:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightYellowColor]];
-      colorTagForANSI256 = MUANSIBrightYellowColorTag;
-      colorTagForANSI16 = MUANSIYellowColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightYellow;
+      colorTagForANSI16 = MUColorTagANSIYellow;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightBlueColor:
+    case MUANSIColorBrightBlue:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightBlueColor]];
-      colorTagForANSI256 = MUANSIBrightBlueColorTag;
-      colorTagForANSI16 = MUANSIBlueColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightBlue;
+      colorTagForANSI16 = MUColorTagANSIBlue;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightMagentaColor:
+    case MUANSIColorBrightMagenta:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightMagentaColor]];
-      colorTagForANSI256 = MUANSIBrightMagentaColorTag;
-      colorTagForANSI16 = MUANSIMagentaColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightMagenta;
+      colorTagForANSI16 = MUColorTagANSIMagenta;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightCyanColor:
+    case MUANSIColorBrightCyan:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightCyanColor]];
-      colorTagForANSI256 = MUANSIBrightCyanColorTag;
-      colorTagForANSI16 = MUANSICyanColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightCyan;
+      colorTagForANSI16 = MUColorTagANSICyan;
       changeIfBright = YES;
       break;
       
-    case MUANSIBrightWhiteColor:
+    case MUANSIColorBrightWhite:
       specifiedColor = [NSUnarchiver unarchiveObjectWithData: [defaults dataForKey: MUPANSIBrightWhiteColor]];
-      colorTagForANSI256 = MUANSIBrightWhiteColorTag;
-      colorTagForANSI16 = MUANSIWhiteColorTag;
+      colorTagForANSI256 = MUColorTagANSIBrightWhite;
+      colorTagForANSI16 = MUColorTagANSIWhite;
       changeIfBright = YES;
       break;
 
@@ -1419,7 +1421,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
     NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
     
     if (attributes[MUInverseColorsAttributeName]
-        && [attributes[MUCustomBackgroundColorAttributeName] intValue] == MUDefaultBackgroundColorTag)
+        && [attributes[MUCustomBackgroundColorAttributeName] intValue] == MUColorTagDefaultBackground)
     {
       [receivedTextView.textStorage addAttribute: NSForegroundColorAttributeName
                                            value: self.connection.profile.effectiveBackgroundColor
@@ -1494,11 +1496,11 @@ constrainSplitPosition: (CGFloat) proposedPosition
     NSRange attributeRange;
     NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
 
-    // Presently we don't have a way for backgrounds to ever actually be set to the system text color, but if we do, this
-    // implementation should be resilient to it. This does correctly handle system text written when we're in inverse
-    // text mode, which also shouldn't really happen.
+    // Presently we don't have a way for backgrounds to ever actually be set to the system text color, but if we do,
+    // this implementation should be resilient to it. This does correctly handle system text written when we're in
+    // inverse text mode, which also shouldn't really happen.
 
-    if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUSystemTextColorTag)
+    if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUColorTagSystemText)
     {
       [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName
@@ -1507,7 +1509,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
                                            range: attributeRange];
     }
     
-    if ([attributes[MUCustomBackgroundColorAttributeName] intValue] == MUSystemTextColorTag)
+    if ([attributes[MUCustomBackgroundColorAttributeName] intValue] == MUColorTagSystemText)
     {
       [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
                                                    ? NSForegroundColorAttributeName
@@ -1531,7 +1533,7 @@ constrainSplitPosition: (CGFloat) proposedPosition
     NSRange attributeRange;
     NSDictionary *attributes = [receivedTextView.textStorage attributesAtIndex: index effectiveRange: &attributeRange];
     
-    if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUDefaultForegroundColorTag)
+    if ([attributes[MUCustomForegroundColorAttributeName] intValue] == MUColorTagDefaultForeground)
     {
       [receivedTextView.textStorage addAttribute: (attributes[MUInverseColorsAttributeName]
                                                    ? NSBackgroundColorAttributeName

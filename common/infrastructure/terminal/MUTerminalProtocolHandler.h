@@ -21,7 +21,7 @@
 
 - (void) log: (NSString *) message, ...;
 
-- (void) processCommandStringWithType: (enum MUTerminalControlStringTypes) commandStringType;
+- (void) processCommandStringWithType: (MUTerminalControlStringType) commandStringType;
 - (void) processCSIWithFinalByte: (uint8_t) finalByte;
 - (void) processPseudoANSIMusic;
 

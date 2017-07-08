@@ -108,37 +108,37 @@ extern NSString * const MUCustomBackgroundColorAttributeName;
 
 #pragma mark Custom color tags.
 
-typedef NS_ENUM(NSInteger, MUCustomColorTag)
+typedef NS_ENUM(NSInteger, MUColorTag)
 {
-  MUUndefinedColorTag = -1,
-  MUDefaultForegroundColorTag = 0,
-  MUDefaultBackgroundColorTag,
-  MUSystemTextColorTag,
-  MUANSIBlackColorTag,
-  MUANSIRedColorTag,
-  MUANSIGreenColorTag,
-  MUANSIYellowColorTag,
-  MUANSIBlueColorTag,
-  MUANSICyanColorTag,
-  MUANSIMagentaColorTag,
-  MUANSIWhiteColorTag,
-  MUANSIBrightBlackColorTag,
-  MUANSIBrightRedColorTag,
-  MUANSIBrightGreenColorTag,
-  MUANSIBrightYellowColorTag,
-  MUANSIBrightBlueColorTag,
-  MUANSIBrightCyanColorTag,
-  MUANSIBrightMagentaColorTag,
-  MUANSIBrightWhiteColorTag,
-  MUANSI256BlackColorTag,      // ANSI-256 colors are distinct from ANSI-16 colors in that they're not affected by the
-  MUANSI256RedColorTag,        // bright conversion. If ANSI-256 is used to specify a non-bright color, that color stays
-  MUANSI256GreenColorTag,      // non-bright regardless of other ANSI attributes.
-  MUANSI256YellowColorTag,
-  MUANSI256BlueColorTag,
-  MUANSI256CyanColorTag,
-  MUANSI256MagentaColorTag,
-  MUANSI256WhiteColorTag,
-  MUANSI256FixedColorTag
+  MUColorTagUndefined = -1,
+  MUColorTagDefaultForeground = 0,
+  MUColorTagDefaultBackground,
+  MUColorTagSystemText,
+  MUColorTagANSIBlack,
+  MUColorTagANSIRed,
+  MUColorTagANSIGreen,
+  MUColorTagANSIYellow,
+  MUColorTagANSIBlue,
+  MUColorTagANSICyan,
+  MUColorTagANSIMagenta,
+  MUColorTagANSIWhite,
+  MUColorTagANSIBrightBlack,
+  MUColorTagANSIBrightRed,
+  MUColorTagANSIBrightGreen,
+  MUColorTagANSIBrightYellow,
+  MUColorTagANSIBrightBlue,
+  MUColorTagANSIBrightCyan,
+  MUColorTagANSIBrightMagenta,
+  MUColorTagANSIBrightWhite,
+  MUColorTagANSI256Black,      // ANSI-256 colors are distinct from ANSI-16 colors in that they're not affected by the
+  MUColorTagANSI256Red,        // bright conversion. If ANSI-256 is used to specify a non-bright color, that color stays
+  MUColorTagANSI256Green,      // non-bright regardless of other ANSI attributes.
+  MUColorTagANSI256Yellow,
+  MUColorTagANSI256Blue,
+  MUColorTagANSI256Cyan,
+  MUColorTagANSI256Magenta,
+  MUColorTagANSI256White,
+  MUColorTagANSI256Fixed
 };
 
 #pragma mark Pasteboard type constants.

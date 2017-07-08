@@ -25,7 +25,7 @@
                                                                effectiveRange: NULL] mutableCopy];
     [attributes removeObjectForKey: MUInverseColorsAttributeName];
     [attributes removeObjectForKey: NSBackgroundColorAttributeName];
-    attributes[MUCustomBackgroundColorAttributeName] = @(MUDefaultBackgroundColorTag);
+    attributes[MUCustomBackgroundColorAttributeName] = @(MUColorTagDefaultBackground);
 
     [normalizedString setAttributes: attributes range: newlineFoundRange];
 

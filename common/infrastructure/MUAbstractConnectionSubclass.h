@@ -9,7 +9,7 @@
 @interface MUAbstractConnection ()
 {
 @protected
-  MUConnectionStatus _status;
+  MUConnectionState _connectionState;
 }
 
 - (void) setStatusConnected;

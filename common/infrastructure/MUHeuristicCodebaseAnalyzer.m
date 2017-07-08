@@ -127,8 +127,7 @@
 
 - (void) noteTextString: (NSAttributedString *) attributedString
 {
-  // TODO: Make this use regex instead, it's probably faster. Note we can't use NSRegularExpression because we run on
-  // 10.6.
+  // TODO: Make this use regex instead, it's probably faster.
   
   if (_definitiveCodebaseFound)
     return;

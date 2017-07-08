@@ -10,15 +10,15 @@
 
 @implementation MUTerminalControlStringState
 {
-  enum MUTerminalControlStringTypes _controlStringType;
+  MUTerminalControlStringType _controlStringType;
 }
 
-+ (instancetype) stateWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
++ (instancetype) stateWithControlStringType: (MUTerminalControlStringType) controlStringType
 {
   return [[self alloc] initWithControlStringType: controlStringType];
 }
 
-- (instancetype) initWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType
+- (instancetype) initWithControlStringType: (MUTerminalControlStringType) controlStringType
 {
   if (!(self = [super init]))
     return nil;

@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-enum MUTelnetCommands
+typedef NS_ENUM (uint8_t, MUTelnetCommandByte)
 {
   // This command is defined in RFC 885.
   MUTelnetEndOfRecord = 0xef,
@@ -28,7 +28,7 @@ enum MUTelnetCommands
   MUTelnetInterpretAsCommand = 0xff
 };
 
-enum MUTelnetOptions
+typedef NS_ENUM (uint8_t, MUTelnetOptionByte)
 {
   // These options are defined by various RFCs.
   MUTelnetOptionTransmitBinary = 0,            // RFC 856.
@@ -90,21 +90,21 @@ enum MUTelnetOptions
   MUTelnetOptionGMCP = 201
 };
 
-enum MUTelnetMSSPSubnegotiationCommands
+typedef NS_ENUM (uint8_t, MUTelnetMSSPSubnegotiationCommandByte)
 {
   // These commands are defined at <http://tintin.sourceforge.net/mssp/>.
   MUTelnetMSSPVariable = 0,
   MUTelnetMSSPValue = 1
 };
 
-enum MUTelnetTerminalTypeSubnegotiationCommands
+typedef NS_ENUM (uint8_t, MUTelnetTerminalTypeSubnegotiationCommandByte)
 {
   // These commands are defined in RFC 1091.
   MUTelnetTerminalTypeIs = 0,
   MUTelnetTerminalTypeSend = 1
 };
 
-enum MUTelnetCharsetSubnegotiationCommands
+typedef NS_ENUM (uint8_t, MUTelnetCharsetSubnegotiationCommandByte)
 {
   // These commands are defined in RFC 2066.
   MUTelnetCharsetRequest = 1,
@@ -116,7 +116,7 @@ enum MUTelnetCharsetSubnegotiationCommands
   MUTelnetCharsetTTableNak = 7
 };
 
-enum MUTelnetStartTLSSubnegotiationCommands
+typedef NS_ENUM (uint8_t, MUTelnetStartTLSSubnegotiationCommandByte)
 {
   MUTelnetStartTLSFollows = 1
 };

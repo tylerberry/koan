@@ -40,8 +40,11 @@ static NSString * const MUKoanLogPlayerIdentifier = @"com_3james_koan_log_player
   if (self.headers[@"Player"])
     dictionary[MUKoanLogPlayerIdentifier] = self.headers[@"Player"];
   
-  if (self.headers[@"Date"])
-    dictionary[(NSString *) kMDItemContentCreationDate] = [NSDate dateWithNaturalLanguageString: self.headers[@"Date"]];
+  if (self.headers[@"Date"]) {
+    NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
+    
+    dictionary[(NSString *) kMDItemContentCreationDate] = [formatter dateFromString: self.headers[@"Date"]];
+  }
 
   if ([self _spotlightDisplayName])
     dictionary[(NSString *) kMDItemDisplayName] = [self _spotlightDisplayName];

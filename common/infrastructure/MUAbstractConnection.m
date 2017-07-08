@@ -9,14 +9,14 @@
 
 @implementation MUAbstractConnection
 
-@dynamic isClosed, isConnected, isConnecting, isConnectedOrConnecting;
+@dynamic closed, connected, connecting, connectedOrConnecting;
 
 - (instancetype) init
 {
   if (!(self = [super init]))
     return nil;
   
-  _status = MUConnectionStatusNotConnected;
+  _connectionState = MUConnectionStateNotConnected;
   
   return self;
 }
@@ -25,17 +25,17 @@
 
 - (BOOL) isClosed
 {
-  return self.status == MUConnectionStatusNotConnected;
+  return _connectionState == MUConnectionStateNotConnected;
 }
 
 - (BOOL) isConnected
 {
-  return self.status == MUConnectionStatusConnected;
+  return _connectionState == MUConnectionStateConnected;
 }
 
 - (BOOL) isConnecting
 {
-  return self.status == MUConnectionStatusConnecting;
+  return _connectionState == MUConnectionStateConnecting;
 }
 
 - (BOOL) isConnectedOrConnecting
@@ -59,27 +59,27 @@
 
 - (void) setStatusConnected
 {
-  _status = MUConnectionStatusConnected;
+  _connectionState = MUConnectionStateConnected;
 }
 
 - (void) setStatusConnecting
 {
-  _status = MUConnectionStatusConnecting;
+  _connectionState = MUConnectionStateConnecting;
 }
 
 - (void) setStatusClosedByClient
 {
-  _status = MUConnectionStatusNotConnected;
+  _connectionState = MUConnectionStateNotConnected;
 }
 
 - (void) setStatusClosedByServer
 {
-  _status = MUConnectionStatusNotConnected;
+  _connectionState = MUConnectionStateNotConnected;
 }
 
 - (void) setStatusClosedWithError: (NSError *) error
 {
-  _status = MUConnectionStatusNotConnected;
+  _connectionState = MUConnectionStateNotConnected;
 }
 
 @end

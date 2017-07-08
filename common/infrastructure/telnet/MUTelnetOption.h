@@ -8,14 +8,15 @@
 
 // This implements the Telnet Q Method: <http://rfc.net/rfc1143.html>
 
-typedef enum MUTelnetQ {
+typedef NS_ENUM (NSInteger, MUTelnetQState)
+{
   MUTelnetQNo,
   MUTelnetQYes,
   MUTelnetQWantNoEmpty,
   MUTelnetQWantNoOpposite,
   MUTelnetQWantYesEmpty,
   MUTelnetQWantYesOpposite
-} MUTelnetQState;
+};
 
 @protocol MUTelnetOptionDelegate
 

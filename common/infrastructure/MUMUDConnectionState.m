@@ -15,7 +15,7 @@
   
   _codebaseAnalyzer = [[MUHeuristicCodebaseAnalyzer alloc] initWithDelegate: newDelegate];
   
-  _charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+  _charsetNegotiationState = MUCharsetNegotiationStateInactive;
   _incomingStreamCompressed = NO;
   _allowCodePage437Substitution = YES; // Defaulting to YES allows some MUSHes that can't negotiate to work properly.
   _nextTerminalTypeIndex = 0;
@@ -35,7 +35,7 @@
 {
   [_codebaseAnalyzer reset];
   
-  self.charsetNegotiationStatus = MUTelnetCharsetNegotiationInactive;
+  self.charsetNegotiationState = MUCharsetNegotiationStateInactive;
   self.incomingStreamCompressed = NO;
   self.allowCodePage437Substitution = YES;
   self.nextTerminalTypeIndex = 0;

@@ -4,20 +4,20 @@
 // Copyright (c) 2014 3James Software. All rights reserved.
 //
 
-enum MUTerminalControlStringTypes
+typedef NS_ENUM (NSInteger, MUTerminalControlStringType)
 {
   MUTerminalControlStringTypeOperatingSystemCommand = 0x9d,
   MUTerminalControlStringTypePrivacyMessage = 0x9e,
   MUTerminalControlStringTypeApplicationProgram = 0x9f
 };
 
-enum MUTerminalCSICommands
+typedef NS_ENUM (NSInteger, MUTerminalCSICommand)
 {
   MUTerminalCSICursorRight = 0x43,           // 'C'
   MUTerminalCSISelectGraphicRendition = 0x6d // 'm'
 };
 
-typedef enum MUANSICode
+typedef NS_ENUM (NSInteger, MUANSICode)
 {
   MUANSIReset = 0,
   MUANSIBrightOn = 1,
@@ -72,29 +72,29 @@ typedef enum MUANSICode
   MUANSIBackgroundBrightMagenta = 105,
   MUANSIBackgroundBrightCyan = 106,
   MUANSIBackgroundBrightWhite = 107
-} MUANSICode;
-
-enum MUAbstractANSIColors
-{
-  MUANSIBlackColor,
-  MUANSIRedColor,
-  MUANSIGreenColor,
-  MUANSIYellowColor,
-  MUANSIBlueColor,
-  MUANSIMagentaColor,
-  MUANSICyanColor,
-  MUANSIWhiteColor,
-  MUANSIBrightBlackColor,
-  MUANSIBrightRedColor,
-  MUANSIBrightGreenColor,
-  MUANSIBrightYellowColor,
-  MUANSIBrightBlueColor,
-  MUANSIBrightMagentaColor,
-  MUANSIBrightCyanColor,
-  MUANSIBrightWhiteColor
 };
 
-typedef enum MUANSI256ColorCode
+typedef NS_ENUM (NSInteger, MUAbstractANSIColor)
+{
+  MUANSIColorBlack,
+  MUANSIColorRed,
+  MUANSIColorGreen,
+  MUANSIColorYellow,
+  MUANSIColorBlue,
+  MUANSIColorMagenta,
+  MUANSIColorCyan,
+  MUANSIColorWhite,
+  MUANSIColorBrightBlack,
+  MUANSIColorBrightRed,
+  MUANSIColorBrightGreen,
+  MUANSIColorBrightYellow,
+  MUANSIColorBrightBlue,
+  MUANSIColorBrightMagenta,
+  MUANSIColorBrightCyan,
+  MUANSIColorBrightWhite
+};
+
+typedef NS_ENUM (NSInteger, MUANSI256ColorCode)
 {
   MUANSI256Black = 0,
   MUANSI256Red = 1,
@@ -112,4 +112,4 @@ typedef enum MUANSI256ColorCode
   MUANSI256BrightMagenta = 13,
   MUANSI256BrightCyan = 14,
   MUANSI256BrightWhite = 15,
-} MUANSI256ColorCode;
+};

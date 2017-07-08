@@ -4,7 +4,7 @@
 // Copyright (c) 2013 3James Software.
 //
 
-typedef enum MUCodebase
+typedef NS_ENUM (NSInteger, MUCodebase)
 {
   MUCodebaseMCTS,
   MUCodebaseTinyMUX,
@@ -21,9 +21,9 @@ typedef enum MUCodebase
   MUCodebaseLPMUD,
   MUCodebaseLPMUDWithDGD,
   MUCodebaseUnknown
-} MUCodebase;
+};
 
-typedef enum MUCodebaseFamily
+typedef NS_ENUM (NSInteger, MUCodebaseFamily)
 {
   MUCodebaseFamilyMCTS,
   MUCodebaseFamilyTinyMUSH,
@@ -33,8 +33,7 @@ typedef enum MUCodebaseFamily
   MUCodebaseFamilyDikuMUD,
   MUCodebaseFamilyGenericMUD,
   MUCodebaseFamilyUnknown
-} MUCodebaseFamily;
-
+};
 
 @protocol MUHeuristicCodebaseAnalyzerDelegate
 

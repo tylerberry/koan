@@ -226,7 +226,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) setStatusClosedByClient
 {
-  if (self.status != MUConnectionStatusNotConnected)
+  if (self.connectedOrConnecting)
   {
     [super setStatusClosedByClient];
     [self _reset];
@@ -238,7 +238,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) setStatusClosedByServer
 {
-  if (self.status != MUConnectionStatusNotConnected)
+  if (self.connectedOrConnecting)
   {
     [super setStatusClosedByServer];
     [self _reset];
@@ -252,7 +252,7 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
 - (void) setStatusClosedWithError: (NSError *) error
 {
-  if (self.status != MUConnectionStatusNotConnected)
+  if (self.connectedOrConnecting)
   {
     [super setStatusClosedWithError: error];
     [self _reset];

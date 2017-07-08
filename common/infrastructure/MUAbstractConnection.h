@@ -4,24 +4,22 @@
 // Copyright (c) 2013 3James Software.
 //
 
-typedef enum MUConnectionStatus
+typedef NS_ENUM (NSInteger, MUConnectionState)
 {
-  MUConnectionStatusNotConnected,
-  MUConnectionStatusConnecting,
-  MUConnectionStatusConnected
-} MUConnectionStatus;
+  MUConnectionStateNotConnected,
+  MUConnectionStateConnecting,
+  MUConnectionStateConnected
+};
 
 #pragma mark -
 
 @interface MUAbstractConnection : NSObject
 
-@property (readonly) MUConnectionStatus status;
+@property (readonly,getter=isClosed) BOOL closed;
+@property (readonly,getter=isConnected) BOOL connected;
+@property (readonly,getter=isConnecting) BOOL connecting;
 
-@property (readonly) BOOL isClosed;
-@property (readonly) BOOL isConnected;
-@property (readonly) BOOL isConnecting;
-
-@property (readonly) BOOL isConnectedOrConnecting;
+@property (readonly,getter=isConnectedOrConnecting) BOOL connectedOrConnecting;
 
 - (void) close;
 - (void) open;

@@ -8,8 +8,8 @@
 
 @interface MUTerminalControlStringState : MUTerminalState
 
-+ (instancetype) stateWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType;
++ (instancetype) stateWithControlStringType: (MUTerminalControlStringType) controlStringType;
 
-- (instancetype) initWithControlStringType: (enum MUTerminalControlStringTypes) controlStringType;
+- (instancetype) initWithControlStringType: (MUTerminalControlStringType) controlStringType;
 
 @end

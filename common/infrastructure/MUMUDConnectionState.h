@@ -6,18 +6,18 @@
 
 #import "MUHeuristicCodebaseAnalyzer.h"
 
-enum charsetNegotiationStatus
+typedef NS_ENUM (NSInteger, MUCharsetNegotiationState)
 {
-  MUTelnetCharsetNegotiationInactive = 0,
-  MUTelnetCharsetNegotiationActive = 1,
-  MUTelnetCharsetNegotiationIgnoreRejected = 2
+  MUCharsetNegotiationStateInactive = 0,
+  MUCharsetNegotiationStateActive = 1,
+  MUCharsetNegotiationStateIgnoreRejected = 2
 };
 
 @interface MUMUDConnectionState : NSObject
 
 @property (strong, nonatomic) MUHeuristicCodebaseAnalyzer *codebaseAnalyzer;
 
-@property (assign) enum charsetNegotiationStatus charsetNegotiationStatus;
+@property (assign) MUCharsetNegotiationState charsetNegotiationState;
 @property (assign) BOOL allowCodePage437Substitution;
 @property (assign, getter=isIncomingStreamCompressed) BOOL incomingStreamCompressed;
 @property (assign) unsigned nextTerminalTypeIndex;

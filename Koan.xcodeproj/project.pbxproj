@@ -61,6 +61,26 @@
 		2F3DDCB41F0FFEEA0050F376 /* BFIconTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DDCAE1F0FFEB00050F376 /* BFIconTabBar.m */; };
 		2F3DDCB51F0FFEEA0050F376 /* BFColorPickerPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DDCA61F0FFEB00050F376 /* BFColorPickerPopover.m */; };
 		2F3DDCB61F0FFEEA0050F376 /* BFPopoverColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DDCA71F0FFEB00050F376 /* BFPopoverColorWell.m */; };
+		2F3DDCB71F1006860050F376 /* MUAutoHyperlinksFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42736F1F0C451800A06B84 /* MUAutoHyperlinksFilterTests.m */; };
+		2F3DDCB81F1006860050F376 /* MUByteSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273721F0C451800A06B84 /* MUByteSetTests.m */; };
+		2F3DDCB91F1006860050F376 /* MUFilterTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273771F0C451800A06B84 /* MUFilterTestCase.m */; };
+		2F3DDCBA1F1006860050F376 /* MUFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273791F0C451800A06B84 /* MUFilterTests.m */; };
+		2F3DDCBB1F1006860050F376 /* MUFugueEditFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42736E1F0C451800A06B84 /* MUFugueEditFilterTests.m */; };
+		2F3DDCBC1F1006860050F376 /* MUHistoryRingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273761F0C451800A06B84 /* MUHistoryRingTests.m */; };
+		2F3DDCBD1F1006860050F376 /* MUNewlineTextAttributeFilterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273741F0C451800A06B84 /* MUNewlineTextAttributeFilterTests.m */; };
+		2F3DDCBE1F1006860050F376 /* MUPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273811F0C451800A06B84 /* MUPlayerTests.m */; };
+		2F3DDCBF1F1006860050F376 /* MUProfileRegistryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42737B1F0C451800A06B84 /* MUProfileRegistryTests.m */; };
+		2F3DDCC01F1006860050F376 /* MUProfileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273731F0C451800A06B84 /* MUProfileTests.m */; };
+		2F3DDCC11F1006860050F376 /* MUTelnetOptionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273751F0C451800A06B84 /* MUTelnetOptionTests.m */; };
+		2F3DDCC21F1006860050F376 /* MUTelnetProtocolHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273701F0C451800A06B84 /* MUTelnetProtocolHandlerTests.m */; };
+		2F3DDCC31F1006860050F376 /* MUTelnetStateMachineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42737C1F0C451800A06B84 /* MUTelnetStateMachineTests.m */; };
+		2F3DDCC41F1006860050F376 /* MUTerminalProtocolHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42737D1F0C451800A06B84 /* MUTerminalProtocolHandlerTests.m */; };
+		2F3DDCC51F1006860050F376 /* MUTextLoggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42736D1F0C451800A06B84 /* MUTextLoggerTests.m */; };
+		2F3DDCC61F1006860050F376 /* MUTextLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273711F0C451800A06B84 /* MUTextLogTests.m */; };
+		2F3DDCC71F1006860050F376 /* MUTreeNodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42736C1F0C451800A06B84 /* MUTreeNodeTests.m */; };
+		2F3DDCC81F1006860050F376 /* MUWorldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42737F1F0C451800A06B84 /* MUWorldTests.m */; };
+		2F3DDCC91F1006860050F376 /* XCTestCase+NSAttributedStringAssertions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4273821F0C451800A06B84 /* XCTestCase+NSAttributedStringAssertions.m */; };
+		2F3DDCCA1F100CFF0050F376 /* UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42722E1F0C366E00A06B84 /* UITests.swift */; };
 		2F4273181F0C44C100A06B84 /* MUConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42725D1F0C414800A06B84 /* MUConstants.m */; };
 		2F4273191F0C44C100A06B84 /* MUKoanMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F42725E1F0C414800A06B84 /* MUKoanMain.m */; };
 		2F42731A1F0C44C100A06B84 /* MUConditionsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F4272751F0C41E500A06B84 /* MUConditionsPreferencesViewController.m */; };
@@ -1468,6 +1488,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F3DDCB71F1006860050F376 /* MUAutoHyperlinksFilterTests.m in Sources */,
+				2F3DDCB81F1006860050F376 /* MUByteSetTests.m in Sources */,
+				2F3DDCB91F1006860050F376 /* MUFilterTestCase.m in Sources */,
+				2F3DDCBA1F1006860050F376 /* MUFilterTests.m in Sources */,
+				2F3DDCBB1F1006860050F376 /* MUFugueEditFilterTests.m in Sources */,
+				2F3DDCBC1F1006860050F376 /* MUHistoryRingTests.m in Sources */,
+				2F3DDCBD1F1006860050F376 /* MUNewlineTextAttributeFilterTests.m in Sources */,
+				2F3DDCBE1F1006860050F376 /* MUPlayerTests.m in Sources */,
+				2F3DDCBF1F1006860050F376 /* MUProfileRegistryTests.m in Sources */,
+				2F3DDCC01F1006860050F376 /* MUProfileTests.m in Sources */,
+				2F3DDCC11F1006860050F376 /* MUTelnetOptionTests.m in Sources */,
+				2F3DDCC21F1006860050F376 /* MUTelnetProtocolHandlerTests.m in Sources */,
+				2F3DDCC31F1006860050F376 /* MUTelnetStateMachineTests.m in Sources */,
+				2F3DDCC41F1006860050F376 /* MUTerminalProtocolHandlerTests.m in Sources */,
+				2F3DDCC51F1006860050F376 /* MUTextLoggerTests.m in Sources */,
+				2F3DDCC61F1006860050F376 /* MUTextLogTests.m in Sources */,
+				2F3DDCC71F1006860050F376 /* MUTreeNodeTests.m in Sources */,
+				2F3DDCC81F1006860050F376 /* MUWorldTests.m in Sources */,
+				2F3DDCC91F1006860050F376 /* XCTestCase+NSAttributedStringAssertions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1475,6 +1514,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F3DDCCA1F100CFF0050F376 /* UITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1791,7 +1831,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = QRQZ87T7UT;
-				INFOPLIST_FILE = KoanTests/Info.plist;
+				GCC_PREFIX_HEADER = "common/tests/Tests-Prefix.pch";
+				INFOPLIST_FILE = common/tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.3james.KoanTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1806,7 +1847,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = QRQZ87T7UT;
-				INFOPLIST_FILE = KoanTests/Info.plist;
+				GCC_PREFIX_HEADER = "common/tests/Tests-Prefix.pch";
+				INFOPLIST_FILE = common/tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.3james.KoanTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1820,7 +1862,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = QRQZ87T7UT;
-				INFOPLIST_FILE = KoanUITests/Info.plist;
+				INFOPLIST_FILE = macos/tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.3james.KoanUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1834,7 +1876,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = QRQZ87T7UT;
-				INFOPLIST_FILE = KoanUITests/Info.plist;
+				INFOPLIST_FILE = macos/tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.3james.KoanUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

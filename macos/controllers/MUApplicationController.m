@@ -286,6 +286,16 @@
   return NSTerminateNow;
 }
 
+- (void) applicationWillFinishLaunching: (NSNotification *) notification
+{
+  [[NSAppleEventManager sharedAppleEventManager] setEventHandler: self
+                                                     andSelector: @selector(_handleGetURLEvent:withReplyEvent:)
+                                                   forEventClass: kInternetEventClass
+                                                      andEventID: kAEGetURL];
+  
+  NSLog (@"1");
+}
+
 - (void) applicationWillTerminate: (NSNotification *) notification
 {
   [NSApp setApplicationIconImage: nil];
@@ -326,6 +336,20 @@
 #pragma mark - Private methods
 
 @dynamic _shouldPlayNotificationSound;
+
+- (void) _handleGetURLEvent: (NSAppleEventDescriptor *) event withReplyEvent: (NSAppleEventDescriptor *) replyEvent
+{
+  NSURL *url = [NSURL URLWithString: [[event paramDescriptorForKeyword: keyDirectObject] stringValue]];
+  
+  if ([url.scheme isEqualToString: @"telnet"])
+  {
+    MUWorld *world = [MUWorld worldWithHostname: url.host port: url.port forceTLS: NO];
+    
+    [self openConnectionForWorld: world];
+  }
+  
+  NSLog (@"2");
+}
 
 + (void) _initializeUserDefaults
 {
@@ -517,7 +541,9 @@
     [openConnectionMenu addItem: worldItem];
   }
   
-  if (autoconnect && !didAutoconnect)
+  if ([MUConnectionWindowControllerRegistry defaultRegistry].controllers.count == 0
+      && autoconnect
+      && !didAutoconnect)
     [self showProfilesWindow: self];
 }
 

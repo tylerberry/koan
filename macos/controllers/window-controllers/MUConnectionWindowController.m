@@ -79,7 +79,7 @@ typedef NS_ENUM (NSInteger, MUTextDisplayMode)
 
 - (instancetype) initWithProfile: (MUProfile *) newProfile
 {
-  if (!(self = [super initWithWindow: nil]))
+  if (!(self = [super init]))
     return nil;
   
   _connection = [[MUMUDConnection alloc] initWithProfile: newProfile delegate: self];

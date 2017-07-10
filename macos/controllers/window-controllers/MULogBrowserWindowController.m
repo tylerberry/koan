@@ -19,12 +19,9 @@
   return _sharedLogBrowserWindowController;
 }
 
-- (instancetype) init
+- (NSString *) windowNibName
 {
-  if (!(self = [super initWithWindowNibName: @"MULogBrowser" owner: self]))
-    return nil;
-  
-  return self;
+  return @"MULogBrowser";
 }
 
 #pragma mark - NSWindowController overrides

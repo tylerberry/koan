@@ -18,17 +18,14 @@
 
 @implementation MUConnectPanelController
 
-- (instancetype) init
-{
-  if (!(self = [super initWithWindowNibName: @"MUConnectPanel" owner: self]))
-    return nil;
-  
-  return self;
-}
-
 - (void) windowDidLoad
 {
   [self _resetInterface];
+}
+
+- (NSString *) windowNibName
+{
+  return @"MUGeneralPreferencesView";
 }
 
 #pragma mark - Actions

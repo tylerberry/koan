@@ -7,14 +7,6 @@
 #import "MUAcknowledgementsWindowController.h"
 
 @implementation MUAcknowledgementsWindowController
-
-- (instancetype) init
-{
-  if (!(self = [super initWithWindowNibName: @"MUAcknowledgementsWindow" owner: self]))
-    return nil;
-
-  return self;
-}
   
 - (IBAction) openGrowlWebPage: (id) sender
 {
@@ -24,6 +16,11 @@
 - (IBAction) openOpenSSLWebPage: (id) sender
 {
   [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: MUOpenSSLURLString]];
+}
+
+- (NSString *) windowNibName
+{
+  return @"MUAcknowledgementsWindow";
 }
 
 @end

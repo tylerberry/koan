@@ -54,7 +54,7 @@
 
 - (instancetype) init
 {
-  if (!(self = [super initWithWindowNibName: @"MUProfilesWindow" owner: self]))
+  if (!(self = [super init]))
     return nil;
   
   _profilesTreeArray = [[NSMutableArray alloc] init];
@@ -103,6 +103,11 @@
     return;
   }
   [super observeValueForKeyPath: keyPath ofObject: object change: changeDictionary context: context];
+}
+
+- (NSString *) windowNibName
+{
+  return @"MUProfilesWindow";
 }
 
 #pragma mark - Actions

@@ -9,7 +9,7 @@
 @implementation MUTelnetNotTelnetState
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   // If we've decided we're not dealing with Telnet, just pass everything on as text, forever.

@@ -245,8 +245,6 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
 
     [[NSNotificationCenter defaultCenter] postNotificationName: MUMUDConnectionWasClosedByServerNotification
                                                         object: self];
-
-    [self _attemptReconnect];
   }
 }
 
@@ -262,6 +260,13 @@ NSString *MUMUDConnectionErrorKey = @"MUMUDConnectionErrorKey";
                                                       userInfo: @{MUMUDConnectionErrorKey: error}];
     [self _attemptReconnect];
   }
+}
+
+#pragma mark - MUHeuristicCodebaseAnalyzerDelegate protocol
+
+- (void) confirmTelnet
+{
+  _state.telnetConfirmed = YES;
 }
 
 #pragma mark - Various protocols for delegates

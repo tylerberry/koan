@@ -12,7 +12,7 @@
 @implementation MUTelnetMCCP1SubnegotiationState
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   switch (byte)

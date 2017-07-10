@@ -86,13 +86,13 @@ static NSArray *_offerableTerminalTypes;
   return [[self alloc] initWithConnectionState: telnetConnectionState];
 }
 
-- (instancetype) initWithConnectionState: (MUMUDConnectionState *) telnetConnectionState
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
 
-  _telnetStateMachine = [MUTelnetStateMachine stateMachine];
-  _connectionState = telnetConnectionState;
+  _telnetStateMachine = [MUTelnetStateMachine stateMachineWithConnectionState: connectionState];
+  _connectionState = connectionState;
   
   _subnegotiationBuffer = [[NSMutableData alloc] initWithCapacity: 64];
 
@@ -106,25 +106,25 @@ static NSArray *_offerableTerminalTypes;
 
 - (void) disableOptionForHim: (uint8_t) option
 {
-  if (_telnetStateMachine.telnetConfirmed)
+  if (_connectionState.telnetConfirmed)
     [_options[option] disableHim];
 }
 
 - (void) disableOptionForUs: (uint8_t) option
 {
-  if (_telnetStateMachine.telnetConfirmed)
+  if (_connectionState.telnetConfirmed)
     [_options[option] disableUs];
 }
 
 - (void) enableOptionForHim: (uint8_t) option
 {
-  if (_telnetStateMachine.telnetConfirmed)
+  if (_connectionState.telnetConfirmed)
     [_options[option] enableHim];
 }
 
 - (void) enableOptionForUs: (uint8_t) option
 {
-  if (_telnetStateMachine.telnetConfirmed)
+  if (_connectionState.telnetConfirmed)
     [_options[option] enableUs];
 }
 
@@ -146,11 +146,6 @@ static NSArray *_offerableTerminalTypes;
 - (void) _permitDoForOption: (uint8_t) option
 {
   _options[option].permittedForUs = YES;
-}
-
-- (BOOL) telnetConfirmed
-{
-  return _telnetStateMachine.telnetConfirmed;
 }
 
 #pragma mark - MUTelnetProtocolHandler protocol
@@ -354,7 +349,7 @@ static NSArray *_offerableTerminalTypes;
 {
   [_telnetStateMachine parse: byte forProtocolHandler: self];
   
-  if (_telnetStateMachine.telnetConfirmed)
+  if (_connectionState.telnetConfirmed)
   {
     if (atomic_flag_test_and_set (&_sentOptionRequest) == false)
     {
@@ -380,7 +375,7 @@ static NSArray *_offerableTerminalTypes;
     [footerData appendBytes: &endOfRecordBytes length: 2];
   }
   
-  if (_telnetStateMachine.telnetConfirmed
+  if (_connectionState.telnetConfirmed
       && ![self optionEnabledForUs: MUTelnetOptionSuppressGoAhead]
       && !(_connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyPennMUSH
            || _connectionState.codebaseAnalyzer.codebaseFamily == MUCodebaseFamilyEvennia))

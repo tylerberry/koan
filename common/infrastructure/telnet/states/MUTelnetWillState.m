@@ -12,7 +12,7 @@
 @implementation MUTelnetWillState
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   [protocolHandler log: @"Received: IAC WILL %@.", [MUTelnetOption optionNameForByte: byte]];

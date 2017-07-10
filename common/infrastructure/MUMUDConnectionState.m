@@ -22,6 +22,7 @@
   _serverWillEcho = NO;
   _shouldReportWindowSizeChanges = NO;
   _stringEncoding = NSASCIIStringEncoding;
+  _telnetConfirmed = NO;
 
   return self;
 }
@@ -42,7 +43,7 @@
   self.serverWillEcho = NO;
   self.shouldReportWindowSizeChanges = NO;
   self.stringEncoding = NSASCIIStringEncoding;
-
+  _telnetConfirmed = NO;
 }
 
 @end

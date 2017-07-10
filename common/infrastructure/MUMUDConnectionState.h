@@ -24,6 +24,7 @@ typedef NS_ENUM (NSInteger, MUCharsetNegotiationState)
 @property (assign) BOOL shouldReportWindowSizeChanges;
 @property (assign) BOOL serverWillEcho;
 @property (assign) NSStringEncoding stringEncoding;
+@property (assign) BOOL telnetConfirmed;
 
 - (instancetype) init NS_UNAVAILABLE;
 - (instancetype) initWithCodebaseAnalyzerDelegate: (NSObject <MUHeuristicCodebaseAnalyzerDelegate> *) newDelegate NS_DESIGNATED_INITIALIZER;

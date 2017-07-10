@@ -7,47 +7,40 @@
 #import "MUTelnetStateMachine.h"
 
 #import "MUTelnetTextState.h"
-
-@interface MUTelnetStateMachine ()
-
-@property (assign) BOOL telnetConfirmed;
-
-@end
-
-#pragma mark -
-
 @implementation MUTelnetStateMachine
-
-+ (instancetype) stateMachine
 {
-  return [[self alloc] init];
+  MUMUDConnectionState *_connectionState;
 }
 
-- (instancetype) init
++ (instancetype) stateMachineWithConnectionState: (MUMUDConnectionState *) connectionState
+{
+  return [[self alloc] initWithConnectionState: connectionState];
+}
+
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState
 {
   if (!(self = [super init]))
     return nil;
   
+  _connectionState = connectionState;
   _state = [MUTelnetTextState state];
-  _telnetConfirmed = NO;
   
   return self;
 }
 
 - (void) confirmTelnet
 {
-  self.telnetConfirmed = YES;
+  _connectionState.telnetConfirmed = YES;
 }
 
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
-  self.state = [self.state parse: byte forStateMachine: self protocolHandler: protocolHandler];
+  self.state = [self.state parse: byte forConnectionState: _connectionState protocolHandler: protocolHandler];
 }
 
 - (void) reset
 {
   self.state = [MUTelnetTextState state];
-  self.telnetConfirmed = NO;
 }
 
 @end

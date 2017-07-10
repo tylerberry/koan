@@ -11,7 +11,7 @@
 #import "MUTelnetDontState.h"
 #import "MUTelnetNotTelnetState.h"
 #import "MUTelnetMCCP1SubnegotiationState.h"
-#import "MUTelnetStateMachine.h"
+#import "MUMUDConnectionState.h"
 #import "MUTelnetSubnegotiationIACState.h"
 #import "MUTelnetSubnegotiationOptionState.h"
 #import "MUTelnetSubnegotiationState.h"
@@ -37,7 +37,6 @@ givenAnyByteProducesState: (Class) nextStateClass
         exceptForThoseInSet: (MUByteSet *) exclusions;
 - (void) _assertStateObject: (MUTelnetState *) state givenByte: (uint8_t) byte producesState: (Class) nextStateClass;
 - (void) _giveStateClass: (Class) stateClass byte: (uint8_t) byte;
-- (void) _resetStateMachine;
 
 @end
 
@@ -45,7 +44,7 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 @implementation MUTelnetStateMachineTests
 {
-  MUTelnetStateMachine *_stateMachine;
+  MUMUDConnectionState *_state;
   int _lastByteInput;
   NSMutableData *_output;
 }
@@ -53,14 +52,14 @@ givenAnyByteProducesState: (Class) nextStateClass
 - (void) setUp
 {
   [super setUp];
-  [self _resetStateMachine];
+  _state = [[MUMUDConnectionState alloc] initWithCodebaseAnalyzerDelegate: nil];
   _lastByteInput = -1;
   _output = [NSMutableData data];
 }
 
 - (void) tearDown
 {
-  _stateMachine = nil;
+  _state = nil;
   _output = nil;
   [super tearDown];
 }
@@ -109,7 +108,7 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 - (void) testIACTransitionsOnceConfirmed
 {
-  [_stateMachine confirmTelnet];
+  _state.telnetConfirmed = YES;
 
   [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetEndOfRecord producesState: C(MUTelnetTextState)];
   [self _assertState: C(MUTelnetIACState) givenByte: MUTelnetNoOperation producesState: C(MUTelnetTextState)];
@@ -279,15 +278,17 @@ givenAnyByteProducesState: C(MUTelnetSubnegotiationState)
 
 - (void) _assertByteConfirmsTelnet: (uint8_t) byte;
 {
-  [self _resetStateMachine];
-  [[MUTelnetIACState state] parse: byte forStateMachine: _stateMachine protocolHandler: nil];
-  XCTAssertTrue (_stateMachine.telnetConfirmed, @"%d did not confirm telnet", byte);
+  [_state reset];
+  [[MUTelnetIACState state] parse: byte
+               forConnectionState: _state
+                  protocolHandler: nil];
+  XCTAssertTrue (_state.telnetConfirmed, @"%d did not confirm telnet", byte);
   [_output replaceBytesInRange: NSMakeRange (0, _output.length) withBytes: NULL length: 0];
 }
 
 - (void) _assertByteInvalidatesTelnet: (uint8_t) byte
 {
-  [self _resetStateMachine];
+  [_state reset];
   uint8_t bytes[] = {MUTelnetInterpretAsCommand, byte};
   [self _assertState: C(MUTelnetIACState) givenByte: byte producesState: C(MUTelnetNotTelnetState)];
   XCTAssertEqualObjects (_output, [NSData dataWithBytes: bytes length: 2]);
@@ -336,19 +337,14 @@ givenAnyByteProducesState: (Class) nextStateClass
 
 - (void) _assertStateObject: (MUTelnetState *) state givenByte: (uint8_t) byte producesState: (Class) nextStateClass
 {
-  MUTelnetState *nextState = [state parse: byte forStateMachine: _stateMachine protocolHandler: self];
+  MUTelnetState *nextState = [state parse: byte forConnectionState: _state protocolHandler: self];
   
   XCTAssertEqualObjects ([nextState class], nextStateClass, @"Byte was 0x%x (%d)", byte, byte);
 }
 
 - (void) _giveStateClass: (Class) stateClass byte: (uint8_t) byte
 {
-  [[[stateClass alloc] init] parse: byte forStateMachine: _stateMachine protocolHandler: self];
-}
-
-- (void) _resetStateMachine
-{
-  _stateMachine = [MUTelnetStateMachine stateMachine];
+  [[[stateClass alloc] init] parse: byte forConnectionState: _state protocolHandler: self];
 }
 
 @end

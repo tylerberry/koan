@@ -33,7 +33,7 @@ static NSMutableDictionary *states;
 }
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocol
 {
   @throw [NSException exceptionWithName: @"SubclassResponsibility"

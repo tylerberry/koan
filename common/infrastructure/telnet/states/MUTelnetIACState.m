@@ -17,9 +17,8 @@
 
 @interface MUTelnetIACState ()
 
-- (MUTelnetState *) notTelnetFromByte: (uint8_t) byte
-                      forStateMachine: (MUTelnetStateMachine *) stateMachine
-                      protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;
+- (MUTelnetState *) _notTelnetFromByte: (uint8_t) byte
+                       protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;
 
 @end
 
@@ -28,13 +27,13 @@
 @implementation MUTelnetIACState
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   switch (byte)
   {
     case MUTelnetNoOperation:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetTextState state];
 
     // TODO: Handle these valid commands individually.
@@ -46,43 +45,43 @@
     case MUTelnetAreYouThere:
     case MUTelnetEraseLine:
       [protocolHandler log: @"  Telnet: IAC %u (unhandled).", byte];
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetTextState state];
 
     case MUTelnetEraseCharacter:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       [protocolHandler deleteLastBufferedCharacter];
       return [MUTelnetTextState state];
       
     case MUTelnetGoAhead:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       [protocolHandler useBufferedDataAsPrompt];
       return [MUTelnetTextState state];
     
     case MUTelnetEndOfRecord:
-      if (!stateMachine.telnetConfirmed)
+      if (!connectionState.telnetConfirmed)
       {
         [protocolHandler log: @"  Telnet: IAC EOR without receiving earlier telnet sequences."];
-        return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
+        return [self _notTelnetFromByte: byte protocolHandler: protocolHandler];
       }
       
       [protocolHandler useBufferedDataAsPrompt];
       return [MUTelnetTextState state];
       
     case MUTelnetWill:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetWillState state];
       
     case MUTelnetWont:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetWontState state];
       
     case MUTelnetDo:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetDoState state];
       
     case MUTelnetDont:
-      [stateMachine confirmTelnet];
+      connectionState.telnetConfirmed = YES;
       return [MUTelnetDontState state];
       
     case MUTelnetInterpretAsCommand:
@@ -90,7 +89,7 @@
       return [MUTelnetTextState state];
 
     case MUTelnetBeginSubnegotiation:
-      if (!stateMachine.telnetConfirmed)
+      if (!connectionState.telnetConfirmed)
       {
         [protocolHandler log: @"  Telnet: IAC SB without receiving earlier telnet sequences."];
         
@@ -108,10 +107,10 @@
       
     case MUTelnetEndSubnegotiation:
     default:
-      if (!stateMachine.telnetConfirmed)
+      if (!connectionState.telnetConfirmed)
       {
         [protocolHandler log: @"  Telnet: IAC SE without receiving earlier telnet sequences."];
-        return [self notTelnetFromByte: byte forStateMachine: stateMachine protocolHandler: protocolHandler];
+        return [self _notTelnetFromByte: byte protocolHandler: protocolHandler];
       }
       
       [protocolHandler log: @"  Telnet: IAC SE while not in subnegotiation."];
@@ -121,9 +120,8 @@
 
 #pragma mark - Private methods
 
-- (MUTelnetState *) notTelnetFromByte: (uint8_t) byte
-                      forStateMachine: (MUTelnetStateMachine *) stateMachine
-                      protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
+- (MUTelnetState *) _notTelnetFromByte: (uint8_t) byte
+                       protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   [protocolHandler bufferTextByte: MUTelnetInterpretAsCommand];
   [protocolHandler bufferTextByte: byte];

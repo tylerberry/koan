@@ -12,9 +12,11 @@
 @interface MUTelnetStateMachine : NSObject
 
 @property (strong) MUTelnetState *state;
-@property (readonly) BOOL telnetConfirmed;
 
-+ (instancetype) stateMachine;
++ (instancetype) stateMachineWithConnectionState: (MUMUDConnectionState *) telnetConnectionState;
+
+- (instancetype) init NS_UNAVAILABLE;
+- (instancetype) initWithConnectionState: (MUMUDConnectionState *) connectionState NS_DESIGNATED_INITIALIZER;
 
 - (void) confirmTelnet;
 - (void) parse: (uint8_t) byte forProtocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler;

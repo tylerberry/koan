@@ -12,7 +12,7 @@
 @implementation MUTelnetDoState
 
 - (MUTelnetState *) parse: (uint8_t) byte
-          forStateMachine: (MUTelnetStateMachine *) stateMachine
+       forConnectionState: (MUMUDConnectionState *) connectionState
           protocolHandler: (NSObject <MUTelnetProtocolHandler> *) protocolHandler
 {
   [protocolHandler log: @"Received: IAC DO %@.", [MUTelnetOption optionNameForByte: byte]];

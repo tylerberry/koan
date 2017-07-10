@@ -21,7 +21,7 @@ static const int32_t currentPlayerVersion = 4;
 
 - (instancetype) init
 {
-  return [self initWithName: @"New player"];
+  return [super initWithName: @"New player"];
 }
 
 - (instancetype) initWithName: (NSString *) name children: (NSArray *) children

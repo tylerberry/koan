@@ -14,7 +14,7 @@
 
 + (instancetype) defaultRegistry;
 
-- (instancetype) init NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithProfiles: (NSDictionary *) profiles NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithProfilesFromUserDefaults;
 
 - (MUProfile *) profileForProfile: (MUProfile *) profile;

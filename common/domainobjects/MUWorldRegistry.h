@@ -15,6 +15,7 @@
 
 + (instancetype) defaultRegistry;
 
+- (instancetype) initWithWorlds: (NSArray *) worlds NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithWorldsFromUserDefaults;
 
 - (MUWorld *) worldForUniqueIdentifier: (NSString *) identifier;

@@ -8,6 +8,8 @@
 
 @interface MUProfilesSection : MUSection
 
-- (instancetype) initWithName: (NSString *) newName;
+- (instancetype) initWithCoder: (NSCoder *) decoder NS_UNAVAILABLE;
+- (instancetype) initWithName: (NSString *) name NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithName: (NSString *) name children: (NSArray *) children NS_UNAVAILABLE;
 
 @end

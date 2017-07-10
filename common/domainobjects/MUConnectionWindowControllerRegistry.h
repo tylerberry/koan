@@ -16,6 +16,8 @@
 
 + (instancetype) defaultRegistry;
 
+- (instancetype) init NS_DESIGNATED_INITIALIZER;
+
 - (MUConnectionWindowController *) controllerForProfile: (MUProfile *) profile;
 - (MUConnectionWindowController *) controllerForWorld: (MUWorld *) world;
 

@@ -35,17 +35,17 @@
   return _defaultRegistry;
 }
 
-- (instancetype) initWithProfilesFromUserDefaults
+- (instancetype) init
 {
-  if (!(self = [self init]))
+  return [self initWithProfiles: @{}];
+}
+
+- (instancetype) initWithProfiles: (NSDictionary *) profiles
+{
+  if (!(self = [super init]))
     return nil;
   
-  NSData *profilesData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];
-  
-  if (profilesData)
-    _mutableProfiles = [NSKeyedUnarchiver unarchiveObjectWithData: profilesData];
-  else
-    _mutableProfiles = [NSMutableDictionary dictionary];
+  _mutableProfiles = [profiles mutableCopy];
   
   for (NSString *key in _mutableProfiles.allKeys)
   {
@@ -53,20 +53,22 @@
     
     [self _startObservingWritableValuesForProfile: profile];
   }
-
+  
   return self;
 }
 
-- (instancetype) init
+- (instancetype) initWithProfilesFromUserDefaults
 {
-  if (!(self = [super init]))
-    return nil;
+  NSData *profilesDataFromUserDefaults = [[NSUserDefaults standardUserDefaults] dataForKey: MUPProfiles];
+  NSDictionary *profilesFromUserDefaults;
   
-  _mutableProfiles = [[NSMutableDictionary alloc] init];
+  if (profilesDataFromUserDefaults)
+    profilesFromUserDefaults = [NSKeyedUnarchiver unarchiveObjectWithData: profilesDataFromUserDefaults];
+  else
+    profilesFromUserDefaults = @{};
   
-  return self;
+  return [self initWithProfiles: profilesFromUserDefaults];
 }
-
 - (void) dealloc
 {
   for (MUProfile *profile in _mutableProfiles)

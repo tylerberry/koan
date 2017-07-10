@@ -44,20 +44,41 @@
   return _defaultRegistry;
 }
 
-- (instancetype) initWithWorldsFromUserDefaults
+- (instancetype) init
+{
+  if (!(self = [self initWithWorlds: @[]]))
+    return nil;
+  
+  return self;
+}
+
+- (instancetype) initWithWorlds: (NSArray *) worlds
 {
   if (!(self = [super init]))
     return nil;
   
-  NSData *worldsData = [[NSUserDefaults standardUserDefaults] dataForKey: MUPWorlds];
+  _worlds = [worlds mutableCopy];
   
-  if (worldsData)
-    _worlds = [NSKeyedUnarchiver unarchiveObjectWithData: worldsData];
+  return self;
+}
+
+- (instancetype) initWithWorldsFromUserDefaults
+{
+  NSData *worldsDataFromUserDefaults = [[NSUserDefaults standardUserDefaults] dataForKey: MUPWorlds];
+  NSArray *worldsFromUserDefaults;
+  
+  if (worldsDataFromUserDefaults)
+  {
+    worldsFromUserDefaults = [NSKeyedUnarchiver unarchiveObjectWithData: worldsDataFromUserDefaults];
+    
+    for (MUTreeNode *topLevelNode in worldsFromUserDefaults)
+      [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
+  }
   else
-    _worlds = [NSMutableArray array];
+    worldsFromUserDefaults = @[];
   
-  for (MUTreeNode *topLevelNode in self.worlds)
-    [topLevelNode recursivelyUpdateParentsWithParentNode: nil];
+  if (!(self = [self initWithWorlds: worldsFromUserDefaults]))
+    return nil;
   
   [[NSNotificationCenter defaultCenter] addObserver: self
                                            selector: @selector (_worldsDidChange:)
@@ -72,14 +93,9 @@
   return self;
 }
 
-- (instancetype) init
+- (void) dealloc
 {
-  if (!(self = [super init]))
-    return nil;
-  
-  _worlds = [[NSMutableArray alloc] init];
-  
-  return self;
+  [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 #pragma mark - Property method implementations for worlds

@@ -9,9 +9,9 @@
 
 @implementation MUProfilesSection
 
-- (instancetype) initWithName: (NSString *) newName
+- (instancetype) initWithName: (NSString *) name
 {
-  if (!(self = [super initWithName: newName children: nil]))
+  if (!(self = [super initWithName: name children: nil]))
     return nil;
   
   [[MUWorldRegistry defaultRegistry] addObserver: self forKeyPath: @"worlds" options: 0 context: nil];
